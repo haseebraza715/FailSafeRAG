@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "faar"
+version = "0.1.0"
+description = "Phase 1 prototype for Failure-Aware Agentic Recovery for OCR-RAG"
+readme = "docs/faar_execution_plan.md"
+requires-python = ">=3.12"
+dependencies = [
+  "faiss-cpu",
+  "langchain-core",
+  "langgraph",
+  "openai",
+  "pandas",
+  "pydantic",
+  "python-dotenv",
+  "rank-bm25",
+  "sentence-transformers",
+  "transformers",
+  "typer",
+]
+
+[project.scripts]
+faar-demo = "faar.cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
