@@ -1,0 +1,10 @@
+{
+  "phase": "phase0",
+  "sample_size": 40,
+  "sampling": "random.sample with python seed 42 from OHR-Bench data/qas_v2.json",
+  "required_labels": [
+    "text_corruption",
+    "structure_corruption",
+    "no_issue"
+  ]
+}

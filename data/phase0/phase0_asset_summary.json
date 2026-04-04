@@ -1,0 +1,544 @@
+{
+  "sample_size": 40,
+  "processed_examples": 40,
+  "multi_page_examples": 5,
+  "total_rendered_pages": 45,
+  "results": [
+    {
+      "example_id": "546fc06f-0ad0-4c77-b584-b6207ce85032",
+      "doc_name": "news/06_16",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/news/06_16.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/546fc06f-0ad0-4c77-b584-b6207ce85032.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/546fc06f-0ad0-4c77-b584-b6207ce85032.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/546fc06f-0ad0-4c77-b584-b6207ce85032_p0.png"
+      ]
+    },
+    {
+      "example_id": "108e0777-95b7-4925-a86c-deaf9dc701aa",
+      "doc_name": "finance/JPMORGAN_2022Q2_10Q",
+      "pages": [
+        68
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/JPMORGAN_2022Q2_10Q.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/108e0777-95b7-4925-a86c-deaf9dc701aa.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/108e0777-95b7-4925-a86c-deaf9dc701aa.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/108e0777-95b7-4925-a86c-deaf9dc701aa_p68.png"
+      ]
+    },
+    {
+      "example_id": "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+      "doc_name": "administration/DUDE_ead50ea3382d22ecad9fa41f246f7681",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_ead50ea3382d22ecad9fa41f246f7681.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/95a75e2f-cedb-4dcd-acaf-9c00752e4b48.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/95a75e2f-cedb-4dcd-acaf-9c00752e4b48.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/95a75e2f-cedb-4dcd-acaf-9c00752e4b48_p0.png"
+      ]
+    },
+    {
+      "example_id": "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+      "doc_name": "academic/DUDE_b4d56265b2693dbb8649bf997a06551c",
+      "pages": [
+        8
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/academic/DUDE_b4d56265b2693dbb8649bf997a06551c.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/8f3b3866-ea97-46d8-8c4b-fae58b4706e7.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/8f3b3866-ea97-46d8-8c4b-fae58b4706e7.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/8f3b3866-ea97-46d8-8c4b-fae58b4706e7_p8.png"
+      ]
+    },
+    {
+      "example_id": "8960b388-5154-469f-86f5-c3e0c3b82238",
+      "doc_name": "finance/DUDE_5eff9d45fd14e5a2c5aaff30d08acd43",
+      "pages": [
+        16
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/DUDE_5eff9d45fd14e5a2c5aaff30d08acd43.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/8960b388-5154-469f-86f5-c3e0c3b82238.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/8960b388-5154-469f-86f5-c3e0c3b82238.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/8960b388-5154-469f-86f5-c3e0c3b82238_p16.png"
+      ]
+    },
+    {
+      "example_id": "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+      "doc_name": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_14",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_14.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/6a34c854-1071-4d51-b6c5-9dacb4d7e28e.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/6a34c854-1071-4d51-b6c5-9dacb4d7e28e.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/6a34c854-1071-4d51-b6c5-9dacb4d7e28e_p0.png"
+      ]
+    },
+    {
+      "example_id": "4fc8bc09-c849-4c44-ad0a-361415754246",
+      "doc_name": "news/08_14",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/news/08_14.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/4fc8bc09-c849-4c44-ad0a-361415754246.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/4fc8bc09-c849-4c44-ad0a-361415754246.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/4fc8bc09-c849-4c44-ad0a-361415754246_p0.png"
+      ]
+    },
+    {
+      "example_id": "446d159e-b5c2-45dc-91cc-faaa931f3649",
+      "doc_name": "manual/dgx_a100",
+      "pages": [
+        27
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/manual/dgx_a100.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/446d159e-b5c2-45dc-91cc-faaa931f3649.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/446d159e-b5c2-45dc-91cc-faaa931f3649.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/446d159e-b5c2-45dc-91cc-faaa931f3649_p27.png"
+      ]
+    },
+    {
+      "example_id": "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+      "doc_name": "administration/DUDE_d02c71efb2744b583514b4cf65fb9c82",
+      "pages": [
+        2,
+        1
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_d02c71efb2744b583514b4cf65fb9c82.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7_p2.png",
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7_p1.png"
+      ]
+    },
+    {
+      "example_id": "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+      "doc_name": "law/BIOAMBERINC_04_10_2013-EX-10.34-DEVELOPMENT AGREEMENT (1)",
+      "pages": [
+        2
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/law/BIOAMBERINC_04_10_2013-EX-10.34-DEVELOPMENT AGREEMENT (1).pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/14dddbc7-b388-4ab6-8df7-6120a4c866ba.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/14dddbc7-b388-4ab6-8df7-6120a4c866ba.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/14dddbc7-b388-4ab6-8df7-6120a4c866ba_p2.png"
+      ]
+    },
+    {
+      "example_id": "13e90002-caa4-4e10-be9d-3cf49e865042",
+      "doc_name": "finance/AES_2022_10K",
+      "pages": [
+        214
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/AES_2022_10K.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/13e90002-caa4-4e10-be9d-3cf49e865042.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/13e90002-caa4-4e10-be9d-3cf49e865042.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/13e90002-caa4-4e10-be9d-3cf49e865042_p214.png"
+      ]
+    },
+    {
+      "example_id": "4a6edc95-c641-4236-9874-81a2d38b5acf",
+      "doc_name": "manual/DSA-278777",
+      "pages": [
+        18
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/manual/DSA-278777.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/4a6edc95-c641-4236-9874-81a2d38b5acf.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/4a6edc95-c641-4236-9874-81a2d38b5acf.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/4a6edc95-c641-4236-9874-81a2d38b5acf_p18.png"
+      ]
+    },
+    {
+      "example_id": "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+      "doc_name": "textbook/DUDE_f1efdd6aa8441a8fd29ebddcc1945fa3",
+      "pages": [
+        6
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/textbook/DUDE_f1efdd6aa8441a8fd29ebddcc1945fa3.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/889c8ae2-4e3c-4f2d-8332-559dcad00273.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/889c8ae2-4e3c-4f2d-8332-559dcad00273.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/889c8ae2-4e3c-4f2d-8332-559dcad00273_p6.png"
+      ]
+    },
+    {
+      "example_id": "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+      "doc_name": "manual/DUDE_4f399b8c526ffb6a2fd585a18d4ed5ec",
+      "pages": [
+        8
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/manual/DUDE_4f399b8c526ffb6a2fd585a18d4ed5ec.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/8c971839-5637-4e73-a0be-8cf3a8a3b3ae.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/8c971839-5637-4e73-a0be-8cf3a8a3b3ae.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/8c971839-5637-4e73-a0be-8cf3a8a3b3ae_p8.png"
+      ]
+    },
+    {
+      "example_id": "ec8c0152-7d1d-4685-b551-10b09e71ba76",
+      "doc_name": "administration/DUDE_a2ef3dbde89003fb50b69e4565bf165f",
+      "pages": [
+        2
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_a2ef3dbde89003fb50b69e4565bf165f.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/ec8c0152-7d1d-4685-b551-10b09e71ba76.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/ec8c0152-7d1d-4685-b551-10b09e71ba76.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/ec8c0152-7d1d-4685-b551-10b09e71ba76_p2.png"
+      ]
+    },
+    {
+      "example_id": "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+      "doc_name": "finance/AMAZON_2019_10K",
+      "pages": [
+        36
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/AMAZON_2019_10K.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/119aa71b-f6bf-47b5-9f46-fe0222087f22.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/119aa71b-f6bf-47b5-9f46-fe0222087f22.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/119aa71b-f6bf-47b5-9f46-fe0222087f22_p36.png"
+      ]
+    },
+    {
+      "example_id": "848d6744-2489-473b-b5fa-9dc0938d4510",
+      "doc_name": "administration/DUDE_5b1147787bc78c7c394c2d613a685b6c",
+      "pages": [
+        1
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_5b1147787bc78c7c394c2d613a685b6c.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/848d6744-2489-473b-b5fa-9dc0938d4510.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/848d6744-2489-473b-b5fa-9dc0938d4510.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/848d6744-2489-473b-b5fa-9dc0938d4510_p1.png"
+      ]
+    },
+    {
+      "example_id": "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+      "doc_name": "manual/DUDE_e3da4ec33b853c7078243375728ba545",
+      "pages": [
+        64,
+        51
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/manual/DUDE_e3da4ec33b853c7078243375728ba545.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/b6a5ca06-85c3-48ca-81d6-8bd6127824c2.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/b6a5ca06-85c3-48ca-81d6-8bd6127824c2.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b6a5ca06-85c3-48ca-81d6-8bd6127824c2_p64.png",
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b6a5ca06-85c3-48ca-81d6-8bd6127824c2_p51.png"
+      ]
+    },
+    {
+      "example_id": "88d5484e-4a97-4775-95b7-a0bd095537b4",
+      "doc_name": "administration/DUDE_d02c71efb2744b583514b4cf65fb9c82",
+      "pages": [
+        9
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_d02c71efb2744b583514b4cf65fb9c82.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/88d5484e-4a97-4775-95b7-a0bd095537b4.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/88d5484e-4a97-4775-95b7-a0bd095537b4.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/88d5484e-4a97-4775-95b7-a0bd095537b4_p9.png"
+      ]
+    },
+    {
+      "example_id": "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+      "doc_name": "administration/DUDE_5fca69305ae96898ffdb285a1946fa04",
+      "pages": [
+        0,
+        3
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_5fca69305ae96898ffdb285a1946fa04.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/b8ad9d57-1a6c-41a2-876b-73dbedbdf94a.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/b8ad9d57-1a6c-41a2-876b-73dbedbdf94a.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b8ad9d57-1a6c-41a2-876b-73dbedbdf94a_p0.png",
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b8ad9d57-1a6c-41a2-876b-73dbedbdf94a_p3.png"
+      ]
+    },
+    {
+      "example_id": "96ab64d2-3512-4906-a4ed-017b208a888e",
+      "doc_name": "finance/DUDE_70e9ace09360e34cc312c59e3e7a4ce9",
+      "pages": [
+        2
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/DUDE_70e9ace09360e34cc312c59e3e7a4ce9.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/96ab64d2-3512-4906-a4ed-017b208a888e.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/96ab64d2-3512-4906-a4ed-017b208a888e.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/96ab64d2-3512-4906-a4ed-017b208a888e_p2.png"
+      ]
+    },
+    {
+      "example_id": "032a0c06-4f55-458e-8618-93ec82d768c6",
+      "doc_name": "finance/JPMORGAN_2021Q1_10Q",
+      "pages": [
+        61,
+        134
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/JPMORGAN_2021Q1_10Q.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/032a0c06-4f55-458e-8618-93ec82d768c6.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/032a0c06-4f55-458e-8618-93ec82d768c6.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/032a0c06-4f55-458e-8618-93ec82d768c6_p61.png",
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/032a0c06-4f55-458e-8618-93ec82d768c6_p134.png"
+      ]
+    },
+    {
+      "example_id": "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+      "doc_name": "textbook/biz-26010.pdf_127",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/textbook/biz-26010.pdf_127.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/76550cb6-e96e-4c38-8ad6-f55d9cbc4414.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/76550cb6-e96e-4c38-8ad6-f55d9cbc4414.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/76550cb6-e96e-4c38-8ad6-f55d9cbc4414_p0.png"
+      ]
+    },
+    {
+      "example_id": "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+      "doc_name": "administration/DUDE_fdac8d1e9ef56519371df7e6532df27d",
+      "pages": [
+        7,
+        12
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_fdac8d1e9ef56519371df7e6532df27d.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/b6dd5d59-9ff7-4117-a5dd-97a63b95548e.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/b6dd5d59-9ff7-4117-a5dd-97a63b95548e.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b6dd5d59-9ff7-4117-a5dd-97a63b95548e_p7.png",
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/b6dd5d59-9ff7-4117-a5dd-97a63b95548e_p12.png"
+      ]
+    },
+    {
+      "example_id": "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+      "doc_name": "finance/DUDE_073c5e237cfc190effc8ff2a3b0f7fe5",
+      "pages": [
+        1
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/DUDE_073c5e237cfc190effc8ff2a3b0f7fe5.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/a494a9e7-0eb8-4048-94e0-bd173b2de0c1.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/a494a9e7-0eb8-4048-94e0-bd173b2de0c1.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/a494a9e7-0eb8-4048-94e0-bd173b2de0c1_p1.png"
+      ]
+    },
+    {
+      "example_id": "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+      "doc_name": "finance/DUDE_9f5e2ca5587c15514608ee169ece3d77",
+      "pages": [
+        8
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/DUDE_9f5e2ca5587c15514608ee169ece3d77.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/969ae6f5-21d0-49d0-907b-bfad6c90bb74.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/969ae6f5-21d0-49d0-907b-bfad6c90bb74.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/969ae6f5-21d0-49d0-907b-bfad6c90bb74_p8.png"
+      ]
+    },
+    {
+      "example_id": "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+      "doc_name": "textbook/UTX_-_Postmodern_Analysis,_Third_Edition.pdf_183",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/textbook/UTX_-_Postmodern_Analysis,_Third_Edition.pdf_183.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/74af8d34-bbfd-4135-a90a-5d07eefc4863.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/74af8d34-bbfd-4135-a90a-5d07eefc4863.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/74af8d34-bbfd-4135-a90a-5d07eefc4863_p0.png"
+      ]
+    },
+    {
+      "example_id": "87c65cdc-a473-490d-a966-9a6753d6904b",
+      "doc_name": "academic/DUDE_8a3ead53e05c32566f45f549b9821a4a",
+      "pages": [
+        13
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/academic/DUDE_8a3ead53e05c32566f45f549b9821a4a.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/87c65cdc-a473-490d-a966-9a6753d6904b.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/87c65cdc-a473-490d-a966-9a6753d6904b.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/87c65cdc-a473-490d-a966-9a6753d6904b_p13.png"
+      ]
+    },
+    {
+      "example_id": "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+      "doc_name": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61571237.pdf_81",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61571237.pdf_81.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/a3c89557-29ec-4e5f-88be-d05fc54d4dab.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/a3c89557-29ec-4e5f-88be-d05fc54d4dab.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/a3c89557-29ec-4e5f-88be-d05fc54d4dab_p0.png"
+      ]
+    },
+    {
+      "example_id": "4fa2f35c-90c8-4387-816a-8771a94a440c",
+      "doc_name": "news/06_18",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/news/06_18.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/4fa2f35c-90c8-4387-816a-8771a94a440c.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/4fa2f35c-90c8-4387-816a-8771a94a440c.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/4fa2f35c-90c8-4387-816a-8771a94a440c_p0.png"
+      ]
+    },
+    {
+      "example_id": "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+      "doc_name": "manual/DSA-278777",
+      "pages": [
+        12
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/manual/DSA-278777.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/49e78dcc-9dd3-49c3-8b75-471e1a340ed5.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/49e78dcc-9dd3-49c3-8b75-471e1a340ed5.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/49e78dcc-9dd3-49c3-8b75-471e1a340ed5_p12.png"
+      ]
+    },
+    {
+      "example_id": "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+      "doc_name": "finance/DUDE_1b8ee1c5da9c5c5e79a6233b3a190bd4",
+      "pages": [
+        5
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/finance/DUDE_1b8ee1c5da9c5c5e79a6233b3a190bd4.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/a9cb4872-83cb-41f4-b793-9a853f7ec204.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/a9cb4872-83cb-41f4-b793-9a853f7ec204.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/a9cb4872-83cb-41f4-b793-9a853f7ec204_p5.png"
+      ]
+    },
+    {
+      "example_id": "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+      "doc_name": "news/06_17",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/news/06_17.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/4ccf7c68-5da6-4a56-a682-861ee45dc52a.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/4ccf7c68-5da6-4a56-a682-861ee45dc52a.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/4ccf7c68-5da6-4a56-a682-861ee45dc52a_p0.png"
+      ]
+    },
+    {
+      "example_id": "a782b7d8-000a-4645-b6c1-49c62a184780",
+      "doc_name": "administration/DUDE_492c67738d0444d67cb75e13ee1a5716",
+      "pages": [
+        8
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_492c67738d0444d67cb75e13ee1a5716.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/a782b7d8-000a-4645-b6c1-49c62a184780.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/a782b7d8-000a-4645-b6c1-49c62a184780.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/a782b7d8-000a-4645-b6c1-49c62a184780_p8.png"
+      ]
+    },
+    {
+      "example_id": "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+      "doc_name": "academic/DUDE_8a3ead53e05c32566f45f549b9821a4a",
+      "pages": [
+        6
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/academic/DUDE_8a3ead53e05c32566f45f549b9821a4a.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/a57a9c82-aeae-4da7-9913-3e39bde1b1d2.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/a57a9c82-aeae-4da7-9913-3e39bde1b1d2.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/a57a9c82-aeae-4da7-9913-3e39bde1b1d2_p6.png"
+      ]
+    },
+    {
+      "example_id": "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+      "doc_name": "academic/DUDE_7a5895d89514def2a56e051c8e584fa9",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/academic/DUDE_7a5895d89514def2a56e051c8e584fa9.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/93ad4bda-e8bd-441a-bbb8-a17cebc263f1.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/93ad4bda-e8bd-441a-bbb8-a17cebc263f1.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/93ad4bda-e8bd-441a-bbb8-a17cebc263f1_p0.png"
+      ]
+    },
+    {
+      "example_id": "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+      "doc_name": "law/Array BioPharma Inc. - LICENSE, DEVELOPMENT AND COMMERCIALIZATION AGREEMENT",
+      "pages": [
+        93
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/law/Array BioPharma Inc. - LICENSE, DEVELOPMENT AND COMMERCIALIZATION AGREEMENT.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/1dc1d806-6dda-4c9e-a391-cffa15ae14f2.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/1dc1d806-6dda-4c9e-a391-cffa15ae14f2.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/1dc1d806-6dda-4c9e-a391-cffa15ae14f2_p93.png"
+      ]
+    },
+    {
+      "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+      "doc_name": "news/omnidocbench_newspaper_a15057349a86850e55b084c235fa2f22_1",
+      "pages": [
+        0
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/news/omnidocbench_newspaper_a15057349a86850e55b084c235fa2f22_1.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/c132e7f1-47cb-4531-82f9-139fbf36e46f.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/c132e7f1-47cb-4531-82f9-139fbf36e46f.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/c132e7f1-47cb-4531-82f9-139fbf36e46f_p0.png"
+      ]
+    },
+    {
+      "example_id": "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+      "doc_name": "academic/2403.20330v2",
+      "pages": [
+        3
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/academic/2403.20330v2.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/60cdc9db-fea0-4b70-8a8b-425cbaab6a44.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/60cdc9db-fea0-4b70-8a8b-425cbaab6a44.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/60cdc9db-fea0-4b70-8a8b-425cbaab6a44_p3.png"
+      ]
+    },
+    {
+      "example_id": "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+      "doc_name": "administration/DUDE_f86d073b0d735ac873a65d906ba82758",
+      "pages": [
+        8
+      ],
+      "pdf_path": "/Users/x/Downloads/Thesis-Paper/Code/data/ohr_bench_raw/pdfs_sample/administration/DUDE_f86d073b0d735ac873a65d906ba82758.pdf",
+      "ocr_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text/a9afa87a-d181-49bf-aa09-9a46f25a3c68.txt",
+      "gt_text_path": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_text_ground_truth/a9afa87a-d181-49bf-aa09-9a46f25a3c68.txt",
+      "image_paths": [
+        "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/a9afa87a-d181-49bf-aa09-9a46f25a3c68_p8.png"
+      ]
+    }
+  ],
+  "label_distribution": {
+    "no_issue": 33,
+    "structure_corruption": 2,
+    "text_corruption": 5
+  },
+  "labelled_examples": 40
+}
