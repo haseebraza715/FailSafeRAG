@@ -1,0 +1,13 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+src/*.egg-info/
+src/**/*.egg-info/
+
+data/ohr_bench_raw/
+OHR-Bench/.git/
