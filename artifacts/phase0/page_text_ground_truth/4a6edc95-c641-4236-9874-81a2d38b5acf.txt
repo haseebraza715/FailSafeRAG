@@ -1,0 +1,40 @@
+===== PAGE 18 =====
+PROGRAM MEMORY LOCK
+
+The two-level Program Lock system consists of 2 Lock bits and a 32-byte Encryption Array which are used to protect the program memory against software piracy.
+
+ENCRYPTION ARRAY
+
+Within the EPROM array are 32 bytes of Encryption Array that are initially unprogrammed (all 1s). Every time that a byte is addressed during a verify, 5 address lines are used to select a byte of the Encryption Array. This byte is then exclusive-NORed (XNOR) with the code byte, creating an Encrypted Verify byte. The algorithm, with the array in the unprogrammed state (all 1s), will return the code in its original, unmodified form.
+
+It is recommended that whenever the Encryption Array is used, at least one of the Lock Bits be programmed as well.
+
+LOCK BITS
+
+Also included in the EPROM Program Lock scheme are two Lock Bits which function as shown in Table 5.
+
+Erasing the EPROM also erases the Encryption Array and the Lock Bits, returning the part to full unlocked functionality.
+
+To ensure proper functionality of the chip, the internally latched value of the EA pin must agree with its external state.
+
+Table 5. Lock Bits and their Features
+\begin{tabular}{|c|c|c|}
+  \multicolumn{2}{|l|}{Lock Bits} & \multirow[t]{2}{*}{Logic Enabled} \\
+  LB1 & LB2 & \\
+  U & U & Minimum Program Lock features enabled. (Code Verify will still be encrypted by the Encryption Array) \\
+  $P$ & U & MOVC instructions executed from external program memory are disabled from fetching code bytes from internal memory, $E A$ is sampled and latched on reset, and further programming of the EPROM is disabled \\
+  $P$ & P & Same as above, but Verify is also disabled \\
+  $U$ & $P$ & Reserved for Future Definition \\
+ 
+\end{tabular}
+$P=$ Programmed
+$\mathrm{U}=$ Unprogrammed
+
+READING THE SIGNATURE BYTES
+
+The signature bytes are read by the same procedure as a normal verification of locations 030 H and 031 H , except that P3.6 and P3.7 need to be pulled to a logic low. The values returned are:
+$$\begin{aligned}
+(030 \mathrm{H})= & 89 \mathrm{H} \text { indicates manufactured by Intel } \\
+(031 \mathrm{H})= & 51 \mathrm{H} \text { indicates } 8751 \mathrm{BH} \\
+& 52 \mathrm{H} \text { indicates } 8752 \mathrm{BH}
+\end{aligned}$$

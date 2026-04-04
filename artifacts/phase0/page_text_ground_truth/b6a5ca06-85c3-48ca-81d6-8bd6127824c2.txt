@@ -1,0 +1,65 @@
+===== PAGE 64 =====
+Transplants
+
+Benefits are payable - subject to any deductible, copays, coinsurance and benefit limits - for necessary medical and surgical expenses incurred for the transplanting of a human organ. To get the highest benefit, see "Quality Centers and Designated Hospitals for transplants" later in this section.
+\begin{tabular}{l|l|l}
+  & \multicolumn{1}{l}{ Community Choice } & \multicolumn{1}{l}{ Non-Community Choice } \\
+  At a Quality Center or Designated Hospital for transplants & \$275 quarterly copay, then deductible, then 100\% & \$275 quarterly copay, then deductible, then 100\% \\
+  At another hospital & \$275 quarterly copay, then deductible, then 80\% & \$750 per-admission copay, then deductible, then 80\% \\
+ 
+\end{tabular}
+
+A case manager is available to support you and your family before the transplant procedure and throughout the recovery period. The case manager will:
+$\square$ Review your ongoing needs
+- Help to coordinate services while you are awaiting a transplant
+- Help you and your family optimize Plan benefits
+- Maintain communication with the transplant team
+
+Facilitate transportation and housing arrangements, if needed
+- Facilitate discharge planning alternatives
+- Help to coordinate home care plans, if appropriate
+- Explore alternative funding or other resources in cases where there is need but benefits under the Plan are limited
+
+Notify UniCare - Notify UniCare Customer Service when your doctor recommends a transplant evaluation, but no less than 21 calendar days before transplant-related services are scheduled to start.
+C Call UniCare Customer Service at 800-442-9300 and ask to speak with a case manager.
+(See page 85 for more information about case management.)
+- You do not need to notify UniCare for cornea transplants.
+
+Human organ donor services
+
+Benefits are payable - subject to any deductible, copays, coinsurance and benefit limits - for necessary expenses incurred for delivery of a human organ (any part of the human body, excluding blood and blood plasma) and medical expenses incurred by a person in direct connection with the donation of an organ.
+
+Benefits are payable for any person who donates a human organ to a person covered under the Plan, whether or not the donor is a member of the Plan.
+
+The Plan also covers expenses for human leukocyte antigen testing or histocompatibility locus antigen testing necessary to establish the suitability of a bone marrow transplant donor. Such expenses consist of testing for $\mathrm{A}, \mathrm{B}$ or DR antigens, or any combination thereof, consistent with the guidelines, criteria, rules and regulations established by the Massachusetts Department of Public Health.
+
+===== PAGE 51 =====
+Inpatient care at hospitals
+
+Inpatient hospital care is covered for a hospital stay at an acute medical facility, a surgical facility, or a rehabilitation facility. A hospital stay is defined as the time a person is confined to a hospital and incurs a room and board charge for inpatient care.
+\begin{tabular}{|c|c|c|}
+  \multicolumn{2}{|r|}{Community Choice} & Non-Community Choice \\
+  Semi-private room, ICU, CCU, and ancillary services & \$275 quarterly copay, then deductible, then 100\% & \$750 per-admission copay, then deductible, then $80 \%$ \\
+  Private room When medically necessary & - First 90 days: \$275 quarterly copay, then deductible, then 100\% - After 90th day: $100 \%$ of the semi-private room rate & - First 90 days: $\$ 750$ per-admission copay, then deductible, then $80 \%$ - After 90th day: $80 \%$ of the semi-private room rate \\
+  Diagnostic laboratory and radiology expenses & Deductible, then 100\% & Deductible, then 80\% \\
+  Select complex inpatient procedures / neonatal ICUs (page 51) & \$275 quarterly copay, then deductible, then 100\% & - At a designated hospital: \$275 quarterly copay, then deductible, then 100\% - At a non-designated hospital: $\$ 750$ per-admission copay, then deductible, then $80 \%$ \\
+ 
+\end{tabular}
+
+Charges for the following services are covered if the services are for a hospital stay:
+1. Your room and board
+2. Anesthesia, radiology and pathology services
+3. Hospital pre-admission testing if you are scheduled to enter the same hospital where the tests are performed within seven days of the testing. If the hospital stay is cancelled or postponed after the tests are performed, the charges will still be covered as long as the physician presents a satisfactory medical explanation.
+4. Medically necessary services and supplies charged by the hospital
+5. Physical, occupational and speech therapy
+6. Diagnostic and therapeutic services
+
+Ancillary services are also covered. These are the services and supplies that a facility ordinarily renders for diagnosis or treatment during your hospital stay, including:
+- Administration of infusions and transfusions
+- Devices that are an integral part of a surgical procedure such as hip joints, skull plates and pacemakers
+- Drugs, medications, solutions, biological preparations, and medical and surgical supplies used during your hospital stay
+- Tests and exams
+- Use of special equipment in the facility
+- Use of special rooms, such as operating or treatment rooms
+
+If you are admitted to a non-Community Choice hospital from the emergency room, you will be covered at the Community Choice benefit level.

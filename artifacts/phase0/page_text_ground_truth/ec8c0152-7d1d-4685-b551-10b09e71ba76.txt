@@ -1,0 +1,21 @@
+===== PAGE 2 =====
+pwc
+
+4. Remarks
+- We understand that no transfer pricing study has been performed for the Luxembourg company and that no advance pricing agreement has been discussed with the Luxembourg tax authorities. We recommend you to collect as much documentation as possible in order to provide the Luxembourg tax authorities with the most appropriate information, in case they raise some specific questions.
+- We have assumed that the arm's length principle has been respected regarding the transactions between related parties realised in 2011.
+- We understand that no director's fees were paid to the members of the Board of Directors.
+
+Based on the above mentioned comments, we estimate the tax charge for the year 2011 as follows:
+\begin{tabular}{lrrr} 
+Amounts in EUR & Estimated tax charges & Accounted tax charges & Difference \\
+Corporate Income Tax (CIT) & $19,867,165$ & $25,965,685$ & $6,098,520$ \\
+Municipal Business Tax (MBT) & $6,084,801$ & 0 & $(6,084,801)$ \\
+Net Wealth Tax (NWT) (*) & 0 & 0 & 0 \\
+Total & $25,951,966$ & $25,965,685$ & $(13,719)$ \\
+\end{tabular}
+(*) Taking into account the NWT reduction
+
+We remain at your entire disposal if you need any further information.
+
+Yours sincerely,

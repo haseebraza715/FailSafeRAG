@@ -1,0 +1,26 @@
+===== PAGE 214 =====
+THE AES CORPORATION
+
+
+SCHEDULE I CONDENSED FINANCIAL INFORMATION OF PARENT STATEMENTS OF OPERATIONS
+
+
+YEARS ENDED DECEMBER 31, 2022, 2021, AND 2020
+\begin{tabular}{|c|c|c|c|c|c|c|}
+  \multirow[t]{2}{*}{For the Years Ended December 31,} & \multicolumn{2}{|c|}{2022} & \multicolumn{2}{|c|}{2021} & \multicolumn{2}{|c|}{2020} \\
+  & \multicolumn{6}{|c|}{(in millions)} \\
+  Revenue from subsidiaries and affiliates & \$ & 30 & \$ & 28 & \$ & 29 \\
+  Equity in earnings of subsidiaries and affiliates & & (280) & & (47) & & 383 \\
+  Interest income & & 28 & & 20 & & 31 \\
+  General and administrative expenses & & (140) & & (121) & & (125) \\
+  Other income & & 14 & & 51 & & 26 \\
+  Other expense & & - & & $(65)$ & & $(6)$ \\
+  Loss on extinguishment of debt & & - & & $-$ & & (146) \\
+  Interest expense & & (163) & & $(74)$ & & $(163)$ \\
+  Income (loss) before income taxes & & (511) & & (208) & & 29 \\
+  Income tax benefit (expense) & & $(35)$ & & (201) & & 17 \\
+  Net income (loss) & \$ & (546) & \$ & (409) & \$ & 46 \\
+ 
+\end{tabular}
+
+See Notes to Schedule I.

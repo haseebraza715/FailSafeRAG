@@ -1,0 +1,63 @@
+===== PAGE 6 =====
+In connection with the introduction of discontinuous multipliers, we /13
+should mention the articles (Refs. 3, 7, 8). In (Ref. 3), the discontinuous
+Lagrange multipliers were first discussed in connection with the application to
+variational problems of gas dynamics. It was shown that it is only the charac-
+teristics which can serve as the lines of discontinuity, and the derivation of
+the conditions for the discontinuities was given. The problems of gas dynamics
+in connection with the utilization of discontinuous Lagrange multipliers were
+also investigated in (Ref. 5).
+
+We shall divide the region S into
+three subregions, as it is shown in Fig-
+ure 2. Here de, is the characteristic
+
+of the second family. Let us consider
+the equations (1.1) in the subregions
+5; with the help of the multipliers
+
+h (2) and h (4). Inside each of the
+1 2
+
+ 
+
+Figure 2
+
+subregions, the multipliers are deter-
+mined with the aid of the system of
+equations (2.4), and the multipliers satisfy the conditions (2.7) in the parts
+ad and db. In calculating the first-order variation, we must deal with in-
+tegrals along the characteristics de, and ed, containing under the integral
+
+sign the variations 6u, év, and 60. Considering that the flow parameters and
+
+their variations are continuous in de, and ed, we find that the coefficients of
+
+éu, dv, and S60 will contain Ah, and hy where bh,» Ah, are the discontinuities
+
+of the multipliers. Equating to zero the expressions multiplying du and dv, we
+shall obtain two conditions for the discontinuities. Along the characteristics,
+these conditions are linearly dependent. We have (Ref. 3)
+
+yovtgaAh, + Ah, =0 | (3.2)
+
+where the upper sign refers to the characteristics of the first family. Thus,
+‘for example, if Ahy is given at one point of the characteristic, one can deter-
+
+mine from (3.2) and (2.5) the discontinuity of the multipliers along the entire
+characteristic. The condition (2.9) will not change with the introduction of
+discontinuous multipliers, and the condition (2.10) will assume the form
+
+_ { Nh@) — AK B+ A=0 WySPSH)
+Nh) — ARM B+ ARMC+A=0 (b<0<y,)
+: (3.3)
+AND = 1 — nO, Ah? = hi — h®
+_ psin(g+a) _ __ psin(@ —a) ;
+B= pw sin a vtga, C= “pw sina tga
+
+Here an, and B are taken along the characteristic cd, and an, and
+C -- along dey. By integrating (3.2) and (2.5) we find
+
+ 
+
+AMD = sr ANP = — VE (3.4)

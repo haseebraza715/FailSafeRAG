@@ -1,0 +1,20 @@
+===== PAGE 12 =====
+MCS ${ }^{*} 51$ CONTROLLER
+
+EXTERNAL CLOCK DRIVE
+\begin{tabular}{|c|c|c|c|c|}
+  Symbol & Parameter & Min & Max & Units \\
+  1/TCLCL & Oscillator Frequency (except 8751H-8) & 3.5 & 12 & MHz \\
+& 8751H-8 & 3.5 & 8 & MHz \\
+  TCHCX & High Time & 20 & & ns \\
+  TCLCX & Low Time & 20 & & ns \\
+  TCLCH & Rise Time & & 20 & ns \\
+  TCHCL & Fall Time & & 20 & ns \\
+ 
+\end{tabular}
+
+EXTERNAL CLOCK DRIVE WAVEFORM
+$272318-9$
+
+AC TESTING INPUT, OUTPUT WAVEFORM
+13

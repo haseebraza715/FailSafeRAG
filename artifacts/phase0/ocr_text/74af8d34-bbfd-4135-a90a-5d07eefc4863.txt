@@ -1,0 +1,47 @@
+===== PAGE 0 =====
+13. Lebesgue Integral and Volume 167
+
+Ra Ra Rd
+[ofaar = a f fade (linearity).
+Re Re
+
+(ii) If f<g, thenalso f f(x)dx < f g(x)dz.
+Rd
+
+Rd
+
+(iti) Ifbe€R*, A an orthogonal d x d—matriz, then
+
+/ f(Az +0)de = / f(a)de.
+Ra Re
+
+Proof. Parts (i) follows directly from the corresponding rules for the integral
+of elementary functions. The rule (iii) holds for elementary functions, because
+for an orthogonal matrix A and an elementary function t, the function to A is
+again elementary as A maps a cube onto a cube, and similarly for translation
+by a vector b. (ii) follows, as in case f < g, we can approximate f and g by
+sequences (f,,) and (s,,), respectively, of elementary functions with t,, < sp.
+
+O
+
+Furthermore, we have
+
+Lemma 13.5 Let f € C.(R%) with supp(f) in a cube of side length £. Then
+
+| f #(2)da| < sup|f(a)|- (2)
+R@
+
+The proof again follows directly from the corresponding property for ele-
+mentary functions.
+Lemmas 13.4 and 13.5 mean that the correspondence
+
+fro f (ods
+J,
+
+is a linear, bounded (therefore continuous) real valued functional on each
+Banach space C.(W) (W a cube in R@) that is invariant under isometries.
+One can show that a functional with these properties and the normalisation
+
+praw=1
+
+Tad

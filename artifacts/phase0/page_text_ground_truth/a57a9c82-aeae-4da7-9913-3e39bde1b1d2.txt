@@ -1,0 +1,18 @@
+===== PAGE 6 =====
+In connection with the introduction of discontinuous multipliers, we /13 should mention the articles (Refs. 3, 7, 8). In (Ref. 3), the discontinuous Lagrange multipliers were first discussed in connection with the application to variational problems of gas dynamics. It was shown that it is only the characteristics which can serve as the lines of discontinuity, and the derivation of the conditions for the discontinuities was given. The problems of gas dynamics in connection with the utilization of discontinuous Lagrange multipliers were also investigated in (Ref. 5).
+
+
+Figure 2
+
+We shall divide the region $S$ into three subregions, as it is shown in Figure 2. Here $d c_{1}$ is the characteristic of the second family. Let us consider the equations (1.1) in the subregions $S_{i}$ with the help of the multipliers $h_{1}^{(i)}$ and $h_{2}^{(i)}$. Inside each of the subregions, the multipliers are determined with the aid of the system of equations (2.4), and the multipliers satisfy the conditions (2.7) in the parts ad and db . In calculating the first-order variation, we must deal with integrals along the characteristics $d c_{1}$ and $c d$, containing under the integral sign the variations $\delta u, \delta v$, and $\delta \sigma$. Considering that the flow parameters and their variations are continuous in $d c_{1}$ and $c d$, we find that the coefficients of $\delta u, \delta v$, and $\delta \sigma$ will contain $\Delta h_{1}$ and $\Delta h_{2}$ where $\Delta h_{1}, \Delta h_{2}$ are the discontinuities of the multipliers. Equating to zero the expressions multiplying $\delta u$ and $\delta v$, we shall obtain two conditions for the discontinuities. Along the characteristics, these conditions are linearly dependent. We have (Ref. 3)
+$$y^{\nu} \rho v^{2} \operatorname{tg} \alpha \Delta h_{1} \pm \Delta h_{2}=0$$
+where the upper sign refers to the characteristics of the first family. Thus, for example, if $\Delta h_{1}$ is given at one point of the characteristic, one can determine from (3.2) and (2.5) the discontinuity of the multipliers along the entire characteristic. The condition (2.9) will not change with the introduction of discontinuous multipliers, and the condition (2.10) will assume the form
+$$\begin{aligned}
+& E \equiv \begin{cases}N h_{2}^{(2)}-\Delta h_{1}^{(1)} B+A=0 & \left(\psi_{c_{1}} \leqslant \psi \leqslant \psi_{c}\right) \\
+N h_{2}^{(3)}-\Delta h_{1}^{(1)} B+\Delta h_{1}^{(2)} C+A=0 & \left(\psi_{a} \leqslant \psi \leqslant \psi_{c_{2}}\right)\end{cases} \\
+& \Delta h_{1}^{(1)}=h_{1}^{(2)}-h_{1}^{(1)}, \quad \Delta h_{1}^{(2)}=h_{1}^{(3)}-h_{1}^{(2)} \\
+& B=\frac{p \sin (\theta+\alpha)}{\rho w \sin \alpha}-v \operatorname{tg} \alpha, \quad C=\frac{p \sin (\theta-\alpha)}{\rho w \sin \alpha}-v \operatorname{tg} \alpha
+\end{aligned}$$
+
+Here $\Delta h_{1}{ }^{(1)}$ and $B$ are taken along the characteristic $c d$, and $\Delta h_{1}{ }^{(2)}$ and $C$-- along $d c_{1}$. By integrating (3.2) and (2.5) we find
+$$\Delta h_{1}^{(1)}=\frac{\mu_{1}}{\sqrt{G}}, \quad \Delta h_{2}^{(1)}=-\mu_{1} \sqrt{G}$$

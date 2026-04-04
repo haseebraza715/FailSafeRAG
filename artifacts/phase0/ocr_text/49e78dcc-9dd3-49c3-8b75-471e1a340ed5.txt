@@ -1,0 +1,98 @@
+===== PAGE 12 =====
+intel.
+
+EXTERNAL CLOCK DRIVE
+
+MCS® 51 CONTROLLER
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Symbol Parameter Min Max Units
+41/TCLCL Oscillator Frequency (except 8751H-8) 3.5 12 MHz
+8751H-8 3.5 8 MHz
+
+TCHCX High Time 20 ns
+
+TCLCX Low Time 20 ns
+
+TCLCH Rise Time 20 ns
+
+TCHCL Fall Time 20 ns
+
+EXTERNAL CLOCK DRIVE WAVEFORM
+TCHCX TCLCH }— TCHCL
+25 25 / 25
+f 08 08 ‘
+TCLCX
+TeLCL
+272318-9
+AC TESTING INPUT, OUTPUT WAVEFORM
+24 20
+TEST POWTS <
+os
+ous
+272318-10
+AC Testing: Inputs are driven at 2.4V for a Logic “1” and 0.45V
+for a Logic “0”. Timing measurements are made at 2.0V for a
+Logic "1" and 0.8V for a Logic “0”.
+13
