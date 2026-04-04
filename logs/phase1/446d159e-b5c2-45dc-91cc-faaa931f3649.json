@@ -1,0 +1,57 @@
+{
+  "example_id": "446d159e-b5c2-45dc-91cc-faaa931f3649",
+  "question": "Is it mandatory for the NVIDIA partner network personnel or NVIDIA field service engineers to install the DGX A100 System?",
+  "correct_answer": "Yes",
+  "answer": "INSTALLATION AND CONFIGURATION IMPORTANT: It is mandatory that your DGX A100 System be installed by NVIDIA partner network personnel or NVIDIA field service engineers.",
+  "gate": {
+    "quality_score": 0.65,
+    "pass_gate": false,
+    "reasons": [
+      "low_lexical_score"
+    ],
+    "layout_signal_count": 0,
+    "layout_signals": {
+      "excess_whitespace": false,
+      "bare_numbers": false,
+      "length_variance": false,
+      "pipe_heavy": false
+    },
+    "corruption_score": 0.0,
+    "avg_hit_score": 0.4065
+  },
+  "failure_type": "semantic",
+  "policy_action": "retry_retrieval",
+  "semantic_retry_query": "Is it mandatory for the NVIDIA partner network personnel or NVIDIA field service engineers to install the DGX A100 System? QUICK START AND BASIC OPERATION This chapter provides basic requirements and instructions for using the DGX A100 System, including how to perform a preliminary",
+  "visual_result": null,
+  "answer_meta": {
+    "answer": "INSTALLATION AND CONFIGURATION IMPORTANT: It is mandatory that your DGX A100 System be installed by NVIDIA partner network personnel or NVIDIA field service engineers.",
+    "answer_mode": "extractive_overlap",
+    "support_score": 14
+  },
+  "top_hits": [
+    {
+      "chunk": {
+        "chunk_id": "446d159e-b5c2-45dc-91cc-faaa931f3649-p27-c0",
+        "example_id": "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "doc_name": "manual/dgx_a100",
+        "page_id": 27,
+        "text": "QUICK START AND BASIC OPERATION This chapter provides basic requirements and instructions for using the DGX A100 System, including how to perform a preliminary health check and how to prepare for running containers. Be sure to visit the DGX documentation website at https:// docs.nvidia.com/dgx/ for additional product documentation. 4.1. INSTALLATION AND CONFIGURATION IMPORTANT: It is mandatory that your DGX A100 System be installed by NVIDIA partner network personnel or NVIDIA field service engineers. If not performed accordingly, your DGX A100 hardware warranty will be voided. Before installation, make sure you have given all relevant site information to your Installation Partner. 4.2 REGISTRATION To obtain support for your DGX A100 system, follow the instructions for registration in the Entitlement Certification email that was sent as part of the purchase. Registration allows you access to the NVIDIA Enterprise Support Portal, technical support, software updates and access to set up an NGC for DGX account. If you did not receive the information, open a case with the NVIDIA Enterprise Support Team by going to https://www.nvidia.com/en-us/support/enterprise/. The site provides ways of contacting the NVIDIA"
+      },
+      "bm25_score": 0.0,
+      "dense_score": 1.0,
+      "fused_score": 0.45650448305527414
+    },
+    {
+      "chunk": {
+        "chunk_id": "446d159e-b5c2-45dc-91cc-faaa931f3649-p27-c1",
+        "example_id": "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "doc_name": "manual/dgx_a100",
+        "page_id": 27,
+        "text": "software updates and access to set up an NGC for DGX account. If you did not receive the information, open a case with the NVIDIA Enterprise Support Team by going to https://www.nvidia.com/en-us/support/enterprise/. The site provides ways of contacting the NVIDIA Enterprise Services team for support without requiring an NVIDIA Enterprise Support account. DGX A100 System User Guide DU-09821-001_v01 | 22"
+      },
+      "bm25_score": 1.0,
+      "dense_score": 0.0,
+      "fused_score": 0.3565044890157386
+    }
+  ]
+}

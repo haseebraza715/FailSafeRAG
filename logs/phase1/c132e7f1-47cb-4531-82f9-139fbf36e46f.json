@@ -1,0 +1,94 @@
+{
+  "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+  "question": "\u5b89\u5fbd\u7701\u5728\u201c\u4e09\u8d44\u201d\u6e05\u7406\u4e2d\u91c7\u53d6\u4e86\u54ea\u4e9b\u63aa\u65bd\u6765\u786e\u4fdd\u6e05\u67e5\u7684\u5f7b\u5e95\u6027\u548c\u89c4\u8303\u6027\uff1f",
+  "correct_answer": "\u6e05\u67e5\u9762\u5e7f\u3001\u6e05\u67e5\u5f7b\u5e95\u3001\u6e05\u67e5\u7a0b\u5e8f\u89c4\u8303\u3001\u63a8\u884c\u59d4\u6258\u4ee3\u7406\u5236",
+  "answer": "S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S",
+  "gate": {
+    "quality_score": 0.9722,
+    "pass_gate": false,
+    "reasons": [
+      "word_noise_alert"
+    ],
+    "layout_signal_count": 0,
+    "layout_signals": {
+      "excess_whitespace": false,
+      "bare_numbers": false,
+      "length_variance": false,
+      "pipe_heavy": false,
+      "fraction_heavy": false
+    },
+    "corruption_score": 0.1111,
+    "avg_hit_score": 0.7706
+  },
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "semantic_retry_query": null,
+  "visual_result": null,
+  "answer_meta": {
+    "answer": "S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S",
+    "answer_mode": "extractive_overlap",
+    "support_score": 0
+  },
+  "top_hits": [
+    {
+      "chunk": {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c6",
+        "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "doc_name": "news/omnidocbench_newspaper_a15057349a86850e55b084c235fa2f22_1",
+        "page_id": 0,
+        "text": "S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S"
+      },
+      "bm25_score": 1.0,
+      "dense_score": 1.0,
+      "fused_score": 0.8060564186186521
+    },
+    {
+      "chunk": {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c4",
+        "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "doc_name": "news/omnidocbench_newspaper_a15057349a86850e55b084c235fa2f22_1",
+        "page_id": 0,
+        "text": "S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S S"
+      },
+      "bm25_score": 1.0,
+      "dense_score": 0.9896840453147888,
+      "fused_score": 0.8012863325262028
+    },
+    {
+      "chunk": {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c10",
+        "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "doc_name": "news/omnidocbench_newspaper_a15057349a86850e55b084c235fa2f22_1",
+        "page_id": 0,
+        "text": "BA MOM ERR 1548, SRS RCP, \u2014 JZ , 22 BA MOM ERR 1548, SRS RCP, \u2014 JZ , 22 BA MOM ERR 1548, SRS RCP, \u2014 JZ , 22 BA MOM ERR 1"
+      },
+      "bm25_score": 1.0,
+      "dense_score": 0.9151927828788757,
+      "fused_score": 0.7679525468418467
+    },
+    {
+      "chunk": {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c0",
+        "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "doc_name": "news/omnidocbench_newspaper_a15057349a86850e55b084c235fa2f22_1",
+        "page_id": 0,
+        "text": "a correct ocr noise: To ka \u2014 im 2% fe FT a Ka \u2014 im 2% fe FT a Ka \u2014 im 2% fe FT a Ka \u2014 im 2% fe FT a Ka \u2014 im 2% fe FT"
+      },
+      "bm25_score": 1.0,
+      "dense_score": 0.8910650610923767,
+      "fused_score": 0.7573829928382498
+    },
+    {
+      "chunk": {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c15",
+        "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "doc_name": "news/omnidocbench_newspaper_a15057349a86850e55b084c235fa2f22_1",
+        "page_id": 0,
+        "text": "HES: 2009 AE HES: 2009 AE HES: 2009 AE HES: 2009 AE HES: 2009 AE HES: 2009 AE HES: 2009 AE HES: 2009 AE HES: 2009 AE HES: 2009"
+      },
+      "bm25_score": 1.0,
+      "dense_score": 0.8085253834724426,
+      "fused_score": 0.7200879577548221
+    }
+  ]
+}

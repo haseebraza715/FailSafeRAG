@@ -1,0 +1,66 @@
+{
+  "example_id": "848d6744-2489-473b-b5fa-9dc0938d4510",
+  "question": "What is the total width in millimeters of the stripes in the COLOR PATTERN: STREAMER SIZE table?",
+  "correct_answer": "70.3 mm",
+  "answer": "MIL-DTL-11589/167F COLOR PATTERN: STREAMER SIZE FINISH: MOIRE TOTAL | WIDTH OF STRIPES FUNCTION COLOR & CABLE NUMBER WIDTH INCHES & METRIC OF STRIPES | STRIPES FILLING YARN 1/32 0.8mm Edge & Binder | Green HAD | 67129 25/32 19.8 mm Ground Green HAD | 67129 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 2-3/4\u201d 1/8 3.2 mm Ground Air Force Yellow | HC 67103 White (70.0mm) 1/4 6.4 mm Ground Scarlet HL 67111 HA 67101 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 1/8 3.2 mm Ground Air Force Yellow | HC 67103 25/32 19.8 mm Ground Green HAD | 67129 1/32 0.8mm Edge & Binder | Green HAD | 67129 CHANGES FROM PREVIOUS ISSUE: The margins of this specification are marked with vertical lines to indicate where changes from the previous issue were made.",
+  "gate": {
+    "quality_score": 0.9403,
+    "pass_gate": false,
+    "reasons": [
+      "layout_alert",
+      "word_noise_alert"
+    ],
+    "layout_signal_count": 2,
+    "layout_signals": {
+      "excess_whitespace": false,
+      "bare_numbers": false,
+      "length_variance": false,
+      "pipe_heavy": true,
+      "fraction_heavy": true
+    },
+    "corruption_score": 0.2389,
+    "avg_hit_score": 0.4065
+  },
+  "failure_type": "structural",
+  "policy_action": "invoke_vlm",
+  "semantic_retry_query": null,
+  "visual_result": {
+    "backend": "mock",
+    "answer": "VLM_NOT_CONFIGURED",
+    "used_images": [
+      "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/848d6744-2489-473b-b5fa-9dc0938d4510_p1.png"
+    ],
+    "fallback_context": "MIL-DTL-11589/167F COLOR PATTERN: STREAMER SIZE FINISH: MOIRE TOTAL | WIDTH OF STRIPES FUNCTION COLOR & CABLE NUMBER WIDTH INCHES & METRIC OF STRIPES | STRIPES FILLING YARN 1/32 0.8mm Edge & Binder | Green HAD | 67129 25/32 19.8 mm Ground Green HAD | 67129 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 2-3/4\u201d 1/8 3.2 mm Ground Air Force Yellow | HC 67103 White (70.0mm) 1/4 6.4 mm Ground Scarlet HL 67111 HA 67101 1/8 3.2 mm Ground Air Force Yellow | HC"
+  },
+  "answer_meta": {
+    "answer": "MIL-DTL-11589/167F COLOR PATTERN: STREAMER SIZE FINISH: MOIRE TOTAL | WIDTH OF STRIPES FUNCTION COLOR & CABLE NUMBER WIDTH INCHES & METRIC OF STRIPES | STRIPES FILLING YARN 1/32 0.8mm Edge & Binder | Green HAD | 67129 25/32 19.8 mm Ground Green HAD | 67129 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 2-3/4\u201d 1/8 3.2 mm Ground Air Force Yellow | HC 67103 White (70.0mm) 1/4 6.4 mm Ground Scarlet HL 67111 HA 67101 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 1/8 3.2 mm Ground Air Force Yellow | HC 67103 25/32 19.8 mm Ground Green HAD | 67129 1/32 0.8mm Edge & Binder | Green HAD | 67129 CHANGES FROM PREVIOUS ISSUE: The margins of this specification are marked with vertical lines to indicate where changes from the previous issue were made.",
+    "answer_mode": "extractive_overlap",
+    "support_score": 11
+  },
+  "top_hits": [
+    {
+      "chunk": {
+        "chunk_id": "848d6744-2489-473b-b5fa-9dc0938d4510-p1-c0",
+        "example_id": "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "doc_name": "administration/DUDE_5b1147787bc78c7c394c2d613a685b6c",
+        "page_id": 1,
+        "text": "MIL-DTL-11589/167F COLOR PATTERN: STREAMER SIZE FINISH: MOIRE TOTAL | WIDTH OF STRIPES FUNCTION COLOR & CABLE NUMBER WIDTH INCHES & METRIC OF STRIPES | STRIPES FILLING YARN 1/32 0.8mm Edge & Binder | Green HAD | 67129 25/32 19.8 mm Ground Green HAD | 67129 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 2-3/4\u201d 1/8 3.2 mm Ground Air Force Yellow | HC 67103 White (70.0mm) 1/4 6.4 mm Ground Scarlet HL 67111 HA 67101 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 1/8 3.2 mm Ground Air Force Yellow | HC 67103 25/32 19.8 mm Ground Green HAD | 67129 1/32 0.8mm Edge & Binder | Green HAD | 67129 CHANGES FROM PREVIOUS ISSUE: The margins of this specification are marked with vertical lines to indicate where changes from the previous issue were made. This was done as a convenience only and the Government assumes no liability whatsoever for any inaccuracies in these notations. Bidders and contractors are cautioned"
+      },
+      "bm25_score": 1.0,
+      "dense_score": 1.0,
+      "fused_score": 0.8065573293654645
+    },
+    {
+      "chunk": {
+        "chunk_id": "848d6744-2489-473b-b5fa-9dc0938d4510-p1-c1",
+        "example_id": "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "doc_name": "administration/DUDE_5b1147787bc78c7c394c2d613a685b6c",
+        "page_id": 1,
+        "text": "are marked with vertical lines to indicate where changes from the previous issue were made. This was done as a convenience only and the Government assumes no liability whatsoever for any inaccuracies in these notations. Bidders and contractors are cautioned to evaluate the requirements of this document based on the entire content irrespective of the marginal notations and relationship to the last previous issue. Custodians: Preparing activity: Army - IH Army - IH Navy - NU Review activities: (Project No. 8455-2012-105) Navy - MC, CG1 DLA - CT NOTE: The activities listed above were interested in this document as of the date of this document. Since organizations and responsibilities can change, you should verify the currency of the information above using the ASSIST Online database at https://assist.dla.mil. Page 2 of 2 Source: https://assist.dla.mil -- Downloaded: 2017-03-02T22:42Z Check the source to verify that this is the current version before use."
+      },
+      "bm25_score": 0.0,
+      "dense_score": 0.0,
+      "fused_score": 0.0064516129032258064
+    }
+  ]
+}
