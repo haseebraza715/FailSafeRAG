@@ -39,12 +39,22 @@ class VisualFallback:
             return self._answer_with_openai(question, image_paths)
         return {
             "backend": "mock",
-            "answer": "VLM_NOT_CONFIGURED",
+            "status": "skipped",
+            "reason": "vlm_backend_not_configured",
+            "answer": "",
             "used_images": [str(path) for path in image_paths],
             "fallback_context": fallback_context[:500],
         }
 
     def _answer_with_openai(self, question: str, image_paths: list[Path]) -> dict:
+        if not image_paths:
+            return {
+                "backend": "openai",
+                "status": "skipped",
+                "reason": "no_images_provided",
+                "answer": "",
+                "used_images": [],
+            }
         client = OpenAI()
         content: list[dict] = [{"type": "text", "text": f"Answer the question using only the page image.\n\nQuestion: {question}"}]
         for path in image_paths:
@@ -61,6 +71,8 @@ class VisualFallback:
         )
         return {
             "backend": "openai",
+            "status": "succeeded",
+            "reason": "visual_fallback_answer_generated",
             "answer": response.choices[0].message.content or "",
             "used_images": [str(path) for path in image_paths],
         }
