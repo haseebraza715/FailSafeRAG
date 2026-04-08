@@ -9,7 +9,11 @@ from pathlib import Path
 import numpy as np
 import typer
 
+from .experiment_profiles import PROFILES
+from .experiment_runner import run_profile
 from .graph import build_graph
+from .results_aggregator import summarize_by_profile
+from .results_export import write_json, write_metrics_csv
 from .settings import AppSettings
 
 app = typer.Typer(add_completion=False, help="FAAR Phase 1 prototype CLI")
@@ -79,3 +83,109 @@ def run_example(
     destination.write_text(json.dumps(payload, indent=2))
     typer.echo(json.dumps(payload, indent=2))
     typer.echo(f"\nSaved log to {destination}")
+
+
+@app.command("run-benchmark")
+def run_benchmark(
+    profile: str = typer.Option("faar_full", help=f"Profile: {', '.join(sorted(PROFILES))}"),
+    max_examples: int = typer.Option(20, help="Limit examples for this run"),
+    project_root: Path | None = typer.Option(None, help="Override repository root"),
+    vlm_backend: str = typer.Option("openai", help="Visual fallback backend"),
+    seed: int = typer.Option(42, help="Random seed"),
+    api_enabled: bool = typer.Option(True, help="Enable API-backed runtime features"),
+) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    settings = AppSettings(project_root=project_root) if project_root else AppSettings()
+    settings.recovery.vlm_backend = vlm_backend
+    settings.recovery.api_enabled = api_enabled
+    settings.validate_runtime_paths()
+    settings.logs_dir = (settings.project_root / "logs/phase3").resolve()
+    settings.artifacts_dir = (settings.project_root / "artifacts/phase3").resolve()
+    settings.logs_dir.mkdir(parents=True, exist_ok=True)
+    settings.artifacts_dir.mkdir(parents=True, exist_ok=True)
+    rows = run_profile(settings, profile_name=profile, max_examples=max_examples)
+    profile_summaries = summarize_by_profile(rows)
+    summary = profile_summaries.get(
+        profile,
+        {"count": 0, "ndcg@5": 0.0, "recall@5": 0.0, "em": 0.0, "f1": 0.0, "visual_fallback_rate": 0.0},
+    )
+    out_summary = settings.artifacts_dir / f"{profile}_summary.json"
+    write_json(out_summary, {"profile": profile, "summary": summary, "count": len(rows)})
+    typer.echo(json.dumps({"profile": profile, "summary": summary, "count": len(rows)}, indent=2))
+    typer.echo(f"\nSaved profile summary to {out_summary}")
+
+
+@app.command("run-benchmark-all")
+def run_benchmark_all(
+    max_examples: int = typer.Option(20, help="Limit examples per profile"),
+    project_root: Path | None = typer.Option(None, help="Override repository root"),
+    vlm_backend: str = typer.Option("openai", help="Visual fallback backend"),
+    seed: int = typer.Option(42, help="Random seed"),
+    api_enabled: bool = typer.Option(True, help="Enable API-backed runtime features"),
+) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    settings = AppSettings(project_root=project_root) if project_root else AppSettings()
+    settings.recovery.vlm_backend = vlm_backend
+    settings.recovery.api_enabled = api_enabled
+    settings.validate_runtime_paths()
+    settings.logs_dir = (settings.project_root / "logs/phase3").resolve()
+    settings.artifacts_dir = (settings.project_root / "artifacts/phase3").resolve()
+    settings.logs_dir.mkdir(parents=True, exist_ok=True)
+    settings.artifacts_dir.mkdir(parents=True, exist_ok=True)
+
+    all_rows = []
+    full_summary: dict[str, dict] = {}
+    for profile_name in sorted(PROFILES):
+        profile_rows = run_profile(settings, profile_name=profile_name, max_examples=max_examples)
+        all_rows.extend(profile_rows)
+        profile_summaries = summarize_by_profile(profile_rows)
+        per_profile = profile_summaries.get(
+            profile_name,
+            {"count": 0, "ndcg@5": 0.0, "recall@5": 0.0, "em": 0.0, "f1": 0.0, "visual_fallback_rate": 0.0},
+        )
+        full_summary[profile_name] = per_profile
+        write_json(settings.artifacts_dir / f"{profile_name}_summary.json", {"profile": profile_name, "summary": per_profile})
+
+    summary = summarize_by_profile(all_rows)
+    if not summary:
+        summary = full_summary
+    write_json(settings.artifacts_dir / "metrics_summary.json", {"profiles": summary, "generated_at_utc": datetime.now(UTC).isoformat()})
+    csv_rows = [{"profile": name, **values} for name, values in summary.items()]
+    write_metrics_csv(settings.artifacts_dir / "qa_metrics.csv", csv_rows)
+    write_metrics_csv(settings.artifacts_dir / "retrieval_metrics.csv", csv_rows)
+    write_json(
+        settings.artifacts_dir / "ablation_summary.json",
+        {
+            "faar_full": summary.get("faar_full", {}),
+            "faar_no_backtrack": summary.get("faar_no_backtrack", {}),
+            "faar_no_vlm": summary.get("faar_no_vlm", {}),
+            "faar_no_diagnosis": summary.get("faar_no_diagnosis", {}),
+        },
+    )
+    typer.echo(json.dumps({"profiles": summary}, indent=2))
+    typer.echo(f"\nSaved global summary to {settings.artifacts_dir / 'metrics_summary.json'}")
+
+
+@app.command("aggregate-phase3")
+def aggregate_phase3(
+    project_root: Path | None = typer.Option(None, help="Override repository root"),
+) -> None:
+    settings = AppSettings(project_root=project_root) if project_root else AppSettings()
+    base = settings.project_root / "logs/phase3"
+    artifacts_dir = settings.project_root / "artifacts/phase3"
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    all_rows = []
+    for profile_name in sorted(PROFILES):
+        profile_dir = base / profile_name
+        if not profile_dir.exists():
+            continue
+        for path in sorted(profile_dir.glob("*.json")):
+            all_rows.append(json.loads(path.read_text()))
+    summary = summarize_by_profile(all_rows)
+    write_json(artifacts_dir / "metrics_summary.json", {"profiles": summary, "generated_at_utc": datetime.now(UTC).isoformat()})
+    csv_rows = [{"profile": name, **values} for name, values in summary.items()]
+    write_metrics_csv(artifacts_dir / "qa_metrics.csv", csv_rows)
+    write_metrics_csv(artifacts_dir / "retrieval_metrics.csv", csv_rows)
+    typer.echo(json.dumps({"profiles": summary}, indent=2))

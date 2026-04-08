@@ -23,10 +23,14 @@ class ByT5Corrector:
         self.model_name = model_name
 
     def correct(self, text: str, max_new_tokens: int = 128) -> str:
+        if not text.strip():
+            return text
+        # Bound inference input to keep Phase 3 batch runs tractable.
+        clipped = text[:512]
         tokenizer, model = _load_byt5(self.model_name)
-        prompt = f"correct ocr noise: {text}"
+        prompt = f"correct ocr noise: {clipped}"
         tokens = tokenizer(prompt, return_tensors="pt", truncation=True)
-        output = model.generate(**tokens, max_new_tokens=max_new_tokens)
+        output = model.generate(**tokens, max_new_tokens=min(max_new_tokens, 64))
         return tokenizer.decode(output[0], skip_special_tokens=True).strip()
 
 
@@ -35,6 +39,14 @@ class VisualFallback:
         self.settings = settings
 
     def answer(self, question: str, image_paths: list[Path], fallback_context: str) -> dict:
+        if not self.settings.recovery.api_enabled and self.settings.recovery.vlm_backend == "openai":
+            return {
+                "backend": "openai",
+                "status": "skipped",
+                "reason": "api_disabled",
+                "answer": "",
+                "used_images": [],
+            }
         if self.settings.recovery.vlm_backend == "openai":
             return self._answer_with_openai(question, image_paths)
         return {
@@ -65,10 +77,20 @@ class VisualFallback:
                     "image_url": {"url": f"data:image/png;base64,{encoded}"},
                 }
             )
-        response = client.chat.completions.create(
-            model=self.settings.recovery.openai_model,
-            messages=[{"role": "user", "content": content}],
-        )
+        try:
+            response = client.chat.completions.create(
+                model=self.settings.recovery.openai_model,
+                messages=[{"role": "user", "content": content}],
+                timeout=self.settings.recovery.request_timeout_seconds,
+            )
+        except Exception as exc:  # pragma: no cover - external runtime dependent
+            return {
+                "backend": "openai",
+                "status": "failed",
+                "reason": f"openai_error:{type(exc).__name__}",
+                "answer": "",
+                "used_images": [str(path) for path in image_paths],
+            }
         return {
             "backend": "openai",
             "status": "succeeded",

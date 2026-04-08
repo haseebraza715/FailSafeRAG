@@ -27,6 +27,17 @@ class RecoverySettings(BaseModel):
     enable_backtracking: bool = True
     vlm_backend: str = "mock"
     openai_model: str = "gpt-4o"
+    enable_vlm: bool = True
+    api_enabled: bool = True
+    request_timeout_seconds: int = 60
+
+
+class ExperimentSettings(BaseModel):
+    profile_name: str = "faar_full"
+    disable_diagnosis: bool = False
+    disable_backtracking: bool = False
+    disable_vlm: bool = False
+    force_direct_answer: bool = False
 
 
 class AppSettings(BaseModel):
@@ -35,9 +46,11 @@ class AppSettings(BaseModel):
     phase0_summary: Path | None = None
     phase0_ocr_dir: Path | None = None
     logs_dir: Path | None = None
+    artifacts_dir: Path | None = None
     retrieval: RetrievalSettings = Field(default_factory=RetrievalSettings)
     gate: GateSettings = Field(default_factory=GateSettings)
     recovery: RecoverySettings = Field(default_factory=RecoverySettings)
+    experiment: ExperimentSettings = Field(default_factory=ExperimentSettings)
 
     def model_post_init(self, __context: object) -> None:
         self.project_root = self.project_root.resolve()
@@ -45,6 +58,7 @@ class AppSettings(BaseModel):
         self.phase0_summary = (self.phase0_summary or self.project_root / "data/phase0/phase0_asset_summary.json").resolve()
         self.phase0_ocr_dir = (self.phase0_ocr_dir or self.project_root / "artifacts/phase0/ocr_text").resolve()
         self.logs_dir = (self.logs_dir or self.project_root / "logs/phase1").resolve()
+        self.artifacts_dir = (self.artifacts_dir or self.project_root / "artifacts/phase1").resolve()
 
     def validate_runtime_paths(self) -> None:
         required = {

@@ -58,9 +58,13 @@ def build_graph(settings: AppSettings):
         return {"gate": gate}
 
     def route_after_gate(state: GraphState) -> str:
+        if settings.experiment.force_direct_answer:
+            return "answer_direct"
         return "answer_direct" if state["gate"]["pass_gate"] else "diagnose"
 
     def diagnose_node(state: GraphState) -> GraphState:
+        if settings.experiment.disable_diagnosis:
+            return {"failure_type": "semantic", "policy_action": "answer_direct"}
         failure_type = diagnose_failure(state["retrieved_hits"], state["gate"], settings.gate)
         policy_action = {
             "word_level": "correct_text",
@@ -70,6 +74,12 @@ def build_graph(settings: AppSettings):
         return {"failure_type": failure_type, "policy_action": policy_action}
 
     def route_after_diagnosis(state: GraphState) -> str:
+        if settings.experiment.force_direct_answer:
+            return "answer_direct"
+        if settings.experiment.disable_backtracking and state.get("policy_action") == "retry_retrieval":
+            return "answer_direct"
+        if settings.experiment.disable_vlm and state.get("policy_action") == "invoke_vlm":
+            return "answer_direct"
         return state["policy_action"]
 
     def word_level_recovery(state: GraphState) -> GraphState:
@@ -101,6 +111,21 @@ def build_graph(settings: AppSettings):
         }
 
     def structural_recovery(state: GraphState) -> GraphState:
+        if not settings.recovery.enable_vlm:
+            return {
+                "visual_result": {
+                    "backend": settings.recovery.vlm_backend,
+                    "status": "skipped",
+                    "reason": "vlm_disabled_by_profile",
+                    "answer": "",
+                    "used_images": [],
+                },
+                "action_outcome": {
+                    "action": "invoke_vlm",
+                    "status": "skipped",
+                    "reason": "vlm_disabled_by_profile",
+                },
+            }
         example = state["example"]
         fallback_context = "\n".join(hit.chunk.text for hit in state["retrieved_hits"])
         result = visual_fallback.answer(example.question, example.image_paths, fallback_context)
@@ -156,6 +181,7 @@ def build_graph(settings: AppSettings):
         "diagnose",
         route_after_diagnosis,
         {
+            "answer_direct": "answer_direct",
             "correct_text": "correct_text",
             "retry_retrieval": "retry_retrieval",
             "invoke_vlm": "invoke_vlm",
