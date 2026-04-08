@@ -30,6 +30,7 @@ class GraphState(TypedDict, total=False):
     visual_result: dict[str, Any]
     answer: str
     answer_meta: dict[str, Any]
+    action_outcome: dict[str, Any]
 
 
 def build_graph(settings: AppSettings):
@@ -77,25 +78,55 @@ def build_graph(settings: AppSettings):
             corrected = corrector.correct(hit.chunk.text)
             hit.chunk.text = corrected or hit.chunk.text
             updated_hits.append(hit)
-        return {"corrected_hits": updated_hits}
+        return {
+            "corrected_hits": updated_hits,
+            "action_outcome": {
+                "action": "correct_text",
+                "status": "succeeded",
+                "reason": "byt5_correction_applied",
+            },
+        }
 
     def semantic_recovery(state: GraphState) -> GraphState:
         retry_query = semantic_backtrack(state["question"], state["retrieved_hits"])
         retry_hits = state["retriever"].retrieve(retry_query, top_k=settings.retrieval.semantic_backtrack_top_k)
-        return {"semantic_retry_query": retry_query, "corrected_hits": retry_hits}
+        return {
+            "semantic_retry_query": retry_query,
+            "corrected_hits": retry_hits,
+            "action_outcome": {
+                "action": "retry_retrieval",
+                "status": "succeeded",
+                "reason": "semantic_backtrack_query_executed",
+            },
+        }
 
     def structural_recovery(state: GraphState) -> GraphState:
         example = state["example"]
         fallback_context = "\n".join(hit.chunk.text for hit in state["retrieved_hits"])
         result = visual_fallback.answer(example.question, example.image_paths, fallback_context)
-        return {"visual_result": result}
+        return {
+            "visual_result": result,
+            "action_outcome": {
+                "action": "invoke_vlm",
+                "status": result.get("status", "unknown"),
+                "reason": result.get("reason", "vlm_action_executed"),
+            },
+        }
 
     def direct_answer(state: GraphState) -> GraphState:
         answer_meta = answer_from_hits(state["question"], state["retrieved_hits"])
-        return {"answer": answer_meta["answer"], "answer_meta": answer_meta}
+        return {
+            "answer": answer_meta["answer"],
+            "answer_meta": answer_meta,
+            "action_outcome": {
+                "action": "answer_direct",
+                "status": "succeeded",
+                "reason": "passed_quality_gate",
+            },
+        }
 
     def recovered_answer(state: GraphState) -> GraphState:
-        if state.get("visual_result") and state["visual_result"]["answer"] != "VLM_NOT_CONFIGURED":
+        if state.get("visual_result") and state["visual_result"].get("status") == "succeeded":
             return {
                 "answer": state["visual_result"]["answer"],
                 "answer_meta": {"answer_mode": "visual_fallback", "visual_backend": state["visual_result"]["backend"]},
