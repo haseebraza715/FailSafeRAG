@@ -229,6 +229,13 @@ where:
 - Notation aligned with the actual implementation
 - Clean mapping between theory and system modules
 
+Phase 2 documentation artifacts:
+
+- `docs/phases/phase2/methodology_formalization.md`
+- `docs/phases/phase2/code_math_mapping.md`
+- `docs/phases/phase2/acceptance_checklist.md`
+- `docs/repo_handbook/documentation_style_standard.md`
+
 ---
 
 ## Phase 3 — Run Real Experiments

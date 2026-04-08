@@ -12,8 +12,8 @@ This checklist maps the required Phase 1 prototype requirements to implementatio
 | Retrieval (BM25 + dense + fused ranking) | `src/faar/retrieval.py` | Complete | BM25 + sentence-transformer + FAISS inner-product retrieval. |
 | Quality gate | `src/faar/quality.py::quality_gate` | Complete | Computes quality score + reasons. |
 | Diagnostic layer (`semantic`, `word_level`, `structural`) | `src/faar/quality.py::diagnose_failure` | Complete | Gate outcomes route to failure types. |
-| Recovery actions (ByT5 / retry / VLM fallback) | `src/faar/recovery.py`, `src/faar/graph.py` | In progress | Recovery hardening and explicit statuses implemented in this phase update. |
-| Answer generation + per-example logs | `src/faar/answering.py`, `src/faar/cli.py`, `logs/phase1/*.json` | In progress | Log schema will be extended with reproducibility metadata. |
+| Recovery actions (ByT5 / retry / VLM fallback) | `src/faar/recovery.py`, `src/faar/graph.py` | Complete | Recovery hardening and explicit action statuses are implemented and logged. |
+| Answer generation + per-example logs | `src/faar/answering.py`, `src/faar/cli.py`, `logs/phase1/*.json` | Complete | Log payload includes `run_metadata` and `action_outcome` fields. |
 
 ## Baseline Branch Behavior (Pre-hardening Snapshot)
 
@@ -29,3 +29,7 @@ This checklist maps the required Phase 1 prototype requirements to implementatio
 3. Logs include reproducibility metadata and action outcomes.
 4. Unit + integration tests pass.
 5. One end-to-end Phase 1 run is executed and archived.
+
+## Reconciliation Note
+
+This checklist has been aligned with `docs/phases/phase1/completion_report.md`, which marks Phase 1 as operationally complete for prototype scope.

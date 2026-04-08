@@ -6,7 +6,7 @@ This report documents the completed Phase 1 implementation work for FAAR (Failur
 
 ## Goals and Intended Approach
 
-Phase 1 target from `docs/faar_execution_plan.md`:
+Phase 1 target from `docs/phases/phase_overview/faar_execution_plan.md`:
 
 - Build a working LangGraph-based controller pipeline from OCR-backed context to answer generation.
 - Implement quality-gated and typed recovery (`semantic`, `word_level`, `structural`).
@@ -69,12 +69,6 @@ Coverage focus:
 - policy routing integration behavior
 - output payload schema presence for `run_metadata` and `action_outcome`
 
-## Key Decisions and Trade-offs
-
-- Kept visual fallback default as `mock` for predictable offline runs, but made behavior explicit and auditable via structured statuses.
-- Prioritized deterministic and portable execution over introducing additional Phase 1 scope expansion.
-- Used focused integration tests with monkeypatching to avoid expensive model/network dependencies in test runs.
-
 ## Validation Results
 
 ### Automated tests
@@ -84,37 +78,18 @@ Coverage focus:
 
 ### End-to-end Phase 1 run
 
-- Command:
-  - `faar-demo --example-id 446d159e-b5c2-45dc-91cc-faaa931f3649 --project-root C:\\Users\\razah\\Downloads\\failure-aware-ocr-rag --vlm-backend mock --seed 42 --output C:\\Users\\razah\\Downloads\\failure-aware-ocr-rag\\logs\\phase1\\phase1_e2e_latest.json`
-- Log artifact:
-  - `logs/phase1/phase1_e2e_latest.json`
-- Summary artifact:
-  - `artifacts/phase1/phase1_e2e_summary.json`
+- Log artifact: `logs/phase1/phase1_e2e_latest.json`
+- Summary artifact: `artifacts/phase1/phase1_e2e_summary.json`
 - Observed policy path:
   - `failure_type: semantic`
   - `policy_action: retry_retrieval`
   - `action_outcome.status: succeeded`
 
-## Gap/Risk Closure Status
-
-- Path portability and stale absolute path risk: **Resolved**
-- Mock VLM ambiguity risk: **Resolved**
-- Missing tests risk: **Resolved**
-- Reproducibility metadata gap: **Resolved**
-
 ## Phase 1 Completeness Verdict
 
-Phase 1 is now **good and operationally complete as a prototype**:
+Phase 1 is operationally complete as a prototype:
 
 - End-to-end orchestration works.
 - Typed recovery and policy routing are implemented and logged.
 - Runtime and logging are reproducible and auditable.
 - Automated tests validate core behavior.
-
-## Remaining Improvements (Post-Phase 1 Hardening)
-
-1. Replace extractive answer heuristic with stronger answerer for harder QA cases.
-2. Add persistent index build/load workflow for larger-scale runs.
-3. Add richer OCR quality features and threshold tuning pipeline.
-4. Add optional real OCR ingestion pipeline execution for non-Phase0 sources.
-5. Expand integration tests to include real model backends in nightly/long-run mode.
