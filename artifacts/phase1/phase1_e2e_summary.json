@@ -1,0 +1,16 @@
+{
+  "run_label": "phase1_e2e_latest",
+  "log_path": "logs/phase1/phase1_e2e_latest.json",
+  "example_id": "446d159e-b5c2-45dc-91cc-faaa931f3649",
+  "status": "completed",
+  "outcome": {
+    "failure_type": "semantic",
+    "policy_action": "retry_retrieval",
+    "action_status": "succeeded",
+    "answer_mode": "extractive_overlap"
+  },
+  "validation": {
+    "tests_command": "python -m pytest",
+    "tests_result": "7 passed"
+  }
+}
