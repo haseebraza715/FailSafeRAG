@@ -1,4 +1,5 @@
 # FAAR — Failure-Aware Agentic Recovery for OCR-RAG
+
 ## Supervisor-Aligned Execution Plan
 
 **Research title:** Failure-Aware Agentic Recovery for OCR-Induced Errors in Document QA  
@@ -32,6 +33,7 @@ This is now a paper-oriented implementation plan rather than a minimal prototype
 ---
 
 ## Phase 0 — Ground Yourself In The Actual Data
+
 **Status:** Completed  
 **Purpose:** Build a real, manually inspected development set before designing the system
 
@@ -44,17 +46,19 @@ This is now a paper-oriented implementation plan rather than a minimal prototype
 5. Compared OCR text against clean benchmark page text.
 6. Checked whether each answer was recoverable from OCR alone.
 7. Manually labeled each example as:
-   - `text_corruption`
-   - `structure_corruption`
-   - `no_issue`
+  - `text_corruption`
+  - `structure_corruption`
+  - `no_issue`
 
 ### Phase 0 results
 
-| Label | Count |
-|---|---:|
-| `no_issue` | 33 |
-| `text_corruption` | 5 |
-| `structure_corruption` | 2 |
+
+| Label                  | Count |
+| ---------------------- | ----- |
+| `no_issue`             | 33    |
+| `text_corruption`      | 5     |
+| `structure_corruption` | 2     |
+
 
 ### Interpretation
 
@@ -73,6 +77,7 @@ Do not discard this phase. It remains the anchor for later detector analysis.
 ---
 
 ## Phase 1 — Build The Working Prototype
+
 **Priority:** Highest  
 **Duration:** Immediate next phase  
 **Goal:** Produce a working end-to-end system that demonstrates the orchestration
@@ -81,48 +86,45 @@ This is now the most important implementation phase.
 
 ### Required stack
 
-| Component | Choice |
-|---|---|
-| Agentic controller | LangGraph |
-| OCR backend | Tesseract or PaddleOCR |
-| Vector store | FAISS or LanceDB |
-| Text retriever | BM25 + dense retrieval |
-| Dense embeddings | sentence-transformers or equivalent |
-| Text repair module | ByT5 |
-| Visual fallback | GPT-4o or Gemini |
-| Logging | JSON per example |
+
+| Component          | Choice                              |
+| ------------------ | ----------------------------------- |
+| Agentic controller | LangGraph                           |
+| OCR backend        | Tesseract or PaddleOCR              |
+| Vector store       | FAISS or LanceDB                    |
+| Text retriever     | BM25 + dense retrieval              |
+| Dense embeddings   | sentence-transformers or equivalent |
+| Text repair module | ByT5                                |
+| Visual fallback    | GPT-4o or Gemini                    |
+| Logging            | JSON per example                    |
+
 
 ### System modules to implement
 
 1. **OCR ingestion**
-   - extract page images or PDFs
-   - run OCR
-   - save raw OCR text
-
+  - extract page images or PDFs
+  - run OCR
+  - save raw OCR text
 2. **Chunking and indexing**
-   - split OCR text into chunks
-   - attach `doc_id`, `page_id`, and chunk metadata
-   - build vector index and lexical retrieval store
-
+  - split OCR text into chunks
+  - attach `doc_id`, `page_id`, and chunk metadata
+  - build vector index and lexical retrieval store
 3. **Quality gate**
-   - compute chunk-level confidence or quality signals
-   - decide whether a chunk passes directly to retrieval/answering or enters diagnosis
-
+  - compute chunk-level confidence or quality signals
+  - decide whether a chunk passes directly to retrieval/answering or enters diagnosis
 4. **Diagnostic layer**
-   - classify chunk or retrieved context into failure types
-   - working taxonomy for implementation:
-     - `semantic`
-     - `word_level`
-     - `structural`
-
+  - classify chunk or retrieved context into failure types
+  - working taxonomy for implementation:
+    - `semantic`
+    - `word_level`
+    - `structural`
 5. **Recovery actions**
-   - `word_level` → ByT5 post-OCR correction
-   - `structural` → selective VLM page fallback
-   - `semantic` → retrieval refinement or controller retry
-
+  - `word_level` → ByT5 post-OCR correction
+  - `structural` → selective VLM page fallback
+  - `semantic` → retrieval refinement or controller retry
 6. **Answer generation**
-   - answer from retrieved context
-   - log path taken by the controller
+  - answer from retrieved context
+  - log path taken by the controller
 
 ### Minimum LangGraph flow
 
@@ -160,6 +162,7 @@ Do not over-optimize here. The goal is not elegance first. The goal is to show t
 ---
 
 ## Phase 2 — Formalize The Framework Mathematically
+
 **Priority:** High, but after the prototype is running  
 **Goal:** Convert the system logic into a clean methodology section
 
@@ -177,7 +180,7 @@ Q(c): chunk -> {pass, diagnose}
 
 with explicit threshold conditions over confidence, noise, retrieval confidence, or layout signals.
 
-2. **Failure taxonomy**
+1. **Failure taxonomy**
 
 Define:
 
@@ -186,11 +189,12 @@ F(c): chunk -> {semantic, word-level, structural}
 ```
 
 where:
+
 - `semantic` means the content is insufficient, mismatched, or retrieval-relevant meaning is lost
 - `word-level` means OCR corruption damages tokens, characters, or short text spans
 - `structural` means layout loss damages answerability, especially for tables, forms, or multi-column pages
 
-3. **Recovery policy**
+1. **Recovery policy**
 
 Define:
 
@@ -204,7 +208,7 @@ or equivalently:
 pi(failure_type) -> {answer_direct, correct_text, retry_retrieval, invoke_vlm}
 ```
 
-4. **Utility function**
+1. **Utility function**
 
 Define:
 
@@ -213,6 +217,7 @@ U(a) = E[Accuracy(a)] - lambda * Cost(a)
 ```
 
 where:
+
 - `a` is an action or recovery strategy
 - `E[Accuracy(a)]` is expected answer quality under action `a`
 - `Cost(a)` is computational or API cost of that action
@@ -227,6 +232,7 @@ where:
 ---
 
 ## Phase 3 — Run Real Experiments
+
 **Priority:** Very high  
 **Goal:** Fill the biggest gap: evidence
 
@@ -239,27 +245,32 @@ Use **OHR-Bench (ICCV 2025)** as the main benchmark.
 ### Systems to evaluate
 
 At minimum:
+
 - **Naive RAG**
 - **FAAR (ours)**
 
 Supervisor-requested reference baselines:
+
 - **CRAG**
 - **Self-RAG**
 - **VisRAG**
 
 Practical note:
+
 - If reproducing every baseline fully is too heavy, document what is reproduced directly, what is approximated, and what uses reported settings.
 - But do not skip the comparison discussion.
 
 ### Metrics
 
 Report:
+
 - **NDCG@5**
 - **Recall@5**
 - **Exact Match (EM)**
 - **F1**
 
 Optional but still useful:
+
 - latency
 - visual fallback rate
 - cost per query
@@ -292,6 +303,7 @@ If implementation complexity forces a rename, keep the ablation logic equivalent
 ---
 
 ## Phase 4 — Refine Experimental Design And Claims
+
 **Goal:** Make sure the story supported by the experiments is precise and defensible
 
 ### Questions this phase must answer
@@ -316,6 +328,7 @@ If implementation complexity forces a rename, keep the ablation logic equivalent
 ---
 
 ## Phase 5 — Write The Paper Properly
+
 **Goal:** Convert implementation + experiments into a conference-ready paper structure
 
 Use this structure:
@@ -331,28 +344,33 @@ Use this structure:
 ### Writing guidance by section
 
 **Abstract**
+
 - state the problem
 - state the method
 - state the key result
 - state the efficiency/accuracy trade-off
 
 **Introduction**
+
 - motivate OCR failures in document QA
 - explain why generic RAG is not enough
 - position selective recovery as the contribution
 
 **Related Work**
+
 - OCR-aware QA
 - agentic RAG
 - document understanding
 - retrieval correction / self-refinement
 
 **Methodology**
+
 - formalize `Q`, `F`, `pi`, and `U`
 - describe LangGraph controller and system modules
 - explain quality gate, diagnosis, recovery actions
 
 **Experiments**
+
 - dataset
 - baselines
 - metrics
@@ -360,12 +378,14 @@ Use this structure:
 - main results
 
 **Analysis**
+
 - ablations
 - failure breakdown
 - recovery success analysis
 - qualitative examples
 
 **Conclusion**
+
 - summarize what works
 - note limitations honestly
 - suggest future work
@@ -404,7 +424,9 @@ This upgraded plan is more ambitious, but it should still be executed with the s
 ## Immediate Next Steps
 
 ### Step 1
+
 Build the **Phase 1 working prototype** first:
+
 - LangGraph
 - OCR
 - indexing
@@ -415,13 +437,16 @@ Build the **Phase 1 working prototype** first:
 - VLM fallback
 
 ### Step 2
+
 Once the system runs, formalize:
+
 - `Q(c)`
 - `F(c)`
 - `pi(s)`
 - `U(a)`
 
 ### Step 3
+
 Then run experiments on OHR-Bench and start filling result tables.
 
 This order is important:
@@ -443,6 +468,7 @@ That is the safest path to a paper-quality result without getting stuck in plann
 The project now has stronger requirements, but it is also more aligned with a publishable paper. The main risk is trying to build every idea at once.
 
 Move forward by treating the updated prototype as the backbone:
+
 - make it run
 - measure it
 - refine it
