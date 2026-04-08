@@ -48,7 +48,7 @@ class Phase0Repository:
     def _load_manifest(path: Path | None) -> dict[str, dict]:
         if path is None or not path.exists():
             raise FileNotFoundError(f"Phase 0 manifest not found: {path}")
-        with path.open(newline="") as handle:
+        with path.open(newline="", encoding="utf-8", errors="ignore") as handle:
             rows = list(csv.DictReader(handle))
         return {row["example_id"]: row for row in rows}
 
@@ -59,8 +59,10 @@ class Phase0Repository:
         row = self._manifest[example_id]
         summary = self._summary.get(example_id, {})
         ocr_text_path = Path(summary.get("ocr_text_path", self.settings.phase0_ocr_dir / f"{example_id}.txt"))
+        if not ocr_text_path.exists():
+            ocr_text_path = self.settings.phase0_ocr_dir / f"{example_id}.txt"
         gt_text_path = Path(summary["gt_text_path"]) if summary.get("gt_text_path") else None
-        image_paths = [Path(p) for p in summary.get("image_paths", [])]
+        image_paths = [Path(p) for p in summary.get("image_paths", []) if Path(p).exists()]
         ocr_text = ocr_text_path.read_text(errors="ignore")
         return Phase0Example(
             example_id=example_id,
