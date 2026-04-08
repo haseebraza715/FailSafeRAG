@@ -11,15 +11,20 @@
   - OCR text, clean page text, and page-level assets for sampled examples
 - `artifacts/phase1/`
   - phase run summaries (for example `phase1_e2e_summary.json`)
+- `artifacts/phase3/`
+  - benchmark summaries, metrics tables, ablation summary, and error-analysis sample set
 
 ## Logs
 
 - `logs/phase1/`
   - per-example structured run outputs showing gate, failure type, policy path, and outcomes
+- `logs/phase3/`
+  - per-profile benchmark run outputs for baseline and ablation variants
 
 ## Documentation Indexes
 
 - `docs/archives/phase1_archive_index.md`
 - `docs/archives/phase2_archive_index.md`
+- `docs/archives/phase3_archive_index.md`
 
 These indexes point to runtime artifacts without relocating the runtime directories.

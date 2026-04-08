@@ -245,6 +245,8 @@ Phase 2 documentation artifacts:
 
 This phase determines whether the work is actually publishable.
 
+**Implementation status:** Completed (minimal runnable scope for this cycle: `naive_rag`, `faar_full`, `faar_no_backtrack`, `faar_no_vlm`, `faar_no_diagnosis`) with generated outputs under `logs/phase3/` and `artifacts/phase3/`.
+
 ### Main dataset
 
 Use **OHR-Bench (ICCV 2025)** as the main benchmark.

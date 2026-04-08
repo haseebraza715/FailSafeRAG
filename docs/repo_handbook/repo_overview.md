@@ -9,8 +9,8 @@
 - `src/faar/`: core controller, quality, retrieval, recovery, answering, and CLI
 - `tests/`: automated tests for routing, quality logic, settings, and payloads
 - `data/phase0/`: sampled benchmark metadata and manual labels
-- `artifacts/phase0/`, `artifacts/phase1/`: OCR and phase outputs
-- `logs/phase1/`: per-example runtime logs
+- `artifacts/phase0/`, `artifacts/phase1/`, `artifacts/phase3/`: OCR and phase outputs
+- `logs/phase1/`, `logs/phase3/`: runtime logs for prototype and benchmark phases
 - `docs/`: modular docs (phases, handbook, reports, archives)
 - `OHR-Bench/`: benchmark/evaluation subproject
 

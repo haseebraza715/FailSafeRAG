@@ -14,3 +14,4 @@ When a phase is completed:
 - Phase 0: completed grounding sample and manual labels
 - Phase 1: prototype pipeline completed and validated
 - Phase 2: methodology formalization and documentation standard completed
+- Phase 3: benchmark runner, ablations, metrics artifacts, and phase reporting completed

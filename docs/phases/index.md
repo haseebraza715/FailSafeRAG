@@ -5,6 +5,7 @@ Phase-scoped documentation is organized as:
 - [`phase0/`](./phase0/index.md)
 - [`phase1/`](./phase1/index.md)
 - [`phase2/`](./phase2/index.md)
+- [`phase3/`](./phase3/index.md)
 - [`phase_overview/`](./phase_overview/index.md)
 
 ## Conventions
