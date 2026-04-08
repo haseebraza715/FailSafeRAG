@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from pydantic import BaseModel, Field
@@ -29,7 +30,7 @@ class RecoverySettings(BaseModel):
 
 
 class AppSettings(BaseModel):
-    project_root: Path = Field(default_factory=lambda: Path("/Users/x/Downloads/Thesis-Paper/Code"))
+    project_root: Path = Field(default_factory=lambda: _default_project_root())
     phase0_manifest: Path | None = None
     phase0_summary: Path | None = None
     phase0_ocr_dir: Path | None = None
@@ -39,7 +40,30 @@ class AppSettings(BaseModel):
     recovery: RecoverySettings = Field(default_factory=RecoverySettings)
 
     def model_post_init(self, __context: object) -> None:
-        self.phase0_manifest = self.phase0_manifest or self.project_root / "data/phase0/sample_manifest.csv"
-        self.phase0_summary = self.phase0_summary or self.project_root / "data/phase0/phase0_asset_summary.json"
-        self.phase0_ocr_dir = self.phase0_ocr_dir or self.project_root / "artifacts/phase0/ocr_text"
-        self.logs_dir = self.logs_dir or self.project_root / "logs/phase1"
+        self.project_root = self.project_root.resolve()
+        self.phase0_manifest = (self.phase0_manifest or self.project_root / "data/phase0/sample_manifest.csv").resolve()
+        self.phase0_summary = (self.phase0_summary or self.project_root / "data/phase0/phase0_asset_summary.json").resolve()
+        self.phase0_ocr_dir = (self.phase0_ocr_dir or self.project_root / "artifacts/phase0/ocr_text").resolve()
+        self.logs_dir = (self.logs_dir or self.project_root / "logs/phase1").resolve()
+
+    def validate_runtime_paths(self) -> None:
+        required = {
+            "project_root": self.project_root,
+            "phase0_manifest": self.phase0_manifest,
+            "phase0_ocr_dir": self.phase0_ocr_dir,
+        }
+        missing = [f"{name}: {path}" for name, path in required.items() if path is None or not path.exists()]
+        if missing:
+            details = "\n".join(missing)
+            raise FileNotFoundError(
+                "FAAR settings validation failed.\n"
+                "Set FAAR_PROJECT_ROOT or pass --project-root to point at the repository root.\n"
+                f"Missing paths:\n{details}"
+            )
+
+
+def _default_project_root() -> Path:
+    env_root = os.getenv("FAAR_PROJECT_ROOT")
+    if env_root:
+        return Path(env_root).expanduser()
+    return Path.cwd()
