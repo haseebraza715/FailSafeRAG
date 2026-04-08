@@ -1,0 +1,84 @@
+{
+  "samples": [
+    {
+      "profile": "faar_full",
+      "example_id": "032a0c06-4f55-458e-8618-93ec82d768c6",
+      "failure_type": "word_level",
+      "policy_action": "correct_text",
+      "predicted_answer": "the Firm\u00e2\u20ac\u2122s end-user activities and the Firm\u00e2\u20ac\u2122s en",
+      "gold_answer": "$1,716 million"
+    },
+    {
+      "profile": "faar_full",
+      "example_id": "108e0777-95b7-4925-a86c-deaf9dc701aa",
+      "failure_type": "pass",
+      "policy_action": "answer_direct",
+      "predicted_answer": "69 The percentage of the Firm\u00e2\u20ac\u2122s over-the-counter derivative transactions subject to collateral agreements \u00e2\u20ac\u201d excluding foreign exchange spot trades, which are not typically covered by collateral agreements due to their short maturity, and centrally cleared trades that are settled daily \u00e2\u20ac\u201d was approximately 87% and 88% at June 30, 2022, and December 31, 2021, respectively.",
+      "gold_answer": "88%"
+    },
+    {
+      "profile": "faar_full",
+      "example_id": "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+      "failure_type": "word_level",
+      "policy_action": "correct_text",
+      "predicted_answer": "of cash flows (in millions) Year Ended December 31, 2017 2018 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019",
+      "gold_answer": "13,723"
+    },
+    {
+      "profile": "faar_full",
+      "example_id": "13e90002-caa4-4e10-be9d-3cf49e865042",
+      "failure_type": "pass",
+      "policy_action": "answer_direct",
+      "predicted_answer": "S-3 | 2022 Annual Report THE AES CORPORATION SCHEDULE I CONDENSED FINANCIAL INFORMATION OF PARENT STATEMENTS OF OPERATIONS YEARS ENDED DECEMBER 31, 2022, 2021, AND 2020 2022 2021 2020 For the Years Ended December 31, (in millions) Equity in earnings of subsidiaries and affiliates (280) (47) 383 General and administrative expenses (140) (121) (125) _ (65) (6) Other expense Interest expense 163 74 163) (35) (201) 17 Income tax benefit (expense) See Notes to Schedule |.",
+      "gold_answer": "383"
+    },
+    {
+      "profile": "faar_full",
+      "example_id": "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+      "failure_type": "pass",
+      "policy_action": "answer_direct",
+      "predicted_answer": "If a subsequent Milestone is achieved by the original Target Date listed in Section 2.3, Bioamber will pay Cargill the amount [***].",
+      "gold_answer": "US $250,000.00"
+    },
+    {
+      "profile": "faar_no_backtrack",
+      "example_id": "032a0c06-4f55-458e-8618-93ec82d768c6",
+      "failure_type": "word_level",
+      "policy_action": "correct_text",
+      "predicted_answer": "the Firm\u00e2\u20ac\u2122s end-user activities and the Firm\u00e2\u20ac\u2122s en",
+      "gold_answer": "$1,716 million"
+    },
+    {
+      "profile": "faar_no_backtrack",
+      "example_id": "108e0777-95b7-4925-a86c-deaf9dc701aa",
+      "failure_type": "pass",
+      "policy_action": "answer_direct",
+      "predicted_answer": "69 The percentage of the Firm\u00e2\u20ac\u2122s over-the-counter derivative transactions subject to collateral agreements \u00e2\u20ac\u201d excluding foreign exchange spot trades, which are not typically covered by collateral agreements due to their short maturity, and centrally cleared trades that are settled daily \u00e2\u20ac\u201d was approximately 87% and 88% at June 30, 2022, and December 31, 2021, respectively.",
+      "gold_answer": "88%"
+    },
+    {
+      "profile": "faar_no_backtrack",
+      "example_id": "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+      "failure_type": "word_level",
+      "policy_action": "correct_text",
+      "predicted_answer": "of cash flows (in millions) Year Ended December 31, 2017 2018 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019",
+      "gold_answer": "13,723"
+    },
+    {
+      "profile": "faar_no_backtrack",
+      "example_id": "13e90002-caa4-4e10-be9d-3cf49e865042",
+      "failure_type": "pass",
+      "policy_action": "answer_direct",
+      "predicted_answer": "S-3 | 2022 Annual Report THE AES CORPORATION SCHEDULE I CONDENSED FINANCIAL INFORMATION OF PARENT STATEMENTS OF OPERATIONS YEARS ENDED DECEMBER 31, 2022, 2021, AND 2020 2022 2021 2020 For the Years Ended December 31, (in millions) Equity in earnings of subsidiaries and affiliates (280) (47) 383 General and administrative expenses (140) (121) (125) _ (65) (6) Other expense Interest expense 163 74 163) (35) (201) 17 Income tax benefit (expense) See Notes to Schedule |.",
+      "gold_answer": "383"
+    },
+    {
+      "profile": "faar_no_backtrack",
+      "example_id": "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+      "failure_type": "pass",
+      "policy_action": "answer_direct",
+      "predicted_answer": "If a subsequent Milestone is achieved by the original Target Date listed in Section 2.3, Bioamber will pay Cargill the amount [***].",
+      "gold_answer": "US $250,000.00"
+    }
+  ]
+}

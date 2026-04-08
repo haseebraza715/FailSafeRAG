@@ -1,0 +1,32 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+  "question": "What is the payment amount Bioamber must pay Cargill upon achieving Milestone 1: Proof of Concept?",
+  "gold_answer": "US $250,000.00",
+  "predicted_answer": "If a subsequent Milestone is achieved by the original Target Date listed in Section 2.3, Bioamber will pay Cargill the amount [***].",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "2.3 24 Bioamber shall also pay Cargill within thirty (30) days of achieving each of the milestones summarized below and more fully described in the Work Plan found in Exhibit A. For purposes of clarity, payment is triggered [***]. Further, each of the Milestones and Target Dates may be changed according to the needs of the Work Plan and upon written agreement by the parties. Milestone Target Date Payment Milestone 1: Proof of Concept 12 months after Effective Date US $250,000.00 Milestone 2: CB1 Strain Development 30 months after Effective Date US $300,000.00 Milestone 3: CB1 Strain Optimization 42 months after Effective Date US $500,000.00 Missed Milestones. 24.1 24.2 In the event Cargill does not achieve a given Milestone provided in Section 2.3 by the Target Date listed in Section 2.3 or modified Milestone and modified Target Date as agreed to by the Parties, and subsequently achieves such milestone as per the criteria described in Exhibit A, the payment for such missed milestone shall be due [***] and the amount due shall be [***] for every [***] beyond the Target",
+    "that time would be a total of $[***]. In the event Cargill does not achieve a given Milestone provided in Section 2.3 by the Target Date listed in Section 2.3 or modified Milestone and modified Target Date as agreed to by the Parties, and Bioamber decides to commercialize Modified CB1, any outstanding milestone payments shall immediately become due such that the total payment due Cargill under this Development Agreement equals One Million Fifty Thousand U.S. Dollars (US $1,050,000.00). Cargill Confidential -3- * Confidential treatment requested",
+    "to by the Parties, and subsequently achieves such milestone as per the criteria described in Exhibit A, the payment for such missed milestone shall be due [***] and the amount due shall be [***] for every [***] beyond the Target Date. The Target Date for subsequent Milestones will be adjusted to reflect the date on which the Milestone was actually achieved. If a subsequent Milestone is achieved by the original Target Date listed in Section 2.3, Bioamber will pay Cargill the amount [***]. For purposes of clarity and as examples, if Milestones 1 and 2 were not delivered by the Target Dates, but Milestone 3 is delivered by or before the Target Date, then the total payments due to Cargill at that time would be [***] (a total payment of $[***]). Another example is if [***], the payment due at that time would be a total of $[***]. In the event Cargill does not achieve a given Milestone provided in Section 2.3 by the Target Date listed in Section 2.3 or modified Milestone and modified Target Date as agreed to"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260408T134138Z",
+    "api_enabled": true,
+    "vlm_backend": "openai",
+    "openai_model": "gpt-4o"
+  }
+}

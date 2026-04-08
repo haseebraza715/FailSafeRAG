@@ -1,0 +1,45 @@
+{
+  "profiles": {
+    "faar_full": {
+      "count": 5,
+      "ndcg@5": 0.6,
+      "recall@5": 0.6,
+      "em": 0.0,
+      "f1": 0.0124,
+      "visual_fallback_rate": 0.0
+    },
+    "faar_no_backtrack": {
+      "count": 5,
+      "ndcg@5": 0.6,
+      "recall@5": 0.6,
+      "em": 0.0,
+      "f1": 0.0124,
+      "visual_fallback_rate": 0.0
+    },
+    "faar_no_diagnosis": {
+      "count": 5,
+      "ndcg@5": 0.7262,
+      "recall@5": 0.8,
+      "em": 0.0,
+      "f1": 0.0161,
+      "visual_fallback_rate": 0.0
+    },
+    "faar_no_vlm": {
+      "count": 5,
+      "ndcg@5": 0.6,
+      "recall@5": 0.6,
+      "em": 0.0,
+      "f1": 0.0124,
+      "visual_fallback_rate": 0.0
+    },
+    "naive_rag": {
+      "count": 5,
+      "ndcg@5": 0.7262,
+      "recall@5": 0.8,
+      "em": 0.0,
+      "f1": 0.0161,
+      "visual_fallback_rate": 0.0
+    }
+  },
+  "generated_at_utc": "2026-04-08T13:59:43.352617+00:00"
+}

@@ -1,0 +1,34 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "032a0c06-4f55-458e-8618-93ec82d768c6",
+  "question": "How much did JPMorgan Chase's credit derivatives used to manage loans and lending-related commitments decrease from December 31, 2020, to March 31, 2021?",
+  "gold_answer": "$1,716 million",
+  "predicted_answer": "Credit derivatives used in credit portfolio management activities Notional amount of protection purchased and sold\u00e2\u20ac March 31, December 31, (in millions) 2021 2020 Credit derivatives used to manage: Loans and lending-related commitments $ 2,161 $ 3,877 Derivative receivables 20,488 18,362 Credit derivatives used in credit portfolio management activities $ 22,649 $ 22,239 (a) Amounts are presented net, considering the",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "(in millions) 2021 2020 Credit derivatives used to manage: Loans and lending-related commitments $ 2,161 $ 3,877 Derivative receivables 20,488 18,362 Credit derivatives used in credit portfolio management activities $ 22,649 $ 22,239 (a) Amounts are presented net, considering the Firm\u00e2\u20ac\u2122s net protection purchased or sold with respect to each underlying reference entity or index. Refer to Credit derivatives in Note 4 of this Form 10-Q and Note 5 of JPMorgan Chase\u00e2\u20ac\u2122s 2020 Form 10-K for further information on credit derivatives and derivatives used in credit portfolio management activities.",
+    "exposure that could arise should the fair value of the client\u00e2\u20ac\u2122s derivative contracts move in the Firm\u00e2\u20ac\u2122s favor. Refer to Note 4 for additional information on the Firm\u00e2\u20ac\u2122s use of collateral agreements. Credit derivatives The Firm uses credit derivatives for two primary purposes: first, in its capacity as a market-maker, and second, as an end-user, to manage the Firm\u00e2\u20ac\u2122s own credit risk associated with various exposures. 62 Credit portfolio management activities Included in the Firm\u00e2\u20ac\u2122s end-user activities are credit derivatives used to mitigate the credit risk associated with traditional lending activities (loans and lending-related commitments) and derivatives counterparty exposure in the Firm\u00e2\u20ac\u2122s wholesale businesses (collectively, \u00e2\u20ac\u0153credit portfolio management activities\"). Information on credit portfolio management activities is provided in the table below. Credit derivatives used in credit portfolio management activities Notional amount of protection purchased and sold\u00e2\u20ac March 31, December 31, (in millions) 2021 2020 Credit derivatives used to manage: Loans and lending-related commitments $ 2,161 $ 3,877 Derivative receivables 20,488 18,362 Credit derivatives used in credit portfolio management activities $ 22,649 $ 22,239 (a) Amounts are presented net, considering the",
+    "Allowance for credit losses and related information The table below summarizes information about the allowances for loan losses and lending-related commitments, and includes a breakdown of loans and lending-related commitments by impairment methodology. Refer to Note 10 of JPMorgan Chase\u00e2\u20ac\u2122s 2020 Form 10-K for further information on the allowance for credit losses on investment securities. 2021 2020\u00e2\u20ac Consumer, Consumer, Three months ended March 31, excluding excluding (in millions) credit card Credit card Wholesale Total creditcard _Creditcard _ Wholesale Total Allowance for loan losses Beginning balance at January 1, $ 3,636 $ 17,800 $ 6,892 $ 28,328 $ 2,538 $ 5,683 $ 4,902 $ 13,123 Cumulative effect of a change in accounting principle NA NA NA NA 297 5,517 (1,642) 4,172 Gross charge-offs 166 1,214 88 1,468 233 1,488 181 1,902 Gross recoveries collected (145) (231) (35) (411) (239) (175) (19) (433) Net charge-offs/(recoveries) 21 983 53 1,057 (6) 1,313 162 1,469 Provision for loan losses (932) (2,517) (830) (4,279) 613 5,063 1,742 7,418 Other (1) = 10 9 = = - - Ending balance at March 31, $ 2,682 $",
+    "Ratings profile of derivative receivables March 31, 2021 December 31, 2020 Exposure net of %ofexposurenet Exposure net of % of exposure net (in millions, except ratios) collateral of collateral collateral of collateral Investment-grade $ 32,774 61% \u00c2\u00a2 37,013 63 % Noninvestment-grade 20,671 39 21,789 37 Total $ 53,445 100% \u00c2\u00a2 58,802 100 % The Firm also holds additional collateral (primarily cash, G7 government securities, other liquid government agency and guaranteed securities, and corporate debt and equity securities) delivered by clients at the initiation of transactions, as well as collateral related to contracts that have a non-daily call frequency and collateral that the Firm has agreed to return but has not yet settled as of the reporting date. Although this collateral does not reduce the balances and is not included in the table above, it is available as security against potential exposure that could arise should the fair value of the client\u00e2\u20ac\u2122s derivative contracts move in the Firm\u00e2\u20ac\u2122s favor. Refer to Note 4 for additional information on the Firm\u00e2\u20ac\u2122s use of collateral agreements. Credit derivatives The Firm uses credit derivatives for",
+    "(433) Net charge-offs/(recoveries) 21 983 53 1,057 (6) 1,313 162 1,469 Provision for loan losses (932) (2,517) (830) (4,279) 613 5,063 1,742 7,418 Other (1) = 10 9 = = - - Ending balance at March 31, $ 2,682 $ 14,300 $ 6,019 $ 23,001 $ 3,454 $ 14,950 $ 4,840 $ 23,244 Allowance for lending-related commitments Beginning balance at January 1, $ 187 $ - $ 2,222 $ 2,409 $ 12 $ - $ 1,179 $ 1,191 Cumulative effect of a change in accounting principle NA NA NA NA 133 - (35) 98 Provision for lending-related commitments (52) - 159 107 6 = 852 858 Other = = = = = = = = Ending balance at March 31, $ 135 $ -\u00c2\u00a2 2,381 $ 2,516 $ 151 $ - $ 1,996 \u00c2\u00a2 2,147 Total allowance for credit losses $ 2,817 $ 14,300 $ 8,400 $ 25,517 $ 3,605 $ 14,950 $ 6836 $ 25,391 Allowance for loan losses by impairment methodology Asset-specific\u00e2\u20ac $ (348) $ 522 $ 529 \u00c2\u00a2 703 $ 223 $ 530 $ 556 $ 1,309"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260408T135012Z",
+    "api_enabled": true,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

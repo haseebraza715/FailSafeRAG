@@ -1,0 +1,30 @@
+{
+  "profile": "faar_full",
+  "example_id": "13e90002-caa4-4e10-be9d-3cf49e865042",
+  "question": "What was the equity in earnings of subsidiaries and affiliates for The AES Corporation in 2020?",
+  "gold_answer": "383",
+  "predicted_answer": "S-3 | 2022 Annual Report THE AES CORPORATION SCHEDULE I CONDENSED FINANCIAL INFORMATION OF PARENT STATEMENTS OF OPERATIONS YEARS ENDED DECEMBER 31, 2022, 2021, AND 2020 2022 2021 2020 For the Years Ended December 31, (in millions) Equity in earnings of subsidiaries and affiliates (280) (47) 383 General and administrative expenses (140) (121) (125) _ (65) (6) Other expense Interest expense 163 74 163) (35) (201) 17 Income tax benefit (expense) See Notes to Schedule |.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.026666666666666665
+  },
+  "top_hit_texts": [
+    "S-3 | 2022 Annual Report THE AES CORPORATION SCHEDULE I CONDENSED FINANCIAL INFORMATION OF PARENT STATEMENTS OF OPERATIONS YEARS ENDED DECEMBER 31, 2022, 2021, AND 2020 2022 2021 2020 For the Years Ended December 31, (in millions) Equity in earnings of subsidiaries and affiliates (280) (47) 383 General and administrative expenses (140) (121) (125) _ (65) (6) Other expense Interest expense 163 74 163) (35) (201) 17 Income tax benefit (expense) See Notes to Schedule |."
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260408T133845Z",
+    "api_enabled": true,
+    "vlm_backend": "openai",
+    "openai_model": "gpt-4o"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "profile": "faar_no_diagnosis",
+  "summary": {
+    "count": 0,
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0,
+    "visual_fallback_rate": 0.0
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "profile": "faar_full",
+  "example_id": "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+  "question": "What was the amount of property and equipment acquired under finance leases by Amazon.com, Inc. in 2019?",
+  "gold_answer": "13,723",
+  "predicted_answer": "of cash flows (in millions) Year Ended December 31, 2017 2018 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "of cash flows (in millions) Year Ended December 31, 2017 2018 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019 2019",
+    "_\u00e2\u20ac\u201d _\u00e2\u20ac\u201d _\u00e2\u20ac\u201d 3,361 See accompanying notes to consolidated financial statements. 37 _\u00e2\u20ac\u201d _\u00e2\u20ac\u201d _\u00e2\u20ac",
+    "of cash paid for interest on long-term debt $ 32,173 $ 36,410 $ 36,410 $ 36,410 $ 36,410 $ 36,410 $ 36,410 $ 36,410 $ 36,410 $"
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260408T133844Z",
+    "api_enabled": true,
+    "vlm_backend": "openai",
+    "openai_model": "gpt-4o"
+  }
+}
