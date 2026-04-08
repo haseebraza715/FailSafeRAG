@@ -1,4 +1,4 @@
-# Repository Architecture Docs
+# Repository Architecture Docs (Legacy)
 
 This folder documents the FAAR repository using a Diataxis-oriented layout:
 
@@ -9,10 +9,17 @@ This folder documents the FAAR repository using a Diataxis-oriented layout:
 
 ## Navigation
 
-- [System Overview (Explanation)](./explanation_system_overview.md)
-- [Component Reference (Reference)](./reference_components.md)
-- [Run Phase 1 (How-to)](./howto_run_phase1.md)
-- [First Run Tutorial (Tutorial)](./tutorial_first_run.md)
+Canonical modular docs entrypoint:
+
+- [Docs Home](../index.md)
+
+- [Repository Handbook Index](../repo_handbook/index.md)
+- [Architecture Overview](../repo_handbook/architecture_overview.md)
+- [Runtime Components](../repo_handbook/runtime_components.md)
+- [Phase 2 Methodology Formalization](../phases/phase2/methodology_formalization.md)
+- [Phase 2 Code-to-Math Mapping](../phases/phase2/code_math_mapping.md)
+- [Phase 2 Acceptance Checklist](../phases/phase2/acceptance_checklist.md)
+- [Documentation Style Standard](../repo_handbook/documentation_style_standard.md)
 
 ## Documentation Map
 
