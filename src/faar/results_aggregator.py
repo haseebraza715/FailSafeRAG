@@ -18,7 +18,11 @@ def summarize_examples(rows: list[dict[str, Any]]) -> dict[str, Any]:
     recall = mean(row["metrics"]["recall@5"] for row in rows)
     em = mean(row["metrics"]["em"] for row in rows)
     f1 = mean(row["metrics"]["f1"] for row in rows)
-    visual_rate = mean(1.0 if row.get("policy_action") == "invoke_vlm" else 0.0 for row in rows)
+    # Measure fallback usage by executed action (action_outcome), not planned route
+    # (policy_action). This avoids over-counting in profiles that reroute to direct answer.
+    visual_rate = mean(
+        1.0 if (row.get("action_outcome") or {}).get("action") == "invoke_vlm" else 0.0 for row in rows
+    )
     return {
         "count": len(rows),
         "ndcg@5": round(ndcg, 4),
@@ -34,4 +38,3 @@ def summarize_by_profile(records: list[dict[str, Any]]) -> dict[str, dict[str, A
     for row in records:
         grouped.setdefault(row["profile"], []).append(row)
     return {profile: summarize_examples(rows) for profile, rows in grouped.items()}
-
