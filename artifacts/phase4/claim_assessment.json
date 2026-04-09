@@ -1,0 +1,41 @@
+{
+  "q1_quality_gate_reduces_expensive_recovery": {
+    "status": "supported",
+    "faar_full_visual_fallback_rate": 0.075,
+    "estimated_cost_savings_vs_always_on_visual": 0.925
+  },
+  "q2_typed_recovery_outperforms_naive_fallback": {
+    "status": "not_supported",
+    "delta_f1_vs_naive_rag": -0.0095,
+    "delta_em_vs_naive_rag": 0.0
+  },
+  "q3_selective_visual_fallback_trades_accuracy_for_cost": {
+    "status": "not_supported",
+    "delta_f1_vs_faar_no_vlm": 0.0,
+    "delta_em_vs_faar_no_vlm": 0.0,
+    "faar_full_visual_fallback_rate": 0.075
+  },
+  "q4_diagnostic_categories_match_observed_errors": {
+    "status": "supported",
+    "diagnosis_policy_consistency": 1.0,
+    "non_pass_rate": 0.475,
+    "failure_distribution": {
+      "pass": {
+        "count": 21,
+        "rate": 0.525
+      },
+      "semantic": {
+        "count": 2,
+        "rate": 0.05
+      },
+      "structural": {
+        "count": 3,
+        "rate": 0.075
+      },
+      "word_level": {
+        "count": 14,
+        "rate": 0.35
+      }
+    }
+  }
+}

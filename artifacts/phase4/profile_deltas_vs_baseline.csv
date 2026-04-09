@@ -1,0 +1,6 @@
+profile,count,em,f1,ndcg@5,recall@5,visual_fallback_rate,delta_em_vs_baseline,delta_f1_vs_baseline,delta_ndcg@5_vs_baseline,delta_recall@5_vs_baseline
+faar_full,40,0.0,0.0627,0.3065,0.325,0.075,0.0,-0.0095,-0.1724,-0.2
+faar_no_backtrack,40,0.0,0.0627,0.3065,0.325,0.075,0.0,-0.0095,-0.1724,-0.2
+faar_no_diagnosis,40,0.0,0.0722,0.4789,0.525,0.0,0.0,0.0,0.0,0.0
+faar_no_vlm,40,0.0,0.0627,0.3065,0.325,0.0,0.0,-0.0095,-0.1724,-0.2
+naive_rag,40,0.0,0.0722,0.4789,0.525,0.0,0.0,0.0,0.0,0.0
