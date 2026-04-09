@@ -11,15 +11,15 @@ This folder documents the FAAR repository using a Diataxis-oriented layout:
 
 Canonical modular docs entrypoint:
 
-- [Docs Home](../index.md)
+- [Docs Home](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/index.md)
 
-- [Repository Handbook Index](../repo_handbook/index.md)
-- [Architecture Overview](../repo_handbook/architecture_overview.md)
-- [Runtime Components](../repo_handbook/runtime_components.md)
-- [Phase 2 Methodology Formalization](../phases/phase2/methodology_formalization.md)
-- [Phase 2 Code-to-Math Mapping](../phases/phase2/code_math_mapping.md)
-- [Phase 2 Acceptance Checklist](../phases/phase2/acceptance_checklist.md)
-- [Documentation Style Standard](../repo_handbook/documentation_style_standard.md)
+- [Repository Handbook Index](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/repo_handbook/index.md)
+- [Architecture Overview](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/repo_handbook/architecture_overview.md)
+- [Runtime Components](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/repo_handbook/runtime_components.md)
+- [Phase 2 Methodology Formalization](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/phases/phase2/methodology_formalization.md)
+- [Phase 2 Code-to-Math Mapping](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/phases/phase2/code_math_mapping.md)
+- [Phase 2 Acceptance Checklist](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/phases/phase2/acceptance_checklist.md)
+- [Documentation Style Standard](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/repo_handbook/documentation_style_standard.md)
 
 ## Documentation Map
 
@@ -35,6 +35,5 @@ flowchart TD
     index --> reference
     index --> explanation
 ```
-
 
 

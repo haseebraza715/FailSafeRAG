@@ -47,8 +47,8 @@ Notes:
 
 ## Architecture
 
-- Top-level architecture summary: [ARCHITECTURE.md](./ARCHITECTURE.md)
-- Detailed handbook view: [docs/repo_handbook/architecture_overview.md](./docs/repo_handbook/architecture_overview.md)
+- Top-level architecture summary: [ARCHITECTURE.md](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/ARCHITECTURE.md)
+- Detailed handbook view: [docs/repo_handbook/architecture_overview.md](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/repo_handbook/architecture_overview.md)
 
 ## Repository Structure
 
@@ -62,8 +62,8 @@ Notes:
 
 ## Documentation
 
-- Docs home: [docs/index.md](./docs/index.md)
-- Phase docs: [docs/phases/index.md](./docs/phases/index.md)
-- Repo handbook: [docs/repo_handbook/index.md](./docs/repo_handbook/index.md)
-- Reports: [docs/reports/index.md](./docs/reports/index.md)
-- Archives: [docs/archives/index.md](./docs/archives/index.md)
+- Docs home: [docs/index.md](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/index.md)
+- Phase docs: [docs/phases/index.md](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/phases/index.md)
+- Repo handbook: [docs/repo_handbook/index.md](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/repo_handbook/index.md)
+- Reports: [docs/reports/index.md](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/reports/index.md)
+- Archives: [docs/archives/index.md](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/archives/index.md)
