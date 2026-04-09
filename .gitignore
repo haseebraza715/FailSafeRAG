@@ -11,3 +11,4 @@ src/**/*.egg-info/
 
 data/ohr_bench_raw/
 OHR-Bench/.git/
+AGENT.MD
