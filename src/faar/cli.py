@@ -12,6 +12,7 @@ import typer
 from .experiment_profiles import PROFILES
 from .experiment_runner import run_profile
 from .graph import build_graph
+from .phase4_analysis import build_phase4_report, load_phase3_rows, write_phase4_comparison_csv
 from .results_aggregator import summarize_by_profile
 from .results_export import write_json, write_metrics_csv
 from .settings import AppSettings
@@ -189,3 +190,33 @@ def aggregate_phase3(
     write_metrics_csv(artifacts_dir / "qa_metrics.csv", csv_rows)
     write_metrics_csv(artifacts_dir / "retrieval_metrics.csv", csv_rows)
     typer.echo(json.dumps({"profiles": summary}, indent=2))
+
+
+@app.command("run-phase4")
+def run_phase4(
+    project_root: Path | None = typer.Option(None, help="Override repository root"),
+    baseline_profile: str = typer.Option("naive_rag", help="Baseline profile for delta metrics"),
+) -> None:
+    settings = AppSettings(project_root=project_root) if project_root else AppSettings()
+    logs_root = settings.project_root / "logs/phase3"
+    artifacts_dir = settings.project_root / "artifacts/phase4"
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+
+    rows_by_profile = load_phase3_rows(logs_root, profiles=sorted(PROFILES))
+    report = build_phase4_report(rows_by_profile, baseline_profile=baseline_profile)
+
+    write_json(artifacts_dir / "phase4_summary.json", report)
+    write_json(artifacts_dir / "claim_assessment.json", report["claim_assessment"])
+    write_json(artifacts_dir / "case_studies.json", report["case_studies"])
+    write_phase4_comparison_csv(artifacts_dir / "profile_deltas_vs_baseline.csv", report["baseline_comparison"])
+
+    typer.echo(
+        json.dumps(
+            {
+                "baseline_profile": baseline_profile,
+                "claim_assessment": report["claim_assessment"],
+                "artifact_dir": str(artifacts_dir),
+            },
+            indent=2,
+        )
+    )
