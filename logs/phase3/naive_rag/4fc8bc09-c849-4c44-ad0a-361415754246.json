@@ -1,0 +1,34 @@
+{
+  "profile": "naive_rag",
+  "example_id": "4fc8bc09-c849-4c44-ad0a-361415754246",
+  "question": "How many signatures were collected by abortion rights groups to put the constitutional amendment on the ballot in Arizona for November?",
+  "gold_answer": "577,971",
+  "predicted_answer": "The Arizona Secretary of State\u2019s office said it had certified 577,971 signatures collected by a coalition of abortion rights groups, 50 percent more than re- quired to put the constitutional amendment on the ballot in No- vember.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.09756097560975609
+  },
+  "top_hit_texts": [
+    "to make their presence at the pro- Continued on Page A1l3 ABORTION ACCESS TO BE ON BALLOT IN ARIZONA IN FALL DEMOCRATS SEE EDGE Turnout Expected to Rise in a Key Swing State as Energy Grows By KATE ZERNIKE Arizona voters will decide in November whether to establish a right to abortion in the state con- stitution, a measure that could strongly influence turnout in a battleground state crucial to the presidential election and control of the Senate. The Arizona Secretary of State\u2019s office said it had certified 577,971 signatures collected by a coalition of abortion rights groups, 50 percent more than re- quired to put the constitutional amendment on the ballot in No- vember. It is the largest number of certified signatures for any ballot measure in state history. A similar question will appear on the ballot in Missouri, after the Secretary of State there said on Tuesday that abortion rights groups had collected 254,871 valid signatures, more than enough to place the measure on the ballot. Missouri, the first state to enact an abortion ban after the United",
+    "after the Secretary of State there said on Tuesday that abortion rights groups had collected 254,871 valid signatures, more than enough to place the measure on the ballot. Missouri, the first state to enact an abortion ban after the United States Supreme Court overturned Roe v. Wade in June 2022, could become the first state where a citi- zen-sponsored measure over- turns a near-total ban. Abortion rights groups have prevailed in all seven states where the question of how to regulate abortion has been put directly to voters in the two years since the demise of Roe, the 1973 decision that said the United States Consti- tution protected a right to abor- tion. The run of abortion rights suc- cesses has put Republicans and anti-abortion groups on the defen- sive. They have mounted \u201cdecline to sign\u201d campaigns, filed lawsuits trying to prevent signatures from being certified, and sponsored legislation trying to make it hard- er for ballot measures to pass. Be- fore the high court overturned Roe, almost every abortion-relat- ed ballot measure had been spon- sored by the anti-abortion",
+    "to prevent signatures from being certified, and sponsored legislation trying to make it hard- er for ballot measures to pass. Be- fore the high court overturned Roe, almost every abortion-relat- ed ballot measure had been spon- sored by the anti-abortion side. Measures to establish or pro- tect abortion rights are already on the November ballot in six other states: Florida, South Dakota, Colorado, New York, Maryland and Nevada. But only Arizona and Nevada are seen as presidential battleground states, where Demo- crats are hoping that support for abortion rights will drive higher turnout in their favor. (South Da- kota and Missouri are the only two of those states with near-total Continued on Page Al5 An Unanticipated Consequence Of Rising Heat: Melted Medicine By EMILY BAUMGAERTNER Melted capsules. Cloudy insu- lin. Pills that may no longer work. Doctors and pharmacists say the scorching temperatures en- veloping the country could be en- dangering people\u2019s health in an unexpected way: by overheating their medications. Millions of Americans now re- ceive their prescription medica- tions through mail-order ship- ments, either for convenience or because",
+    "the po- tential for a more embarrassing spectacle: prime-time disruptions inside the arena itself. About 30 uncommitted dele- gates representing the Democrat- ic primary voters who opposed President Biden \u2014 largely over what they see as his tilt toward Is- rael in the war launched after the Hamas attacks last October \u2014 will have unfettered access to make their voices heard. State party leaders, led by Lavora Barnes, the chairwoman of the Michigan Democratic Party, and Ken Mar- tin, the chairman of the Democrat- ic-Farmer-Labor Party in Minne- sota, have for months worked to defuse tensions and head off a high-profile clash. Those diplomatic efforts, along with the elevation of Vice Presi- dent Kamala Harris to replace Mr. Biden as the Democratic nominee, have yielded progress, people on both sides said. But as of now, the delegates are still planning to make their presence at the pro- Continued on Page A1l3 ABORTION ACCESS TO BE ON BALLOT IN ARIZONA IN FALL DEMOCRATS SEE EDGE Turnout Expected to Rise in a Key Swing State as Energy Grows By KATE ZERNIKE Arizona",
+    "she shared her infectious appreciation for the his- toric vessel, telling stories from the glory days, back in the 1950s and \u201960s. She spoke of the sweep- ing symbolism of such a luxuri- ous, technologically advanced ship carrying the nation\u2019s name and laughed about how Salvador Dali would travel on the United States accompanied by his pet ocelot. Yet a shadow hung over our drive. A ship-size shadow. The ship is being evicted from its pier in Philadelphia. The con- servancy has just a few weeks to Continued on Page A18 Democrats Try To Ease Anger At Gaza Policy By JONATHAN WEISMAN Thousands of demonstrators are expected in the streets and the parks of Chicago for next week\u2019s Democratic National Convention, most of them to protest the U.S. role in the war in Gaza. But offi- cials are concerned about the po- tential for a more embarrassing spectacle: prime-time disruptions inside the arena itself. About 30 uncommitted dele- gates representing the Democrat- ic primary voters who opposed President Biden \u2014 largely over what they see as his tilt toward Is-"
+  ],
+  "run_metadata": {
+    "profile": "naive_rag",
+    "run_id": "20260409T084647Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

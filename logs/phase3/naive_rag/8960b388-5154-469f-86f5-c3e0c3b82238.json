@@ -1,0 +1,30 @@
+{
+  "profile": "naive_rag",
+  "example_id": "8960b388-5154-469f-86f5-c3e0c3b82238",
+  "question": "What was the total amount of dividends paid by the company in 2007?",
+  "gold_answer": "28878",
+  "predicted_answer": "Statement of Changes in Equity for the year ended 31 December 2008 ~\u2014Non-distributable Distributable Share Treasury Retained Total capital shares profits equity Company Note RM\u2019000 RM\u2019000 RM\u2019000 RM\u2019000 At 1 January 2007 336,000 (4,090) 11,120 343,030 Purchase of treasury shares - (1,471) - (1,471) Profit for the year - - 804,944 804,944 Dividends - 2006 final 25 - - (12,192) (12,192) - 2007 interim 25 - - (16,686) (16,686) At 31 December 2007 336,000 (5,561) 787,186 1,117,625 At 1 January 2008 336,000 (5,561) 787,186 1,117,625 Purchase of treasury shares - (7,463) - (7,463) Profit for the year - - 23,620 23,620 Dividends - 2007 final 25 - - (24,693) (24,693) - 2008 interim 25 - - (24,687) (24,687) At 31 December 2008 336,000 (13,024) 761,426 1,084,402 Note 16 Note 16 The notes on pages 40 to 86 are an integral part of these financial statements.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "Statement of Changes in Equity for the year ended 31 December 2008 ~\u2014Non-distributable Distributable Share Treasury Retained Total capital shares profits equity Company Note RM\u2019000 RM\u2019000 RM\u2019000 RM\u2019000 At 1 January 2007 336,000 (4,090) 11,120 343,030 Purchase of treasury shares - (1,471) - (1,471) Profit for the year - - 804,944 804,944 Dividends - 2006 final 25 - - (12,192) (12,192) - 2007 interim 25 - - (16,686) (16,686) At 31 December 2007 336,000 (5,561) 787,186 1,117,625 At 1 January 2008 336,000 (5,561) 787,186 1,117,625 Purchase of treasury shares - (7,463) - (7,463) Profit for the year - - 23,620 23,620 Dividends - 2007 final 25 - - (24,693) (24,693) - 2008 interim 25 - - (24,687) (24,687) At 31 December 2008 336,000 (13,024) 761,426 1,084,402 Note 16 Note 16 The notes on pages 40 to 86 are an integral part of these financial statements. 36 TAN CHONG MOTOR HOLDINGS BERHAD annual report 2008"
+  ],
+  "run_metadata": {
+    "profile": "naive_rag",
+    "run_id": "20260409T084647Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

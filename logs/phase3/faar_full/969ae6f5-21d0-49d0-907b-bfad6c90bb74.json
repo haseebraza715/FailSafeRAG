@@ -1,0 +1,30 @@
+{
+  "profile": "faar_full",
+  "example_id": "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+  "question": "What was the difference between the 2013 Budget and the 2013 Expenditures for the Road Agent's Salary in the Highway department?",
+  "gold_answer": "0.19",
+  "predicted_answer": "the correct ocr noise: Town of Campton 2014 Approved Buy Now 2",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "the correct ocr noise: Town of Campton 2014 Approved Buy Now 2"
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260409T084408Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

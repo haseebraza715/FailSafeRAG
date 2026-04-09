@@ -1,0 +1,31 @@
+{
+  "profile": "faar_no_vlm",
+  "example_id": "a782b7d8-000a-4645-b6c1-49c62a184780",
+  "question": "If a mentor teacher in the Peters Township Federation of Teachers worked from 2010-2011 to 2019-2020, what is the total stipend they would receive over these years?",
+  "gold_answer": "$9,975",
+  "predicted_answer": "$165 per month 2017-2018 $165 per month 2017-2018 $165 per mon",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "$165 per month 2017-2018 $165 per month 2017-2018 $165 per mon",
+    "and an equivalent program as attached in a health care. each e"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_vlm",
+    "run_id": "20260409T084622Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

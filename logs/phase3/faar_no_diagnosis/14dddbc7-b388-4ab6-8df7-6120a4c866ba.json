@@ -24,9 +24,9 @@
   ],
   "run_metadata": {
     "profile": "faar_no_diagnosis",
-    "run_id": "20260408T134138Z",
-    "api_enabled": true,
-    "vlm_backend": "openai",
+    "run_id": "20260409T084536Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
     "openai_model": "gpt-4o"
   }
 }

@@ -1,0 +1,33 @@
+{
+  "profile": "faar_no_backtrack",
+  "example_id": "87c65cdc-a473-490d-a966-9a6753d6904b",
+  "question": "For example number 7, what is the difference between the values of $\\Delta h_{1 c}^{(1)}$ and $\\Delta h_{1 d}^{(1)}$?",
+  "gold_answer": "0.0015",
+  "predicted_answer": "0.0000 | 09.0000; 0.0000; 0.0000} \u2014 .uv00 The following notation has been adopted: 1, c and c xm xk is the inverse of the aspect ratio; are the coefficients of the wave drag for the optimum contour and a wedge with the equivalent wedge aspect ratio; 0 is the combined break angle at Also the values of the discontinuities of the the point d, equal to Ae, + AG Lagrange multipliers at the points c,d, and c, are given.",
+  "failure_type": "structural",
+  "policy_action": "invoke_vlm",
+  "action_outcome": {
+    "action": "invoke_vlm",
+    "status": "skipped",
+    "reason": "vlm_backend_not_configured"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.024096385542168672
+  },
+  "top_hit_texts": [
+    "0.0000! 0.0000} 0.0000 A hot) | \u20140.0050 | \u20140.0370 | 0.0518 | 0.0150 | \u20140.1759 | \u20140.2089] \u20140.4056 A hy) | \u20140.0050 | \u20140.0376 | 0.0516 |\u20140.0150 | \u20140.1741| 0.2079] \u20140.4010 A hog) 0.0000 | 0.0001 | 0.0000} 0.0000! 0.0000] 0.0000} 0.0000 A hig, 2) 0.0000 | 9.0001! 0.0000 | 09.0000; 0.0000; 0.0000} \u2014 .uv00 The following notation has been adopted: 1, c and c xm xk is the inverse of the aspect ratio; are the coefficients of the wave drag for the optimum contour and a wedge with the equivalent wedge aspect ratio; 0 is the combined break angle at Also the values of the discontinuities of the the point d, equal to Ae, + AG Lagrange multipliers at the points c,d, and c, are given. Here ani) (2) are the quantities equal to hy ce and d, respectively, 2\u00b0 4 @ The values of an?) and an (2) id icy \u00bb which may be determined at are defined (i and Ah- the points =1,2) as qQ) id (3) (2) hy - hy L a in all the examples",
+    "2\u00b0 4 @ The values of an?) and an (2) id icy \u00bb which may be determined at are defined (i and Ah- the points =1,2) as qQ) id (3) (2) hy - hy L a in all the examples has the coordinates (0,0). From the table given it can be seen that the values of the reflected discontinuities at the point d are equal to zero, within the accuracy of the calculations in question, With this accu- racy, in all the examples the optimum body profiles obtained have only one break at the point d. For examples 5 and 6 from the table, Figure 5 gives the dependence of T = tan 6/tan oy on x for the optimum profile, where va is the All the examples are located in the regions fgh The curve fg for each value of Wo determines the \u00bb which may be calculated at the points d and c The point angle of the equivalent wdge, and 3, shown in Figure 6. wedge aspect ratio for which acoustic streaming occurs when. the flow passes",
+    "of Wo determines the \u00bb which may be calculated at the points d and c The point angle of the equivalent wdge, and 3, shown in Figure 6. wedge aspect ratio for which acoustic streaming occurs when. the flow passes around the wedge. The curves fg and kl correspond to the values of the aspect ratio and of the incoming flow (References 9,10), for which the wedge (ce = 0) will be the optimum form. In the regions fgh and 3, the value of \u00a2\u00ab is positive, and in region 2 it is negative. The author is grateful to V.M. Borisov, A.N. Krayko, and Yu.D. Shmyglevskiy for the attention shown to the work. Received February 21, 1966 13",
+    "characteristic results of the calculations, & a 4 5 = No 1 1 wy 4.4000 | 1.6000{ 2.1000] 2.3000] 2.3000! 2.3000] 2.4000 lo 0.2128 | 0.3358 | 0.4370} 0.2069] 0.4801] 0.7237} 0.8489 Cam 4.0926 | 1.1815 | 0.6090 | 0.1717 | 0.5380) 0.9519) 0.9178 Cok 1.0927} 1.1818 | 0.6096} 0.1721] 0.54131 0.9533] 0.9245 zy 0.7138 | 1.0878 | 1.4226 | 4.9555] 1.3248} 4.0112! 4.0422 V4 0.1533 | 0.4021} 0.5056 | 0.4289] 0.6744] 0.7507| 0.8133 ty 1.8354} 41.6785} 3.4001] 7.5288} 3.5811| 2.2167] 2.2688 u, 0.3906'| 0.6475 | 1.4858} 4.5578 | 1.7195] 1.6043} 1.6979 Q \u20140.0031 |\u20140.0047 |\u20140.0209 |\u20140.0172 | 0.0499} \u20140.0299} \u20140.0526 A hy,(t) 0.0280 | 0.0367 | 0.0685 | 0.1190] 0.1536] 0.0788) 0.1303 Ah 0.0280 | 0.0361] 0.0686} 0.1192} 0.1552] 0.0792} 0.1318 A hy? 0.0000 | 0.0001} 06.0000} 0.0000} 0.0000} 0.0000} \u2014 0.0000 Ahi, | 0.0000] 0.0001 | 0.0000} 0.0000! 0.0000! 0.0000} 0.0000 A hot) | \u20140.0050 | \u20140.0370 | 0.0518 | 0.0150 | \u20140.1759 | \u20140.2089] \u20140.4056 A hy) | \u20140.0050 | \u20140.0376 | 0.0516 |\u20140.0150 | \u20140.1741| 0.2079] \u20140.4010 A hog) 0.0000 | 0.0001 | 0.0000} 0.0000! 0.0000]"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_backtrack",
+    "run_id": "20260409T084458Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

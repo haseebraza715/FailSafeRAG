@@ -1,0 +1,34 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+  "question": "What is the deadline for the Lessee to submit the Annual Plan of Operation and Maintenance to the Grantor when the Lessee may provide comments as a response to the Grantor updating the existing Master Master Plan affecting the premises during the lease term?",
+  "gold_answer": "January 1 of each year",
+  "predicted_answer": "During the term of the lease, the Grantor will notify the Lessee of any updates to the existing project Master Plan affecting the premises and the Lessee may provide comments.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.6309297535714575,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.05714285714285715
+  },
+  "top_hit_texts": [
+    "c. In the event development plans substantially change during the lease term from those described in the Environment Impact Statement additional National Environmental Policy Act (NEPA) analysis will be required. d. The use and occupation of the premises shall be subject to the general supervision and approval of the Grantor. During the term of the lease, the Grantor will notify the Lessee of any updates to the existing project Master Plan affecting the premises and the Lessee may provide comments. 6. STRUCTURES AND EQUIPMENT The Lessee shall have the right, during the term of the lease, to erect such structures and to provide such equipment upon the premises as may be necessary to furnish the facilities and services authorized. Those structures and equipment shall be and remain the property of the Lessee, except as otherwise provided in the Condition on RESTORATION. However, no structures may be erected or altered upon the premises unless and until the type of use, design, and proposed location or alteration thereof shall have been approved in writing by the Grantor. The Grantor may require the",
+    "4. AUTHORIZED REPRESENTATIVES Except as otherwise specifically provided, any reference herein to \"Secretary of the Army,\" \"Grantor,\" or \"said officer\" shall include their duly authorized representatives, Any reference to \"Lessee\" shall include sublessees, assignees, transferees, concessionaires, and its duly authorized representatives. 5. DEVELOPMENT PLANS a. The premises shall be developed and used in accordance with the Lessee\u2019s implementing Plan of Recreation Development and Management (Development Plan) attached as EXHIBITS B1 AND B2 which shows the facilities and services necessary to meet the current and potential public demand and the management and development activities to be undertaken by the Lessee and any sublessees. b. The Lessee shall be guided by an annual Plan of Operation and Maintenance in furtherance of the Lessee\u2019s implementing Development Plan. No later than January 1 of each year, the Lessee will submit the annual Plan to be mutually agreed on between the Lessee and the Grantor. Such annual Plan shall include but is not limited to the following: (1) Plans for management, maintenance and development activities to be undertaken by the Lessee and any sublessees. (2)",
+    "be mutually agreed on between the Lessee and the Grantor. Such annual Plan shall include but is not limited to the following: (1) Plans for management, maintenance and development activities to be undertaken by the Lessee and any sublessees. (2) Report of the management, maintenance and development accomplishments of the Lessee for the preceding year. (3) Report on any significant modification of policies or procedures which are planned for the following year as well as those implemented in the preceding year. (4) Minor modifications to the development plan. Major modifications are to be accomplished by amendment to the Plan before proceeding to implement any changes in the development or management of the leased premises. (5) Budget of the Lessee for carrying out all activities for the upcoming year. (6) Personnel to be used in the management of the leased premises. (7) Annual certification that all water and sanitary systems on the premises have been inspected and comply with Federal, state and local standards as required by the condition on APPLICABLE LAWS AND REGULATIONS. The Lessee will also provide a statement",
+    "RESTORATION. However, no structures may be erected or altered upon the premises unless and until the type of use, design, and proposed location or alteration thereof shall have been approved in writing by the Grantor. The Grantor may require the Lessee, upon the completion of each of the proposed developments to furnish complete \"as built\" construction plans for all facilities. 7. APPLICABLE LAWS AND REGULATIONS a. The Lessee shall comply with all applicable Federal laws and regulations and with all applicable laws, ordinances, and regulations of the state, county, and municipality wherein the premises are located, including, but not limited to, those regarding construction, health, safety, food service, water supply, sanitation, use of pesticides, and licenses or permits to do business. The Lessee shall make and enforce such regulations as are necessary and within its legal authority in exercising the privileges granted in this lease, provided that such regulations are not inconsistent with those issued by the Secretary of the Army or with the provisions of 16 U.S.C. \u00a7 460d. b. The Lessee will provide an annual certification that all",
+    "privileges granted in this lease, provided that such regulations are not inconsistent with those issued by the Secretary of the Army or with the provisions of 16 U.S.C. \u00a7 460d. b. The Lessee will provide an annual certification that all water and sanitary systems on the premises have been inspected and comply with Federal, state and local standards. The Lessee will also provide a statement of compliance with the Rehabilitations Act and the Americans with Disability Act, as required in the condition on NON-DISCRIMINATION, noting any deficiencies and providing a schedule for correction. c. In addition to other applicable codes, the lessee and sublessees shall comply with the current editions of the National Fire Protection Association (NFPA) codes and standards, including, but not limited to NFPA 70, National Electric Code, NFPA 303, Fire Protection Standard for Marinas and Boatyards, and the codes and standards of the American National Standards Institute (ANSI), including, but not limited to the"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084538Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

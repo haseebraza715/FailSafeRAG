@@ -1,0 +1,31 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "446d159e-b5c2-45dc-91cc-faaa931f3649",
+  "question": "Is it mandatory for the NVIDIA partner network personnel or NVIDIA field service engineers to install the DGX A100 System?",
+  "gold_answer": "Yes",
+  "predicted_answer": "INSTALLATION AND CONFIGURATION IMPORTANT: It is mandatory that your DGX A100 System be installed by NVIDIA partner network personnel or NVIDIA field service engineers.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "QUICK START AND BASIC OPERATION This chapter provides basic requirements and instructions for using the DGX A100 System, including how to perform a preliminary health check and how to prepare for running containers. Be sure to visit the DGX documentation website at https:// docs.nvidia.com/dgx/ for additional product documentation. 4.1. INSTALLATION AND CONFIGURATION IMPORTANT: It is mandatory that your DGX A100 System be installed by NVIDIA partner network personnel or NVIDIA field service engineers. If not performed accordingly, your DGX A100 hardware warranty will be voided. Before installation, make sure you have given all relevant site information to your Installation Partner. 4.2 REGISTRATION To obtain support for your DGX A100 system, follow the instructions for registration in the Entitlement Certification email that was sent as part of the purchase. Registration allows you access to the NVIDIA Enterprise Support Portal, technical support, software updates and access to set up an NGC for DGX account. If you did not receive the information, open a case with the NVIDIA Enterprise Support Team by going to https://www.nvidia.com/en-us/support/enterprise/. The site provides ways of contacting the NVIDIA",
+    "software updates and access to set up an NGC for DGX account. If you did not receive the information, open a case with the NVIDIA Enterprise Support Team by going to https://www.nvidia.com/en-us/support/enterprise/. The site provides ways of contacting the NVIDIA Enterprise Services team for support without requiring an NVIDIA Enterprise Support account. DGX A100 System User Guide DU-09821-001_v01 | 22"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084536Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

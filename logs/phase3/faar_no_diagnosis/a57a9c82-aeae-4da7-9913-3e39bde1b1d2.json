@@ -1,0 +1,32 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+  "question": "What are the conditions for the discontinuities of the multipliers along the characteristics in the context of gas dynamics?",
+  "gold_answer": "$y^{\nu} \rho v^{2} \\operatorname{tg} \\alpha \\Delta h_{1} \\pm \\Delta h_{2}=0$",
+  "predicted_answer": "3) yovtgaAh, + Ah, =0 | (3.2) where the upper sign refers to the characteristics of the first family.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.11764705882352941
+  },
+  "top_hit_texts": [
+    "In connection with the introduction of discontinuous multipliers, we /13 should mention the articles (Refs. 3, 7, 8). In (Ref. 3), the discontinuous Lagrange multipliers were first discussed in connection with the application to variational problems of gas dynamics. It was shown that it is only the charac- teristics which can serve as the lines of discontinuity, and the derivation of the conditions for the discontinuities was given. The problems of gas dynamics in connection with the utilization of discontinuous Lagrange multipliers were also investigated in (Ref. 5). We shall divide the region S into three subregions, as it is shown in Fig- ure 2. Here de, is the characteristic of the second family. Let us consider the equations (1.1) in the subregions 5; with the help of the multipliers h (2) and h (4). Inside each of the 1 2 Figure 2 subregions, the multipliers are deter- mined with the aid of the system of equations (2.4), and the multipliers satisfy the conditions (2.7) in the parts ad and db. In calculating the first-order variation, we must deal with",
+    "2 Figure 2 subregions, the multipliers are deter- mined with the aid of the system of equations (2.4), and the multipliers satisfy the conditions (2.7) in the parts ad and db. In calculating the first-order variation, we must deal with in- tegrals along the characteristics de, and ed, containing under the integral sign the variations 6u, \u00e9v, and 60. Considering that the flow parameters and their variations are continuous in de, and ed, we find that the coefficients of \u00e9u, dv, and S60 will contain Ah, and hy where bh,\u00bb Ah, are the discontinuities of the multipliers. Equating to zero the expressions multiplying du and dv, we shall obtain two conditions for the discontinuities. Along the characteristics, these conditions are linearly dependent. We have (Ref. 3) yovtgaAh, + Ah, =0 | (3.2) where the upper sign refers to the characteristics of the first family. Thus, \u2018for example, if Ahy is given at one point of the characteristic, one can deter- mine from (3.2) and (2.5) the discontinuity of the multipliers along the entire characteristic. The condition (2.9) will not change",
+    "of the first family. Thus, \u2018for example, if Ahy is given at one point of the characteristic, one can deter- mine from (3.2) and (2.5) the discontinuity of the multipliers along the entire characteristic. The condition (2.9) will not change with the introduction of discontinuous multipliers, and the condition (2.10) will assume the form _ { Nh@) \u2014 AK B+ A=0 WySPSH) Nh) \u2014 ARM B+ ARMC+A=0 (b<0<y,) : (3.3) AND = 1 \u2014 nO, Ah? = hi \u2014 h\u00ae _ psin(g+a) _ __ psin(@ \u2014a) ; B= pw sin a vtga, C= \u201cpw sina tga Here an, and B are taken along the characteristic cd, and an, and C -- along dey. By integrating (3.2) and (2.5) we find AMD = sr ANP = \u2014 VE (3.4)"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084537Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

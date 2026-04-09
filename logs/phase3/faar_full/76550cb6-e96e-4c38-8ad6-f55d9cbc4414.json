@@ -1,0 +1,33 @@
+{
+  "profile": "faar_full",
+  "example_id": "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+  "question": "What is the contribution margin percentage for Product 3?",
+  "gold_answer": "60\\%",
+  "predicted_answer": "the company are $125,000, compute the company are $125,000, co",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "the company are $125,000, compute the company are $125,000, co",
+    "the product mix for product (or sales) mix for product (or sal",
+    "the product is the product is the product is the product is th",
+    "and data: per unit data: Mild Bold Crunchy 3 sales price $ 11."
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260409T084358Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

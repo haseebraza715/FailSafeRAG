@@ -1,6 +1,6 @@
 profile,count,ndcg@5,recall@5,em,f1,visual_fallback_rate
-faar_full,5,0.6,0.6,0.0,0.0124,0.0
-faar_no_backtrack,5,0.6,0.6,0.0,0.0124,0.0
-faar_no_diagnosis,5,0.7262,0.8,0.0,0.0161,0.0
-faar_no_vlm,5,0.6,0.6,0.0,0.0124,0.0
-naive_rag,5,0.7262,0.8,0.0,0.0161,0.0
+faar_full,40,0.3065,0.325,0.0,0.0627,0.075
+faar_no_backtrack,40,0.3065,0.325,0.0,0.0627,0.075
+faar_no_diagnosis,40,0.4789,0.525,0.0,0.0722,0.0
+faar_no_vlm,40,0.3065,0.325,0.0,0.0627,0.0
+naive_rag,40,0.4789,0.525,0.0,0.0722,0.0

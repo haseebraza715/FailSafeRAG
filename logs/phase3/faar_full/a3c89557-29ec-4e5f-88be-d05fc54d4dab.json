@@ -1,0 +1,30 @@
+{
+  "profile": "faar_full",
+  "example_id": "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+  "question": "\u5728\u836f\u7269\u7ec4\u5408\u5173\u8054\u89c4\u5219\u4e2d\uff0c\u54ea\u4e2a\u7ec4\u5408\u7684\u7f6e\u4fe1\u5ea6\u6700\u9ad8\uff1f",
+  "gold_answer": "\u7092\u767d\u672f\u2192\u515a\u53c2",
+  "predicted_answer": "PS BS SHUR PS BS BUR 8 was 40 18 Heit] 20 9 EY 40 19 AAAS 20 10 KE 37 Fb, MTT AGE DW KAY, CHIT 4 LAKE: AD MEZG 302 WIV (24.65%), HEZG 163 HYE( 13.318), MK FAMEZY 118 HI 9.63%), FETE 106 TAK (8.65% )o 2.2 MPA WAAKD I Slee 2, AW a th Be I UIUDET IT.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "PS BS SHUR PS BS BUR 8 was 40 18 Heit] 20 9 EY 40 19 AAAS 20 10 KE 37 Fb, MTT AGE DW KAY, CHIT 4 LAKE: AD MEZG 302 WIV (24.65%), HEZG 163 HYE( 13.318), MK FAMEZY 118 HI 9.63%), FETE 106 TAK (8.65% )o 2.2 MPA WAAKD I Slee 2, AW a th Be I UIUDET IT. SCRE ML 23 CEASE DT BO), BE FEA 0.95 GFX Y, BABE v TE x AUS Hy A Sl 2 TPA A CEM BE >0.95 ) eS a Ste 1 WARCKE 0.97222 2 HEL, DAS ORE 0.95238 3 HAL, eb Ro 0.96666 4 BS DAR BE 0.96774 5 RSL WD AR EB 0.96969 6 HBL, OSD AR 0.96153 7 HBL, PRBS > IR et 0.96428 8 PRS BES WDA 0.96551 9 HL, PRE BES DR oc 0.95833 2.3 SEP MRA TT HALT EEA OT 2.3.1 APC Ee IE NIZS TA CI aT LAE 3. HR HET CHE, AT AAS Te AY TH, CIE Hy 8, WE 5, WET, FEAT HP ZS YT AY SORE"
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260409T084409Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

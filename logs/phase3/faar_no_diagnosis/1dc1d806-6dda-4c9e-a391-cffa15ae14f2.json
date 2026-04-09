@@ -1,0 +1,33 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+  "question": "What is the time frame within which Senior Executives must resolve a dispute after written notice is given?",
+  "gold_answer": "forty-five (45) days",
+  "predicted_answer": "If the Senior Executives cannot resolve the dispute within forty-five (45) days of such written notice, or either Party concludes that the matter will not be so resolved, then, (a) with respect to disputes or decisions regarding matters described in Section 17.2(a), the provisions set forth in Section 17.2 shall apply, and (b) with respect to all other disputes, the provisions of Section 17.3 shall apply.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.10666666666666667
+  },
+  "top_hit_texts": [
+    "The Parties recognize that disputes as to certain matters relating to this Agreement may from time to time arise during the term of this Agreement. Any such dispute which cannot be resolved by good faith negotiations shall be referred, by written notice from either Party to the other, to the Senior Executives (or their respective designees) for resolution. The Senior Executives (or their respective designees) shall negotiate in good faith to resolve such dispute through discussions promptly following such written notice. If the Senior Executives cannot resolve the dispute within forty-five (45) days of such written notice, or either Party concludes that the matter will not be so resolved, then, (a) with respect to disputes or decisions regarding matters described in Section 17.2(a), the provisions set forth in Section 17.2 shall apply, and (b) with respect to all other disputes, the provisions of Section 17.3 shall apply. If the Parties should resolve such dispute pursuant to the procedures in this Section 17.1, a memorandum setting forth their agreement will be prepared and signed by both Parties, if requested by either",
+    "the provisions of Section 17.3 shall apply. If the Parties should resolve such dispute pursuant to the procedures in this Section 17.1, a memorandum setting forth their agreement will be prepared and signed by both Parties, if requested by either Party. 17.2 Resolution of Certain Disputes. (a) Application to Certain Disputes. The provisions of this Section 17.2 shall apply with respect to any dispute that has not been resolved following referral to Senior Executives described in Section 17.1, where such dispute concerns any matter (i) to be decided by the JDRC or JCC and for which a different means of resolution (e.g., a deciding vote of either Party) is not specified pursuant to Section 3.5 above, or (ii) that is otherwise expressly provided for in this Agreement to be resolved pursuant to this Section 17.2 (each of the foregoing cases referred to as an \u201cExpert Dispute\u201d). (b) Resolution by Experts. If the Parties do not reach a mutually acceptable resolution as to an Expert Dispute following referral to Executive Officers described in Section 17.1, then upon written notice by either",
+    "referred to as an \u201cExpert Dispute\u201d). (b) Resolution by Experts. If the Parties do not reach a mutually acceptable resolution as to an Expert Dispute following referral to Executive Officers described in Section 17.1, then upon written notice by either Party (an \u201cExpert Resolution Notice\u201d), the Expert Dispute shall be resolved by a final, binding determination by independent experts in the manner described in this Section 17.2. 77",
+    "[ * ] = Certain confidential information contained in this document, marked by brackets, has been omitted and filed separately with the Securities and Exchange Commission pursuant to Rule 24b-2 of the Securities Exchange Act of 1934, as amended. making all contact with relevant Regulatory Authorities; provided, however, that Ono shall not take any action with respect to any such recall without first consulting in good faith with Array and obtaining approval of the JDRC, to the extent practicable, and Ono shall consider in good faith any comments of Array in connection with any aspect of the management of any such recall. For clarity, all matters relating to a withdrawal or recall of the Product in the Array Territory shall, as between the Parties, be determined, controlled and coordinated by Array. ARTICLE XVII DISPUTE RESOLUTION 17.1 Referral to Senior Executives. The Parties recognize that disputes as to certain matters relating to this Agreement may from time to time arise during the term of this Agreement. Any such dispute which cannot be resolved by good faith negotiations shall be referred, by"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084536Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

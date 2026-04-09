@@ -1,0 +1,34 @@
+{
+  "profile": "faar_no_vlm",
+  "example_id": "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+  "question": "What was the total surplus available for appropriation by ITC Limited in the year ended 31st March 2005?",
+  "gold_answer": "2594.38 crores",
+  "predicted_answer": "Proposed dividend for the financial year ended 31st March, 2005 includes dividend payable on the new Ordinary Shares of the Company, issued and allotted to the shareholders of erstwhile ITC Hotels Limited and Ansal Hotels Limited, which rank pari passu in all respects with the Ordinary Shares of the Company, in accordance with the Scheme of Amalgamation of ITC Hotels Limited and Ansal Hotels Limited with the Company.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "past litigation. Inclusive of these exceptional items net of tax, your Company\u2019s Profit after Tax stands at Rs.2191 crores. Earnings Per Share (before exceptional items) for the year stands at Rs.73.74. Cash flows from Operations were Rs.2635 crores during the year. The financial results for the year ended 31st March, \u00a9 AS ITC Limited 2005 include those of the erstwhile ITC Hotels Limited and Ansal Hotels Limited which were amalgamated with your Company with effect from 1st April, 2004. In order to strike a balance between the need to sustain strategic investments for a secure future and the annual expectation of shareholders for growing income, your Directors are pleased to recommend a dividend of Rs.31.00 per share (previous year Rs.20.00 per share) for the year ended 31st March, 2005. The cash outflow in this regard will be Rs.881.70 crores (previous year Rs.560.10 crores) including Dividend Tax of Rs.108.45 crores (previous year Rs.64.74 crores). Your Board further recommends a transfer to General Reserve of Rs.1100 crores (previous year Rs.1000 crores). Consequently, your Board recommends leaving an unappropriated balance in the Profit",
+    "year Rs.560.10 crores) including Dividend Tax of Rs.108.45 crores (previous year Rs.64.74 crores). Your Board further recommends a transfer to General Reserve of Rs.1100 crores (previous year Rs.1000 crores). Consequently, your Board recommends leaving an unappropriated balance in the Profit and Loss Account of Rs.611.41 crores (previous year Rs.387.84 crores). Proposed dividend for the financial year ended 31st March, 2005 includes dividend payable on the new Ordinary Shares of the Company, issued and allotted to the shareholders of erstwhile ITC Hotels Limited and Ansal Hotels Limited, which rank pari passu in all respects with the Ordinary Shares of the Company, in accordance with the Scheme of Amalgamation of ITC Hotels Limited and Ansal Hotels Limited with the Company. PROFITS, DIVIDENDS AND RETENTION (Rs. in crores) 2005 2004 a) Profit Before Taxation and Exceptional Items 2673.07 2319.06 b) Income Tax 836.00 726.21 c) Profit After Taxation Before Exceptional Items 1837.07 1592.85 d) Exceptional Items (net of tax) 354.33 = e) Profit After Tax 2191.40 1592.85 f) Add : Profit brought forward from previous year 387.84 343.88 g) Transfer from Hotel Foreign",
+    "726.21 c) Profit After Taxation Before Exceptional Items 1837.07 1592.85 d) Exceptional Items (net of tax) 354.33 = e) Profit After Tax 2191.40 1592.85 f) Add : Profit brought forward from previous year 387.84 343.88 g) Transfer from Hotel Foreign Exchange Earnings Reserve 15.14 4.00 Less : Transfer to Hotel Foreign Exchange Earnings Reserve - 5.00 h) Surplus available for Appropriation 2594.38 1935.73",
+    "sections that follow. COMPANY PERFORMANCE Your Company posted yet another year of stellar performance, testifying to the robustness of the corporate strategy of pursuing multiple drivers of growth. The performance is even more heartening when viewed in the context of the challenging environment of the cigarette industry, impact of the absorption of incubation costs of the new business initiatives and the gestation cost of new investments in the hotels and paperboards businesses. Gross Turnover for the year 2004-05 grew by 13% to Rs.13350 crores, driven by good topline growth across all businesses of your Company. Pre- tax profit (before exceptional items) increased by 15.3% to Rs.2673 crores, while Post-tax profit (before exceptional items) at Rs.1837 crores registered a growth of 15.3%. The financials for the year include Rs.692 crores representing net income from exceptional items, most of which relate to past litigation. Inclusive of these exceptional items net of tax, your Company\u2019s Profit after Tax stands at Rs.2191 crores. Earnings Per Share (before exceptional items) for the year stands at Rs.73.74. Cash flows from Operations were Rs.2635 crores during the",
+    "REPORT OF THE DIRECTORS 26.3% is well below that of China, which sustains a level of 45% of GDP. For India\u2019s oft quoted advantage of demographics to become a driver of growth, about 10 million new jobs need to be created annually over the next decade. Public- private partnerships in investment are critical to realise such outcomes, particularly in generating off-farm employment and absorbing displacement of labour inherent in agricultural reform. In line with this rationale, your Company is engaged in enlarging its contribution across three dimensions \u2014 economic, ecological and social \u2014 through investments in all its businesses and across the value chain, where feasible. Your Company believes that it has earned the right to make an enlarged contribution on the basis of its ability to create superior economic value. Highlights of your Company\u2019s progress are discussed in the sections that follow. COMPANY PERFORMANCE Your Company posted yet another year of stellar performance, testifying to the robustness of the corporate strategy of pursuing multiple drivers of growth. The performance is even more heartening when viewed in the context of"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_vlm",
+    "run_id": "20260409T084620Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "profile": "naive_rag",
+  "example_id": "96ab64d2-3512-4906-a4ed-017b208a888e",
+  "question": "If a customer purchases sportswear and dresses already reduced by 25\\%-50\\%, what is the total percentage savings they can achieve by taking an extra 30\\% off?",
+  "gold_answer": "45-65",
+  "predicted_answer": "0, Oo, Sportswear, dresses 30 %*u=HO\u201d O Yo and suits for misses, : Ol |= petites, women, juniors \u00a7 : 30% off career se colts Roeteel seseni Pee Py off dresses and suits a) 23.99 juni heen aT Vee lao) coe shortalls Take an extra 30\u201d off sportswear and fe [tty already reduced 25%-50% for a total savings of fi _2._..",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "AY Naso, jowl0, 1997+ Tee Rasevecron Post TUESDAY IS PREVIEW DAY! ALL STORES OPEN EARLY BoTH Days AT SAM One Day Sale look for our lowest prices y season! 0, Oo, Sportswear, dresses 30 %*u=HO\u201d O Yo and suits for misses, : Ol |= petites, women, juniors \u00a7 : 30% off career se colts Roeteel seseni Pee Py off dresses and suits a) 23.99 juni heen aT Vee lao) coe shortalls Take an extra 30\u201d off sportswear and fe [tty already reduced 25%-50% for a total savings of fi _2._.. ES rere hes nn a a 8 . a shop Wednesday sam to 11PM SERS es arr ore res gc way nore eT TUN. a ADVTS MY FTERED FUTURE ALE ENTS. raat tsar \u2018rts ee oc fom. te me ae orem a Shoe ts Rn a Cares Nets tee a tn = \u2018san say bcd ss are spect ho eps apap ep wn. Ss ont Sane HNO RVNEAGLE AT CON BOMANTRLE STE"
+  ],
+  "run_metadata": {
+    "profile": "naive_rag",
+    "run_id": "20260409T084648Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

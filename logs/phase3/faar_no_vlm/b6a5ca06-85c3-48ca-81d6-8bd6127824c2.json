@@ -1,0 +1,34 @@
+{
+  "profile": "faar_no_vlm",
+  "example_id": "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+  "question": "What is the quarterly copay for a semi-private room under the Community Choice plan before the deductible is applied, given that the quarterly copay for a transplant at a Center Center or Designated Hospital under the same plan is the same amount?",
+  "gold_answer": "\\$275",
+  "predicted_answer": "than 21 calendar days before transplant evaluation, but no les",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "correct ocr noise: 3: Find out what\u2019s covered Inpatient care",
+    "then then then then then then then then then then then then th",
+    "and board 1. Your room and board 2. Your room and board 2. You",
+    "than 21 calendar days before transplant evaluation, but no les",
+    "and speech therapy 7. Diagnostic and therapeutic services Anci"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_vlm",
+    "run_id": "20260409T084631Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

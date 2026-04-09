@@ -1,0 +1,34 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "4fa2f35c-90c8-4387-816a-8771a94a440c",
+  "question": "For how many people has Israel's war against Hamas in Gaza resulted in deaths, according to Gazan health authorities?",
+  "gold_answer": "More than 37,000",
+  "predicted_answer": "Israel\u2019s war against Hamas in Gaza has killed more than 37,000 people in the enclave, according to Gazan health authorities.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.3076923076923077
+  },
+  "top_hit_texts": [
+    "a kitchen knife, scissors and sewing string \u2014 then amputated Ahed\u2019s leg on the kitchen table, where her mother had just made bread. \u201cShe was badly hit,\u201d he recalled. With \u201cno tools, no anesthetic, nothing,\u201d he explained, \u201cI had to find a way to save her life.\u201d The crude surgery was cap- tured in a video shared widely on- line, a grim emblem of the agoniz- ing choices that have been re- peated countless times in a war that has ravaged Gazans\u2019 lives and limbs. Doctors say they have been stunned by the sheer num- ber of amputations in Gaza, which put patients at risk of infection ina place where access to medical care and even clean water is lim- ited. Israel\u2019s war against Hamas in Gaza has killed more than 37,000 people in the enclave, according to Gazan health authorities. The numbers do not distinguish be- tween civilians and combatants. The war has also left an even larger number of people of wounded. Local health authorities say that number is more than 85,000 \u2014 and aid workers say that",
+    "authorities. The numbers do not distinguish be- tween civilians and combatants. The war has also left an even larger number of people of wounded. Local health authorities say that number is more than 85,000 \u2014 and aid workers say that includes an outsize number of am- putees. Gaza\u2019s health care system is ill- equipped to cope. Many of the ter- ritory\u2019s hospitals have been knocked out of service completely while others scrape by with se- vere shortages of supplies like an- esthesia and antibiotics. Surgeons say the lack of sup- plies and the scale of the wounded have forced them to amputate limbs that elsewhere would have been salvageable. But it\u2019s a lose- lose situation, they say, because amputations require close care and, frequently, further surgeries. \u201cThere\u2019s no good options there,\u201d said Dr. Ana Jeelani, an orthope- dic surgeon in Liverpool, England, who spent two weeks at Al-Aqsa Hospital in central Gaza in March. \u201cEverything requires follow-up that we do, and there is none.\u201d Continued on Page All RAFAH ATTACK A Times investi- gation shows civilian casualties were almost inevitable.",
+    "pause in the Israeli offensive would make it less dan- gerous to deliver vital supplies to areas in central and southern Gaza from Kerem Shalom, a key border crossing between Israel and Gaza, removing one of many obstacles to their beleaguered op- erations. But aid agencies warned that other restrictions on movement, as well as lawlessness in the terri- tory, would still make it difficult to meet the dire needs of Gazans struggling to survive after eight months of war. With stockpiles in southern AMIR: COLEN/REUTERS An Israeli convoy inside Gaza, where some military opera- tions paused during the day. Gaza dwindling, \u201cmaybe for a cou- ple of weeks they\u2019ll have enough food, but if we cannot have access and sustain that, then that\u2019s going to be a big problem,\u201d said Carl Skau, the deputy director of the World Food Program, an arm of the United Nations that distrib- utes food in Gaza. Food supplies in southern Gaza were \u201cmore stabi- lized a month ago, but we are re- ally concerned now,\u201d said Mr. Skau, who visited Gaza last week.",
+    "Liverpool, England, who spent two weeks at Al-Aqsa Hospital in central Gaza in March. \u201cEverything requires follow-up that we do, and there is none.\u201d Continued on Page All RAFAH ATTACK A Times investi- gation shows civilian casualties were almost inevitable. PAGE Al2 = Medical Limits PAUSE IN FIGHTING OPENS POTENTIAL FOR ALD T0 GAZA SIGN OF ISRAELI SHIFT With Moderates Gone, Netanyahu Disbands War Cabinet This article is by Patrick Kingsley, Adam Rasgon, Cassandra Vino- grad and Michael Levenson. JERUSALEM \u2014 The Israeli military said on Monday that it had paused operations during daylight hours in parts of the southern Gaza Strip, as anew pol- icy announced a day earlier ap- peared to take hold, along with cautious hopes that it would allow more food and other goods to reach desperate civilians. Aid workers said they hoped that the daily pause in the Israeli offensive would make it less dan- gerous to deliver vital supplies to areas in central and southern Gaza from Kerem Shalom, a key border crossing between Israel and Gaza, removing one of many obstacles to their",
+    "changes: to share in- ternal data on the health impact of their products; to allow independ- ent safety audits; and to restrict features like push notifications, autoplay and infinite scroll, which he says \u201cprey on developing brains and contribute to excessive use.\u201d Continued on Page Al7 In Gaza Result In Lost Limbs War Creates an Outsize Share of Amputees This article is by Hiba Yazbek, Bi- lal Shbair, Cassandra Vinograd and Abu Bakr Bashir. Bleeding and crying, Dr. Hani Bseso\u2019s teenage niece Ahed called out for him as she slipped in and out of consciousness. A shell had ripped into their home, which had been sur- rounded by Israeli troops as fight- ing raged outside that December day. It was too dangerous to make the five-minute drive to Al-Shifa Hospital, where Dr. Bseso, 52, worked in orthopedics. So he grabbed a kitchen knife, scissors and sewing string \u2014 then amputated Ahed\u2019s leg on the kitchen table, where her mother had just made bread. \u201cShe was badly hit,\u201d he recalled. With \u201cno tools, no anesthetic, nothing,\u201d he explained, \u201cI had to"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084536Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

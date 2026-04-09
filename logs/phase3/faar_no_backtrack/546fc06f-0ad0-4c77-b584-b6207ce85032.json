@@ -1,0 +1,34 @@
+{
+  "profile": "faar_no_backtrack",
+  "example_id": "546fc06f-0ad0-4c77-b584-b6207ce85032",
+  "question": "What banned substance led to 23 elite Chinese swimmers testing positive just before the last Summer Olympic Games?",
+  "gold_answer": "a banned substance",
+  "predicted_answer": "SCHMIDT and TARIQ PANJA After the revelation in April that 23 elite Chinese swimmers had tested positive for a banned sub- stance months before the last Summer Olympic Games, China and the global antidoping author- ity vigorously defended their deci- sions to allow them to compete in the Games in 2021.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.07407407407407407
+  },
+  "top_hit_texts": [
+    "\u201cAll the News That\u2019s Fit to Print\u201d Che New York Cimes THE WEATHER Today, sunny, low humidity, a light breeze, high 78. Tonight, partly cloudy, light and variable winds, low 65. Tomorrow, clouds and sun, hu- mid, high 83. Weather map, Page 30. VOL. CLXXIII... No. 60,187 \u00a9 2024 The New York Times Company SUNDAY, JUNE 16, 2024 Prices in Canada may be higher $6.00 SA CAUGHT DOPING, STILL SWIMMING Chinese Athletes Failed More Than One Test By MICHAEL S. SCHMIDT and TARIQ PANJA After the revelation in April that 23 elite Chinese swimmers had tested positive for a banned sub- stance months before the last Summer Olympic Games, China and the global antidoping author- ity vigorously defended their deci- sions to allow them to compete in the Games in 2021. The swim- mers, they insisted, had not been doping. But as they made those claims, China and the antidoping author- ity were both aware that three of those 23 swimmers had tested positive several years earlier fora different performance-enhancing drug and had escaped being pub- licly identified and suspended",
+    "But as they made those claims, China and the antidoping author- ity were both aware that three of those 23 swimmers had tested positive several years earlier fora different performance-enhancing drug and had escaped being pub- licly identified and suspended in that case as well, according to a secret report reviewed by The New York Times. In both instances, China claimed that the swimmers had unwittingly ingested the banned substances, an explanation viewed with considerable skepti- cism by some antidoping experts. The two incidents add to long- standing suspicions among rival athletes about what they see as a pattern of Chinese doping and the unwillingness or inability of the global authority, the World Anti- Doping Agency, to deal with it. The three Chinese athletes re- vealed to have tested positive ear- lier, in 2016 and 2017, were no ordi- nary swimmers: Two would go on to win gold medals at the Tokyo Olympic Games in 2021, and the third is now a world-record holder. All three are expected to contend for medals again at the Paris Games in July. Antidoping",
+    "swimmers: Two would go on to win gold medals at the Tokyo Olympic Games in 2021, and the third is now a world-record holder. All three are expected to contend for medals again at the Paris Games in July. Antidoping experts say that if Chinese officials and WADA had abided by existing rules with both sets of positive tests, the athletes would have been publicly identi- fied and subject to further scru- tiny, and could have been disquali- fied from the 2021 Olympics, and possibly the Games that open in Paris next month. \u201cAthletes we have spoken to are appalled with the antidoping sys- tem and WADA,\u2019 said Rob Koehler, the director general of Global Athlete, a group working for athletes\u2019 rights. \u201cAthletes are expected to follow the antidoping rules to aT, but yet the very orga- nization holding them account- Continued on Page 27 ans OOM OFF Z one: .: = PHOTOGRAPHS BY VERONICA GABRIELA CARDENAS FOR THE NEW YORK TIMES Suheidy de Leon and her mother, Maty Vargas, taking a spin with Gonzalo Vazquez at La Pulga de",
+    "and found themselves turning into internet celebrities. A local electrician known as El Divino Colombiano, the Divine Colombian, twirls in a pair of tight blue jeans and ruby-red, six-inch heels. A woman with lime-green feathers around her neck pushes a wheelchair onto the floor. In it is her mother, La Reynita de Oro, the Small Gold Queen, who waves her arms, festooned with gold bracelets, as the music swells. And then there\u2019s the construction worker known as El Bronco because of his resemblance to the lead sing- er of the popular Mexican band Continued on Page 16 Gazans Voice Their Distress Under Hamas Risking Retribution in TRUMP RESISTERS DRAFT PLAYBOOK IN CASE HE WINS Group\u2019s Stranglehold \\ GROWING COALITION aN LILA Abortion Pill Stockpiles JERUSALEM \u2014 On Oct. 7, as the Hamas-led attack on Israel was unfolding, many Palestinians took to the streets of Gaza to cele- brate what they likened to a pris- on break and saw as the sudden humiliation of an occupier. But it was just a temporary boost for Hamas, whose support among Gazans has been",
+    "elections. PAGE7 A 2022 Ukraine-Russia Deal? With the two locked in their third year of all-out war, documents show that early negotiations explored peace terms in remarkable detail. PAGE 10 It\u2019s Not Just Russia China, while not invited to the G7 sum- mit, was referred to 28 times, almost always as a malign force, in the final communiqu\u00e9. News Analysis. | PAGE6 NATIONAL 13-22 Father\u2019s Day Advice Pearls of wisdom from Times readers: Trust your instincts, find the fun and don\u2019t forget those nail clippers. PAGE 14 Ready to Be Just Some Guy The fashion designer Dries Van Noten talks about why, at 66, he\u2019s walking away from the career that has defined him for decades. PAGE 6 Stars, Stripes and Trump His affinity for the red, white and blue is powerful, and Pavlovian, branding, Vanessa Friedman writes. PAGE 10 METROPOLITAN A Woman Leads This Nation Lisa Goree takes the helm of the Shin- necock Indian Nation as the Long Is- land tribe navigates disputes. PAGE 1 ARTS & LEISURE The Shape of Inspiration Dozens of this year\u2019s Tony Award"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_backtrack",
+    "run_id": "20260409T084444Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

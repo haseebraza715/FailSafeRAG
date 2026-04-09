@@ -1,0 +1,31 @@
+{
+  "profile": "faar_full",
+  "example_id": "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+  "question": "What condition must an orthogonal matrix A and vector b meet for the integral of f(Ax+b) over \\mathbb{R}^{d} to equal the integral of f(x) over \\mathbb{R}^{d}?",
+  "gold_answer": "\\int_{\\mathbb{R}^{d}}f(A x+b)d x=\\int_{\\mathbb{R}^{d}}f(x)d x",
+  "predicted_answer": "the correct ocr noise: in a cube of side length \u00a3.",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.07142857142857142
+  },
+  "top_hit_texts": [
+    "a cube, and similarly a cube, and similarly a cube, and simila",
+    "the correct ocr noise: in a cube of side length \u00a3. Then | f #"
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260409T084352Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

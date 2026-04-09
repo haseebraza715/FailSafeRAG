@@ -1,45 +1,45 @@
 {
   "profiles": {
     "faar_full": {
-      "count": 5,
-      "ndcg@5": 0.6,
-      "recall@5": 0.6,
+      "count": 40,
+      "ndcg@5": 0.3065,
+      "recall@5": 0.325,
       "em": 0.0,
-      "f1": 0.0124,
-      "visual_fallback_rate": 0.0
+      "f1": 0.0627,
+      "visual_fallback_rate": 0.075
     },
     "faar_no_backtrack": {
-      "count": 5,
-      "ndcg@5": 0.6,
-      "recall@5": 0.6,
+      "count": 40,
+      "ndcg@5": 0.3065,
+      "recall@5": 0.325,
       "em": 0.0,
-      "f1": 0.0124,
-      "visual_fallback_rate": 0.0
+      "f1": 0.0627,
+      "visual_fallback_rate": 0.075
     },
     "faar_no_diagnosis": {
-      "count": 5,
-      "ndcg@5": 0.7262,
-      "recall@5": 0.8,
+      "count": 40,
+      "ndcg@5": 0.4789,
+      "recall@5": 0.525,
       "em": 0.0,
-      "f1": 0.0161,
+      "f1": 0.0722,
       "visual_fallback_rate": 0.0
     },
     "faar_no_vlm": {
-      "count": 5,
-      "ndcg@5": 0.6,
-      "recall@5": 0.6,
+      "count": 40,
+      "ndcg@5": 0.3065,
+      "recall@5": 0.325,
       "em": 0.0,
-      "f1": 0.0124,
+      "f1": 0.0627,
       "visual_fallback_rate": 0.0
     },
     "naive_rag": {
-      "count": 5,
-      "ndcg@5": 0.7262,
-      "recall@5": 0.8,
+      "count": 40,
+      "ndcg@5": 0.4789,
+      "recall@5": 0.525,
       "em": 0.0,
-      "f1": 0.0161,
+      "f1": 0.0722,
       "visual_fallback_rate": 0.0
     }
   },
-  "generated_at_utc": "2026-04-08T13:59:43.352617+00:00"
+  "generated_at_utc": "2026-04-09T08:47:08.067758+00:00"
 }

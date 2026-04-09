@@ -1,0 +1,30 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+  "question": "What is the maximum fall time specified for the MCS * 51 controller's external clock drive?",
+  "gold_answer": "20 ns",
+  "predicted_answer": "EXTERNAL CLOCK DRIVE MCS\u00ae 51 CONTROLLER Symbol Parameter Min Max Units 41/TCLCL Oscillator Frequency (except 8751H-8) 3.5 12 MHz 8751H-8 3.5 8 MHz TCHCX High Time 20 ns TCLCX Low Time 20 ns TCLCH Rise Time 20 ns TCHCL Fall Time 20 ns EXTERNAL CLOCK DRIVE WAVEFORM TCHCX TCLCH }\u2014 TCHCL 25 25 / 25 f 08 08 \u2018 TCLCX TeLCL 272318-9 AC TESTING INPUT, OUTPUT WAVEFORM 24 20 TEST POWTS < os ous 272318-10 AC Testing: Inputs are driven at 2.4V for a Logic \u201c1\u201d and 0.45V for a Logic \u201c0\u201d.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.04040404040404041
+  },
+  "top_hit_texts": [
+    "intel. EXTERNAL CLOCK DRIVE MCS\u00ae 51 CONTROLLER Symbol Parameter Min Max Units 41/TCLCL Oscillator Frequency (except 8751H-8) 3.5 12 MHz 8751H-8 3.5 8 MHz TCHCX High Time 20 ns TCLCX Low Time 20 ns TCLCH Rise Time 20 ns TCHCL Fall Time 20 ns EXTERNAL CLOCK DRIVE WAVEFORM TCHCX TCLCH }\u2014 TCHCL 25 25 / 25 f 08 08 \u2018 TCLCX TeLCL 272318-9 AC TESTING INPUT, OUTPUT WAVEFORM 24 20 TEST POWTS < os ous 272318-10 AC Testing: Inputs are driven at 2.4V for a Logic \u201c1\u201d and 0.45V for a Logic \u201c0\u201d. Timing measurements are made at 2.0V for a Logic \"1\" and 0.8V for a Logic \u201c0\u201d. 13"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084536Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

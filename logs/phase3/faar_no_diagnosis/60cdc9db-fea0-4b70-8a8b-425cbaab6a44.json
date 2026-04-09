@@ -1,0 +1,33 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+  "question": "Which closed-source LLM achieved the highest average score across the six multi-modal benchmarks?",
+  "gold_answer": "GeminiPro",
+  "predicted_answer": "Table 1: Evaluation of various LLMs on six popular multi-modal benchmarks.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "Table 1: Evaluation of various LLMs on six popular multi-modal benchmarks. We employ a 0-shot in- ference strategy for evaluating all LLMs. We report the results of 2 closed-source LLMs and 20 open-source LLMs with varying sizes and architectures. The evaluated benchmarks include MMMU (MMMU-Val [51]), MMB (MMBench-EN-Dev [27]), ScienceQA (ScienceQA-Test [30]), AI2D (AI2D-Test [20]), SEED (SEED- Image [21]), and MathVista (MathVista-Mini [29]). The best results are highlighted in bold and underlined. Model | Strategy | MMMU MMB ScienceQA_ AI2D SEED MathVista | Avg. Baselines Random Choice | - | 22.1 0.0 24.2 23.8 24.3 17.9 | 18.7 Closed-source LLMs GPT4-Turbo[34] 0-shot 41.2 12.2 64.3 59.7 10.1 24.2 35.3 GeminiPro[41] 0-shot 42.9 18.4 68.9 59.2 35.5 23.3 41.4 Open-source LLMs Qwen1.5-1.8B[1] 0-shot 29.0 10.0 54.3 37.9 28.9 20.4 30.1 Phi2-2.7B[32] 0-shot 20.0 72 47.1 38.7 26.4 22.0 26.9 Yi-6B[49] 0-shot 25.7 9.5 58.1 39.1 274 21.2 30.2 LLaMA2-7B[43] 0-shot 23.6 11.5 56.8 43.5 31.7 24.1 31.9 Qwen-7B[1] 0-shot 19.8 8.4 52.7 42.6 76 20.5 25.3 Deepseek-7B[3] 0-shot 21.6 8.4 56.3 38.1 13.4 20.6 26.4 InternLM2-7B[42] 0-shot 32.8 8.9 64.0 48.3",
+    "64.3, 57.5 17.1 23.2 34.6 LLaMA2-70B[43] 0-shot 28.9 12.3 62.2 48.6 34.3. 25.2 35.3 Qwen1.5-72B[1] 0-shot 21.4 10.1 57.5 44.2 8.8 19.5 26.9 antee that all evaluation samples can not be correctly answered without the visual content. On the other hand, current evaluations consistently adhere to the process of inferring on given benchmarks and calculating scores for LVLMs, overlooking the possibility of data leakage during multi-modal training. This oversight can lead to unfair comparisons and misjudgments of the real gains in multi- modal capabilities brought by multi-modal training. 3 Two Overlooked Issues for Evaluating LVLMs In this section, we delve into two commonly overlooked issues in current LVLM evaluation works. Moreover, we present detailed experimental results to further substantiate our observations. First issue: visual content is unnecessary for many evaluation samples. The key distinction between evaluating LLMs and LVLMs lies in the necessity for LVLM evaluations to strictly ensure that the correct answers can only be derived based on a thorough understanding of visual con- tent. Without this, evaluating LVLMs\u2019 multi-modal capabilities degrades to merely assessing their LLM backbones\u2019 uni-modal",
+    "in the necessity for LVLM evaluations to strictly ensure that the correct answers can only be derived based on a thorough understanding of visual con- tent. Without this, evaluating LVLMs\u2019 multi-modal capabilities degrades to merely assessing their LLM backbones\u2019 uni-modal abilities. However, upon examining samples from some popular LVLM benchmarks, we find many samples lack vital visual dependency and can yield correct answers even without the image inputs! Through analysis of these failure samples, we categorize them into two groups: (1) Answers can be directly obtained from the world knowledge embedded in LLMs, ow- ing to the LLMs\u2019 extensive pertaining on the large corpus of data. For example, as illustrated in Figure 1(a), the question \"What is the capital of Nebraska?\" already provides the key information \"Nebraska\", eliminating the need for extracting relevant location information from visual content. A more appropriate question is \"What is the capital of the highlighted area in the image?\" to emphasize",
+    "25.7 9.5 58.1 39.1 274 21.2 30.2 LLaMA2-7B[43] 0-shot 23.6 11.5 56.8 43.5 31.7 24.1 31.9 Qwen-7B[1] 0-shot 19.8 8.4 52.7 42.6 76 20.5 25.3 Deepseek-7B[3] 0-shot 21.6 8.4 56.3 38.1 13.4 20.6 26.4 InternLM2-7B[42] 0-shot 32.8 8.9 64.0 48.3 31.9 18.9 34.1 Qwen1.5-7B[1] 0-shot 25.0 11.4 62.3 49.4 194 19.9 31.2 Vicuna-v1.5-7B[8] 0-shot 29.9 10.3 58.9 42.5 32.6 22.0 32.7 Baichuan2-7B[47] 0-shot 25.7 10.5 52.7 44.0 29.2 20.8 30.5 Mistral-7B[18] 0-shot 30.0 13.2 63.4 48.5 34.3 22.6 35.3 LLaMA2-13B[43] 0-shot 24.4 10.1 59.1 45.0 33.6 23.8 32.7 Vicuna-v1.5-13B[8] | 0-shot 28.3 11.6 59.5 45.0 26.3 19.6 31.7 Baichuan2-13B[47] | 0-shot 22.1 47 51.1 32.8 25.4 20.3 26.1 InternLM2-20B[42] | 0-shot 32.2 15.9 63.8 55.7 26.0 21.3 35.8 Yi-34B[49] 0-shot 371 10.5 53.6 57.3 37.30 21.7 36.3 Mixtral-8x7B[19] 0-shot 25.7 8.6 57.2 48.7 13.5 23.4 29.5 Deepseek-67B[3] 0-shot 30.9 14.8 64.3, 57.5 17.1 23.2 34.6 LLaMA2-70B[43] 0-shot 28.9 12.3 62.2 48.6 34.3. 25.2 35.3 Qwen1.5-72B[1] 0-shot 21.4 10.1 57.5 44.2 8.8 19.5 26.9 antee that all evaluation samples can not be correctly answered without the visual content. On the other"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084537Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

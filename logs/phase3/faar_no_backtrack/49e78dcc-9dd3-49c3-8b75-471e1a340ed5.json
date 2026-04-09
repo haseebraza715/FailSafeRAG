@@ -1,0 +1,30 @@
+{
+  "profile": "faar_no_backtrack",
+  "example_id": "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+  "question": "What is the maximum fall time specified for the MCS * 51 controller's external clock drive?",
+  "gold_answer": "20 ns",
+  "predicted_answer": "EXTERNAL CLOCK DRIVE MCS\u00ae 51 CONT",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "a correct ocr noise: intel. EXTERNAL CLOCK DRIVE MCS\u00ae 51 CONT"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_backtrack",
+    "run_id": "20260409T084444Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

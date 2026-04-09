@@ -1,0 +1,32 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+  "question": "What is the projected total revenue for PUD No. 1 of Klickitat County in 2020 based on the 2016 budget?",
+  "gold_answer": "$54,705,108",
+  "predicted_answer": "1 OF KLICKITAT COUNTY INCOME STATEMENT - COMBINED 2016 BUDGET (11/2/15 Forward Curve Prices) 2015 Budget 2016 2017 2018 2019 2020 [ RATE INCREASES (Jan 1st & Jul 1st) 3% & 3% 4% & 3% 3% & 0% 3% & 0% 2% & 0% REVENUE Rate Residential 13,935,749 15,375,550 16,479,531 17,268,573 17,796,611 18,162,728 Small General Service 770,922 854,519 923,750 975,966 1,014,459 1,044,232 Medium General Service 2,704,661 3,016,602 3,279,855 3,481,774 3,640,021 3,768,514 Large General Service 4,364,325 4,862,283 5,264,286 5,554,295 5,780,939 5,957,774 Industrial/Commercial 2,001,268 2,070,290 2,104,446 2,194,507 2,230,712 2,326,178 Irrigation Service 2,505,584 2,829,467 3,126,046 3,338,959 3,540,685 3,715,088 Street Lighting 274,810 298,418 319,730 334,251 344,348 351,235 Cliffs Water 20,121 4,331 4,461 4,595 4,732 4,874 Water/Wastewater Systems 1,449,567 1,218,472 1,239,206 1,259,323 1,280,070 1,301,486 Total Rate Revenue 28,027,007 30,529,932 32,741,311 34,412,243 35,632,576 36,632,109 Transmission Transmission Service 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Total Transmission Revenue 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Wholesale Market HW Hill Methane Facility (LFG) 7,611,543 7,016,348 5,512,652 5,267,737 5,635,924 6,092,651 White Creek Wind 1,881,265 1,231,494 1,304,761 1,480,453 1,788,076 1,957,239 Slice/Other 2,144,249 1,439,692 1,414,000 1,428,140 1,442,421 1,456,846 Total Generation Revenue",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.6309297535714575,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "PUD NO. 1 OF KLICKITAT COUNTY INCOME STATEMENT - COMBINED 2016 BUDGET (11/2/15 Forward Curve Prices) 2015 Budget 2016 2017 2018 2019 2020 [ RATE INCREASES (Jan 1st & Jul 1st) 3% & 3% 4% & 3% 3% & 0% 3% & 0% 2% & 0% REVENUE Rate Residential 13,935,749 15,375,550 16,479,531 17,268,573 17,796,611 18,162,728 Small General Service 770,922 854,519 923,750 975,966 1,014,459 1,044,232 Medium General Service 2,704,661 3,016,602 3,279,855 3,481,774 3,640,021 3,768,514 Large General Service 4,364,325 4,862,283 5,264,286 5,554,295 5,780,939 5,957,774 Industrial/Commercial 2,001,268 2,070,290 2,104,446 2,194,507 2,230,712 2,326,178 Irrigation Service 2,505,584 2,829,467 3,126,046 3,338,959 3,540,685 3,715,088 Street Lighting 274,810 298,418 319,730 334,251 344,348 351,235 Cliffs Water 20,121 4,331 4,461 4,595 4,732 4,874 Water/Wastewater Systems 1,449,567 1,218,472 1,239,206 1,259,323 1,280,070 1,301,486 Total Rate Revenue 28,027,007 30,529,932 32,741,311 34,412,243 35,632,576 36,632,109 Transmission Transmission Service 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Total Transmission Revenue 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Wholesale Market HW Hill Methane Facility (LFG) 7,611,543 7,016,348 5,512,652 5,267,737 5,635,924 6,092,651 White Creek Wind 1,881,265 1,231,494 1,304,761 1,480,453 1,788,076 1,957,239 Slice/Other 2,144,249 1,439,692 1,414,000 1,428,140 1,442,421 1,456,846 Total Generation Revenue",
+    "18,647 18,647 18,647 18,647 18,647 Other Water/Wastewater Income 7,178 - - - - - Other Income 512,402 575,394 529,073 529,073 496,073 463,073 BABS 487,902 483,144 436,823 436,823 436,823 436,823 Other Income 24,500 92,250 92,250 92,250 59,250 26,250 Total Miscellaneous Revenue 4,015,812 3,997,967 3,575,833 3,227,469 3,190,642 3,155,067 TOTAL REVENUE $48,555,895 $ 49,494,455 $ 49,855,849 $ 51,156,190 $ 53,064,303 $ 54,705,108 12/8/2015",
+    "Transmission Revenue 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Wholesale Market HW Hill Methane Facility (LFG) 7,611,543 7,016,348 5,512,652 5,267,737 5,635,924 6,092,651 White Creek Wind 1,881,265 1,231,494 1,304,761 1,480,453 1,788,076 1,957,239 Slice/Other 2,144,249 1,439,692 1,414,000 1,428,140 1,442,421 1,456,846 Total Generation Revenue 11,637,057 9,687,535 8,231,412 8,176,330 8,866,422 9,506,736 Miscellaneous Pole Connections & Rent Revenues 245,871 250,499 250,499 250,499 250,499 250,499 Billings & Collection Fees 217,800 209,800 209,800 209,800 209,800 209,800 Set Up Fees 4,737 2,329 2,329 2,329 2,329 2,329 Interest Income 186,164 157,701 154,953 149,977 146,149 143,575 Electric 158,504 132,925 133,097 129,823 127,352 125,981 Water/Wastewater 27,660 24,777 21,856 20,154 18,798 17,595 Aid in Construction, GEC 2,823,180 2,783,596 2,410,532 2,067,144 2,067,144 2,067,144 Electric - Cash 1,253,994 1,353,952 1,200,000 1,200,000 1,200,000 1,200,000 Electric - Regulatory Acctg (Non Cash) 867,144 867,144 867,144 867,144 867,144 867,144 Water/Wastewater 702,042 562,500 343,388 - - - Energy Services 18,480 18,647 18,647 18,647 18,647 18,647 Other Water/Wastewater Income 7,178 - - - - - Other Income 512,402 575,394 529,073 529,073 496,073 463,073 BABS 487,902 483,144 436,823 436,823 436,823 436,823 Other Income 24,500 92,250 92,250 92,250 59,250 26,250 Total Miscellaneous Revenue"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084537Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

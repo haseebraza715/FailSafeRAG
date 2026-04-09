@@ -1,11 +1,11 @@
 {
   "profile": "naive_rag",
   "summary": {
-    "count": 0,
-    "ndcg@5": 0.0,
-    "recall@5": 0.0,
+    "count": 40,
+    "ndcg@5": 0.4789,
+    "recall@5": 0.525,
     "em": 0.0,
-    "f1": 0.0,
+    "f1": 0.0722,
     "visual_fallback_rate": 0.0
   }
 }

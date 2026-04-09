@@ -1,0 +1,32 @@
+{
+  "profile": "faar_no_vlm",
+  "example_id": "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+  "question": "What is the projected total revenue for PUD No. 1 of Klickitat County in 2020 based on the 2016 budget?",
+  "gold_answer": "$54,705,108",
+  "predicted_answer": "1 OF KLICKITAT CORRECT",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "of klickitat correct ocr noise: PUD NO. 1 OF KLICKITAT CORRECT",
+    "$ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $",
+    "Creek Wind 1,881,265 1,231,494 1,231,494 1,231,494 1,231,494 1"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_vlm",
+    "run_id": "20260409T084618Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

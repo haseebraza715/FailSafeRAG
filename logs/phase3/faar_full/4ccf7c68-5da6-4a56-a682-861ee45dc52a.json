@@ -1,0 +1,34 @@
+{
+  "profile": "faar_full",
+  "example_id": "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+  "question": "What city will host the U.S. field trials starting on a Friday?",
+  "gold_answer": "Eugene, Oregon",
+  "predicted_answer": "track and field trials, which are a 10-day smorgasbord of joy and sorrow that starts on Friday in Eugene, Ore., the top three finishers in each event will qualify for Paris \u2014 provided those athletes have met the Olympic standard.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.047619047619047616
+  },
+  "top_hit_texts": [
+    "the U.S. trials in sports like swimming, gymnastics and track and field might just be the fiercest crucibles of all, with a ruthless requirement for Olympic berths: Perform well, or you\u2019re staying home. At the U.S. track and field trials, which are a 10-day smorgasbord of joy and sorrow that starts on Friday in Eugene, Ore., the top three finishers in each event will qualify for Paris \u2014 provided those athletes have met the Olympic standard. So, even for someone like Elle St. Pierre, who has the Continued on Page Al2 INTERNATIONAL A4-10 BUSINESS B1-5 NATIONAL A11-17 ARTS C1-6 SPORTS D1-8 Green Parties Chastened Europe\u2019s climate change-minded par- ties performed poorly in the European Union elections, leaving the continent\u2019s green agenda in peril. PAGE A6 Pope\u2019s Slur Awakens Pride An L.G.B.T.Q. march in Rome on Satur- day turned an insult used by Francis into a point of honor. PAGE A6 OBITUARIES B7-8 A Shaper of TV and Movies Martin Starger helped ABC rise, and produced award winners like \u201cRoots\u201d and \u201cNashville.\u201d He was 92. PAGE B8 Who Really Runs Toyota?",
+    "Hopes Surge and Olympic Dreams Die By SCOTT CACCIOLA Before the Olympics even be- gin, there is always heartbreak. And June may be the hardest month of all. Caitlin Clark, the ascendant star of women\u2019s basketball, just found out that she won\u2019t be going to Paris. So did Bill May, whose hopes of becoming the first man to compete at the Olympics in the sport of artistic swimming were dashed by the U.S. selection com- mittee. Over the next few weeks, hun- dreds more athletes \u2014 swimmers and sprinters, divers and tum- blers, many of whom have spent years training with the singular goal of representing Team U.S.A. on the planet\u2019s grandest sports stage \u2014 will see their dreams of competing at the Paris Olympics US. Trials Test Minds as Well as Bodies pulverized to a fine dust. That\u2019s because the U.S. trials in sports like swimming, gymnastics and track and field might just be the fiercest crucibles of all, with a ruthless requirement for Olympic berths: Perform well, or you\u2019re staying home. At the U.S. track and field trials,",
+    "different ways. PAGE Al6 Woes in Anti-Abortion Camp After a week that highlighted its strug- gles, the movement seeks a path for- ward: \u201cIs the goal the absolute abolition of abortion in our nation?\u201d PAGE Al7 Now Playing: The Press Tour For Jennifer Lopez and other stars, the conventional movie publicity blitz has become very unpredictable. PAGE Cl An Artist\u2019s Baltimore Joyce J. Scott uses humor as much as art to open up conversations about race and inequality in her hometown. PAGE Cl Sudden Shift in N.F.L\u2019s Hiring After years of decline, the number of Black head coaches in the league dou- bled in the off-season. PAGE D1 Redefining a Troubling Past The Olympiastadion in Berlin will host the final of Euro 2024. Hitler used it for the 1936 Summer Olympics. PAGES D4-5 OPINION A18-19 Linda Greenhouse 35 4613 PAGE Al8 0 9",
+    "used by Francis into a point of honor. PAGE A6 OBITUARIES B7-8 A Shaper of TV and Movies Martin Starger helped ABC rise, and produced award winners like \u201cRoots\u201d and \u201cNashville.\u201d He was 92. PAGE B8 Who Really Runs Toyota? Akio Toyoda gave the reins to a new chief executive last year, but some say he wields unchecked power. PAGE Bl At a Cricket Stadium Near You Investors are looking to cash in ona growing U.S. audience for the sport with venues across the country. PAGE Bl A Halt Felt Nationwide The governor of New York\u2019s decision to pause congestion pricing in Manhattan is likely to stall similar initiatives in other cities. PAGE All Readying for a Hostile Debate With Donald J. Trump\u2019s rampage in 2020 still fresh in mind, his campaign, CNN and President Biden are prepar- ing in different ways. PAGE Al6 Woes in Anti-Abortion Camp After a week that highlighted its strug- gles, the movement seeks a path for- ward: \u201cIs the goal the absolute abolition of abortion in our nation?\u201d PAGE Al7 Now Playing: The Press",
+    "\u201cAll the News That\u2019s Fit to Print\u201d Che New York Cimes THE WEATHER Today, sun and clouds, warmer, a bit more humid, high 85. Tonight, partly cloudy, warm, low 70. Tomorrow, partly sunny, very warm, humid, high 88. Weather map, Page D8. VOL. CLXXIII.... No. 60,188 \u00a9 2024 The New York Times Company MONDAY, JUNE 17, 2024 Prices in Canada may be higher $4.00 \u00ab An injured Russian soldier in January at a hospital in Bakhmut, Ukraine, close to the front lines. The soldier survived and was evacuated to Rostov in Russia. Chechen Units Fight for Russia, A Sign of Shifting Ethnic Bonds Photographs by NANNA HEITMANN Article by NEIL MacFARQUHAR GROZNY, Chechen Republic \u2014 Ahulking military transport plane roared onto the tarmac at the main airfield in Grozny, the capital of the Chechen Republic in south- eastern Russia, and a group of 120 volunteer fighters heading for Ukraine clambered aboard. Dressed in camouflage, the newly minted troops had just com- pleted at least 10 days of training in Gudermes, near Grozny, at the Special Forces University, which accepts men"
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260409T084340Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

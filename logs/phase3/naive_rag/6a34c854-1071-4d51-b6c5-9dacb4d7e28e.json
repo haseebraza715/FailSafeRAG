@@ -1,0 +1,34 @@
+{
+  "profile": "naive_rag",
+  "example_id": "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+  "question": "What type of substrates do adults of the species feed and spawn over in their preferred habitats?",
+  "gold_answer": "Gravel, cobble, boulder, and bedrock substrates with no, or very little, silt overlay.",
+  "predicted_answer": "In streams, adults of the species are generally associated with moderate to fast currents, in riffles, runs, and well- flowing pools, while juveniles show a preference for moderate to deep pools with slow currents and large boulder crevice cover.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.11538461538461538
+  },
+  "top_hit_texts": [
+    "carinatum). Subsequent detailed morphological and behavioral studies and genetic studies have concluded that the sicklefin redhorse sucker is, in fact, a distinct species. The Service has reviewed the available taxonomic literature, and is not aware of any challenges to the validity of this conclusion. The species is currently known to occupy cool to warm, moderate-gradient creeks and rivers and, during at least parts of its early life, large reservoirs. In streams, adults of the species are generally associated with moderate to fast currents, in riffles, runs, and well- flowing pools, while juveniles show a preference for moderate to deep pools with slow currents and large boulder crevice cover. Adults feed and spawn over gravel, cobble, boulder, and bedrock substrates with no, or very little, silt overlay. Past and recent collection records of the sicklefin redhorse sucker, together with what is known about the habitat utilization of the species, indicate that the sicklefin redhorse sucker once inhabited the majority, if not all, of the rivers and large creeks in the Blue Ridge portion of the Hiwassee and Little Tennessee River systems",
+    "inorganic pollutants from industrial, municipal, agricultural, and other point and nonpoint sources; (3) habitat alterations associated with channelization and instream dredging/ mining activities; (4) predation and habitat suitability impacts by nonnative species; (5) fragmentation and isolation of surviving populations; and (6) other natural and human-related factors that adversely modify the aquatic environment. Associated with the status review for this 12-month finding, we conducted an analysis of the Candidate Conservation Agreement (CCA) for the Sicklefin Redhorse Sucker under the Service\u2019s Policy for Evaluation of Conservation Efforts When Making Listing Decisions (PECE policy), published in the Federal Register on March 28, 2003 (68 FR 15100), and found that the CCA does meet the PECE policy criteria for certainty of implementation and certainty of effectiveness. A number of factors likely contributed to a reduction in the species\u2019 historical range and may have affected population dynamics within the existing occupied stream reaches. The construction of hydroelectric dams fragmented populations, confining spawning activity only to river reaches accessible from the two reservoirs where this species is thought to reside during the juvenile stage of its",
+    "population dynamics within the existing occupied stream reaches. The construction of hydroelectric dams fragmented populations, confining spawning activity only to river reaches accessible from the two reservoirs where this species is thought to reside during the juvenile stage of its life cycle. The sicklefin redhorse sucker also appears to be absent from several reaches of unimpounded river habitat where it was likely extirpated by degradation of the habitat or by cold water from hypolimnetic (deepwater that remains perpetually cold) discharges or hydropeaking (releasing frequent, large discharge pulses of water) for hydropower production. The introduction of blueback herring (Alosa aestivalis) into the habitat occupied by the sicklefin redhorse sucker was also considered a potential threat to future population stability in past candidate assessments. Upon further review of the information related to the factors",
+    "Jackson Counties, North Carolina, from approximately rm 27.5, downstream to Fontana Reservoir (approximately 27.5 rm), and its tributaries, Forney Creek (mouth of the creek), Deep Creek (approximately 2.35 \u2018m), and the Oconaluftee River below the Bryson Dam (also sometimes referred to as the Ela Dam) (approximately 0.5 rm), in Swain County, North Carolina; and (3) sub- adults in the near shore portions of Fontana Reservoir, Swain County, North Carolina. Summary of Status Review In completing our status review, we reviewed the best available scientific and commercial information and compiled this information in the SSA Report for the sicklefin redhorse sucker. For our finding, we evaluated potential stressors related to the sicklefin redhorse sucker and its habitat. The stressors we analyzed were: (1) Hydroelectric operations, inadequate erosion/sedimentation control during agricultural, timbering, and construction activities; (2) runoff and discharge of organic and inorganic pollutants from industrial, municipal, agricultural, and other point and nonpoint sources; (3) habitat alterations associated with channelization and instream dredging/ mining activities; (4) predation and habitat suitability impacts by nonnative species; (5) fragmentation and isolation of surviving populations; and",
+    "known about the habitat utilization of the species, indicate that the sicklefin redhorse sucker once inhabited the majority, if not all, of the rivers and large creeks in the Blue Ridge portion of the Hiwassee and Little Tennessee River systems in North Carolina, Tennessee, and Georgia. Currently, there are only two metapopulations of the sicklefin redhorse sucker known to remain: One in the Hiwassee River system and one in the Little Tennessee River system. Estimated occupied stream habitat in the Hiwassee river systems totals about 53.0 river miles (rm). However, use of various streams/stream reaches within this total appears to be seasonal. Available information indicates that the sicklefin redhorse sucker uses Brasstown Creek, Hanging Dog Creek, Beaverdam Creek, Nottely River, and the mid and upper reaches of the Valley River, primarily for spawning. No spawning or courting behavior was observed within the mainstem of the Hiwassee River; the mid and lower Hiwassee River or lower reaches of the spawning tributaries primarily from the post-spawning period through the fall and early winter; or the lower un- impounded reaches of the Hiwassee"
+  ],
+  "run_metadata": {
+    "profile": "naive_rag",
+    "run_id": "20260409T084647Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

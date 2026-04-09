@@ -1,0 +1,32 @@
+{
+  "profile": "faar_no_vlm",
+  "example_id": "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+  "question": "What is the range of premium increases per pay period for workers on the employee plus spouse/domestic partner benefit tier at the University of Minnesota if the proposed health insurance changes are implemented?",
+  "gold_answer": "$22 to $35.80",
+  "predicted_answer": "Workers on the employee plus spouse/domestic partner benefit tier would see premium increases per pay period ranging from $22 to $35.80, depending on their plan.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.25806451612903225
+  },
+  "top_hit_texts": [
+    "Local 3800 Local 3937 AFSCME. \u00a722:2\u00b0 \u00ae Local 3807 University of Minnesota Clerical, Technical, and Healthcare Workers Talking Paper #2: Health Insurance at the University of Minnesota All University Employees would face increases in deductibles and co-pays if the changes proposed by the administration in the health insurance plan are implemented. Workers on the employee plus spouse/domestic partner benefit tier would see premium increases per pay period ranging from $22 to $35.80, depending on their plan. University officials say they must pass these costs on to employees in order to avoid paying increased taxes under the Affordable Care Act. Though it is clear that employers will face the potential for new taxes under the act, it is not clear, as the University proposes, that employees must bear the brunt of the financial burden in order to comply with the new law. The proposed changes were recently announced at the University Benefits Advisory Committee, a group representing University employees that advises the administration on the benefits plan. Affordable Care Act Insures the Uninsured In the drive to make affordable health care",
+    "U will begin automatically enrolling new employees in the single health insurance plan (they can later opt out or add family coverage). New Taxes Intended to Reduce Cost of Care Two goals of the Affordable Care Act are to make insurance more affordable and keep costs down. The main focus of the Act is on premiums. So the Act included a provision, set to take effect in 2018, that will require employers to pay taxes on part of their most expensive insurance plans. University officials said that plan changes are necessary now in order to prepare for the 2018 deadline. This is the second in a series of talking papers on critical workplace issues for frontline workers at the University of Minnesota AFSCME Local 3800, AFSCME Local 3937, and AFSCME Local 3260 312 Central Ave. SE, Suite 356, Minneapolis, MN 55414 / 106 Kirby Student Center, 1120 Kirby Drive, Duluth, MN 55812 afscme3800@gmail.com / afscme3937@gmail.com / afscme@d.umn.edu",
+    "law. The proposed changes were recently announced at the University Benefits Advisory Committee, a group representing University employees that advises the administration on the benefits plan. Affordable Care Act Insures the Uninsured In the drive to make affordable health care available to all who need it, the Affordable Care Act has already made some significant changes to health care nationally. Insurers are no longer able to disqualify people on the basis of pre-existing conditions, and caps on coverage have been eliminated. Further changes are the way. Next year, insurance exchanges will open, expanding the availability of affordable health insurance for those who currently don\u2019t have it. Individuals will either pay for insurance or pay a fee, and employers likewise must either offer affordable insurance or pay a fee. As part of the Affordable Care Act, in 2015 and 2016, the U will begin automatically enrolling new employees in the single health insurance plan (they can later opt out or add family coverage). New Taxes Intended to Reduce Cost of Care Two goals of the Affordable Care Act are to make"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_vlm",
+    "run_id": "20260409T084613Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

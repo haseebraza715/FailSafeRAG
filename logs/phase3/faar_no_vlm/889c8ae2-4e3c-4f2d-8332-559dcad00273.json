@@ -1,0 +1,30 @@
+{
+  "profile": "faar_no_vlm",
+  "example_id": "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+  "question": "What should a Wiki Ambassador consider if their studies are nearing the end, according to the guidelines provided by Wikimedia Serbia?",
+  "gold_answer": "The Wiki Ambassador should think about who might replace them in their role.",
+  "predicted_answer": "A good Wiki ambassador thinks in advance, so if your studies are nearing the end, think about who might replace you in your Wiki Ambassador role.",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.5128205128205128
+  },
+  "top_hit_texts": [
+    "For the end Finally, you need to know that Wikimedia Serbia regularly hosts meetings of Wiki Ambassadors that you should attend. In addition, it will be your responsibility to write a report in a specific format after each meeting, workshop or other activity, and to forward it to the Educational Program Manager. Wiki ambassadors also write annual reports. A good Wiki ambassador thinks in advance, so if your studies are nearing the end, think about who might replace you in your Wiki Ambassador role. We hope that this short guide will help you understand and successfully carry out the important role of the Wiki Ambassador. We are grateful for the time and effort you will invest in working with us! Author: NebojSa Ratkovi\u00e9 Education Program Manager Wikimedia Serbia nebojsa.ratkovic@vikimedija.org Proofreading: Miroslav Loci Wikimedia Serbia"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_vlm",
+    "run_id": "20260409T084609Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "profile": "faar_full",
+  "example_id": "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+  "question": "What was the percentage change in the number of beneficiaries receiving regular income benefits in Regina from August 2021 to August 2022?",
+  "gold_answer": "-71.3",
+  "predicted_answer": "The Daily, Thursday, October 20, 2022 Table 3 - continued by c",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.15384615384615385
+  },
+  "top_hit_texts": [
+    "The Daily, Thursday, October 20, 2022 Table 3 - continued by c",
+    "10,740 2,320 2,320 2,320 2,320 2,320 2,320 2,320 2,320 2,320 2"
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260409T084403Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

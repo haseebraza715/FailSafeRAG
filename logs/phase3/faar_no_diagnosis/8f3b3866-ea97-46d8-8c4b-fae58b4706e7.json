@@ -1,0 +1,31 @@
+{
+  "profile": "faar_no_diagnosis",
+  "example_id": "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+  "question": "What was the percentage change in the number of beneficiaries receiving regular income benefits in Regina from August 2021 to August 2022?",
+  "gold_answer": "-71.3",
+  "predicted_answer": "The Daily, Thursday, October 20, 2022 Table 3 - continued Beneficiaries receiving regular income benefits,1 by census metropolitan category?",
+  "failure_type": "pass",
+  "policy_action": "answer_direct",
+  "action_outcome": {
+    "action": "answer_direct",
+    "status": "succeeded",
+    "reason": "passed_quality_gate"
+  },
+  "metrics": {
+    "ndcg@5": 1.0,
+    "recall@5": 1.0,
+    "em": 0.0,
+    "f1": 0.09523809523809525
+  },
+  "top_hit_texts": [
+    "The Daily, Thursday, October 20, 2022 Table 3 - continued Beneficiaries receiving regular income benefits,1 by census metropolitan category? \u2014 Seasonally adjusted August July August July to August 2021 July to August 2021 2021 2022P 2022P August 2022 to August August 2022 to August 2022 2022 Saskatchewan Census metropolitan areas 17,800 5,500 5,520 20 -12,280 0.4 -69.0 Regina 7,800 2,160 2,240 80 -5,560 3.7 71.3 Saskatoon 10,010 3,340 3,280 -60 -6,730 -1.8 -67.2 Census agglomerations 7,240 2,720 2,780 60 -4,460 2.2 -61.6 Outside census metropolitan areas and census agglomerations 15,160 7,590 7,470 -120 -7,690 1.6 -50.7 Alberta Census metropolitan areas 128,220 34,760 34,050 -710 -94,170 -2.0 -73.4 Calgary 61,420 15,730 15,170 -560 -46,250 -3.6 -75.3 Edmonton 62,800 17,930 17,750 -180 -45,050 -1.0 71.7 Lethbridge 4,000 1,110 1,130 20 -2,870 1.8 71.8 Census agglomerations 24,040 7,050 7,110 60 -16,930 0.9 -70.4 Outside census metropolitan areas and census agglomerations 27,880 9,430 9,460 30 -18,420 0.3 -66.1 British Columbia Census metropolitan areas 100,010 24,380 24,440 60 -75,570 0.2 -75.6 Abbotsford\u2014Mission 6,760 2,320 2,340 20 -4,420 0.9 -65.4 Kelowna 7,760 2,150 2,160 10 -5,600",
+    "Outside census metropolitan areas and census agglomerations 27,880 9,430 9,460 30 -18,420 0.3 -66.1 British Columbia Census metropolitan areas 100,010 24,380 24,440 60 -75,570 0.2 -75.6 Abbotsford\u2014Mission 6,760 2,320 2,340 20 -4,420 0.9 -65.4 Kelowna 7,760 2,150 2,160 10 -5,600 0.5 -72.2 Vancouver 74,750 17,440 17,390 -50 -57,360 -0.3 -76.7 Victoria 10,740 2,480 2,550 70 -8,190 28 -76.3 Census agglomerations 34,580 10,990 11,160 170 -23,420 1.5 -67.7 Outside census metropolitan areas and census agglomerations 24,660 8,300 8,490 190 -16,170 2.3 -65.6 P preliminary 1. Includes people who receive regular income benefits, whether or not they participate in one of three employment benefit programs, Development Program, the Job Creation Partnerships Program and the Self-employment Program. 2. 2016 Standard Geographical Classification. Source(s): Table 14-10-0322-01. namely the Skills Component of Statistics Canada catalogue no. 11-001-X"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_diagnosis",
+    "run_id": "20260409T084537Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

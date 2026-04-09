@@ -1,0 +1,31 @@
+{
+  "profile": "faar_full",
+  "example_id": "848d6744-2489-473b-b5fa-9dc0938d4510",
+  "question": "What is the total width in millimeters of the stripes in the COLOR PATTERN: STREAMER SIZE table?",
+  "gold_answer": "70.3 mm",
+  "predicted_answer": "MIL-DTL-11589/167F COLOR PATTERN: STREAMER SIZE FINISH: MOIRE TOTAL | WIDTH OF STRIPES FUNCTION COLOR & CABLE NUMBER WIDTH INCHES & METRIC OF STRIPES | STRIPES FILLING YARN 1/32 0.8mm Edge & Binder | Green HAD | 67129 25/32 19.8 mm Ground Green HAD | 67129 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 2-3/4\u201d 1/8 3.2 mm Ground Air Force Yellow | HC 67103 White (70.0mm) 1/4 6.4 mm Ground Scarlet HL 67111 HA 67101 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 1/8 3.2 mm Ground Air Force Yellow | HC 67103 25/32 19.8 mm Ground Green HAD | 67129 1/32 0.8mm Edge & Binder | Green HAD | 67129 CHANGES FROM PREVIOUS ISSUE: The margins of this specification are marked with vertical lines to indicate where changes from the previous issue were made.",
+  "failure_type": "structural",
+  "policy_action": "invoke_vlm",
+  "action_outcome": {
+    "action": "invoke_vlm",
+    "status": "skipped",
+    "reason": "vlm_backend_not_configured"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.03571428571428572
+  },
+  "top_hit_texts": [
+    "MIL-DTL-11589/167F COLOR PATTERN: STREAMER SIZE FINISH: MOIRE TOTAL | WIDTH OF STRIPES FUNCTION COLOR & CABLE NUMBER WIDTH INCHES & METRIC OF STRIPES | STRIPES FILLING YARN 1/32 0.8mm Edge & Binder | Green HAD | 67129 25/32 19.8 mm Ground Green HAD | 67129 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 2-3/4\u201d 1/8 3.2 mm Ground Air Force Yellow | HC 67103 White (70.0mm) 1/4 6.4 mm Ground Scarlet HL 67111 HA 67101 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 1/8 3.2 mm Ground Air Force Yellow | HC 67103 25/32 19.8 mm Ground Green HAD | 67129 1/32 0.8mm Edge & Binder | Green HAD | 67129 CHANGES FROM PREVIOUS ISSUE: The margins of this specification are marked with vertical lines to indicate where changes from the previous issue were made. This was done as a convenience only and the Government assumes no liability whatsoever for any inaccuracies in these notations. Bidders and contractors are cautioned",
+    "are marked with vertical lines to indicate where changes from the previous issue were made. This was done as a convenience only and the Government assumes no liability whatsoever for any inaccuracies in these notations. Bidders and contractors are cautioned to evaluate the requirements of this document based on the entire content irrespective of the marginal notations and relationship to the last previous issue. Custodians: Preparing activity: Army - IH Army - IH Navy - NU Review activities: (Project No. 8455-2012-105) Navy - MC, CG1 DLA - CT NOTE: The activities listed above were interested in this document as of the date of this document. Since organizations and responsibilities can change, you should verify the currency of the information above using the ASSIST Online database at https://assist.dla.mil. Page 2 of 2 Source: https://assist.dla.mil -- Downloaded: 2017-03-02T22:42Z Check the source to verify that this is the current version before use."
+  ],
+  "run_metadata": {
+    "profile": "faar_full",
+    "run_id": "20260409T084358Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

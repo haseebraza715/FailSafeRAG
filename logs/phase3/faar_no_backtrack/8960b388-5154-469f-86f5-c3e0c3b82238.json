@@ -1,0 +1,30 @@
+{
+  "profile": "faar_no_backtrack",
+  "example_id": "8960b388-5154-469f-86f5-c3e0c3b82238",
+  "question": "What was the total amount of dividends paid by the company in 2007?",
+  "gold_answer": "28878",
+  "predicted_answer": "31 December 2008 336,000 (4,090) 11,120 343,030 At 31 December",
+  "failure_type": "word_level",
+  "policy_action": "correct_text",
+  "action_outcome": {
+    "action": "correct_text",
+    "status": "succeeded",
+    "reason": "byt5_correction_applied"
+  },
+  "metrics": {
+    "ndcg@5": 0.0,
+    "recall@5": 0.0,
+    "em": 0.0,
+    "f1": 0.0
+  },
+  "top_hit_texts": [
+    "31 December 2008 336,000 (4,090) 11,120 343,030 At 31 December"
+  ],
+  "run_metadata": {
+    "profile": "faar_no_backtrack",
+    "run_id": "20260409T084459Z",
+    "api_enabled": false,
+    "vlm_backend": "mock",
+    "openai_model": "gpt-4o"
+  }
+}

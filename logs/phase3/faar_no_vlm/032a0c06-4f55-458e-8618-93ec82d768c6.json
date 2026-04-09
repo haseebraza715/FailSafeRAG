@@ -3,7 +3,7 @@
   "example_id": "032a0c06-4f55-458e-8618-93ec82d768c6",
   "question": "How much did JPMorgan Chase's credit derivatives used to manage loans and lending-related commitments decrease from December 31, 2020, to March 31, 2021?",
   "gold_answer": "$1,716 million",
-  "predicted_answer": "the Firm\u00e2\u20ac\u2122s end-user activities and the Firm\u00e2\u20ac\u2122s en",
+  "predicted_answer": "the Firm\u2019s end-user activities are credit the Firm\u2019s end-u",
   "failure_type": "word_level",
   "policy_action": "correct_text",
   "action_outcome": {
@@ -18,16 +18,16 @@
     "f1": 0.0
   },
   "top_hit_texts": [
-    "Form 10-K for further information on one of the Firm\u00e2\u20ac\u2122s",
-    "the Firm\u00e2\u20ac\u2122s end-user activities and the Firm\u00e2\u20ac\u2122s en",
-    "credit card correct ocr noise: Allowance for credit losses and",
-    "and equity and equity and equity and equity and equity and equ",
+    "Form 10-K for further information on credit portfolio of JPMor",
+    "the Firm\u2019s end-user activities are credit the Firm\u2019s end-u",
+    "2020 Form 10-K for further information on the allowance for cr",
+    "and corporate debt and equity securities securities securities",
     "NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA"
   ],
   "run_metadata": {
     "profile": "faar_no_vlm",
-    "run_id": "20260408T135321Z",
-    "api_enabled": true,
+    "run_id": "20260409T084546Z",
+    "api_enabled": false,
     "vlm_backend": "mock",
     "openai_model": "gpt-4o"
   }
