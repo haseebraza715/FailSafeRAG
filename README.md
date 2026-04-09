@@ -32,7 +32,7 @@ flowchart TD
 ## Research Objective
 
 - Hypothesis: typed, failure-aware recovery outperforms naive OCR-RAG handling under OCR corruption while using fewer expensive visual calls than always-on multimodal pipelines.
-- Current scope: Phase 1 prototype completion and Phase 2 methodological formalization.
+- Current scope: Phases 1-3 are completed for prototype, formalization, and initial benchmark/ablation reporting.
 
 ## Reproducible Quick Start
 
@@ -50,7 +50,7 @@ python -m pip install -e .
 ### Run one end-to-end example
 
 ```bash
-faar-demo --example-id 446d159e-b5c2-45dc-91cc-faaa931f3649 --project-root . --vlm-backend mock --seed 42 --output logs/phase1/phase1_e2e_latest.json
+faar-demo run-example --example-id 446d159e-b5c2-45dc-91cc-faaa931f3649 --project-root . --vlm-backend mock --seed 42 --output logs/phase1/phase1_e2e_latest.json
 ```
 
 ### Run test suite
@@ -90,10 +90,10 @@ python -m pytest
 - Phase 0: complete (grounding sample and manual labels)
 - Phase 1: complete (prototype pipeline validated)
 - Phase 2: complete (formalization and documentation modularization)
-- Next milestone: Phase 3 benchmark experiments and ablations
+- Phase 3: complete (benchmark runner, ablations, metrics artifacts, and reporting)
+- Next milestone: Phase 4 claim refinement and Phase 5 paper drafting
 
 ## Operational Notes
 
 - `vlm-backend=mock` is the default for offline reproducibility.
 - API-backed visual evaluation is primarily required in Phase 3 benchmarking and cost analysis.
-

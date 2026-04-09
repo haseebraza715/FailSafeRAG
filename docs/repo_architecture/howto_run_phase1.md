@@ -21,7 +21,7 @@ python -m pip install -e .
 1. Run one example:
 
 ```bash
-faar-demo --example-id 446d159e-b5c2-45dc-91cc-faaa931f3649 --project-root C:\Users\razah\Downloads\failure-aware-ocr-rag --vlm-backend mock --seed 42 --output C:\Users\razah\Downloads\failure-aware-ocr-rag\logs\phase1\phase1_e2e_latest.json
+faar-demo run-example --example-id 446d159e-b5c2-45dc-91cc-faaa931f3649 --project-root . --vlm-backend mock --seed 42 --output logs/phase1/phase1_e2e_latest.json
 ```
 
 1. Validate output JSON contains:
@@ -48,6 +48,5 @@ flowchart TD
     test[RunPytest]
     install --> run --> verify --> test
 ```
-
 
 

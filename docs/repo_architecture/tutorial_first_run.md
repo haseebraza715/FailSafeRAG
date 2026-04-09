@@ -13,7 +13,7 @@ python -m pip install -e .
 ## Step 2: Execute a run
 
 ```bash
-faar-demo --example-id 446d159e-b5c2-45dc-91cc-faaa931f3649 --project-root C:\Users\razah\Downloads\failure-aware-ocr-rag --vlm-backend mock --seed 42 --output C:\Users\razah\Downloads\failure-aware-ocr-rag\logs\phase1\tutorial_run.json
+faar-demo run-example --example-id 446d159e-b5c2-45dc-91cc-faaa931f3649 --project-root . --vlm-backend mock --seed 42 --output logs/phase1/tutorial_run.json
 ```
 
 ## Step 3: Inspect outputs
@@ -40,6 +40,5 @@ flowchart LR
     compare[CompareWithOtherRuns]
     setup --> execute --> inspect --> compare
 ```
-
 
 
