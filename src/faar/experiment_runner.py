@@ -17,17 +17,19 @@ def run_profile(
     profile_name: str,
     max_examples: int | None = None,
     output_dir: Path | None = None,
+    example_ids: list[str] | None = None,
+    selection: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     settings = apply_profile(settings, profile_name)
     repo = Phase0Repository(settings)
     graph = build_graph(settings)
-    example_ids = repo.list_example_ids()
-    if max_examples is not None:
-        example_ids = example_ids[: max(0, max_examples)]
+    selected_ids = list(example_ids) if example_ids is not None else repo.list_example_ids()
+    if max_examples is not None and example_ids is None:
+        selected_ids = selected_ids[: max(0, max_examples)]
     base_output = output_dir or (settings.project_root / "logs/phase3" / profile_name)
     base_output.mkdir(parents=True, exist_ok=True)
     rows: list[dict[str, Any]] = []
-    for example_id in example_ids:
+    for example_id in selected_ids:
         result = graph.invoke({"example_id": example_id})
         hit_texts = [hit.chunk.text for hit in result.get("corrected_hits") or result.get("retrieved_hits", [])]
         gold = result["example"].correct_answer
@@ -54,10 +56,11 @@ def run_profile(
                 "api_enabled": settings.recovery.api_enabled,
                 "vlm_backend": settings.recovery.vlm_backend,
                 "openai_model": settings.recovery.openai_model,
+                "evaluation_size": len(selected_ids),
+                "selection": selection or {"max_examples": max_examples},
             },
         }
         rows.append(row)
         destination = base_output / f"{example_id}.json"
         destination.write_text(json.dumps(row, indent=2))
     return rows
-

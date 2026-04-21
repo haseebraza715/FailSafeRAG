@@ -4,6 +4,7 @@ import ast
 import csv
 import json
 import re
+from collections import defaultdict
 from pathlib import Path
 
 from .settings import AppSettings
@@ -36,6 +37,7 @@ class Phase0Repository:
         self.settings = settings
         self._summary = self._load_summary(settings.phase0_summary)
         self._manifest = self._load_manifest(settings.phase0_manifest)
+        self._manual_labels = self._load_manual_labels(settings.phase0_manual_labels)
 
     @staticmethod
     def _load_summary(path: Path | None) -> dict[str, dict]:
@@ -52,11 +54,74 @@ class Phase0Repository:
             rows = list(csv.DictReader(handle))
         return {row["example_id"]: row for row in rows}
 
+    @staticmethod
+    def _load_manual_labels(path: Path | None) -> dict[str, dict]:
+        if path is None or not path.exists():
+            return {}
+        with path.open(newline="", encoding="utf-8", errors="ignore") as handle:
+            rows = list(csv.DictReader(handle))
+        return {row["example_id"]: row for row in rows}
+
     def list_example_ids(self) -> list[str]:
         return sorted(self._manifest)
 
+    def get_example_record(self, example_id: str) -> dict[str, str]:
+        row = dict(self._manifest[example_id])
+        manual = self._manual_labels.get(example_id, {})
+        row["manual_failure_type"] = manual.get("failure_type", "").strip()
+        row["manual_failure_notes"] = manual.get("notes", "").strip()
+        return row
+
+    def select_example_ids(
+        self,
+        *,
+        max_examples: int | None = None,
+        doc_types: list[str] | None = None,
+        evidence_sources: list[str] | None = None,
+        manual_failure_types: list[str] | None = None,
+        stratify_by: str | None = None,
+        examples_per_stratum: int | None = None,
+    ) -> list[str]:
+        allowed_strata = {"doc_type", "evidence_source", "manual_failure_type"}
+        if stratify_by and stratify_by not in allowed_strata:
+            raise ValueError(
+                f"Unsupported stratify_by={stratify_by!r}. Expected one of: {', '.join(sorted(allowed_strata))}."
+            )
+
+        doc_type_filter = {value.strip() for value in doc_types or [] if value.strip()}
+        evidence_filter = {value.strip() for value in evidence_sources or [] if value.strip()}
+        failure_filter = {value.strip() for value in manual_failure_types or [] if value.strip()}
+
+        filtered: list[str] = []
+        for example_id in self.list_example_ids():
+            row = self.get_example_record(example_id)
+            if doc_type_filter and row.get("doc_type", "").strip() not in doc_type_filter:
+                continue
+            if evidence_filter and row.get("evidence_source", "").strip() not in evidence_filter:
+                continue
+            if failure_filter and row.get("manual_failure_type", "").strip() not in failure_filter:
+                continue
+            filtered.append(example_id)
+
+        if stratify_by:
+            grouped: dict[str, list[str]] = defaultdict(list)
+            for example_id in filtered:
+                row = self.get_example_record(example_id)
+                stratum = row.get(stratify_by, "").strip() or "unknown"
+                grouped[stratum].append(example_id)
+            balanced: list[str] = []
+            for stratum in sorted(grouped):
+                group_ids = sorted(grouped[stratum])
+                take = len(group_ids) if examples_per_stratum is None else max(examples_per_stratum, 0)
+                balanced.extend(group_ids[:take])
+            filtered = balanced
+
+        if max_examples is not None:
+            filtered = filtered[: max(max_examples, 0)]
+        return filtered
+
     def get_example(self, example_id: str) -> Phase0Example:
-        row = self._manifest[example_id]
+        row = self.get_example_record(example_id)
         summary = self._summary.get(example_id, {})
         ocr_text_path = Path(summary.get("ocr_text_path", self.settings.phase0_ocr_dir / f"{example_id}.txt"))
         if not ocr_text_path.exists():
@@ -77,6 +142,8 @@ class Phase0Repository:
             metadata={
                 "doc_type": row.get("doc_type", ""),
                 "evidence_source": row.get("evidence_source", ""),
+                "manual_failure_type": row.get("manual_failure_type", ""),
+                "manual_failure_notes": row.get("manual_failure_notes", ""),
                 "page_texts": _parse_ocr_pages(ocr_text),
             },
         )

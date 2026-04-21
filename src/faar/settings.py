@@ -44,6 +44,7 @@ class AppSettings(BaseModel):
     project_root: Path = Field(default_factory=lambda: _default_project_root())
     phase0_manifest: Path | None = None
     phase0_summary: Path | None = None
+    phase0_manual_labels: Path | None = None
     phase0_ocr_dir: Path | None = None
     logs_dir: Path | None = None
     artifacts_dir: Path | None = None
@@ -56,6 +57,7 @@ class AppSettings(BaseModel):
         self.project_root = self.project_root.resolve()
         self.phase0_manifest = (self.phase0_manifest or self.project_root / "data/phase0/sample_manifest.csv").resolve()
         self.phase0_summary = (self.phase0_summary or self.project_root / "data/phase0/phase0_asset_summary.json").resolve()
+        self.phase0_manual_labels = (self.phase0_manual_labels or self.project_root / "data/phase0/manual_labels.csv").resolve()
         self.phase0_ocr_dir = (self.phase0_ocr_dir or self.project_root / "artifacts/phase0/ocr_text").resolve()
         self.logs_dir = (self.logs_dir or self.project_root / "logs/phase1").resolve()
         self.artifacts_dir = (self.artifacts_dir or self.project_root / "artifacts/phase1").resolve()

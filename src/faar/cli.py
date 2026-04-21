@@ -20,6 +20,43 @@ from .settings import AppSettings
 app = typer.Typer(add_completion=False, help="FAAR Phase 1 prototype CLI")
 
 
+def _parse_csv_option(raw: str) -> list[str]:
+    return [value.strip() for value in raw.split(",") if value.strip()]
+
+
+def _resolve_benchmark_selection(
+    settings: AppSettings,
+    *,
+    max_examples: int | None,
+    doc_types: str,
+    evidence_sources: str,
+    manual_failure_types: str,
+    stratify_by: str | None,
+    examples_per_stratum: int | None,
+) -> tuple[list[str], dict[str, object]]:
+    repo = Phase0Repository(settings)
+    selection = {
+        "max_examples": max_examples,
+        "doc_types": _parse_csv_option(doc_types),
+        "evidence_sources": _parse_csv_option(evidence_sources),
+        "manual_failure_types": _parse_csv_option(manual_failure_types),
+        "stratify_by": stratify_by,
+        "examples_per_stratum": examples_per_stratum,
+    }
+    example_ids = repo.select_example_ids(
+        max_examples=max_examples,
+        doc_types=selection["doc_types"],
+        evidence_sources=selection["evidence_sources"],
+        manual_failure_types=selection["manual_failure_types"],
+        stratify_by=stratify_by,
+        examples_per_stratum=examples_per_stratum,
+    )
+    if not example_ids:
+        raise typer.BadParameter("No examples matched the requested benchmark slice.")
+    selection["selected_example_ids"] = example_ids
+    return example_ids, selection
+
+
 @app.command()
 def run_example(
     example_id: str = typer.Option(..., help="Phase 0 example id to run"),
@@ -94,6 +131,11 @@ def run_benchmark(
     vlm_backend: str = typer.Option("openai", help="Visual fallback backend"),
     seed: int = typer.Option(42, help="Random seed"),
     api_enabled: bool = typer.Option(True, help="Enable API-backed runtime features"),
+    doc_types: str = typer.Option("", help="Comma-separated doc_type filter"),
+    evidence_sources: str = typer.Option("", help="Comma-separated evidence_source filter"),
+    manual_failure_types: str = typer.Option("", help="Comma-separated manual failure labels"),
+    stratify_by: str | None = typer.Option(None, help="Optional stratification key: doc_type, evidence_source, manual_failure_type"),
+    examples_per_stratum: int | None = typer.Option(None, help="Optional cap per stratum when stratifying"),
 ) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -105,7 +147,22 @@ def run_benchmark(
     settings.artifacts_dir = (settings.project_root / "artifacts/phase3").resolve()
     settings.logs_dir.mkdir(parents=True, exist_ok=True)
     settings.artifacts_dir.mkdir(parents=True, exist_ok=True)
-    rows = run_profile(settings, profile_name=profile, max_examples=max_examples)
+    example_ids, selection = _resolve_benchmark_selection(
+        settings,
+        max_examples=max_examples,
+        doc_types=doc_types,
+        evidence_sources=evidence_sources,
+        manual_failure_types=manual_failure_types,
+        stratify_by=stratify_by,
+        examples_per_stratum=examples_per_stratum,
+    )
+    rows = run_profile(
+        settings,
+        profile_name=profile,
+        max_examples=max_examples,
+        example_ids=example_ids,
+        selection=selection,
+    )
     profile_summaries = summarize_by_profile(rows)
     summary = profile_summaries.get(
         profile,
@@ -124,6 +181,11 @@ def run_benchmark_all(
     vlm_backend: str = typer.Option("openai", help="Visual fallback backend"),
     seed: int = typer.Option(42, help="Random seed"),
     api_enabled: bool = typer.Option(True, help="Enable API-backed runtime features"),
+    doc_types: str = typer.Option("", help="Comma-separated doc_type filter"),
+    evidence_sources: str = typer.Option("", help="Comma-separated evidence_source filter"),
+    manual_failure_types: str = typer.Option("", help="Comma-separated manual failure labels"),
+    stratify_by: str | None = typer.Option(None, help="Optional stratification key: doc_type, evidence_source, manual_failure_type"),
+    examples_per_stratum: int | None = typer.Option(None, help="Optional cap per stratum when stratifying"),
 ) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -135,11 +197,26 @@ def run_benchmark_all(
     settings.artifacts_dir = (settings.project_root / "artifacts/phase3").resolve()
     settings.logs_dir.mkdir(parents=True, exist_ok=True)
     settings.artifacts_dir.mkdir(parents=True, exist_ok=True)
+    example_ids, selection = _resolve_benchmark_selection(
+        settings,
+        max_examples=max_examples,
+        doc_types=doc_types,
+        evidence_sources=evidence_sources,
+        manual_failure_types=manual_failure_types,
+        stratify_by=stratify_by,
+        examples_per_stratum=examples_per_stratum,
+    )
 
     all_rows = []
     full_summary: dict[str, dict] = {}
     for profile_name in sorted(PROFILES):
-        profile_rows = run_profile(settings, profile_name=profile_name, max_examples=max_examples)
+        profile_rows = run_profile(
+            settings,
+            profile_name=profile_name,
+            max_examples=max_examples,
+            example_ids=example_ids,
+            selection=selection,
+        )
         all_rows.extend(profile_rows)
         profile_summaries = summarize_by_profile(profile_rows)
         per_profile = profile_summaries.get(

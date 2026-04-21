@@ -12,7 +12,7 @@ from .quality import diagnose_failure, quality_gate
 from .recovery import ByT5Corrector, VisualFallback, semantic_backtrack
 from .retrieval import HybridRetriever
 from .settings import AppSettings
-from .types import RetrievalHit
+from .types import Chunk, RetrievalHit
 
 
 class GraphState(TypedDict, total=False):
@@ -84,16 +84,43 @@ def build_graph(settings: AppSettings):
 
     def word_level_recovery(state: GraphState) -> GraphState:
         updated_hits: list[RetrievalHit] = []
+        applied = 0
+        decisions: list[dict[str, str | bool]] = []
         for hit in state["retrieved_hits"]:
-            corrected = corrector.correct(hit.chunk.text)
-            hit.chunk.text = corrected or hit.chunk.text
-            updated_hits.append(hit)
+            proposal = corrector.propose_correction(hit.chunk.text)
+            corrected_text = str(proposal["text"]) or hit.chunk.text
+            decisions.append(
+                {
+                    "chunk_id": hit.chunk.chunk_id,
+                    "applied": bool(proposal["applied"]),
+                    "reason": str(proposal["reason"]),
+                }
+            )
+            if proposal["applied"]:
+                applied += 1
+            updated_hits.append(
+                RetrievalHit(
+                    chunk=Chunk(
+                        chunk_id=hit.chunk.chunk_id,
+                        example_id=hit.chunk.example_id,
+                        doc_name=hit.chunk.doc_name,
+                        page_id=hit.chunk.page_id,
+                        text=corrected_text,
+                    ),
+                    bm25_score=hit.bm25_score,
+                    dense_score=hit.dense_score,
+                    fused_score=hit.fused_score,
+                )
+            )
         return {
             "corrected_hits": updated_hits,
             "action_outcome": {
                 "action": "correct_text",
-                "status": "succeeded",
-                "reason": "byt5_correction_applied",
+                "status": "succeeded" if applied else "skipped",
+                "reason": "byt5_correction_applied" if applied else "byt5_correction_guarded",
+                "applied_count": applied,
+                "reviewed_count": len(state["retrieved_hits"]),
+                "decisions": decisions,
             },
         }
 
