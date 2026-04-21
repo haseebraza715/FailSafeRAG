@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 import typer
 
+from .data import Phase0Repository
 from .experiment_profiles import PROFILES
 from .experiment_runner import run_profile
 from .graph import build_graph
