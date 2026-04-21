@@ -3,13 +3,42 @@
   "example_id": "032a0c06-4f55-458e-8618-93ec82d768c6",
   "question": "How much did JPMorgan Chase's credit derivatives used to manage loans and lending-related commitments decrease from December 31, 2020, to March 31, 2021?",
   "gold_answer": "$1,716 million",
-  "predicted_answer": "the Firm\u2019s end-user activities are credit the Firm\u2019s end-u",
+  "predicted_answer": "4",
   "failure_type": "word_level",
   "policy_action": "correct_text",
   "action_outcome": {
     "action": "correct_text",
-    "status": "succeeded",
-    "reason": "byt5_correction_applied"
+    "status": "skipped",
+    "reason": "byt5_correction_guarded",
+    "applied_count": 0,
+    "reviewed_count": 5,
+    "decisions": [
+      {
+        "chunk_id": "032a0c06-4f55-458e-8618-93ec82d768c6-p61-c2",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      },
+      {
+        "chunk_id": "032a0c06-4f55-458e-8618-93ec82d768c6-p61-c1",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      },
+      {
+        "chunk_id": "032a0c06-4f55-458e-8618-93ec82d768c6-p134-c0",
+        "applied": false,
+        "reason": "formula_like_source"
+      },
+      {
+        "chunk_id": "032a0c06-4f55-458e-8618-93ec82d768c6-p61-c0",
+        "applied": false,
+        "reason": "numeric_signature_changed"
+      },
+      {
+        "chunk_id": "032a0c06-4f55-458e-8618-93ec82d768c6-p134-c1",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      }
+    ]
   },
   "metrics": {
     "ndcg@5": 0.0,
@@ -18,17 +47,68 @@
     "f1": 0.0
   },
   "top_hit_texts": [
-    "Form 10-K for further information on credit portfolio of JPMor",
-    "the Firm\u2019s end-user activities are credit the Firm\u2019s end-u",
-    "2020 Form 10-K for further information on the allowance for cr",
-    "and corporate debt and equity securities securities securities",
-    "NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA"
+    "(in millions) 2021 2020 Credit derivatives used to manage: Loans and lending-related commitments $ 2,161 $ 3,877 Derivative receivables 20,488 18,362 Credit derivatives used in credit portfolio management activities $ 22,649 $ 22,239 (a) Amounts are presented net, considering the Firm\u2019s net protection purchased or sold with respect to each underlying reference entity or index. Refer to Credit derivatives in Note 4 of this Form 10-Q and Note 5 of JPMorgan Chase\u2019s 2020 Form 10-K for further information on credit derivatives and derivatives used in credit portfolio management activities.",
+    "exposure that could arise should the fair value of the client\u2019s derivative contracts move in the Firm\u2019s favor. Refer to Note 4 for additional information on the Firm\u2019s use of collateral agreements. Credit derivatives The Firm uses credit derivatives for two primary purposes: first, in its capacity as a market-maker, and second, as an end-user, to manage the Firm\u2019s own credit risk associated with various exposures. 62 Credit portfolio management activities Included in the Firm\u2019s end-user activities are credit derivatives used to mitigate the credit risk associated with traditional lending activities (loans and lending-related commitments) and derivatives counterparty exposure in the Firm\u2019s wholesale businesses (collectively, \u201ccredit portfolio management activities\"). Information on credit portfolio management activities is provided in the table below. Credit derivatives used in credit portfolio management activities Notional amount of protection purchased and sold\u201d March 31, December 31, (in millions) 2021 2020 Credit derivatives used to manage: Loans and lending-related commitments $ 2,161 $ 3,877 Derivative receivables 20,488 18,362 Credit derivatives used in credit portfolio management activities $ 22,649 $ 22,239 (a) Amounts are presented net, considering the",
+    "Allowance for credit losses and related information The table below summarizes information about the allowances for loan losses and lending-related commitments, and includes a breakdown of loans and lending-related commitments by impairment methodology. Refer to Note 10 of JPMorgan Chase\u2019s 2020 Form 10-K for further information on the allowance for credit losses on investment securities. 2021 2020\u201d Consumer, Consumer, Three months ended March 31, excluding excluding (in millions) credit card Credit card Wholesale Total creditcard _Creditcard _ Wholesale Total Allowance for loan losses Beginning balance at January 1, $ 3,636 $ 17,800 $ 6,892 $ 28,328 $ 2,538 $ 5,683 $ 4,902 $ 13,123 Cumulative effect of a change in accounting principle NA NA NA NA 297 5,517 (1,642) 4,172 Gross charge-offs 166 1,214 88 1,468 233 1,488 181 1,902 Gross recoveries collected (145) (231) (35) (411) (239) (175) (19) (433) Net charge-offs/(recoveries) 21 983 53 1,057 (6) 1,313 162 1,469 Provision for loan losses (932) (2,517) (830) (4,279) 613 5,063 1,742 7,418 Other (1) = 10 9 = = - - Ending balance at March 31, $ 2,682 $",
+    "Ratings profile of derivative receivables March 31, 2021 December 31, 2020 Exposure net of %ofexposurenet Exposure net of % of exposure net (in millions, except ratios) collateral of collateral collateral of collateral Investment-grade $ 32,774 61% \u00a2 37,013 63 % Noninvestment-grade 20,671 39 21,789 37 Total $ 53,445 100% \u00a2 58,802 100 % The Firm also holds additional collateral (primarily cash, G7 government securities, other liquid government agency and guaranteed securities, and corporate debt and equity securities) delivered by clients at the initiation of transactions, as well as collateral related to contracts that have a non-daily call frequency and collateral that the Firm has agreed to return but has not yet settled as of the reporting date. Although this collateral does not reduce the balances and is not included in the table above, it is available as security against potential exposure that could arise should the fair value of the client\u2019s derivative contracts move in the Firm\u2019s favor. Refer to Note 4 for additional information on the Firm\u2019s use of collateral agreements. Credit derivatives The Firm uses credit derivatives for",
+    "(433) Net charge-offs/(recoveries) 21 983 53 1,057 (6) 1,313 162 1,469 Provision for loan losses (932) (2,517) (830) (4,279) 613 5,063 1,742 7,418 Other (1) = 10 9 = = - - Ending balance at March 31, $ 2,682 $ 14,300 $ 6,019 $ 23,001 $ 3,454 $ 14,950 $ 4,840 $ 23,244 Allowance for lending-related commitments Beginning balance at January 1, $ 187 $ - $ 2,222 $ 2,409 $ 12 $ - $ 1,179 $ 1,191 Cumulative effect of a change in accounting principle NA NA NA NA 133 - (35) 98 Provision for lending-related commitments (52) - 159 107 6 = 852 858 Other = = = = = = = = Ending balance at March 31, $ 135 $ -\u00a2 2,381 $ 2,516 $ 151 $ - $ 1,996 \u00a2 2,147 Total allowance for credit losses $ 2,817 $ 14,300 $ 8,400 $ 25,517 $ 3,605 $ 14,950 $ 6836 $ 25,391 Allowance for loan losses by impairment methodology Asset-specific\u201d $ (348) $ 522 $ 529 \u00a2 703 $ 223 $ 530 $ 556 $ 1,309"
   ],
   "run_metadata": {
     "profile": "faar_no_backtrack",
-    "run_id": "20260409T084438Z",
+    "run_id": "20260421T152453Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }

@@ -3,13 +3,27 @@
   "example_id": "a782b7d8-000a-4645-b6c1-49c62a184780",
   "question": "If a mentor teacher in the Peters Township Federation of Teachers worked from 2010-2011 to 2019-2020, what is the total stipend they would receive over these years?",
   "gold_answer": "$9,975",
-  "predicted_answer": "$165 per month 2017-2018 $165 per month 2017-2018 $165 per mon",
+  "predicted_answer": "$165",
   "failure_type": "word_level",
   "policy_action": "correct_text",
   "action_outcome": {
     "action": "correct_text",
-    "status": "succeeded",
-    "reason": "byt5_correction_applied"
+    "status": "skipped",
+    "reason": "byt5_correction_guarded",
+    "applied_count": 0,
+    "reviewed_count": 2,
+    "decisions": [
+      {
+        "chunk_id": "a782b7d8-000a-4645-b6c1-49c62a184780-p8-c1",
+        "applied": false,
+        "reason": "formula_like_source"
+      },
+      {
+        "chunk_id": "a782b7d8-000a-4645-b6c1-49c62a184780-p8-c0",
+        "applied": false,
+        "reason": "formula_like_source"
+      }
+    ]
   },
   "metrics": {
     "ndcg@5": 0.0,
@@ -18,14 +32,65 @@
     "f1": 0.0
   },
   "top_hit_texts": [
-    "$165 per month 2017-2018 $165 per month 2017-2018 $165 per mon",
-    "and an equivalent program as attached in a health care. each e"
+    "per month $165 per month 2017-2018 $85 per month $175 per month 2018-2019 $90 per month $185 per month 2019-2020 $95 per month $200 per month 7. Section 12 E - Extra Duties Activities - Mentor Teachers All mentor teachers shall receive a stipend as follows: 2010-2011 $950 2015-2016 $1,025 2044-2012 $950 2016-2017 $1,025 2042-2013\u2014\u2014_4975 2017-2018 $1,025 2043-2614_$975 2018-2019 $1,050 2044-2015\u2014\u2014_41.000 2019-2020 $1,050",
+    "Peters Township Federation of Teachers Non-Binding Arbitration Final Best Offer 6. Section 11 Alb & A2 - INSURANCE AND HOSPITALIZATION A. Health Care. Each employee will be provided with medical benefits unless he/she chooses option A-1-c: 1. Each employee may elect one of the following options: a. participate in a Highmark PPO Blue type program or an equivalent program as attached in appendix C. b. receive a per month credit contributed toward a tax sheltered annuity rather than participating in a health insurance program at the following rates. 2015-2016 $250 2044-2012 +4196 2016-2017 $275 2042-2013\u2014\u2014_4199 2017-2018 $300 2043-2014\u2014\u2014_4130 2018-2019 $325 2014-2015\u2014\u2014_$149 2019-2020 $350 2. All employees will be in enrolled in the Highmark PPO Blue Plan or an equivalent plan at the following cost to the employee Individual All Other a 2015-2016 $75 per month $155 per month 2016-2017 $80 per month $165 per month 2017-2018 $85 per month $175 per month 2018-2019 $90 per month $185 per month 2019-2020 $95 per month $200 per month 7. Section 12 E - Extra Duties Activities - Mentor Teachers All mentor teachers"
   ],
   "run_metadata": {
     "profile": "faar_no_backtrack",
-    "run_id": "20260409T084511Z",
+    "run_id": "20260421T152501Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }

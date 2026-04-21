@@ -3,32 +3,112 @@
   "example_id": "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
   "question": "How many Satellite Control Earth Stations are integrated at MCF - Hassan to manage the operations of the organization that the Indian Institute of Space Science and Technology (IIST) established in 2007 aims to provide quality manpower to, geostationary and geosynchronous satellites?",
   "gold_answer": "9",
-  "predicted_answer": "of the correct ocr noise: (MCF) Master Control Facility (MCF)",
+  "predicted_answer": "2015",
   "failure_type": "word_level",
   "policy_action": "correct_text",
   "action_outcome": {
     "action": "correct_text",
-    "status": "succeeded",
-    "reason": "byt5_correction_applied"
+    "status": "skipped",
+    "reason": "byt5_correction_guarded",
+    "applied_count": 0,
+    "reviewed_count": 5,
+    "decisions": [
+      {
+        "chunk_id": "b6dd5d59-9ff7-4117-a5dd-97a63b95548e-p12-c2",
+        "applied": false,
+        "reason": "numeric_signature_changed"
+      },
+      {
+        "chunk_id": "b6dd5d59-9ff7-4117-a5dd-97a63b95548e-p7-c0",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      },
+      {
+        "chunk_id": "b6dd5d59-9ff7-4117-a5dd-97a63b95548e-p12-c1",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      },
+      {
+        "chunk_id": "b6dd5d59-9ff7-4117-a5dd-97a63b95548e-p12-c0",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      },
+      {
+        "chunk_id": "b6dd5d59-9ff7-4117-a5dd-97a63b95548e-p7-c2",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      }
+    ]
   },
   "metrics": {
-    "ndcg@5": 0.0,
-    "recall@5": 0.0,
+    "ndcg@5": 0.6309297535714575,
+    "recall@5": 1.0,
     "em": 0.0,
     "f1": 0.0
   },
   "top_hit_texts": [
-    "of the correct ocr noise: (MCF) Master Control Facility (MCF)",
-    "of B. Tech graduates were placed as Scientists/ Engineers at v",
-    "and Shillong and Shillong and Shillong and Shillong and Shillo",
-    "and a network of ground station and a network of ground statio",
-    "Appellate Authority, namely, Central Information Commission. C"
+    "(MCF) Master Control Facility (MCF) at Hassan in Karnataka and Bhopal in Madhya Pradesh monitors and controls all the Geostationary/Geosynchronous satellites of ISRO, namely, INSAT, GSAT, Kalpana and IRNSS series of satellites. MCF is responsible for Orbit Raising of satellites, In-orbit payload testing, and On-orbit operations all through the life of these satellites. MCF activities include round-the-clock Tracking, Telemetry & Commanding (TT&C) operations, and special operations like Eclipse management, Station-keeping manoeuvres and recovery actions in case of contingencies. MCF interacts with User Agencies for effective utilisation of the satellite payloads and to minimise the service disturbances during special operations. MCF currently controls INSAT-38C, INSAT-3A, INSAT-4A, INSAT-4B, INSAT-4CR, INSAT-3D, Kalpana-1, GSAT-8, GSAT-10, GSAT-12, GSAT-14, IRNSS-1A, IRNSS-1B, IRNSS-1C, IRNSS-1D, IRNSS-1E, GSAT-6, GSAT-16 and GSAT-15. To carry out these operations effectively, MCF-Hassan is having an integrated facility consisting of nine Satellite Control Earth Stations. 15",
+    "alfaas Rat? 2015-2016 SRC E i: IMM: Eee MEO ESEEy Indian Institute of Space Science and Technology Towards capacity building in human resources and to meet the growing demands of the Indian Space Programme, the Indian Institute of Space Science and Technology (IIST), a deemed University, was established at Thiruvananthapuram in 2007. Towards the fulfillment of its primary objective of providing quality manpower to ISRO, 99 students of 2011 batch of B. Tech graduates were placed as Scientists/ Engineers at various centres of ISRO in 2015. Public Awareness on Space Programme During the year, ISRO organised media visits to SDSC SHAR, Sriharikota, ISRO Satellite Centre (ISAC) and Mission Operations Complex (MOX), ISTRAC Bengaluru for the live coverage of PSLV and GSLV launches, \u2018GNSS User Meet 2015\u2019 and Mars Orbiter Mission coverage respectively. Besides, ISRO also organised many exhibitions at national and international conferences, important public congregations like cultural festivals, trade fairs and events and also at academic institutions. Exhibitions and other outreach events were also organised in association with Non-Governmental Organisations in various places for keeping the public abreast of",
+    "realisation of the ground segment of IRNSS, ISTRAC has established a network of stations to support IRNSS satellites consisting of ISRO Navigation Centre (INC) at Byalalu (40 km from Bengaluru), four CDMA Ranging stations at Hassan, Bhopal, Jodhpur and Shillong and twelve IRNSS Range and Integrity Monitoring Stations at Bengaluru, Hassan, Bhopal, Jodhpur, Shillong, Dehradun, Port Blair, Mahendragiri, Lucknow, Kolkata, Udaipur, Shadnagar and Pune and one IRNWT facility at Bengaluru. In keeping with its long-established TTC support responsibility, ISTRAC has also been mandated to provide space operations support for Deep Space Missions of ISRO, undertake development of radar systems for launch vehicle tracking and meteorological applications, establish and operationalise the ground segment for Indian Regional Navigational Satellite System, provide Search & Rescue and Disaster Management Services and support space based services like telemedicine, VRC and tele- education. Master Control Facility (MCF) Master Control Facility (MCF) at Hassan in Karnataka and Bhopal in Madhya Pradesh monitors and controls all the Geostationary/Geosynchronous satellites of ISRO, namely, INSAT, GSAT, Kalpana and IRNSS series of satellites. MCF is responsible for Orbit Raising of satellites,",
+    "ANNUAL REPORT 2015-2016 GOVERNMENT OF INDIA, DEPARTMENT OF System and development of radars and associated systems for meteorological applications and launch vehicle tracking. In addition, ISTRAC has also been mandated to provide space operations support for Deep Space Missions of ISRO and to provide active support for Search & Rescue, Disaster Management and a host Space Communication Hub services for societal applications. In order to realise these objectives, ISTRAC has established a network of ground stations at Bengaluru, Lucknow, Mauritius, Sriharikota (SHAR | & Il), Port Blair, Thiruvananthapuram, Brunei, Biak (Indonesia) and Deep Space Network Stations DSN-32 and DSN-18 at Byalalu near Bengaluru. The Mission Operations Complex (MOX) located at Bengaluru carries out round-the-clock mission operations for all remote sensing and scientific satellites. All network stations of ISTRAC are connected to MOX through dedicated high-performance satellite/terrestrial communication links. Towards the realisation of the ground segment of IRNSS, ISTRAC has established a network of stations to support IRNSS satellites consisting of ISRO Navigation Centre (INC) at Byalalu (40 km from Bengaluru), four CDMA Ranging stations at Hassan, Bhopal, Jodhpur and Shillong",
+    "for stage one appeals. As required under the Act, Department of Space has published the requisite information on DOS website (http://www.dos.gov.in) and on ISRO website (http:/Avww.isro.gov.in). During the period January 2015 to December 2015, 807 applications were received and information was disseminated under the provisions of the RTI Act. 120 appeals were received by the First Appellate Authority and 25 appellants approached the Second Appellate Authority, namely, Central Information Commission. Conclusion Indian space programme during the year made significant progress in its quest towards mastering critical technologies and witnessed significant milestones in space exploration. Necessary infrastructure for casting large boosters, liquid propellant engines, heavy cryogenic boosters for advanced heavier launchers and missions in the area of remote sensing, communications and navigational satellites as well as space science have been established. The expansion of space applications programmes like tele-education and disaster management support and outreach through Direct-To-Home television, reiterates the increasing role played by the Indian space systems in providing direct benefits to the society. Thus, Indian Space Programme continues to pursue successful goals on all fronts in meeting its objective."
   ],
   "run_metadata": {
     "profile": "faar_no_backtrack",
-    "run_id": "20260409T084527Z",
+    "run_id": "20260421T152505Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }

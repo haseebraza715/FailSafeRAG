@@ -3,7 +3,7 @@
   "example_id": "4fa2f35c-90c8-4387-816a-8771a94a440c",
   "question": "For how many people has Israel's war against Hamas in Gaza resulted in deaths, according to Gazan health authorities?",
   "gold_answer": "More than 37,000",
-  "predicted_answer": "Israel\u2019s war against Hamas in Gaza has killed more than 37,000 people in the enclave, according to Gazan health authorities.",
+  "predicted_answer": "37,000",
   "failure_type": "pass",
   "policy_action": "answer_direct",
   "action_outcome": {
@@ -15,7 +15,7 @@
     "ndcg@5": 1.0,
     "recall@5": 1.0,
     "em": 0.0,
-    "f1": 0.3076923076923077
+    "f1": 0.6666666666666666
   },
   "top_hit_texts": [
     "a kitchen knife, scissors and sewing string \u2014 then amputated Ahed\u2019s leg on the kitchen table, where her mother had just made bread. \u201cShe was badly hit,\u201d he recalled. With \u201cno tools, no anesthetic, nothing,\u201d he explained, \u201cI had to find a way to save her life.\u201d The crude surgery was cap- tured in a video shared widely on- line, a grim emblem of the agoniz- ing choices that have been re- peated countless times in a war that has ravaged Gazans\u2019 lives and limbs. Doctors say they have been stunned by the sheer num- ber of amputations in Gaza, which put patients at risk of infection ina place where access to medical care and even clean water is lim- ited. Israel\u2019s war against Hamas in Gaza has killed more than 37,000 people in the enclave, according to Gazan health authorities. The numbers do not distinguish be- tween civilians and combatants. The war has also left an even larger number of people of wounded. Local health authorities say that number is more than 85,000 \u2014 and aid workers say that",
@@ -26,9 +26,60 @@
   ],
   "run_metadata": {
     "profile": "faar_no_backtrack",
-    "run_id": "20260409T084444Z",
+    "run_id": "20260421T152454Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }

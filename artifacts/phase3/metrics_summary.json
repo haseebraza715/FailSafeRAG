@@ -2,44 +2,44 @@
   "profiles": {
     "faar_full": {
       "count": 40,
-      "ndcg@5": 0.3065,
-      "recall@5": 0.325,
-      "em": 0.0,
-      "f1": 0.0627,
+      "ndcg@5": 0.4789,
+      "recall@5": 0.525,
+      "em": 0.125,
+      "f1": 0.2036,
       "visual_fallback_rate": 0.075
     },
     "faar_no_backtrack": {
       "count": 40,
-      "ndcg@5": 0.3065,
-      "recall@5": 0.325,
-      "em": 0.0,
-      "f1": 0.0627,
+      "ndcg@5": 0.4789,
+      "recall@5": 0.525,
+      "em": 0.125,
+      "f1": 0.2036,
       "visual_fallback_rate": 0.075
     },
     "faar_no_diagnosis": {
       "count": 40,
       "ndcg@5": 0.4789,
       "recall@5": 0.525,
-      "em": 0.0,
-      "f1": 0.0722,
+      "em": 0.125,
+      "f1": 0.2036,
       "visual_fallback_rate": 0.0
     },
     "faar_no_vlm": {
       "count": 40,
-      "ndcg@5": 0.3065,
-      "recall@5": 0.325,
-      "em": 0.0,
-      "f1": 0.0627,
+      "ndcg@5": 0.4789,
+      "recall@5": 0.525,
+      "em": 0.125,
+      "f1": 0.2036,
       "visual_fallback_rate": 0.0
     },
     "naive_rag": {
       "count": 40,
       "ndcg@5": 0.4789,
       "recall@5": 0.525,
-      "em": 0.0,
-      "f1": 0.0722,
+      "em": 0.125,
+      "f1": 0.2036,
       "visual_fallback_rate": 0.0
     }
   },
-  "generated_at_utc": "2026-04-09T08:47:08.067758+00:00"
+  "generated_at_utc": "2026-04-21T15:25:33.068566+00:00"
 }

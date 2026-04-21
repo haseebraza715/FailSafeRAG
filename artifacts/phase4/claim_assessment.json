@@ -6,7 +6,7 @@
   },
   "q2_typed_recovery_outperforms_naive_fallback": {
     "status": "not_supported",
-    "delta_f1_vs_naive_rag": -0.0095,
+    "delta_f1_vs_naive_rag": 0.0,
     "delta_em_vs_naive_rag": 0.0
   },
   "q3_selective_visual_fallback_trades_accuracy_for_cost": {

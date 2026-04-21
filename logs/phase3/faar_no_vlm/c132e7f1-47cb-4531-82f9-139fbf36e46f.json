@@ -3,13 +3,42 @@
   "example_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
   "question": "\u5b89\u5fbd\u7701\u5728\u201c\u4e09\u8d44\u201d\u6e05\u7406\u4e2d\u91c7\u53d6\u4e86\u54ea\u4e9b\u63aa\u65bd\u6765\u786e\u4fdd\u6e05\u67e5\u7684\u5f7b\u5e95\u6027\u548c\u89c4\u8303\u6027\uff1f",
   "gold_answer": "\u6e05\u67e5\u9762\u5e7f\u3001\u6e05\u67e5\u5f7b\u5e95\u3001\u6e05\u67e5\u7a0b\u5e8f\u89c4\u8303\u3001\u63a8\u884c\u59d4\u6258\u4ee3\u7406\u5236",
-  "predicted_answer": "the correct ocr noise: IAS] 100%, HERTS E 17313 PAD RATE RY 10",
+  "predicted_answer": "IAS] 100%, HERTS E 17313 PAD RATE Ry)",
   "failure_type": "word_level",
   "policy_action": "correct_text",
   "action_outcome": {
     "action": "correct_text",
-    "status": "succeeded",
-    "reason": "byt5_correction_applied"
+    "status": "skipped",
+    "reason": "byt5_correction_guarded",
+    "applied_count": 0,
+    "reviewed_count": 5,
+    "decisions": [
+      {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c6",
+        "applied": false,
+        "reason": "formula_like_source"
+      },
+      {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c4",
+        "applied": false,
+        "reason": "formula_like_source"
+      },
+      {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c10",
+        "applied": false,
+        "reason": "numeric_signature_changed"
+      },
+      {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c0",
+        "applied": false,
+        "reason": "formula_like_source"
+      },
+      {
+        "chunk_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f-p0-c15",
+        "applied": false,
+        "reason": "formula_like_source"
+      }
+    ]
   },
   "metrics": {
     "ndcg@5": 0.0,
@@ -18,17 +47,68 @@
     "f1": 0.0
   },
   "top_hit_texts": [
-    "the correct ocr noise: IAS] 100%, HERTS E 17313 PAD RATE RY 10",
-    "AE AE AE AE AE AE AE AE AE AE AE AE AE AE AE AE AE AE AE AE AE",
-    "a correct ocr noise: AS ASA ARE, Be AB ERA AT RAMEE AT RAMEE A",
-    "To ka \u2014 im 2% fe FT A Ka \u2014 im 2% fe FT A Ka \u2014 im 2% fe F",
-    "the ocr noise: KP aE CUM 17.33 (ZTE , FE 2000 EW) 4.5 (FF 17.3"
+    "IAS] 100%, HERTS E 17313 PAD RATE Ry). Sa PEBCAUIIES . SSS SEAS PIT BY Se EP Bese Sid Hb REAP A BEXZWERED\u2014K. HRRAE FRRLYG. PRS TATE EN \u201cTE. Bid ASE ATR TBA EAR\u201d N/E Fie. CURE TSCRH. TE WORE SETAE, DRS = CIE, ARO OTEL AA ELAVIA} QS\" APMC LPS T BEF BCR. SRB T RAR 217324 ADE Bc Fir NY BR) 28 ee FEW STR EL EER. HERAT RAR OT ARNE Sd BE AR A, LRG IMT TfFo EKA JKYNE SC, SS TR Se AH Saka AA, Bee TS FIBE AREI TMS RAE. Geek THN RR GT 283.68 (2.76. GEE 11583.12 7 A Cas 4.64 (2,76 WEN 64.18 12,76, fot S 114.65 ce veboCet fk 4Nt2e4 b PWS, AK 99% GE fe 46.58 (2,70, BET\" (L3., ARG 51216) 28 oe\u201d ERASERS , Wy GES EL, fee She TUES HET T BITRE. HEIR = a SSeS Lb, BN, TS\u201d BHC CHIR SH, 4a KEEPS FUME TAB ALAM BAA AL A BK Atl BEALS EER AAS DR BE GH S PALER OR) 2557 T BHC BAW TAA WAILS. AR, AST",
+    "eT Balk. GOK, ABB LEE INEST. BAR I BAL, FBI RED. BIZOE (tht PULA TE T\u2014 TIE, FR SRA ST ERS, EAB A 5 TERA. SLI , Ter BABI, SRA] SHERPA ETP, SWEAT 76, > SRE DA LATNMA. HAAR RE ARES I \u2014 PALI ACE A, SARS fal ze ASEH TEL Ae Pree cS YI MLS tk, AFAR PPE AEIS SH HG EHH 7 hb SRL 28h Pals} 24h SEAT 24h ASA AE AAS ST 8A, eH roy RE REM AGHIZ IC. ERAT TESLA BAR + EP HY BIRTTX,, EAE A BOUL PREM BALA EL DIRE CI EAE, FEIGEPSIS PIRSA 58 PAP WA BZN APL, EDR 6 AE SEA BEATE FAVELA AME AVE AEA AAT Aap TEHOAEE SCENT POL ARE ALAR FRE |NXPSE , AACE RAIN TAO Bs WE PUTS, SCE HO MB 17.4(Z 70, Bll. EP RRS AR NY 50%. WZ HEX TRE RW, KAS 39 3 HIRE SW A VERE 284 4. FEMS FT eto h Ea RK SBP eB es BG SRE, IED HEL SE EE Ses tal ATS AES LP SEE DAME TAA (SET APE SAHA",
+    "AS ASA ARE, Be AB ERA AT RAMEE. All, HEE nt 90 FLA SEAL EE HY A 530 & Mb PR LIE EMT 141 Pee an, VE T 171 MALS\u201d ABLE IE N32) SLB BEAR SPR\u201d VAG. BEDE 9 \u201cHP RS PB Br\u201d , SoM EIA SI 22.74 (ZT. 7\u00a3 12 517 A Fab ers (MA) SE Seb KGS AT AUR FH, ESCH ee ER AR ei A PATI A GE PB i. PMSA SE, RE JAN Bee it cH BRT TS MELB B44 b (ARTE BAR PTH LEAT S A SBA HE Fe Ae Pi ES EY AG KR SMR EADS TEAL. SPIRE SARITA BEE 6719 75 th ESSAY 1.44%, SeAvEC 5400 Fmt, THT EELH Fl BR BEI 55%, RE Bake AS etAi 11S 5 ta Ee Se % ALA BIG SLOTS SENATE SE I Ie ZEIT AUTRE A ES BHA THR BSE ZEOBLIE 700 Fa, ASEH OR HEA 20%26 4, Hi 11S A IAN PRBS BEE SR PU WARS BEY 10.3 fF AA BATA NTE CT ESS KREEWA BA MOM ERR 1548, SRS RCP, \u2014 JZ , 22",
+    "To ka \u2014 im 2% fe FT a Ka 20104-1221 Be oS a5 F~ TEARS eC ATE: {020184399251 E-mail:paowen]49@sina.com DK PRA EAH FRE ARG TS Ae AQ LR HY TAPS , ACTOR OE CRBS 8 8 a TTR LAE) SR REG PAU GOK. RK Thiel FR AS EAE GB BF VETODLR BOAR a, WS MBER ADU PIE Ce ak BS TET FAL, AMMA KIRA TF) IV CATY) BEA ROUTAN GE Se AI PHL AN 8 TK ANUP EEL , FEU # Nida SE BL. FAURE Pte 88 AF is Uae 7 THEY \u201cHA SR BTL WL BIL ARCH BBP FAD WAS PEA RAR ARES #NUG , Se SE ANE BSI BUK 2.6 DAE, TERIA NEE $390.3 75 TC HAE PLA NG Ot Se 300 F576 , HLA AE A 2100 75 Too J BER RAUF RES LANIER A aR LL: HS TRE WE TRS PORT ANMERME, PURE A VE ATR RISA RE be 4 EE SCHILS KAU AR TA BR 25270 77 HA re\" BA 5.91 54H, P18 4335 FFG. HOGS 7.32 56 / FF, PH 1.9 FTC, BllPt 6004",
+    "KP aE CUM 17.33 (ZTE , FE 2000 EW) 4.5 (FF, EIS 3K 18.5%, MDRBERIN Lit F1 22.3 (Z52TC , HE 2000 FRAY 1.4642 FISHIN 9.42% Boy ERR ane PT. i te He, UD BAO S30 Sk ED Ka SSN, 2009 AEA tity A BEC 1779 77 SET, AE 10 4 BIAS 15 (5 EMME FE 1242.8 Se70, FE 104F BIAS 4 (iF 5 AVR 3c HEL 5009 5870, WE 2002 FAY 36 (FF. JES b, FRR 7 pee STA ll Ae RS PIE A EERE AES} MPR. HAA HEEAG ASAE SI CS WOR RS WO 7K OR ZERO TAMIL, Bae ATTA Pe IAN ERPS STH ARB TERS , TC TH EAR HOF? FAI LANL A PREP. SEA HARA, AaGlakT HO PBA BED , SEAN BE AGB BI PRN 7k Po rEUTR DH A. AES BH Se Be BE Ke PE Mt RUS KL RE it BOE FE BK , FR Ha Me 2 FG S| AT Lb HH TURAEN BRITE BAK RAL ER FED ca. AA Be \u2014 , el PEK RAE OS URE HES. KP a HES: 20"
   ],
   "run_metadata": {
     "profile": "faar_no_vlm",
-    "run_id": "20260409T084646Z",
+    "run_id": "20260421T152529Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }

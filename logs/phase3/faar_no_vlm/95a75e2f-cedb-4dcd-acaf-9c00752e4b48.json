@@ -3,30 +3,100 @@
   "example_id": "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
   "question": "What is the projected total revenue for PUD No. 1 of Klickitat County in 2020 based on the 2016 budget?",
   "gold_answer": "$54,705,108",
-  "predicted_answer": "1 OF KLICKITAT CORRECT",
+  "predicted_answer": "1",
   "failure_type": "word_level",
   "policy_action": "correct_text",
   "action_outcome": {
     "action": "correct_text",
-    "status": "succeeded",
-    "reason": "byt5_correction_applied"
+    "status": "skipped",
+    "reason": "byt5_correction_guarded",
+    "applied_count": 0,
+    "reviewed_count": 3,
+    "decisions": [
+      {
+        "chunk_id": "95a75e2f-cedb-4dcd-acaf-9c00752e4b48-p0-c0",
+        "applied": false,
+        "reason": "numeric_signature_changed"
+      },
+      {
+        "chunk_id": "95a75e2f-cedb-4dcd-acaf-9c00752e4b48-p0-c2",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      },
+      {
+        "chunk_id": "95a75e2f-cedb-4dcd-acaf-9c00752e4b48-p0-c1",
+        "applied": false,
+        "reason": "source_not_noisy_enough"
+      }
+    ]
   },
   "metrics": {
-    "ndcg@5": 0.0,
-    "recall@5": 0.0,
+    "ndcg@5": 0.6309297535714575,
+    "recall@5": 1.0,
     "em": 0.0,
     "f1": 0.0
   },
   "top_hit_texts": [
-    "of klickitat correct ocr noise: PUD NO. 1 OF KLICKITAT CORRECT",
-    "$ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $",
-    "Creek Wind 1,881,265 1,231,494 1,231,494 1,231,494 1,231,494 1"
+    "PUD NO. 1 OF KLICKITAT COUNTY INCOME STATEMENT - COMBINED 2016 BUDGET (11/2/15 Forward Curve Prices) 2015 Budget 2016 2017 2018 2019 2020 [ RATE INCREASES (Jan 1st & Jul 1st) 3% & 3% 4% & 3% 3% & 0% 3% & 0% 2% & 0% REVENUE Rate Residential 13,935,749 15,375,550 16,479,531 17,268,573 17,796,611 18,162,728 Small General Service 770,922 854,519 923,750 975,966 1,014,459 1,044,232 Medium General Service 2,704,661 3,016,602 3,279,855 3,481,774 3,640,021 3,768,514 Large General Service 4,364,325 4,862,283 5,264,286 5,554,295 5,780,939 5,957,774 Industrial/Commercial 2,001,268 2,070,290 2,104,446 2,194,507 2,230,712 2,326,178 Irrigation Service 2,505,584 2,829,467 3,126,046 3,338,959 3,540,685 3,715,088 Street Lighting 274,810 298,418 319,730 334,251 344,348 351,235 Cliffs Water 20,121 4,331 4,461 4,595 4,732 4,874 Water/Wastewater Systems 1,449,567 1,218,472 1,239,206 1,259,323 1,280,070 1,301,486 Total Rate Revenue 28,027,007 30,529,932 32,741,311 34,412,243 35,632,576 36,632,109 Transmission Transmission Service 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Total Transmission Revenue 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Wholesale Market HW Hill Methane Facility (LFG) 7,611,543 7,016,348 5,512,652 5,267,737 5,635,924 6,092,651 White Creek Wind 1,881,265 1,231,494 1,304,761 1,480,453 1,788,076 1,957,239 Slice/Other 2,144,249 1,439,692 1,414,000 1,428,140 1,442,421 1,456,846 Total Generation Revenue",
+    "18,647 18,647 18,647 18,647 18,647 Other Water/Wastewater Income 7,178 - - - - - Other Income 512,402 575,394 529,073 529,073 496,073 463,073 BABS 487,902 483,144 436,823 436,823 436,823 436,823 Other Income 24,500 92,250 92,250 92,250 59,250 26,250 Total Miscellaneous Revenue 4,015,812 3,997,967 3,575,833 3,227,469 3,190,642 3,155,067 TOTAL REVENUE $48,555,895 $ 49,494,455 $ 49,855,849 $ 51,156,190 $ 53,064,303 $ 54,705,108 12/8/2015",
+    "Transmission Revenue 4,876,019 5,279,022 5,307,292 5,340,148 5,374,663 5,411,196 Wholesale Market HW Hill Methane Facility (LFG) 7,611,543 7,016,348 5,512,652 5,267,737 5,635,924 6,092,651 White Creek Wind 1,881,265 1,231,494 1,304,761 1,480,453 1,788,076 1,957,239 Slice/Other 2,144,249 1,439,692 1,414,000 1,428,140 1,442,421 1,456,846 Total Generation Revenue 11,637,057 9,687,535 8,231,412 8,176,330 8,866,422 9,506,736 Miscellaneous Pole Connections & Rent Revenues 245,871 250,499 250,499 250,499 250,499 250,499 Billings & Collection Fees 217,800 209,800 209,800 209,800 209,800 209,800 Set Up Fees 4,737 2,329 2,329 2,329 2,329 2,329 Interest Income 186,164 157,701 154,953 149,977 146,149 143,575 Electric 158,504 132,925 133,097 129,823 127,352 125,981 Water/Wastewater 27,660 24,777 21,856 20,154 18,798 17,595 Aid in Construction, GEC 2,823,180 2,783,596 2,410,532 2,067,144 2,067,144 2,067,144 Electric - Cash 1,253,994 1,353,952 1,200,000 1,200,000 1,200,000 1,200,000 Electric - Regulatory Acctg (Non Cash) 867,144 867,144 867,144 867,144 867,144 867,144 Water/Wastewater 702,042 562,500 343,388 - - - Energy Services 18,480 18,647 18,647 18,647 18,647 18,647 Other Water/Wastewater Income 7,178 - - - - - Other Income 512,402 575,394 529,073 529,073 496,073 463,073 BABS 487,902 483,144 436,823 436,823 436,823 436,823 Other Income 24,500 92,250 92,250 92,250 59,250 26,250 Total Miscellaneous Revenue"
   ],
   "run_metadata": {
     "profile": "faar_no_vlm",
-    "run_id": "20260409T084618Z",
+    "run_id": "20260421T152522Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }

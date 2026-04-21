@@ -3,7 +3,7 @@
   "example_id": "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
   "question": "What was the percentage change in the number of beneficiaries receiving regular income benefits in Regina from August 2021 to August 2022?",
   "gold_answer": "-71.3",
-  "predicted_answer": "The Daily, Thursday, October 20, 2022 Table 3 - continued Beneficiaries receiving regular income benefits,1 by census metropolitan category?",
+  "predicted_answer": "20 -12,280",
   "failure_type": "pass",
   "policy_action": "answer_direct",
   "action_outcome": {
@@ -15,7 +15,7 @@
     "ndcg@5": 1.0,
     "recall@5": 1.0,
     "em": 0.0,
-    "f1": 0.09523809523809525
+    "f1": 0.0
   },
   "top_hit_texts": [
     "The Daily, Thursday, October 20, 2022 Table 3 - continued Beneficiaries receiving regular income benefits,1 by census metropolitan category? \u2014 Seasonally adjusted August July August July to August 2021 July to August 2021 2021 2022P 2022P August 2022 to August August 2022 to August 2022 2022 Saskatchewan Census metropolitan areas 17,800 5,500 5,520 20 -12,280 0.4 -69.0 Regina 7,800 2,160 2,240 80 -5,560 3.7 71.3 Saskatoon 10,010 3,340 3,280 -60 -6,730 -1.8 -67.2 Census agglomerations 7,240 2,720 2,780 60 -4,460 2.2 -61.6 Outside census metropolitan areas and census agglomerations 15,160 7,590 7,470 -120 -7,690 1.6 -50.7 Alberta Census metropolitan areas 128,220 34,760 34,050 -710 -94,170 -2.0 -73.4 Calgary 61,420 15,730 15,170 -560 -46,250 -3.6 -75.3 Edmonton 62,800 17,930 17,750 -180 -45,050 -1.0 71.7 Lethbridge 4,000 1,110 1,130 20 -2,870 1.8 71.8 Census agglomerations 24,040 7,050 7,110 60 -16,930 0.9 -70.4 Outside census metropolitan areas and census agglomerations 27,880 9,430 9,460 30 -18,420 0.3 -66.1 British Columbia Census metropolitan areas 100,010 24,380 24,440 60 -75,570 0.2 -75.6 Abbotsford\u2014Mission 6,760 2,320 2,340 20 -4,420 0.9 -65.4 Kelowna 7,760 2,150 2,160 10 -5,600",
@@ -23,9 +23,60 @@
   ],
   "run_metadata": {
     "profile": "faar_no_diagnosis",
-    "run_id": "20260409T084537Z",
+    "run_id": "20260421T152509Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }

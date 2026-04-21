@@ -3,7 +3,7 @@
   "example_id": "119aa71b-f6bf-47b5-9f46-fe0222087f22",
   "question": "What was the amount of property and equipment acquired under finance leases by Amazon.com, Inc. in 2019?",
   "gold_answer": "13,723",
-  "predicted_answer": "18,365 30,723 38,514 INVESTING ACTIVITIES: Purchases of property and equipment (11,955) (13,427) (16,861) Proceeds from property and equipment sales and incentives 1,897 2,104 4,172 Acquisitions, net of cash acquired, and other (13,972) (2,186) (2,461) Sales and maturities of marketable securities 9,677 8,240 22,681 Purchases of marketable securities (12,731) (7,100) (31,812) Net cash provided by (used in) investing activities (27,084) (12,369) (24,281) FINANCING ACTIVITIES: Proceeds from long-term debt and other 16,228 768 RHE) Repayments of long-term debt and other (1,301) (668) (2,684) Principal repayments of finance leases (4,799) (7,449) (9,628) Principal repayments of financing obligations (200) (337) (27) Net cash provided by (used in) financing activities 9,928 (7,686) (10,066) Foreign currency effect on cash, cash equivalents, and restricted cash 713 (351) 70 Net increase (decrease) in cash, cash equivalents, and restricted cash 1,922 10,317 4,237 CASH, CASH EQUIVALENTS, AND RESTRICTED CASH, END OF PERIOD $ 21,856 $ 32,173 $ 36,410 SUPPLEMENTAL CASH FLOW INFORMATION: Cash paid for interest on long-term debt $ 328 $ 854 \u00a7 875 Cash paid for operating leases _\u2014 _\u2014 3,361 Cash paid for interest on finance",
+  "predicted_answer": "31,",
   "failure_type": "pass",
   "policy_action": "answer_direct",
   "action_outcome": {
@@ -15,7 +15,7 @@
     "ndcg@5": 0.6309297535714575,
     "recall@5": 1.0,
     "em": 0.0,
-    "f1": 0.018691588785046728
+    "f1": 0.0
   },
   "top_hit_texts": [
     "Table of Contents AMAZON.COM, INC. CONSOLIDATED STATEMENTS OF CASH FLOWS (in millions) Year Ended December 31, 2017 2018 2019 CASH, CASH EQUIVALENTS, AND RESTRICTED CASH, BEGINNING OF PERIOD $ 19,934 $ 21,856 \u00a7$ 32,173 OPERATING ACTIVITIES: Net income 3,033 10,073 11,588 Adjustments to reconcile net income to net cash from operating activities: Depreciation and amortization of property and equipment and capitalized content costs, operating lease assets, and other 11,478 15,341 21,789 Stock-based compensation 4,215 5,418 6,864 Other operating expense (income), net 202 274 164 Other expense (income), net (292) 219 (249) Deferred income taxes (29) 44] 796 Changes in operating assets and liabilities: Inventories (3,583) (1,314) (3,278) Accounts receivable, net and other (4,780) (4,615) (7,681) Accounts payable 7,100 3,263 8,193 Accrued expenses and other 283 472 (1,383) Unearned revenue 738 1,151 1,711 Net cash provided by (used in) operating activities 18,365 30,723 38,514 INVESTING ACTIVITIES: Purchases of property and equipment (11,955) (13,427) (16,861) Proceeds from property and equipment sales and incentives 1,897 2,104 4,172 Acquisitions, net of cash acquired, and other (13,972) (2,186) (2,461) Sales and maturities of marketable securities",
@@ -24,9 +24,60 @@
   ],
   "run_metadata": {
     "profile": "faar_no_diagnosis",
-    "run_id": "20260409T084536Z",
+    "run_id": "20260421T152507Z",
     "api_enabled": false,
     "vlm_backend": "mock",
-    "openai_model": "gpt-4o"
+    "openai_model": "gpt-4o",
+    "evaluation_size": 40,
+    "selection": {
+      "max_examples": 40,
+      "doc_types": [],
+      "evidence_sources": [],
+      "manual_failure_types": [],
+      "stratify_by": null,
+      "examples_per_stratum": null,
+      "selected_example_ids": [
+        "032a0c06-4f55-458e-8618-93ec82d768c6",
+        "108e0777-95b7-4925-a86c-deaf9dc701aa",
+        "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+        "13e90002-caa4-4e10-be9d-3cf49e865042",
+        "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+        "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+        "446d159e-b5c2-45dc-91cc-faaa931f3649",
+        "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+        "4a6edc95-c641-4236-9874-81a2d38b5acf",
+        "4ccf7c68-5da6-4a56-a682-861ee45dc52a",
+        "4fa2f35c-90c8-4387-816a-8771a94a440c",
+        "4fc8bc09-c849-4c44-ad0a-361415754246",
+        "546fc06f-0ad0-4c77-b584-b6207ce85032",
+        "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+        "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+        "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+        "76550cb6-e96e-4c38-8ad6-f55d9cbc4414",
+        "848d6744-2489-473b-b5fa-9dc0938d4510",
+        "87c65cdc-a473-490d-a966-9a6753d6904b",
+        "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+        "88d5484e-4a97-4775-95b7-a0bd095537b4",
+        "8960b388-5154-469f-86f5-c3e0c3b82238",
+        "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+        "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+        "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+        "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+        "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+        "96ab64d2-3512-4906-a4ed-017b208a888e",
+        "a3c89557-29ec-4e5f-88be-d05fc54d4dab",
+        "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+        "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+        "a782b7d8-000a-4645-b6c1-49c62a184780",
+        "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+        "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+        "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+        "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+        "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+        "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+        "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+        "ec8c0152-7d1d-4685-b551-10b09e71ba76"
+      ]
+    }
   }
 }
