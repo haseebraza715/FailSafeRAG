@@ -31,3 +31,13 @@ Use this safer claim framing for next draft:
 1. Improve answer generation quality (current EM is zero across compared profiles).
 2. Revisit word-level correction behavior where case studies show regressions.
 3. Expand and stratify evaluation slices before promoting quality-improvement claims.
+
+## Phase 5 Handoff
+
+Phase 5 writing should treat the current evidence as:
+
+- strong support for selective-cost control and policy-consistent routing;
+- insufficient support for quality-improvement claims over the naive baseline on the current 40-example slice;
+- motivation for larger or stratified reruns before thesis-level claim escalation.
+
+Use [Phase 5 Writing Plan](https://github.com/haseebraza715/failure-aware-ocr-rag/blob/main/docs/phases/phase5/writing_plan.md) as the default handoff document for drafting.

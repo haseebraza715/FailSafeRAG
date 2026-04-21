@@ -340,6 +340,8 @@ If implementation complexity forces a rename, keep the ablation logic equivalent
 
 **Goal:** Convert implementation + experiments into a conference-ready paper structure
 
+**Claim-safety rule:** Until larger or stratified reruns show quality gains, position FAAR as a failure-aware selective recovery framework with supported cost-control and diagnosis-consistency evidence, not as a confirmed quality-improvement win over naive OCR-RAG.
+
 Use this structure:
 
 1. **Abstract**
@@ -384,7 +386,7 @@ Use this structure:
 - baselines
 - metrics
 - implementation details
-- main results
+- main results, including unsupported findings where relevant
 
 **Analysis**
 
@@ -403,6 +405,7 @@ Use this structure:
 
 - Supervisor-ready draft
 - Figures: architecture diagram, result tables, ablations
+- Claim-safe writing pack under `docs/phases/phase5/`
 
 ---
 
