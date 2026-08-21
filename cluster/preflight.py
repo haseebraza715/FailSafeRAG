@@ -26,6 +26,7 @@ SRC = Path(__file__).resolve().parents[1] / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from faar.api_logging import ANTHROPIC_VLM_BACKENDS
 from faar.dataset_paths import (
     SPLIT_RELATIVE_PATH,
     DatasetPathError,
@@ -848,7 +849,7 @@ def run_checks(
             record("hf_model_access", "warning", "warn", detail="no model lock found; cannot verify HF access")
 
     vlm_backend = os.getenv("VLM_BACKEND", "openai")
-    if vlm_backend in {"claude-sonnet-4-5", "anthropic", "claude"}:
+    if vlm_backend in ANTHROPIC_VLM_BACKENDS:
         required_key = "ANTHROPIC_API_KEY"
     else:
         required_key = "OPENAI_API_KEY"

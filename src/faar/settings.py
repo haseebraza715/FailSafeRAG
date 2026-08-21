@@ -8,6 +8,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field, model_validator
 
+from .api_logging import ANTHROPIC_VLM_BACKENDS
+
 # Local credentials live in an ignored .env file; explicit shell exports win.
 load_dotenv(override=False)
 
@@ -31,7 +33,6 @@ MODEL_REPOSITORY_ALIASES = {
     "NV-Embed-v2": "nvidia/NV-Embed-v2",
     "bge-reranker-v2-m3": "BAAI/bge-reranker-v2-m3",
 }
-ANTHROPIC_VLM_BACKENDS = {"claude-sonnet-4-5", "anthropic", "claude"}
 
 
 def _locked_model_value(role: str, key: str, fallback: str | None = None) -> str | None:

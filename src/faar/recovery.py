@@ -14,6 +14,7 @@ from uuid import uuid4
 from openai import OpenAI
 
 from .api_logging import (
+    ANTHROPIC_VLM_BACKENDS,
     anthropic_cost_rates,
     estimate_anthropic_cost_usd,
     estimate_openai_cost_usd,
@@ -222,7 +223,7 @@ class VisualFallback:
         self.settings = settings
         self.logger = make_vlm_logger(settings.project_root, enabled=settings.recovery.log_vlm_calls)
 
-    _PAID_BACKENDS = {"openai", "claude-sonnet-4-5", "anthropic", "claude"}
+    _PAID_BACKENDS = {"openai"} | ANTHROPIC_VLM_BACKENDS
 
     def answer(self, question: str, image_paths: list[Path], fallback_context: str) -> dict:
         if not self.settings.recovery.api_enabled and self.settings.recovery.vlm_backend in self._PAID_BACKENDS:
@@ -237,7 +238,7 @@ class VisualFallback:
             }
         if self.settings.recovery.vlm_backend == "openai":
             return self._answer_with_openai(question, image_paths)
-        if self.settings.recovery.vlm_backend in {"claude-sonnet-4-5", "anthropic", "claude"}:
+        if self.settings.recovery.vlm_backend in ANTHROPIC_VLM_BACKENDS:
             return self._answer_with_anthropic(question, image_paths, fallback_context)
         if self.settings.recovery.vlm_backend == "mock":
             return {

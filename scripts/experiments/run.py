@@ -18,7 +18,7 @@ if str(SRC) not in sys.path:
 
 from evaluate import load_rows
 
-from faar.api_logging import vlm_cost_rates
+from faar.api_logging import ANTHROPIC_VLM_BACKENDS, vlm_cost_rates
 from faar.benchmarks import load_benchmark_repository
 from faar.experiment_runner import run_profile
 from faar.gate_tuning import require_paper_gate_threshold
@@ -122,13 +122,13 @@ def _validate_baseline(
 
 
 def _require_key_for_paid_vlm(vlm_backend: str) -> None:
-    if vlm_backend in {"claude-sonnet-4-5", "anthropic", "claude"} and not (
+    if vlm_backend in ANTHROPIC_VLM_BACKENDS and not (
         os.getenv("ANTHROPIC_API_KEY") or ""
     ).strip():
         raise SystemExit("Missing required key: ANTHROPIC_API_KEY for VLM_BACKEND=claude-sonnet-4-5.")
     if vlm_backend == "openai" and not (os.getenv("OPENAI_API_KEY") or "").strip():
         raise SystemExit("Missing required key: OPENAI_API_KEY for VLM_BACKEND=openai.")
-    if vlm_backend not in {"openai", "claude-sonnet-4-5", "anthropic", "claude"}:
+    if vlm_backend not in {"openai"} | ANTHROPIC_VLM_BACKENDS:
         raise SystemExit(f"Unsupported paid VLM backend for paper runs: {vlm_backend!r}.")
 
 

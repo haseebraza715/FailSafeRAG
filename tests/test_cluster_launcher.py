@@ -60,7 +60,7 @@ def _gpu_payload(*, devices: list[dict], cpu_count: int = 8, physical_bytes: int
 
 def test_required_key_for_backend() -> None:
     assert launcher.required_key_for_backend("openai") == "OPENAI_API_KEY"
-    assert launcher.required_key_for_backend("oai") == "OPENAI_API_KEY"
+    assert launcher.required_key_for_backend("oai") is None
     assert launcher.required_key_for_backend("claude-sonnet-4-5") == "ANTHROPIC_API_KEY"
     assert launcher.required_key_for_backend("anthropic") == "ANTHROPIC_API_KEY"
     assert launcher.required_key_for_backend("mock") is None

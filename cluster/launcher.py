@@ -20,6 +20,7 @@ if str(SCRIPT_DIR) not in sys.path:
 
 import preflight
 
+from faar.api_logging import ANTHROPIC_VLM_BACKENDS
 from faar.dataset_paths import load_project_dotenv
 
 CALIBRATION_108_DOC = "manual/User_Manual_1500S_Classic_EN"
@@ -295,9 +296,9 @@ def validate_hf_cache() -> None:
 
 
 def required_key_for_backend(backend: str) -> str | None:
-    if backend in {"openai", "oai"}:
+    if backend == "openai":
         return "OPENAI_API_KEY"
-    if backend in {"claude-sonnet-4-5", "anthropic", "claude"}:
+    if backend in ANTHROPIC_VLM_BACKENDS:
         return "ANTHROPIC_API_KEY"
     return None
 
