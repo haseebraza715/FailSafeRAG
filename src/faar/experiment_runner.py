@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -254,6 +255,13 @@ def _is_valid_checkpoint(
         return False
     if (row.get("action_outcome") or {}).get("status") == "failed":
         return False
+    metrics = row.get("metrics")
+    if not isinstance(metrics, dict):
+        return False
+    for key in ("ndcg@5", "recall@5", "em", "f1"):
+        value = metrics.get(key)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(float(value)):
+            return False
     if settings.experiment.random_recovery and row.get("failure_type") == "random":
         expected = random_recovery_type(settings.experiment.random_seed, example_id)
         if row.get("recovery_type") != expected:

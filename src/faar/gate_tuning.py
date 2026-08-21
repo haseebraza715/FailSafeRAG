@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from .metrics import exact_match
-from .run_io import canonical_digest
+from .run_io import atomic_write_text, canonical_digest
 
 THETA_GRID = (0.3, 0.4, 0.5, 0.6, 0.7)
 
@@ -85,9 +85,9 @@ def search_threshold(examples: Iterable[GateExample], theta_grid: Iterable[float
         "grid": grid,
         "winner": winner,
         "pass_criteria": {
-            "precision_at_least": 0.75,
-            "recall_at_least": 0.70,
-            "passed": winner["precision"] >= 0.75 and winner["recall"] >= 0.70,
+            "precision_at_least": GATE_PRECISION_MIN,
+            "recall_at_least": GATE_RECALL_MIN,
+            "passed": winner["precision"] >= GATE_PRECISION_MIN and winner["recall"] >= GATE_RECALL_MIN,
         },
     }
 
@@ -178,7 +178,7 @@ def write_locked_threshold(path: Path, search: dict[str, Any], *, source: Path |
         "f1": winner["f1"],
     }
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2) + "\n")
+    atomic_write_text(path, json.dumps(payload, indent=2) + "\n")
 
 
 def _text_relevant_provenance(model_provenance: dict[str, Any]) -> dict[str, Any]:

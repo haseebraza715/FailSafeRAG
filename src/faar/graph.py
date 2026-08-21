@@ -132,11 +132,7 @@ def build_graph(settings: AppSettings, repo: Phase0Repository | Any | None = Non
         if settings.experiment.disable_diagnosis:
             return {"failure_type": "semantic", "policy_action": "answer_direct"}
         failure_type = diagnose_failure(state["retrieved_hits"], state["gate"], settings.gate)
-        policy_action = {
-            "word_level": "correct_text",
-            "structural": "invoke_vlm",
-            "semantic": "retry_retrieval",
-        }[failure_type]
+        policy_action = POLICY_ACTION_BY_TYPE[failure_type]
         return {"failure_type": failure_type, "policy_action": policy_action}
 
     def route_after_diagnosis(state: GraphState) -> str:
