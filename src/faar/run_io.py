@@ -9,7 +9,24 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
-FINGERPRINT_SCHEMA_VERSION = 2
+FINGERPRINT_SCHEMA_VERSION = 3
+
+_CODE_IDENTITY_CACHE: dict[str, str] = {}
+
+
+def _measurement_code_digest() -> str:
+    package_dir = Path(__file__).resolve().parent
+    cached = _CODE_IDENTITY_CACHE.get(str(package_dir))
+    if cached is not None:
+        return cached
+    hasher = hashlib.sha256()
+    for source in sorted(package_dir.glob("*.py")):
+        hasher.update(source.name.encode("utf-8"))
+        hasher.update(b"\x00")
+        hasher.update(source.read_bytes())
+    digest = hasher.hexdigest()
+    _CODE_IDENTITY_CACHE[str(package_dir)] = digest
+    return digest
 
 def atomic_write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -92,6 +109,7 @@ def run_fingerprint(
     return canonical_digest(
         {
             "schema_version": FINGERPRINT_SCHEMA_VERSION,
+            "code_identity": _measurement_code_digest(),
             "profile": profile,
             "dataset": dataset or "phase0",
             "split": split or "development",

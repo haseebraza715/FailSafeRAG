@@ -105,6 +105,20 @@ def test_resume_recomputes_when_fingerprint_changes(monkeypatch, tmp_path: Path)
     assert len(rows) == 2
 
 
+def test_resume_recomputes_checkpoints_from_different_code(monkeypatch, tmp_path: Path) -> None:
+    _prepare_phase0(tmp_path, 2)
+    graph = _patch_graph(monkeypatch)
+    settings = _settings(tmp_path)
+    run_profile(settings, profile_name="faar_full", example_ids=["ex1", "ex2"])
+
+    monkeypatch.setattr("faar.run_io._measurement_code_digest", lambda: "0" * 64)
+    graph.invoked.clear()
+    rows = run_profile(settings, profile_name="faar_full", example_ids=["ex1", "ex2"], resume=True)
+
+    assert graph.invoked == ["ex1", "ex2"]
+    assert len(rows) == 2
+
+
 def test_resume_recomputes_corrupt_checkpoint_only(monkeypatch, tmp_path: Path) -> None:
     _prepare_phase0(tmp_path, 2)
     graph = _patch_graph(monkeypatch)
