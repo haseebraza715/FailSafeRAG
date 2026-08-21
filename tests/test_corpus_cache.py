@@ -87,6 +87,19 @@ def test_text_corpus_cache_recomputes_on_model_change(tmp_path: Path) -> None:
     assert embedder.calls == 2
 
 
+def test_text_corpus_cache_recomputes_on_corrupt_npz(tmp_path: Path) -> None:
+    chunks = _chunks()
+    settings = _settings(tmp_path)
+    cache_dir = tmp_path / "cache"
+    embedder = _FakeEmbedder()
+
+    _encode_corpus_embeddings(embedder, chunks, settings, cache_dir)
+    npz_path = next(cache_dir.glob("*.npz"))
+    npz_path.write_bytes(b"not an npz file at all")
+    _encode_corpus_embeddings(embedder, chunks, settings, cache_dir)
+    assert embedder.calls == 2
+
+
 def test_text_digest_is_stable_and_sensitive(tmp_path: Path) -> None:
     chunks = _chunks()
     assert _corpus_text_digest(chunks) == _corpus_text_digest(list(chunks))

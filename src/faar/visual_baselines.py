@@ -569,7 +569,7 @@ class VisRAGRetriever:
     def retrieve(self, query: str, top_k: int) -> list[tuple[Path, float]]:
         query_embedding = self._encode([self.INSTRUCTION + query])
         scores = (query_embedding @ self.image_embeddings.T)[0]
-        indices = np.argsort(scores)[::-1][:top_k]
+        indices = np.argsort(-scores, kind="stable")[:top_k]
         return [(self.image_paths[int(index)], float(scores[int(index)])) for index in indices]
 
 

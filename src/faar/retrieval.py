@@ -5,6 +5,8 @@ import json
 import math
 import os
 import re
+import tempfile
+import zipfile
 from functools import lru_cache
 from hashlib import blake2b
 from importlib import import_module
@@ -133,14 +135,14 @@ def _encode_corpus_embeddings(
                 and stored.get("count") == len(chunks)
             )
             if valid:
-                embeddings = np.load(npz_path)["embeddings"]
+                embeddings = np.load(npz_path, allow_pickle=False)["embeddings"]
                 if embeddings.shape == (len(chunks), int(stored["dim"])) and embeddings.dtype == np.float32:
                     print(
                         f"[faar] corpus embeddings cache hit: {npz_path.name} ({len(chunks)} chunks)",
                         flush=True,
                     )
                     return embeddings
-        except (OSError, ValueError, TypeError, KeyError):
+        except (OSError, ValueError, TypeError, KeyError, zipfile.BadZipFile):
             pass
     embeddings = _encode_with_oom_retry(
         embedder,
@@ -150,21 +152,33 @@ def _encode_corpus_embeddings(
     )
     try:
         cache_dir.mkdir(parents=True, exist_ok=True)
-        tmp_npz = npz_path.with_name(f".{npz_path.stem}.tmp")
-        tmp_meta = meta_path.with_name(f".{meta_path.name}.tmp")
-        np.savez(tmp_npz, embeddings=embeddings)
-        os.replace(Path(f"{tmp_npz}.npz"), npz_path)
-        meta = {
-            "schema_version": CORPUS_CACHE_SCHEMA_VERSION,
-            "model": settings.embedding_model,
-            "revision": settings.embedding_revision,
-            "dtype": dtype_name,
-            "text_digest": text_digest,
-            "count": len(chunks),
-            "dim": int(embeddings.shape[1]),
-        }
-        tmp_meta.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
-        os.replace(tmp_meta, meta_path)
+        npz_fd, tmp_npz_name = tempfile.mkstemp(prefix=f".{npz_path.stem}.", suffix=".tmp.npz", dir=str(cache_dir))
+        os.close(npz_fd)
+        meta_fd, tmp_meta_name = tempfile.mkstemp(prefix=f".{meta_path.name}.", suffix=".tmp", dir=str(cache_dir))
+        os.close(meta_fd)
+        tmp_npz = Path(tmp_npz_name)
+        tmp_meta = Path(tmp_meta_name)
+        try:
+            np.savez(tmp_npz, embeddings=embeddings)
+            meta = {
+                "schema_version": CORPUS_CACHE_SCHEMA_VERSION,
+                "model": settings.embedding_model,
+                "revision": settings.embedding_revision,
+                "dtype": dtype_name,
+                "text_digest": text_digest,
+                "count": len(chunks),
+                "dim": int(embeddings.shape[1]),
+            }
+            tmp_meta.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+            os.replace(tmp_npz, npz_path)
+            os.replace(tmp_meta, meta_path)
+        except BaseException:
+            for leftover in (tmp_npz, tmp_meta):
+                try:
+                    os.unlink(leftover)
+                except OSError:
+                    pass
+            raise
     except OSError as exc:
         print(f"[faar] could not persist corpus embedding cache: {exc}", flush=True)
     return embeddings
@@ -340,7 +354,7 @@ class HybridRetriever:
                 )
             return hits
 
-        candidate_indices = np.argsort(fused)[::-1][:k]
+        candidate_indices = np.argsort(-fused, kind="stable")[:k]
         candidate_pairs = [(query, self.chunks[int(idx)].text) for idx in candidate_indices]
         reranker_logits = self._reranker.predict(candidate_pairs, show_progress_bar=False)
         reranker_scores = [_to_probability(float(score)) for score in reranker_logits]
