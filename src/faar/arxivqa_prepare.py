@@ -1310,23 +1310,6 @@ def figure_page_similarity(figure_path: Path | bytes, page_path: Path | bytes) -
         return float(np.clip(np.dot(r_c.reshape(-1), p_c.reshape(-1)) / denom, 0.0, 1.0))
 
 
-def _image_fingerprint(path_or_bytes: Path | bytes, size: tuple[int, int] = (64, 64)) -> np.ndarray:
-    """Deprecated helper retained for tests; prefer figure_page_similarity."""
-    array = _load_gray(path_or_bytes)
-    from PIL import Image
-
-    image = Image.fromarray(array.astype(np.uint8)).resize(size, Image.Resampling.BILINEAR)
-    vec = np.asarray(image, dtype=np.float32).reshape(-1)
-    norm = float(np.linalg.norm(vec))
-    if norm <= 1e-8:
-        return vec
-    return vec / norm
-
-
-def _similarity(a: np.ndarray, b: np.ndarray) -> float:
-    return float(np.clip(np.dot(a.reshape(-1), b.reshape(-1)), -1.0, 1.0))
-
-
 def match_evidence_pages(
     staged: list[StagedRow],
     figures_manifest: dict[str, Any],

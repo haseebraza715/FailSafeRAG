@@ -246,19 +246,6 @@ def _verify_locked_provenance(
             )
 
 
-def load_locked_threshold(
-    path: Path,
-    *,
-    dataset: str | None = None,
-    model_provenance: dict[str, Any] | None = None,
-) -> float | None:
-    if not path.exists():
-        return None
-    payload = json.loads(path.read_text())
-    _verify_locked_provenance(payload, path, dataset=dataset, model_provenance=model_provenance)
-    return float(payload["threshold"])
-
-
 def require_paper_gate_threshold(
     path: Path,
     *,

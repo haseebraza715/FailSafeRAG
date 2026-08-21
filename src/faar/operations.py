@@ -22,10 +22,6 @@ def install_graceful_termination_handler() -> None:
     signal.signal(signal.SIGINT, _handler)
 
 
-def termination_signal() -> int | None:
-    return _TERMINATION_SIGNAL
-
-
 def check_termination() -> None:
     """Raise SystemExit(128+signum) once a graceful termination was requested."""
     signum = _TERMINATION_SIGNAL

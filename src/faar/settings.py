@@ -8,8 +8,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field, model_validator
 
-from .dataset_paths import SPLIT_RELATIVE_PATH
-
 # Local credentials live in an ignored .env file; explicit shell exports win.
 load_dotenv(override=False)
 
@@ -223,7 +221,6 @@ class RecoverySettings(BaseModel):
     )
     correction: CorrectionSettings = Field(default_factory=CorrectionSettings)
     enable_byt5: bool = True
-    enable_backtracking: bool = True
     vlm_backend: str = Field(default_factory=lambda: os.getenv("VLM_BACKEND", "openai"))
     openai_model: str = Field(default_factory=lambda: os.getenv("OPENAI_MODEL", "gpt-4o-2024-11-20"))
     anthropic_model: str = "claude-sonnet-4-5"
@@ -243,7 +240,6 @@ class RecoverySettings(BaseModel):
             _locked_model_value("got_ocr", "revision"),
         )
     )
-    pdf_preprocessor: str = Field(default_factory=lambda: os.getenv("PDF_PREPROCESSOR", "docling"))
     enable_vlm: bool = True
     api_enabled: bool = True
     request_timeout_seconds: int = Field(
@@ -274,9 +270,6 @@ class AppSettings(BaseModel):
     phase0_ocr_dir: Path | None = None
     logs_dir: Path | None = None
     artifacts_dir: Path | None = None
-    split_path: Path | None = None
-    external_data_dir: Path | None = None
-    results_dir: Path | None = None
     gate_threshold_path: Path | None = None
     retrieval: RetrievalSettings = Field(default_factory=RetrievalSettings)
     gate: GateSettings = Field(default_factory=GateSettings)
@@ -291,9 +284,6 @@ class AppSettings(BaseModel):
         self.phase0_ocr_dir = (self.phase0_ocr_dir or self.project_root / "artifacts/phase0/ocr_text").resolve()
         self.logs_dir = (self.logs_dir or self.project_root / "logs/phase1").resolve()
         self.artifacts_dir = (self.artifacts_dir or self.project_root / "artifacts/phase1").resolve()
-        self.split_path = (self.split_path or self.project_root / SPLIT_RELATIVE_PATH).resolve()
-        self.external_data_dir = (self.external_data_dir or self.project_root / "data/external").resolve()
-        self.results_dir = (self.results_dir or self.project_root / "results").resolve()
         self.gate_threshold_path = (self.gate_threshold_path or self.project_root / "config/gate_threshold.json").resolve()
 
     def validate_runtime_paths(self) -> None:
