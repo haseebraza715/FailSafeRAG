@@ -74,6 +74,8 @@ class _FakeProcessor:
 
 
 def _install_colpali_fakes(monkeypatch: pytest.MonkeyPatch, model) -> _FakeProcessor:
+    import transformers
+
     processor = _FakeProcessor()
 
     class FakeModelClass:
@@ -86,6 +88,9 @@ def _install_colpali_fakes(monkeypatch: pytest.MonkeyPatch, model) -> _FakeProce
         def from_pretrained(cls, *args, **kwargs):
             return processor
 
+    resolved_model_class = transformers.ColPaliForRetrieval
+    resolved_processor_class = transformers.ColPaliProcessor
+    assert resolved_model_class is not None and resolved_processor_class is not None
     monkeypatch.setattr(visual_baselines, "torch_device", lambda torch_module: torch.device("cpu"))
     monkeypatch.setattr(visual_baselines, "select_dtype", lambda device, torch_module: torch.float32)
     monkeypatch.setattr(visual_baselines, "release_cuda_cache", lambda torch_module: None)
