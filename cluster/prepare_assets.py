@@ -38,7 +38,6 @@ explicitly. Train is intentionally not prepared by this runner.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import math
 import os
@@ -58,6 +57,7 @@ from faar.asset_preparation import (
     hash_source_pdf,
     load_locked_docling,
     load_locked_got_ocr,
+    sha256_file,
 )
 from faar.dataset_paths import (
     SPLIT_RELATIVE_PATH,
@@ -73,17 +73,6 @@ from faar.run_io import atomic_write_text, select_shard, shard_label
 
 SCHEMA_VERSION = 1
 SPLIT_CHOICES = ("val", "test")
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        while True:
-            chunk = handle.read(1024 * 1024)
-            if not chunk:
-                break
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def verify_split_checksums(project_root: Path) -> None:

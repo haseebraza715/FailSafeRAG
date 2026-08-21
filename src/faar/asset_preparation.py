@@ -37,15 +37,19 @@ def docling_audit_name(doc_rel: str) -> str:
     return f"{doc_rel}.docling.md"
 
 
-def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
+def sha256_stream(read, chunk_size: int = 1024 * 1024) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        while True:
-            chunk = handle.read(chunk_size)
-            if not chunk:
-                break
-            digest.update(chunk)
+    while True:
+        chunk = read(chunk_size)
+        if not chunk:
+            break
+        digest.update(chunk)
     return digest.hexdigest()
+
+
+def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
+    with path.open("rb") as handle:
+        return sha256_stream(handle.read, chunk_size)
 
 
 def load_locked_got_ocr(project_root: Path) -> dict[str, str]:
@@ -275,13 +279,7 @@ def hash_source_pdf(
     try:
         with zipfile.ZipFile(zip_path) as archive:
             with archive.open(source.as_posix()) as handle:
-                digest = hashlib.sha256()
-                while True:
-                    chunk = handle.read(1024 * 1024)
-                    if not chunk:
-                        break
-                    digest.update(chunk)
-                return digest.hexdigest()
+                return sha256_stream(handle.read)
     except OSError as exc:
         raise FileNotFoundError(
             f"Source PDF zip member is unreadable for {doc_rel!r}: {zip_path}:{source}: {exc}"

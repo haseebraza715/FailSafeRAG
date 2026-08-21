@@ -14,6 +14,7 @@ from typing import Any, Protocol
 import numpy as np
 
 from .api_logging import is_valid_api_usage, vlm_cost_rates, zero_api_usage
+from .asset_preparation import sha256_file as _stream_sha256
 from .benchmarks import BenchmarkRepository
 from .metrics import exact_match, token_f1
 from .operations import ProgressReporter, check_termination
@@ -38,17 +39,6 @@ VISUAL_CACHE_SCHEMA_VERSION = 2
 
 _HASH_PROGRESS_THRESHOLD = 256
 _HASH_PROGRESS_INTERVAL = 128
-
-
-def _stream_sha256(path: Path, chunk_size: int = 1024 * 1024) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        while True:
-            chunk = handle.read(chunk_size)
-            if not chunk:
-                break
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def _compute_content_hashes(
