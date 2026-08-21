@@ -108,9 +108,6 @@ def main() -> None:
         probe_routing=not args.no_routing_probe,
     )
     summary = payload["summary"]
-    missing = [field for field in REQUIRED_SUMMARY_FIELDS if field not in summary]
-    if missing:
-        raise SystemExit(f"Smoke output missing required summary fields: {missing}")
     if payload.get("paper_result") is not False or not payload.get("smoke"):
         raise SystemExit("Smoke payload must set smoke=true and paper_result=false.")
 

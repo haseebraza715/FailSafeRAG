@@ -340,7 +340,7 @@ def _rel(path: Path, project_root: Path | None) -> str:
         return path.as_posix()
     try:
         return to_relative_project_path(path, project_root)
-    except Exception:
+    except OSError:
         return path.as_posix()
 
 

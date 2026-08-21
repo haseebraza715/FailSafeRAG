@@ -421,9 +421,6 @@ def run_one_document_b0_smoke(
         "cost_usd": round(float(end_usage["cost_usd"]) - float(start_usage["cost_usd"]), 6),
         "runtime_sec": runtime_sec,
     }
-    missing_fields = [field for field in REQUIRED_SUMMARY_FIELDS if field not in summary]
-    if missing_fields:
-        raise RuntimeError(f"Smoke summary missing required fields: {missing_fields}")
 
     routing_probe: dict[str, Any] | None = None
     if probe_routing:

@@ -71,7 +71,7 @@ def load_locked_docling(project_root: Path) -> dict[str, str]:
 def _rel(path: Path, project_root: Path) -> str:
     try:
         return to_relative_project_path(path, project_root)
-    except Exception:
+    except OSError:
         return path.as_posix()
 
 

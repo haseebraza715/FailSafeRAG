@@ -70,7 +70,7 @@ CALIBRATION_108_PAGE_IDS = list(range(CALIBRATION_108_PAGE_COUNT))
 def _rel(path: Path, project_root: Path) -> str:
     try:
         return to_relative_project_path(path, project_root)
-    except Exception:
+    except OSError:
         return path.as_posix()
 
 
