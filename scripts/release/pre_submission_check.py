@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -51,6 +52,26 @@ def scan_git_matches(root: Path, term: str) -> list[str]:
     return matches
 
 
+def scan_git_pattern_matches(root: Path, pattern: str) -> list[str]:
+    regex = re.compile(pattern.encode("utf-8"))
+    tracked = _git_list_files(root)
+    untracked = _git_list_files(root, "--others", "--exclude-standard")
+    matches: list[str] = []
+    for relative in tracked + untracked:
+        path = root / relative
+        try:
+            content = (
+                os.readlink(path).encode("utf-8", errors="surrogateescape")
+                if path.is_symlink()
+                else path.read_bytes()
+            )
+        except OSError as exc:
+            raise GitScanError(f"could not scan {relative!r}: {exc}") from exc
+        if regex.search(content):
+            matches.append("./" + relative)
+    return matches
+
+
 def pdf_author(pdf_path: Path) -> str | None:
     if not pdf_path.exists():
         return None
@@ -77,9 +98,11 @@ def main() -> None:
         "./docs/history/aaai-execution-status.md",
         "./scripts/release/pre_submission_check.py",
     }
+    scanner_self_reference = "./scripts/release/pre_submission_check.py"
     try:
         raw_handle_matches = scan_git_matches(root, "haseebraza")
         raw_name_matches = scan_git_matches(root, "your-real-name")
+        raw_home_matches = scan_git_pattern_matches(root, r"/Users/|/home/")
     except GitScanError as exc:
         raise SystemExit(
             f"Pre-submission check could not enumerate repository files: {exc}"
@@ -87,6 +110,7 @@ def main() -> None:
     report = {
         "haseebraza_matches": raw_handle_matches,
         "your_real_name_matches": raw_name_matches,
+        "home_path_matches": [path for path in raw_home_matches if path != scanner_self_reference],
         "unexpected_haseebraza_matches": [path for path in raw_handle_matches if path not in allowed_checklist_references],
         "unexpected_your_real_name_matches": [path for path in raw_name_matches if path not in allowed_checklist_references],
         "pdf_path": str(paper),
@@ -96,6 +120,7 @@ def main() -> None:
     report["passed"] = (
         not report["unexpected_haseebraza_matches"]
         and not report["unexpected_your_real_name_matches"]
+        and not report["home_path_matches"]
         and report["pdf_present"]
         and report["pdf_author"] == ""
     )

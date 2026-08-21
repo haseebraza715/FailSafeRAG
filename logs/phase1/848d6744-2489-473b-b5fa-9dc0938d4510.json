@@ -28,7 +28,7 @@
     "backend": "mock",
     "answer": "VLM_NOT_CONFIGURED",
     "used_images": [
-      "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/page_images/848d6744-2489-473b-b5fa-9dc0938d4510_p1.png"
+      "artifacts/phase0/page_images/848d6744-2489-473b-b5fa-9dc0938d4510_p1.png"
     ],
     "fallback_context": "MIL-DTL-11589/167F COLOR PATTERN: STREAMER SIZE FINISH: MOIRE TOTAL | WIDTH OF STRIPES FUNCTION COLOR & CABLE NUMBER WIDTH INCHES & METRIC OF STRIPES | STRIPES FILLING YARN 1/32 0.8mm Edge & Binder | Green HAD | 67129 25/32 19.8 mm Ground Green HAD | 67129 1/8 3.2 mm Ground Air Force Yellow | HC 67103 3/16 4.8mm Ground Ultramarine Blue | HS 67118 2-3/4\u201d 1/8 3.2 mm Ground Air Force Yellow | HC 67103 White (70.0mm) 1/4 6.4 mm Ground Scarlet HL 67111 HA 67101 1/8 3.2 mm Ground Air Force Yellow | HC"
   },

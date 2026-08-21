@@ -40,12 +40,12 @@
     "python_version": "3.12.13",
     "platform": "macOS-26.3.1-arm64-arm-64bit",
     "seed": 42,
-    "project_root": "/Users/x/Downloads/Thesis-Paper/Code",
+    "project_root": ".",
     "paths": {
-      "phase0_manifest": "/Users/x/Downloads/Thesis-Paper/Code/data/phase0/sample_manifest.csv",
-      "phase0_summary": "/Users/x/Downloads/Thesis-Paper/Code/data/phase0/phase0_asset_summary.json",
-      "phase0_ocr_dir": "/Users/x/Downloads/Thesis-Paper/Code/artifacts/phase0/ocr_text",
-      "logs_dir": "/Users/x/Downloads/Thesis-Paper/Code/logs/phase1"
+      "phase0_manifest": "data/phase0/sample_manifest.csv",
+      "phase0_summary": "data/phase0/phase0_asset_summary.json",
+      "phase0_ocr_dir": "artifacts/phase0/ocr_text",
+      "logs_dir": "logs/phase1"
     },
     "model_config": {
       "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
