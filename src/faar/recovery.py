@@ -27,6 +27,7 @@ from .api_logging import (
 from .resource_limits import (
     enforce_gpu_memory_fraction,
     enforce_memory_budget,
+    is_fatal_resource_error,
     select_dtype,
     torch_device,
 )
@@ -194,7 +195,9 @@ class ByT5Corrector:
             return {"text": text, "candidate": text, "applied": False, "reason": "byt5_ml_extra_missing"}
         except OSError:
             return {"text": text, "candidate": text, "applied": False, "reason": "byt5_model_unavailable"}
-        except RuntimeError:
+        except RuntimeError as exc:
+            if is_fatal_resource_error(exc):
+                raise
             return {"text": text, "candidate": text, "applied": False, "reason": "byt5_inference_failed"}
         accepted, reason = _should_accept_correction(text, corrected, self.correction_settings)
         return {

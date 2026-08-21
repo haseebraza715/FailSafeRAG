@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from faar.recovery import (
     ByT5Corrector,
     VisualFallback,
@@ -54,13 +56,32 @@ def test_propose_correction_degrades_on_inference_runtime_error(monkeypatch) -> 
     corrector = ByT5Corrector("google/byt5-small")
 
     def _boom(self, text, max_new_tokens=128) -> str:
-        raise RuntimeError("cuda out of memory")
+        raise RuntimeError("transformer generation failed")
 
     monkeypatch.setattr(ByT5Corrector, "_generate_correction", _boom)
     proposal = corrector.propose_correction("invoice t0tal $98 due on receipt")
     assert proposal["applied"] is False
     assert proposal["reason"] == "byt5_inference_failed"
     assert proposal["text"] == "invoice t0tal $98 due on receipt"
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        RuntimeError("CUDA out of memory. Tried to allocate 2.00 GiB"),
+        MemoryError("host RAM exhausted"),
+    ],
+    ids=["cuda-oom", "ram-oom"],
+)
+def test_propose_correction_escalates_resource_exhaustion(monkeypatch, error: Exception) -> None:
+    corrector = ByT5Corrector("google/byt5-small")
+
+    def _boom(self, text, max_new_tokens=128) -> str:
+        raise error
+
+    monkeypatch.setattr(ByT5Corrector, "_generate_correction", _boom)
+    with pytest.raises(type(error)):
+        corrector.propose_correction("invoice t0tal $98 due on receipt")
 
 
 def test_accept_correction_rejects_low_token_preservation() -> None:
