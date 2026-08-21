@@ -121,6 +121,30 @@ def test_merge_rejects_duplicate_example_ids(tmp_path: Path) -> None:
         merge_shards.merge_shards([first, second])
 
 
+def test_merge_rejects_rows_with_unscoreable_metrics(tmp_path: Path) -> None:
+    first = tmp_path / "a.json"
+    second = tmp_path / "b.json"
+
+    missing = _row("e1")
+    del missing["metrics"]["em"]
+    _shard(first, [missing], shard_index=0)
+    _shard(second, [_row("e2")], shard_index=1)
+    with pytest.raises(SystemExit, match="has no metrics.em"):
+        merge_shards.merge_shards([first, second])
+
+    nonfinite = _row("e3")
+    nonfinite["metrics"]["f1"] = {"score": 0.9}
+    _shard(first, [nonfinite], shard_index=0)
+    with pytest.raises(SystemExit, match="invalid metrics.f1"):
+        merge_shards.merge_shards([first, second])
+
+    out_of_range = _row("e4")
+    out_of_range["metrics"]["f1"] = 1.5
+    _shard(first, [out_of_range], shard_index=0)
+    with pytest.raises(SystemExit, match="outside \\[0, 1\\]"):
+        merge_shards.merge_shards([first, second])
+
+
 def test_merge_rejects_failed_rows_with_metrics(tmp_path: Path) -> None:
     first = tmp_path / "a.json"
     second = tmp_path / "b.json"

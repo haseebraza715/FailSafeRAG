@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -54,6 +55,18 @@ EXPECTED_LABELS = {
     "faar_always_vlm": "Always-VLM",
     "faar_no_diagnosis": "Random recovery",
 }
+
+
+def _require_scored_metrics(row: dict[str, Any], key: str, path: Path) -> None:
+    metrics = row.get("metrics")
+    if not isinstance(metrics, dict) or metrics.get(key) is None:
+        raise SystemExit(f"{path} row {row.get('example_id')!r} has no metrics.{key}.")
+    try:
+        score = float(metrics[key])
+    except (TypeError, ValueError) as exc:
+        raise SystemExit(f"{path} row {row.get('example_id')!r} has invalid metrics.{key}.") from exc
+    if not math.isfinite(score) or not 0.0 <= score <= 1.0:
+        raise SystemExit(f"{path} row {row.get('example_id')!r} has metrics.{key} outside [0, 1].")
 
 
 def _load_shard(path: Path) -> dict[str, Any]:
@@ -317,6 +330,8 @@ def merge_shards(
                     f"shard {path} contains failed row {example_id!r}; "
                     "failed examples cannot be merged or scored."
                 )
+            _require_scored_metrics(row, "em", path)
+            _require_scored_metrics(row, "f1", path)
             if example_id in seen:
                 raise SystemExit(
                     f"duplicate example_id {example_id!r} in shards {seen[example_id]} and {path}."
