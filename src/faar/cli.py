@@ -20,6 +20,7 @@ from .phase4_analysis import (
 )
 from .results_aggregator import summarize_by_profile
 from .results_export import write_json, write_metrics_csv
+from .run_io import safe_checkpoint_stem
 from .settings import AppSettings
 
 app = typer.Typer(add_completion=False, help="FAAR Phase 1 prototype CLI")
@@ -129,7 +130,7 @@ def run_example(
         "run_metadata": run_metadata,
         "top_hits": [hit.to_dict() for hit in result.get("corrected_hits") or result.get("retrieved_hits", [])],
     }
-    destination = output or settings.logs_dir / f"{example_id}.json"
+    destination = output or settings.logs_dir / f"{safe_checkpoint_stem(example_id)}.json"
     destination.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     typer.echo(json.dumps(payload, indent=2))
     typer.echo(f"\nSaved log to {destination}")

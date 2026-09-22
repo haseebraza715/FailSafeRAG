@@ -29,6 +29,7 @@ class Chunk:
     doc_name: str
     page_id: int
     text: str
+    image_path: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -40,9 +41,9 @@ class RetrievalHit:
     bm25_score: float
     dense_score: float
     fused_score: float
+    reranker_score: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)
         payload["chunk"] = self.chunk.to_dict()
         return payload
-

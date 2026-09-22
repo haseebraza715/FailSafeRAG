@@ -7,8 +7,13 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from .asset_paths import resolve_project_asset
 from .settings import AppSettings
 from .types import Phase0Example
+
+
+class DatasetUnavailableError(FileNotFoundError):
+    pass
 
 
 def _parse_pages(raw: str) -> list[int]:
@@ -89,10 +94,7 @@ class Phase0Repository:
     def _resolve_summary_path(self, raw: str | None) -> Path | None:
         if not raw:
             return None
-        path = Path(raw)
-        if path.is_absolute():
-            return path
-        return self.settings.project_root / path
+        return resolve_project_asset(raw, self.settings.project_root)
 
     def list_example_ids(self) -> list[str]:
         return sorted(self._manifest)

@@ -40,7 +40,12 @@ def layout_signals(text: str) -> dict[str, bool]:
     }
 
 
-def quality_gate(hits: list[RetrievalHit], settings: GateSettings) -> dict:
+def quality_gate(
+    hits: list[RetrievalHit],
+    settings: GateSettings,
+    *,
+    prototype_signals: bool = False,
+) -> dict:
     if not hits:
         return {
             "quality_score": 0.0,
@@ -48,6 +53,7 @@ def quality_gate(hits: list[RetrievalHit], settings: GateSettings) -> dict:
             "reasons": ["no_retrieval_hits"],
             "layout_signal_count": 0,
             "corruption_score": 1.0,
+            "top_reranker_score": 0.0,
         }
 
     top = hits[0]
@@ -56,21 +62,28 @@ def quality_gate(hits: list[RetrievalHit], settings: GateSettings) -> dict:
     layout_count = sum(layout.values())
     lexical = top.bm25_score
     dense = top.dense_score
-    quality_score = (0.40 * dense) + (0.35 * lexical) + (0.25 * (1.0 - min(corruption_score, 1.0)))
     reasons: list[str] = []
-    if quality_score < settings.quality_threshold:
-        reasons.append("low_quality_score")
-    if layout_count >= settings.structural_threshold:
-        reasons.append("layout_alert")
-    if corruption_score > settings.weird_char_threshold:
-        reasons.append("word_noise_alert")
-    if lexical < settings.lexical_floor:
-        reasons.append("low_lexical_score")
-    if dense < settings.dense_floor:
-        reasons.append("low_dense_score")
+    if prototype_signals:
+        # Offline demo / local-hash path from main. Not used by AAAI B0-B4.
+        quality_score = (0.40 * dense) + (0.35 * lexical) + (0.25 * (1.0 - min(corruption_score, 1.0)))
+        if quality_score < settings.quality_threshold:
+            reasons.append("low_quality_score")
+        if layout_count >= settings.structural_threshold:
+            reasons.append("layout_alert")
+        if corruption_score > settings.weird_char_threshold:
+            reasons.append("word_noise_alert")
+        if lexical < settings.lexical_floor:
+            reasons.append("low_lexical_score")
+        if dense < settings.dense_floor:
+            reasons.append("low_dense_score")
+    else:
+        quality_score = top.reranker_score
+        if quality_score < settings.quality_threshold:
+            reasons.append("top_reranker_below_threshold")
 
     return {
         "quality_score": round(quality_score, 4),
+        "top_reranker_score": round(top.reranker_score, 6),
         "pass_gate": not reasons,
         "reasons": reasons,
         "layout_signal_count": layout_count,

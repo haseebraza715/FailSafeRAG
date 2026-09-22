@@ -28,6 +28,8 @@ EXAMPLES = ["noisy_threshold", "clean_threshold", "clean_accesslog"]
 
 def settings() -> AppSettings:
     s = AppSettings(project_root=CORPUS)
+    s.retrieval.embedding_backend = "local-hash-v1"
+    s.gate.quality_threshold = 0.52
     s.recovery.vlm_backend = "mock"
     s.recovery.enable_byt5 = False
     s.recovery.api_enabled = False

@@ -1,78 +1,82 @@
-# FailSafeRAG (faar)
+# FAAR
 
-> An OCR-RAG pipeline that detects its own retrieval failures and recovers — re-reading pages or answering with measured confidence.
+FAAR is a failure-aware OCR-RAG pipeline for document question answering. It
+retrieves from OCR text first, then applies a typed recovery only when a quality
+gate indicates that the evidence is likely to fail. Recoveries are `semantic`
+(retry retrieval), `word_level` (correct OCR noise), and `structural` (selective
+visual fallback).
 
-<p align="center"><img src="assets/demo/demo.gif" alt="Demo" width="720"></p>
+## Status
 
-Watch the full demo: [demo.mp4](assets/demo/demo.mp4)
+| Stage | State |
+| --- | --- |
+| Local implementation and regression tests | Ready |
+| Bounded 108-page CUDA calibration on a shared cluster | Ready to run |
+| Full OHR validation preparation and B0-B4 paper runs | Not done |
 
-## Why this exists
-OCR noise breaks retrieval quietly: the pipeline still finds a chunk and produces an answer, often a confident wrong one, and nothing in a naive RAG text path admits the evidence is unreliable. This project asks a research question: can an OCR-RAG pipeline detect **its own** retrieval failures and recover from them, instead of silently answering from degraded evidence?
-## What it does
-- **Text-first hybrid retrieval:** chunks OCR text and ranks by BM25 + dense embeddings fused with reciprocal-rank fusion; images are never touched on the default path.
-- **Quality gate:** scores the top evidence for OCR word noise, layout damage, weak lexical evidence, and weak dense evidence, then passes or fails the example before any answer is trusted.
-- **Failure diagnosis + typed recovery routing:** a failed gate is diagnosed (`word_level` / `structural` / `semantic`) and routed to OCR-text correction, selective visual fallback, or retrieval retry.
-- **Mock-vision fallback:** a swappable VLM backend (`mock` / `openai`) so the visual path is testable offline at zero cost; only structural failures spend multimodal tokens.
-- **Measured answers + experiment runner:** every answer carries an `answer_meta` block (`answer_mode`, `support_score`, source chunk); `run_profile` runs profiles per example in isolation and logs `ndcg@5`, `recall@5`, `EM`, `F1`, plus a recovered-vs-direct-answer counterfactual per example.
-## Architecture
-```text
-  question + example_id
-            │
-            ▼
-  load OCR example ──► chunk & metadata ──► hybrid retrieve (BM25 + dense)
-                                            │
-                                            ▼
-                                       quality gate
-                          ┌────────────────┴────────────────┐
-                        pass                              fail
-                          ▼                                 ▼
-                   answer direct                    failure diagnosis
-                          │                     ┌───────────┼───────────┐
-                          │                     ▼           ▼           ▼
-                          │              semantic     word-level   structural
-                          │              retry        OCR correct  VLM fallback
-                          │                │              │           │
-                          └────────────────┴──────┬───────┴───────────┘
-                                                  ▼
-                                       answer + measured confidence
-                                                  │
-                                                  ▼
-                        per-example metrics log (experiment runner)
-```
-Pipeline: OCR text (possibly corrupted) → chunk → retrieve → quality gate → diagnose → recover → answer. The controller is a compiled LangGraph state machine (`src/faar/graph.py`) whose nodes map one-to-one onto this diagram. Module map (`src/faar/`): `data.py` (phase-0 corpus loading) · `chunking.py` · `retrieval.py` (hybrid + RRF fusion) · `quality.py` (gate + diagnosis) · `recovery.py` (semantic backtrack, ByT5 correction, VLM fallback) · `answering.py` (typed span extraction + support score) · `graph.py` (controller) · `experiment_runner.py`, `metrics.py`, `results_aggregator.py`, `phase4_analysis.py` (experiments and reports). See [ARCHITECTURE.md](ARCHITECTURE.md).
-## Quick start
+Real GPU calibration measurements and full validation results are still pending.
+Older 40-example mock-backend numbers in `docs/reports/` and `artifacts/phase3/`
+are prototype evidence only. They are not AAAI baselines.
+
+## Repository
+
+- GitHub: <https://github.com/haseebraza715/FailSafeRAG>
+- Branch: `faar-aaai-experiments`
+
+Do not run the cluster workflow from `main` until this branch has been reviewed
+and merged. Do not edit `config/datasets/ohr_split.json` or the locked OHR QA file. Their SHA-256
+checksums must remain:
+
+- `config/datasets/ohr_split.json`: `64583a532c5db5aa31e4cbb5cd9c7d894c7a2d5e8aa49f1a7f6041f54e714f53`
+- `OHR-Bench/data/qas_v2.json`: `2446db28741fa9f392067ee7aae7f3b05e0d85c584069a50ddd5b1b5bc783f58`
+
+## Setup
+
+Use CPython 3.12 and the pinned AAAI extra. A paper run is invalid if `pip check`
+fails. The same command works on macOS for local checks and on Linux for Slurm.
+
 ```bash
-git clone https://github.com/haseebraza715/FailSafeRAG.git
-cd FailSafeRAG
-python3 -m venv .venv && source .venv/bin/activate
-pip install -e .
-python scripts/demo/demo_run.py
+git clone https://github.com/haseebraza715/FailSafeRAG.git faar
+cd faar
+git checkout faar-aaai-experiments
+python3.12 -m venv .venv-aaai
+.venv-aaai/bin/python -m pip install --upgrade pip
+.venv-aaai/bin/python -m pip install -c config/environment/constraints-aaai.txt -e '.[aaai]'
+.venv-aaai/bin/python -m pip check
 ```
-Runs the full pipeline over the committed synthetic corpus in `examples/demo_corpus/` (three tiny pages, one OCR-corrupted). Fully offline and deterministic: local-hash embeddings, mock VLM, seed 42, no API keys, ByT5 disabled by profile.
-## Demo
+
+Copy `.env.example` to `.env` and fill paths and resource names only. Never
+commit `.env`. Local `pytest` is a code check, not a paper result. On macOS,
+run the bounded-memory tests in a separate process if the full suite hits the
+known OpenMP segfault.
+
+## First cluster commands
+
+Login-node preflight, no CUDA:
+
 ```bash
-python scripts/demo/demo_run.py                 # milestone trace (3 examples, ~10s)
-faar-demo run-example --project-root examples/demo_corpus \
-    --example-id noisy_threshold --vlm-backend mock --seed 42    # full JSON run log
+.venv-aaai/bin/python cluster/preflight.py --check --no-cuda --project-root "$PWD"
 ```
-`run-example` enables word-level ByT5 correction by default; on macOS builds where faiss and torch OpenMP runtimes conflict, that path can crash. Use `scripts/demo/demo_run.py` (ByT5 disabled by profile) or `faar-demo run-benchmark --no-enable-byt5` instead.
-The corrupted page (`Z3phyr c0mpliance requires a thr3shold…`) retrieves its chunk but fails the quality gate on `word_noise_alert` (corruption 0.474 vs 0.053 clean), is diagnosed as `word_level`, and is routed to OCR-text correction; the answer `"42%"` is delivered with `support_score 9`, measurably lower than the clean page's 10. The clean example passes the gate and answers directly, and no example invokes the visual model.
-Regenerate the recorded assets with:
+
+Allocated-GPU preflight, then the bounded 108-page calibration. Submit nothing
+else until the calibration report is approved.
+
 ```bash
-bash scripts/demo/record.sh                     # re-record assets/demo/demo.cast (needs asciinema)
-IDLE_LIMIT=3.0 bash scripts/demo/render.sh assets/demo/demo.cast assets/demo   # re-render gif + mp4
+sbatch cluster/templates/slurm_preflight.sbatch
+sbatch cluster/templates/slurm_calibration_108.sbatch
 ```
-## Technical decisions
-- **Deterministic local-hash embedding backend.** `local-hash-v1` (blake2b feature hashing over tokens, 256 dims) needs no model download, no GPU, no network, so every demo and test run is reproducible anywhere. Sentence-transformers embeddings are available behind the `[ml]` extra on the same code path.
-- **Quality-gate → diagnosis → recovery routing.** Instead of an LLM agent loop, recovery is a small typed policy: the gate emits concrete signals, `diagnose_failure` maps them to one of three failure types, and the graph routes to the matching action. Failures are first-class, countable objects, which keeps the cost story measurable.
-- **Tie-stable ranking.** Fusion combines normalized BM25 and dense scores with a rank-derived RRF component, and `np.argsort(…, kind="stable")` breaks fused-score ties deterministically.
-- **Per-example failure isolation.** The experiment runner wraps each example in its own try/except and writes one JSON row per example; a failing example becomes an `error` row instead of aborting the run, and every row records a direct-answer counterfactual.
-## Validation
-155 tests pass (`pytest`), including an end-to-end demo over a synthetic OCR-corruption corpus, robustness tests for the retrieval/gate/recovery/answering code paths, and an evidence tripwire that re-runs the committed benchmark aggregation offline and fails if the committed summaries drift. The committed 40-example offline slice shows typed-recovery profiles at parity with the naive baseline (recovery changed 0 of 15 routed cases; EM/F1 effect `equal` in all 15), so claims are limited to routing and cost control, not answer-quality improvement. Run logs, summaries, and the preserved-evidence inventory live in `logs/phase3/`, `artifacts/phase3/`, and [evidence-manifest.tsv](evidence-manifest.tsv).
-[![CI](https://github.com/haseebraza715/FailSafeRAG/actions/workflows/tests.yml/badge.svg)](https://github.com/haseebraza715/FailSafeRAG/actions/workflows/tests.yml)
-## Limitations
-- Phase-1 research prototype: the quality gate and recovery routing are rule-based and tuned on a small slice, not a shipped product.
-- Answer extraction is regex/span-based (numeric, date, range, yes/no, extractive overlap), with no free-form reasoning.
-- The committed evidence uses a mock VLM; real-VLM answer quality is untested, and word-level ByT5 correction is disabled in the offline profile (it degrades to a guarded skip).
-- Benchmark scope is a 40-example committed slice of OHR-Bench; the full benchmark lives in `data/`/`OHR-Bench` and is not tracked.
-- On macOS builds where faiss and torch OpenMP runtimes conflict, running the CLI with ByT5 enabled can crash; the demo profile disables it.
+
+Edit partition, account, QOS, and `FAAR_GPU_BUDGET_GB` in those templates before
+submission. Exact procedure, resume, shard merge, and stop conditions are in
+[SUPERVISOR_HANDOFF.md](SUPERVISOR_HANDOFF.md) and
+[docs/operations/runbook.md](docs/operations/runbook.md).
+The next cluster-only work is that preflight and calibration. Full validation
+stays blocked until those measurements are approved.
+
+## Documentation
+
+- [Supervisor handoff](SUPERVISOR_HANDOFF.md)
+- [Shared-cluster runbook](docs/operations/runbook.md)
+- [Architecture](docs/architecture/overview.md)
+- [Experimental plan](docs/experiments/aaai-plan.md)
+- [Documentation index](docs/README.md)

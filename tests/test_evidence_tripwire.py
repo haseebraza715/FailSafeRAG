@@ -48,6 +48,8 @@ def _fresh_faar_full_summary() -> dict:
     random.seed(42)
     np.random.seed(42)
     settings = AppSettings(project_root=REPO_ROOT)
+    settings.retrieval.embedding_backend = "local-hash-v1"
+    settings.gate.quality_threshold = 0.52
     settings.recovery.vlm_backend = "mock"
     settings.recovery.enable_byt5 = False
     settings.recovery.api_enabled = False

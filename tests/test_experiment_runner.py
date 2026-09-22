@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from faar.data import Phase0Repository
@@ -14,6 +15,17 @@ class FakeGraph:
             "failure_type": "semantic",
             "policy_action": "retry_retrieval",
             "action_outcome": {"action": "retry_retrieval", "status": "succeeded"},
+            "visual_result": {
+                "request_model": "gpt-4o-2024-11-20",
+                "response_model": "gpt-4o-2024-11-20",
+                "completed_at_utc": "2026-07-23T12:00:00+00:00",
+                "api_usage": {
+                    "api_requests": 0,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "cost_usd": 0.0,
+                },
+            },
             "retrieved_hits": [],
             "corrected_hits": [],
         }
@@ -53,6 +65,14 @@ def test_run_profile_writes_rows(monkeypatch, tmp_path: Path) -> None:
     assert rows[0]["example_id"] == "ex2"
     assert rows[0]["metrics"]["em"] == 1.0
     assert rows[0]["run_metadata"]["selection"]["manual_failure_types"] == ["text_corruption"]
+    saved = json.loads((tmp_path / "logs/phase3/faar_full/ex2.json").read_text())
+    assert saved["request_model"] == "gpt-4o-2024-11-20"
+    assert saved["response_model"] == "gpt-4o-2024-11-20"
+    assert saved["completed_at_utc"] == "2026-07-23T12:00:00+00:00"
+    assert saved["cost_rates"]["input_usd_per_million_tokens"] == 2.5
+    assert saved["cost_rates"]["output_usd_per_million_tokens"] == 10.0
+    assert saved["run_metadata"]["cost_rates"]["input_usd_per_million_tokens"] == 2.5
+    assert saved["run_metadata"]["cost_rates"]["output_usd_per_million_tokens"] == 10.0
 
 
 def test_run_profile_records_recovery_metrics(monkeypatch, tmp_path: Path) -> None:

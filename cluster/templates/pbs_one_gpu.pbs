@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#PBS -N faar-one-gpu
+#PBS -l select=1:ncpus=8:mem=32gb:ngpus=1
+#PBS -l walltime=08:00:00
+#PBS -q gpu
+#PBS -o logs/faar-$PBS_JOBID.out
+#PBS -e logs/faar-$PBS_JOBID.err
+
+# Edit the resource directives for the confirmed lab allocation.
+# Configure the lab's supported pre-walltime signal option before long runs.
+# B0--B4 checkpoint each example and resume with --resume.
+
+set -euo pipefail
+cd "${PBS_O_WORKDIR:-$PWD}"
+mkdir -p logs
+if [[ -f .env ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source .env
+  set +a
+fi
+
+export VLM_BACKEND="${VLM_BACKEND:-openai}"
+export FAAR_PYTHON="${FAAR_PYTHON:-$PWD/.venv-aaai/bin/python}"
+export FAAR_DATASET="${FAAR_DATASET:-ohrbench}"
+export FAAR_SPLIT="${FAAR_SPLIT:-val}"
+# Required after preflight: pick a positive GPU process budget (GiB) from the
+# reported GPU model and free VRAM. The launcher fails closed without it.
+export FAAR_GPU_BUDGET_GB="${FAAR_GPU_BUDGET_GB:-}"
+
+"${FAAR_PYTHON}" cluster/run_baselines.py \
+  --project-root "${PBS_O_WORKDIR:-$PWD}" \
+  --dataset "${FAAR_DATASET}" \
+  --split "${FAAR_SPLIT}" \
+  --resume

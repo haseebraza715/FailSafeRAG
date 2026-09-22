@@ -6,7 +6,7 @@ from faar.types import Chunk, RetrievalHit
 
 
 class FakeRetriever:
-    def __init__(self, chunks, settings) -> None:
+    def __init__(self, chunks, settings, *, cache_dir=None) -> None:
         self.hits = [
             RetrievalHit(
                 chunk=Chunk(
@@ -68,6 +68,7 @@ def test_word_level_recovery_does_not_crash_when_byt5_unavailable(
 
     monkeypatch.setattr(ByT5Corrector, "_generate_correction", _unavailable)
     settings = AppSettings(project_root=tmp_path)
+    settings.retrieval.embedding_backend = "local-hash-v1"
     settings.gate.quality_threshold = 0.95
     settings.gate.lexical_floor = 0.5
     settings.gate.structural_threshold = 99

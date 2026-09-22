@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from faar.experiment_runner import run_profile
 from faar.settings import AppSettings
 
@@ -8,9 +10,11 @@ from faar.settings import AppSettings
 class FlakyGraph:
     def __init__(self) -> None:
         self.questions = {}
+        self.invoked = []
 
     def invoke(self, state):
         example_id = state["example_id"]
+        self.invoked.append(example_id)
         if example_id == "ex_bad":
             raise FileNotFoundError(f"OCR text artifact missing for example {example_id}")
         return {
@@ -41,32 +45,40 @@ def _prepare_phase0(tmp_path: Path) -> None:
         )
 
 
-def test_run_profile_continues_past_failing_example(monkeypatch, tmp_path: Path) -> None:
+def test_run_profile_finishes_other_examples_but_refuses_to_publish_missing_input(monkeypatch, tmp_path: Path) -> None:
     _prepare_phase0(tmp_path)
-    monkeypatch.setattr("faar.experiment_runner.build_graph", lambda settings: FlakyGraph())
+    graph = FlakyGraph()
+    monkeypatch.setattr("faar.experiment_runner.build_graph", lambda settings: graph)
     settings = AppSettings(project_root=tmp_path)
-    rows = run_profile(settings, profile_name="faar_full", example_ids=["ex1", "ex_bad", "ex2"])
-    assert len(rows) == 3
-    good = [row for row in rows if row["example_id"] != "ex_bad"]
-    bad = next(row for row in rows if row["example_id"] == "ex_bad")
-    assert len(good) == 2
-    assert all(row["metrics"]["em"] == 1.0 for row in good)
-    assert bad["failure_type"] == "error"
-    assert bad["action_outcome"]["action"] == "failed"
-    assert "missing for example ex_bad" in bad["action_outcome"]["reason"]
-    assert bad["metrics"]["em"] == 0.0
+    with pytest.raises(RuntimeError, match="failed and were not scored"):
+        run_profile(settings, profile_name="faar_full", example_ids=["ex1", "ex_bad", "ex2"])
+
+    assert graph.invoked == ["ex1", "ex_bad", "ex2"]
+    out_dir = tmp_path / "logs/phase3" / "faar_full"
+    assert json.loads((out_dir / "ex1.json").read_text())["metrics"]["em"] == 1.0
+    assert json.loads((out_dir / "ex2.json").read_text())["metrics"]["em"] == 1.0
+    failed = json.loads((out_dir / "ex_bad.json").read_text())
+    assert failed["action_outcome"]["status"] == "failed"
+    assert "metrics" not in failed
 
 
-def test_run_profile_writes_json_for_failed_examples_too(monkeypatch, tmp_path: Path) -> None:
+def test_missing_input_checkpoint_is_not_reused_as_a_scored_row(monkeypatch, tmp_path: Path) -> None:
     _prepare_phase0(tmp_path)
-    monkeypatch.setattr("faar.experiment_runner.build_graph", lambda settings: FlakyGraph())
+    graph = FlakyGraph()
+    monkeypatch.setattr("faar.experiment_runner.build_graph", lambda settings: graph)
     settings = AppSettings(project_root=tmp_path)
-    run_profile(settings, profile_name="faar_full", example_ids=["ex1", "ex_bad"])
+    with pytest.raises(RuntimeError, match="failed and were not scored"):
+        run_profile(settings, profile_name="faar_full", example_ids=["ex1", "ex_bad"])
+    graph.invoked.clear()
+    with pytest.raises(RuntimeError, match="failed and were not scored"):
+        run_profile(settings, profile_name="faar_full", example_ids=["ex1", "ex_bad"], resume=True)
+
+    assert graph.invoked == ["ex_bad"]
     out_dir = tmp_path / "logs/phase3" / "faar_full"
     assert (out_dir / "ex1.json").exists()
     assert (out_dir / "ex_bad.json").exists()
     payload = json.loads((out_dir / "ex_bad.json").read_text(encoding="utf-8"))
-    assert payload["action_outcome"]["action"] == "failed"
+    assert payload["action_outcome"]["status"] == "failed"
 
 
 def test_run_profile_is_deterministic(monkeypatch, tmp_path: Path) -> None:

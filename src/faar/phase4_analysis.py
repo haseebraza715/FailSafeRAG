@@ -31,9 +31,16 @@ def load_phase3_rows(logs_root: Path, profiles: Iterable[str] | None = None) -> 
             for path in sorted(profile_dir.glob("*.json")):
                 try:
                     payload = json.loads(path.read_text(encoding="utf-8"))
-                except (json.JSONDecodeError, OSError):
+                except (json.JSONDecodeError, OSError) as exc:
+                    print(f"[faar] skipping unreadable phase3 checkpoint {path.name}: {exc}", flush=True)
                     continue
                 if isinstance(payload, dict):
+                    if (payload.get("action_outcome") or {}).get("status") == "failed":
+                        print(
+                            f"[faar] skipping failed phase3 checkpoint {path.name} from aggregate metrics",
+                            flush=True,
+                        )
+                        continue
                     rows.append(payload)
         rows_by_profile[profile_name] = rows
     return rows_by_profile

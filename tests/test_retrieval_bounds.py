@@ -25,6 +25,6 @@ def test_local_hash_embedder_is_deterministic_and_normalized() -> None:
 
 
 def test_retriever_rejects_configured_chunk_overflow_before_embedding() -> None:
-    settings = RetrievalSettings(max_chunks=1)
+    settings = RetrievalSettings(max_chunks=1, embedding_backend="local-hash-v1")
     with pytest.raises(ValueError, match="exceeds configured max_chunks"):
         HybridRetriever([_chunk(1), _chunk(2)], settings)

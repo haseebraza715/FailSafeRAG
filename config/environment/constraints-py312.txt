@@ -1,0 +1,11 @@
+# Verified direct dependency set for Python 3.12. Install with:
+# python -m pip install -c constraints-py312.txt -e .
+faiss-cpu==1.9.0.post1
+langgraph==0.6.11
+numpy==2.0.2
+openai==1.59.8
+pydantic==2.10.6
+rank-bm25==0.2.2
+sentence-transformers==3.3.1
+transformers==4.46.3
+typer==0.15.1

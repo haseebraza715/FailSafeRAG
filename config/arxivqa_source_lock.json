@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "official_source": {
+    "repository": "MMInstruction/ArxivQA",
+    "revision": "85a6dca0e2bdc6f0268ae519be8913f83a83cafd",
+    "filename": "arxivqa.jsonl",
+    "sha256": "d66cee08f152747ea58ce7851310c97229dcc6103901b3041ea988ad11eb1b96",
+    "upstream_split": "test"
+  },
+  "vidore_source": {
+    "repository": "vidore/arxivqa_test_subsampled",
+    "revision": "b8a106812c8682bab08935cf5d1b4566c82562de",
+    "filename": "test-00000-of-00001.parquet",
+    "sha256": "a45cb85bb49dce83b1beb851e312fe38179035151a55401a8801a2e53c1159d3",
+    "expected_rows": 500
+  },
+  "staged_row_fingerprint_sha256": "ccb60459021d211628c399682437841158e1ca238799a3cd81eef63026a7fa9a",
+  "staged_row_fingerprint_algorithm": "sha256(canonical-json(sorted staged StagedRow dictionaries))",
+  "upstream_split": "test",
+  "supervisor_approved_project_role": "validation",
+  "project_role_policy": {
+    "policy_id": "supervisor-approved-full-paper-remap-v1",
+    "allows_upstream_test_as_project_validation": true,
+    "approval_source": "supervisor instruction: use the full-paper remapping version"
+  },
+  "arxiv_version_policy": {
+    "source_filenames_include_versions": false,
+    "pdf_version_pinning": "documented_overrides_only",
+    "limitation": "The source image filenames omit arXiv versions. All unversioned papers keep the default unversioned download and claim no source-version pin; only papers with an explicit validated pdf_override record a pinned arXiv version."
+  },
+  "pdf_overrides": {
+    "2304.04203": {
+      "paper_id": "2304.04203",
+      "pdf_url": "https://arxiv.org/pdf/2304.04203v1",
+      "version": "v1",
+      "withdrawal_reason": "arXiv:2304.04203 (OpenDriver: An Open-Road Driver State Detection Dataset) was withdrawn by the submitting author; the unversioned PDF endpoint returns 404. Withdrawal notice: \"Considering that there are flaws in the statistical data of the dataset, all the authors agreed to withdraw the manuscript.\" Version v1 is pinned for the staged figure.",
+      "figure_sha256": "e6a559bed0f6cccd2dbeea5e3062474591b5ee47557cf3ee9904ee32db1f93bf",
+      "matched_page_id": 4,
+      "v1_score": 0.7699745893478394,
+      "v2_max_score": 0.2556701898574829
+    }
+  }
+}

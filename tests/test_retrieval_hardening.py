@@ -19,7 +19,7 @@ def _chunk(index: int, text: str | None = None) -> Chunk:
 
 def _retriever(n: int = 6, texts: list[str] | None = None) -> HybridRetriever:
     chunks = [_chunk(i, texts[i] if texts else None) for i in range(n)]
-    return HybridRetriever(chunks, RetrievalSettings())
+    return HybridRetriever(chunks, RetrievalSettings(embedding_backend="local-hash-v1"))
 
 
 def test_top_k_zero_or_negative_returns_empty() -> None:

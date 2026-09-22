@@ -38,7 +38,11 @@ pytestmark = pytest.mark.skipif(
 
 def _invoke(example_id: str) -> dict:
     settings = AppSettings(project_root=REPO_ROOT)
+    settings.retrieval.embedding_backend = "local-hash-v1"
+    settings.gate.quality_threshold = 0.52
     settings.recovery.vlm_backend = "mock"
+    settings.recovery.enable_byt5 = False
+    settings.recovery.api_enabled = False
     graph = build_graph(settings)
     return graph.invoke({"example_id": example_id})
 

@@ -35,6 +35,8 @@ def _prepare_corpus(tmp_path: Path) -> None:
 
 def _settings(tmp_path: Path) -> AppSettings:
     settings = AppSettings(project_root=tmp_path)
+    settings.retrieval.embedding_backend = "local-hash-v1"
+    settings.gate.quality_threshold = 0.52
     settings.recovery.vlm_backend = "mock"
     settings.recovery.enable_byt5 = False
     settings.recovery.api_enabled = False

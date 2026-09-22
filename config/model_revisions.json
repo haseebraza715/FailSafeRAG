@@ -1,0 +1,34 @@
+{
+  "resolved_at_utc": "2026-07-23T12:05:42Z",
+  "source": "Hugging Face model_info(repo_id, revision='main').sha",
+  "models": {
+    "embedding": {
+      "repository": "nvidia/NV-Embed-v2",
+      "revision": "3fa59658547db50a1e8e3346cf057fd0c77ed6ef"
+    },
+    "reranker": {
+      "repository": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    },
+    "got_ocr": {
+      "repository": "stepfun-ai/GOT-OCR-2.0-hf",
+      "revision": "d3017ef2c2c1395888c8d635c5e0508bcb0ac78d"
+    },
+    "docling": {
+      "repository": "docling-project/docling-models",
+      "revision": "2bdc831fd1edeb61e6d0dfc8ae7596b0c30bdff4"
+    },
+    "colpali": {
+      "repository": "vidore/colpali-v1.2-hf",
+      "revision": "56b5c732913abf3501ba208562df7b8f4edd5861"
+    },
+    "visrag": {
+      "repository": "openbmb/VisRAG-Ret",
+      "revision": "95ef596df871b606167cb7e4b7215caf1bfdf761"
+    },
+    "byt5": {
+      "repository": "google/byt5-small",
+      "revision": "68377bdc18a2ffec8a0533fef03b1c513a4dd49d"
+    }
+  }
+}

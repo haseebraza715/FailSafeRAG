@@ -1,5 +1,9 @@
 .DS_Store
+.env
+.env.*
+!.env.example
 .venv/
+.venv-aaai/
 __pycache__/
 *.pyc
 *.pyo
@@ -8,11 +12,36 @@ __pycache__/
 
 src/*.egg-info/
 src/**/*.egg-info/
+build/
+dist/
 
 # Experiment output and benchmark data are preserved as committed evidence;
 # these rules keep new runs and untracked benchmark payloads out of git status.
 data/
+!scripts/data/
+!scripts/data/*.py
 logs/
 artifacts/
 OHR-Bench/
+
+data/ohr_bench_raw/
+data/benchmark_prep/
+data/benchmark_assets_smoke/
+data/external/
+results/smoke/
+docs/output/pdf/*.aux
+docs/output/pdf/*.fls
+docs/output/pdf/*.fdb_latexmk
+docs/output/pdf/*.log
+docs/output/pdf/*.out
+docs/tmp/
+OHR-Bench/.git/
 AGENT.MD
+*.partial
+
+tmp/
+cache/
+results/calibration/
+results/baselines/
+results/environment/preflight*.json
+cluster/preflight_*.json
