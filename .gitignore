@@ -31,7 +31,6 @@ data/external/
 results/smoke/
 paper/build/
 OHR-Bench/.git/
-AGENT.MD
 *.partial
 
 tmp/

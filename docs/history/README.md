@@ -16,6 +16,7 @@ them refer to the layout of their time; resolve moved paths with the map in
 | [prototype-reproducibility.md](prototype-reproducibility.md) | Prototype environment notes |
 | [portfolio.md](portfolio.md) | Prototype portfolio write-up |
 | [agent-notes.md](agent-notes.md) | Earlier git rules for agents ("work on main"), superseded |
+| [legacy-agent-instructions.md](legacy-agent-instructions.md) | The former root `AGENT.MD` (git-ignored, never tracked), moved here byte for byte on 2026-09-28. Superseded by [../../AGENTS.md](../../AGENTS.md) |
 | [status-report-2026-08/](status-report-2026-08/) | "Verified experimental status" paper-style report (LaTeX and PDF, dated 12 August 2026). Not the paper; the current paper is [../../paper/main.tex](../../paper/main.tex) |
 | [workspace-migration-2026-09-28.md](workspace-migration-2026-09-28.md) | Reorganisation record: path map and cleanup ledger |
 

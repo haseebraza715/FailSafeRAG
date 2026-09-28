@@ -64,9 +64,24 @@ python3.12 -m venv .venv-aaai
 ```
 
 Copy `.env.example` to `.env` and fill paths and resource names only. Never
-commit `.env`. Local `pytest` is a code check, not a paper result. On macOS,
-run the bounded-memory tests in a separate process if the full suite hits the
-known OpenMP segfault.
+commit `.env`. Local `pytest` is a code check, not a paper result.
+
+### Local checks and known issues
+
+Run project scripts with `.venv-aaai/bin/python`. The system `python3` may be
+older than 3.12.
+
+```bash
+.venv-aaai/bin/python -m pytest -q -p no:cacheprovider --ignore=tests/test_bounded_memory_batches.py
+KMP_DUPLICATE_LIB_OK=TRUE OMP_NUM_THREADS=1 .venv-aaai/bin/python -m pytest -q -p no:cacheprovider tests/test_bounded_memory_batches.py
+.venv-aaai/bin/ruff check .
+```
+
+These issues predate the current layout and are not regressions:
+
+- On macOS the full suite segfaults in `tests/test_bounded_memory_batches.py` (OpenMP). Run that file separately, as above.
+- The suite appends mock entries to the git-ignored `logs/vlm_calls.jsonl`. Copy that file aside before a test run if you need it unchanged.
+- `faar-demo --help` fails with `TypeError: Secondary flag is not valid for non-boolean flag`. The installed `click` 8.4.2 is not pinned and is incompatible with the pinned `typer` 0.12.5.
 
 ## First cluster commands
 
