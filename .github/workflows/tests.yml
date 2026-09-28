@@ -9,10 +9,11 @@ on:
 permissions:
   contents: read
 
-# A newer push to the same branch or pull request makes the running jobs obsolete.
+# A newer push to the same pull request makes its running jobs obsolete. Runs on
+# main are not cancelled, so every commit on main keeps its own result.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
@@ -110,3 +111,10 @@ jobs:
 
       - name: Run the offline test suite
         run: python -m pytest -q -ra -p no:cacheprovider
+
+      # Compares faar.ohr_scoring with the vendored upstream metric on about
+      # 99,000 answer pairs. The vendored files and qas_v2.json are tracked.
+      - name: Check scorer parity with the vendored OHR-Bench metric
+        run: |
+          python -W ignore::SyntaxWarning scripts/experiments/ohr_scoring_parity.py --check-fixture
+          python -W ignore::SyntaxWarning scripts/experiments/ohr_scoring_parity.py > parity_report.json

@@ -4,6 +4,8 @@
 !.env.example
 .venv/
 .venv-aaai/
+# Local environments, handoff notes and runs kept outside git.
+.local/
 __pycache__/
 *.pyc
 *.pyo
