@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-28-ohr-dev-v1-offline-engineering-r3",
+  "pilot_id": "ohr_dev_v1",
+  "kind": "engineering_check",
+  "label": "Engineering settings for an offline pipeline check. They are not the approved scientific protocol.",
+  "status": "complete",
+  "exit_code": 0,
+  "all_questions_terminal": true,
+  "counts": {
+    "questions": 70,
+    "answered": 63,
+    "no_evidence": 7,
+    "execution_failed": 0,
+    "abstained": 7
+  },
+  "no_evidence_by_reason": {
+    "no_text_chunks": 6,
+    "no_text_content": 1,
+    "no_retrieval_tokens": 0,
+    "no_hits": 0
+  },
+  "questions_without_query_tokens": {
+    "total": 19,
+    "answered": 18,
+    "no_evidence": 1,
+    "execution_failed": 0
+  },
+  "execution_failures_by_stage": {},
+  "injected_failures": [],
+  "documents": 30,
+  "pages": {
+    "total": 54,
+    "ok": 48,
+    "empty": 6,
+    "missing": 0
+  },
+  "chunks": 145,
+  "documents_with_chunks_but_no_retrieval_tokens": [
+    "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124"
+  ],
+  "fingerprint": "6725749f435f3e119f700a70e9ca1c4b3bdeea57a2b4bbae4197f2711743de3f",
+  "predictions_sha256": "906310fd646f49f6f89ce9c1599c087a4cb836580c7da698ab1c56957b928d77"
+}
