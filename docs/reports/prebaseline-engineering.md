@@ -289,3 +289,24 @@ r3. It was registered before it started. The registry attempt therefore says `di
 
 - **Lead, requested and observed:** the task prompt asked for `claude-opus-5-5` at High. The session metadata reported `claude-opus-5-5` and effort `high`.
 - **Workers A to E, configured:** every worker used the agent definition `faar-worker` in the workspace `.claude/agents/`. It sets `model: claude-sonnet-5-5` and `effort: high`. No runtime record of a worker's model or effort was available beyond that configuration, and a worker's statement about itself is not treated as confirmation.
+
+### Independent review of 2026-09-29
+
+A reviewer (agent definition `faar-worker`) that wrote none of the overnight
+code reviewed `cb5d151`. It found no critical or high issue.
+
+- **Fuzzing.** Its differential fuzzing against the `8479309` code covered 20,000 random non-CJK pages and 50,000 ASCII strings, with 0 mismatches.
+- **Chunk invariants.** 30,000 random pages were checked for chunk coverage and termination.
+- **Mutation tests.** Of 9 mutants, the tests killed 8.
+- **Rerun and leakage.** A byte-identical regeneration of r4 matched the committed files, and a file-access spy saw no evaluation file opened during generation.
+- **Matching evidence.** `openmp_check.py` gave the same verdicts as above, and its spot checks of the cited provenance sources matched.
+
+| Finding | Disposition |
+| --- | --- |
+| M1: this report still called r3 current, and its r3 reproduction command now yields an r4-style run | Fixed. r3 is marked superseded, and the reproduction note says to check out `adfb2d3` or `8479309`. Pre-r4 limitation lines are dated. |
+| M2: study brief section 15.4 cited `pilot_runner.py` line numbers from `8479309` | Fixed. It cites symbols instead. |
+| L1: the section 15.6 cost estimate used r3 evidence sizes and called the retrieval change in progress | Fixed. It names the r3 figures and adds the r4 figures (mean 3,190 and maximum 6,252 characters, recomputed by the lead). |
+| L2: the provenance record missed `f1_zh`, which uses jieba, in OHR-Bench's init commit, and cited an uncommitted draft path | Fixed in the record. The module docstring says these parts come from OHR-Bench, which stays true, so it was not changed. |
+| L3: `multilingual-v1` splits Devanagari, vowelled Arabic and pointed Hebrew at combining marks | Accepted as a documented limit in study brief section 11. No code change, because the pilot has none of these scripts and a code change would alter the r4 fingerprint. |
+| L4: removing the katakana prolonged sound mark from the CJK range survived the tests | Fixed. A test case for `コンピューター` was added, and the lead confirmed that the mutant now fails it. |
+| L5: r4's registry attempt says `dirty: false`, while its `run_config.json` says `dirty: true` | Explained above, with no change. Both values are true at their own moments. |
