@@ -12,7 +12,7 @@ Generation never calls it and never receives its path.
 Data flow::
 
     runtime_manifest.json + MinerU JSON  (hash-verified)
-      -> per-document chunks and hybrid retrieval (local-hash embeddings)
+      -> per-document chunks and hybrid retrieval (local-hash embeddings; text policy multilingual-v1)
       -> one terminal record per question (answered, no_evidence, execution_failed)
       -> predictions.jsonl, run_config.json, generation_summary.json
       -> score_run: join to evaluation_manifest.json -> scores.jsonl, score_summary.json
@@ -61,6 +61,15 @@ from .run_io import (
     canonical_digest,
 )
 from .settings import RetrievalSettings
+from .text_units import (
+    CJK_CHARS_PER_WORD,
+    LEGACY_CHUNK_POLICY,
+    LEGACY_TEXT_POLICY,
+    MULTILINGUAL_TEXT_POLICY,
+    TOKENIZER_DESCRIPTIONS,
+    TextPolicy,
+    tokenize,
+)
 from .types import Chunk, RetrievalHit
 
 RUN_SCHEMA_VERSION = 1
@@ -101,8 +110,8 @@ OCR_STATUSES = ("ok", "empty", "missing")
 RUNTIME_QUESTION_KEYS = frozenset({"question_id", "doc_id", "question"})
 FAILURE_MESSAGE_LIMIT = 500
 
-_TOKENISER_PATTERN = "[a-z0-9%$]+"
-_WORD_PATTERN = r"\S+"
+# Tokenizer and chunk policy of this path. `describe_retrieval` records them, so they enter the fingerprint.
+DEFAULT_TEXT_POLICY = MULTILINGUAL_TEXT_POLICY
 
 
 class RunnerRefusal(Exception):
@@ -407,8 +416,85 @@ def engineering_retrieval_settings() -> RetrievalSettings:
     )
 
 
-def describe_retrieval(settings: RetrievalSettings) -> dict[str, Any]:
-    """The retrieval settings as recorded in ``run_config.json`` and hashed into the fingerprint."""
+def _describe_chunking(settings: RetrievalSettings, text_policy: TextPolicy) -> dict[str, Any]:
+    common = {
+        "function": "faar.chunking.build_page_chunks",
+        "policy": text_policy.chunk_policy,
+        "chunk_size_words": settings.chunk_size_words,
+        "chunk_overlap_words": settings.chunk_overlap_words,
+        "chunk_id": "<doc_id>-p<page_idx>-c<chunk_index>",
+        "pages_without_text": "empty or missing OCR gives no chunk and is counted in ocr_condition",
+    }
+    if text_policy.chunk_policy == LEGACY_CHUNK_POLICY:
+        return {**common, "word_tokeniser": r"\S+"}
+    return {
+        **common,
+        "units": (
+            "a CJK character (Han, Hiragana, Katakana) is one unit of weight 1; "
+            "any other run of non-space characters is one unit of weight 2"
+        ),
+        "cjk_chars_per_word": CJK_CHARS_PER_WORD,
+        "window": (
+            f"chunk_size_words * {CJK_CHARS_PER_WORD} weight, so a chunk holds at most "
+            f"{settings.chunk_size_words * CJK_CHARS_PER_WORD} CJK characters or {settings.chunk_size_words} other words; "
+            "the window advances by (chunk_size_words - chunk_overlap_words) words on the same scale"
+        ),
+        "chunk_text": "the page text of the span, each run of whitespace replaced by one space",
+        "without_cjk": "text with no CJK character gets the boundaries and the chunk text of whitespace-words-v1",
+    }
+
+
+def _describe_tokenisation(text_policy: TextPolicy) -> dict[str, Any]:
+    tokenizer = text_policy.tokenizer
+    common = {
+        "tokenizer": tokenizer,
+        "definition": TOKENIZER_DESCRIPTIONS[tokenizer],
+        "applied_to": "chunk text and query text alike, for BM25 and for the hashing embedder",
+    }
+    if text_policy == LEGACY_TEXT_POLICY:
+        return {
+            **common,
+            "retrieval_tokeniser": "[a-z0-9%$]+",
+            "han_script": "the tokeniser matches only [a-z0-9%$], so Han-script text gets no lexical or hashed-embedding signal",
+        }
+    return {
+        **common,
+        "retrieval_tokeniser": tokenizer,
+        "normalisation": "Unicode NFKC, then casefold (the Unicode data version is in environment.unicodedata)",
+        "word_tokens": "runs of Unicode letters or digits plus % and $, so 12% and $5 stay whole; _ and other symbols separate tokens",
+        "han_script": (
+            "a run of Han, Hiragana or Katakana characters becomes overlapping character bigrams (one character gives itself); "
+            "whitespace between two such characters is deleted first; no dictionary and no model"
+        ),
+        "ascii_text": "pure ASCII text gets the same tokens as ascii-alnum-v1",
+        "limits": (
+            "a token count above zero says the question can be indexed, not that retrieval finds its evidence; "
+            "bigrams of common Chinese function words count as tokens; "
+            "Hangul is not segmented within a space-delimited word and Thai, Lao and Khmer are not segmented"
+        ),
+    }
+
+
+def _describe_no_retrieval_tokens(text_policy: TextPolicy) -> str:
+    if text_policy == LEGACY_TEXT_POLICY:
+        return (
+            "chunks hold letters or digits but none holds a [a-z0-9%$] token, so BM25 cannot index the document "
+            "(rank_bm25 divides by zero). This is a limitation of the engineering tokeniser, not an OCR condition. "
+            "Han-only text lands here. The document is listed in generation_summary.json"
+        )
+    return (
+        f"chunks hold letters or digits but the {text_policy.tokenizer} tokeniser yields no token for any of them, "
+        "so BM25 cannot index the document (rank_bm25 divides by zero). This is a limitation of the engineering tokeniser, "
+        "not an OCR condition. Only stand-alone Arabic diacritic letters (U+FC5E to U+FC63 and U+FE70 to U+FE7E) reach it, "
+        "because NFKC turns each into a space and a combining mark. The document is listed in generation_summary.json"
+    )
+
+
+def describe_retrieval(settings: RetrievalSettings, text_policy: TextPolicy = DEFAULT_TEXT_POLICY) -> dict[str, Any]:
+    """The retrieval settings as recorded in ``run_config.json`` and hashed into the fingerprint.
+
+    ``text_policy`` names the tokenizer and the chunk policy (see ``faar.text_units``).
+    """
     from .retrieval import LOCAL_HASH_BACKEND, LocalHashEmbedder
 
     _require(settings.embedding_backend == LOCAL_HASH_BACKEND, "the offline runner only supports the local-hash embedding backend")
@@ -419,19 +505,8 @@ def describe_retrieval(settings: RetrievalSettings) -> dict[str, Any]:
         "embedding_dimensions": LocalHashEmbedder.dimensions,
         "embedding": "signed feature hashing of blake2b token digests, L2-normalised, no model download",
         "reranker": None,
-        "chunking": {
-            "function": "faar.chunking.build_page_chunks",
-            "word_tokeniser": _WORD_PATTERN,
-            "chunk_size_words": settings.chunk_size_words,
-            "chunk_overlap_words": settings.chunk_overlap_words,
-            "chunk_id": "<doc_id>-p<page_idx>-c<chunk_index>",
-            "pages_without_text": "empty or missing OCR gives no chunk and is counted in ocr_condition",
-        },
-        "tokenisation": {
-            "retrieval_tokeniser": _TOKENISER_PATTERN,
-            "applied_to": "lower-cased chunk and query text, for BM25 and for the hashing embedder",
-            "han_script": "the tokeniser matches only [a-z0-9%$], so Han-script text gets no lexical or hashed-embedding signal",
-        },
+        "chunking": _describe_chunking(settings, text_policy),
+        "tokenisation": _describe_tokenisation(text_policy),
         "ranking": {
             "lexical": "BM25Okapi from rank_bm25, default parameters",
             "fusion": "0.45 * min-max dense + 0.35 * min-max bm25 + 0.20 * reciprocal-rank component (k=60)",
@@ -446,11 +521,7 @@ def describe_retrieval(settings: RetrievalSettings) -> dict[str, Any]:
                 "for example only Markdown heading markers. The input holds no usable evidence text. This is not missing OCR: "
                 "the manifest records the page as ok because its text is non-empty"
             ),
-            NO_RETRIEVAL_TOKENS: (
-                "chunks hold letters or digits but none holds a [a-z0-9%$] token, so BM25 cannot index the document "
-                "(rank_bm25 divides by zero). This is a limitation of the engineering tokeniser, not an OCR condition. "
-                "Han-only text lands here. The document is listed in generation_summary.json"
-            ),
+            NO_RETRIEVAL_TOKENS: _describe_no_retrieval_tokens(text_policy),
             NO_HITS: "the retriever returned zero hits",
         },
         "top_k": settings.top_k,
@@ -498,11 +569,11 @@ class _DocumentIndex:
     the same chunk count whatever the question order.
     """
 
-    def __init__(self, loaded: LoadedDocument, settings: RetrievalSettings) -> None:
+    def __init__(self, loaded: LoadedDocument, settings: RetrievalSettings, text_policy: TextPolicy) -> None:
         from .chunking import build_page_chunks
-        from .retrieval import _tokenize
 
         self._settings = settings
+        self._text_policy = text_policy
         self._loaded = loaded
         self._built = False
         self._error: Exception | None = None
@@ -517,13 +588,18 @@ class _DocumentIndex:
                         page_id=page_idx,
                         page_text=loaded.page_texts[page_idx],
                         settings=settings,
+                        chunk_policy=text_policy.chunk_policy,
                     )
                 )
         except Exception as exc:
             self._error, self._built, chunks = exc, True, []
         loaded.chunks = chunks
-        loaded.chunks_with_tokens = sum(1 for chunk in chunks if _tokenize(chunk.text))
+        loaded.chunks_with_tokens = sum(1 for chunk in chunks if tokenize(chunk.text, text_policy.tokenizer))
         loaded.chunks_with_content = sum(1 for chunk in chunks if has_text_content(chunk.text))
+
+    def query_token_count(self, query: str) -> int:
+        """Number of retrieval tokens in ``query`` under the tokenizer that searches this document."""
+        return len(tokenize(query, self._text_policy.tokenizer))
 
     @property
     def empty_reason(self) -> str | None:
@@ -540,10 +616,9 @@ class _DocumentIndex:
         """Return the document's retriever, or ``None`` when no chunk holds a retrieval token.
 
         ``rank_bm25`` raises ``ZeroDivisionError`` on a corpus without a single
-        token, so a document whose chunks match no ``[a-z0-9%$]`` token (for
-        example a page of only ``#`` marks, or only Han script) has nothing to
-        index. Its questions get ``no_evidence``. ``run_config.json`` lists
-        such documents.
+        token, so a document whose chunks give the tokenizer nothing (for
+        example a page of only ``#`` marks) has nothing to index. Its questions
+        get ``no_evidence``. ``generation_summary.json`` lists such documents.
         """
         if not self._built:
             self._built = True
@@ -551,7 +626,7 @@ class _DocumentIndex:
                 if self._loaded.chunks_with_tokens:
                     from .retrieval import HybridRetriever
 
-                    self._retriever = HybridRetriever(self._loaded.chunks, self._settings)
+                    self._retriever = HybridRetriever(self._loaded.chunks, self._settings, tokenizer=self._text_policy.tokenizer)
             except Exception as exc:
                 self._error = exc
         if self._error is not None:
@@ -602,13 +677,9 @@ def _evidence_record(rank: int, hit: RetrievalHit) -> dict[str, Any]:
     }
 
 
-def _retrieval_tokens(text: str) -> list[str]:
-    from .retrieval import _tokenize
-
-    return _tokenize(text)
-
-
-def _record(question: RuntimeQuestion, status: str, loaded: LoadedDocument, **fields: Any) -> dict[str, Any]:
+def _record(
+    question: RuntimeQuestion, status: str, loaded: LoadedDocument, query_tokens: int, **fields: Any
+) -> dict[str, Any]:
     record: dict[str, Any] = {
         "schema_version": RUN_SCHEMA_VERSION,
         "question_id": question.question_id,
@@ -617,7 +688,7 @@ def _record(question: RuntimeQuestion, status: str, loaded: LoadedDocument, **fi
         "answer": None,
         "abstained": False,
         "no_evidence_reason": None,
-        "query_retrieval_tokens": len(_retrieval_tokens(question.question)),
+        "query_retrieval_tokens": query_tokens,
         "answer_mode": None,
         "evidence": [],
         "ocr_condition": loaded.ocr_condition,
@@ -637,6 +708,7 @@ def answer_question(
     """Produce the one terminal record for a question. Any exception becomes ``execution_failed``."""
     stage = "load"
     evidence: list[dict[str, Any]] = []
+    query_tokens = index.query_token_count(question.question)
 
     def inject(at: str) -> None:
         if injection is not None and injection.stage == at:
@@ -662,15 +734,15 @@ def answer_question(
         inject("answer")
         if not hits:
             reason = index.empty_reason or NO_HITS
-            return _record(question, STATUS_NO_EVIDENCE, loaded, answer="", abstained=True, no_evidence_reason=reason)
+            return _record(question, STATUS_NO_EVIDENCE, loaded, query_tokens, answer="", abstained=True, no_evidence_reason=reason)
         result = backend.answer(question.question, hits)
         answer, mode = result.get("answer"), result.get("answer_mode")
         if not isinstance(answer, str) or not (mode is None or isinstance(mode, str)):
             raise TypeError("answer backend must return a str answer and a str or None answer_mode")
-        return _record(question, STATUS_ANSWERED, loaded, answer=answer, answer_mode=mode, evidence=evidence)
+        return _record(question, STATUS_ANSWERED, loaded, query_tokens, answer=answer, answer_mode=mode, evidence=evidence)
     except Exception as exc:
         failure = {"stage": stage, "type": type(exc).__name__, "message": str(exc)[:FAILURE_MESSAGE_LIMIT]}
-        return _record(question, STATUS_EXECUTION_FAILED, loaded, evidence=evidence, failure=failure)
+        return _record(question, STATUS_EXECUTION_FAILED, loaded, query_tokens, evidence=evidence, failure=failure)
 
 
 def check_terminal_records(questions: Sequence[RuntimeQuestion], records: Sequence[Mapping[str, Any]]) -> None:
@@ -690,9 +762,10 @@ def generate_records(
     settings: RetrievalSettings,
     backend: AnswerBackend,
     injections: Sequence[InjectedFailureSpec] = (),
+    text_policy: TextPolicy = DEFAULT_TEXT_POLICY,
 ) -> list[dict[str, Any]]:
     """Answer every runtime question. The evaluation manifest plays no part."""
-    indexes = {doc_id: _DocumentIndex(loaded, settings) for doc_id, loaded in loaded_documents.items()}
+    indexes = {doc_id: _DocumentIndex(loaded, settings, text_policy) for doc_id, loaded in loaded_documents.items()}
     by_question = {spec.question_id: spec for spec in injections}
     records = [
         answer_question(q, loaded_documents[q.doc_id], indexes[q.doc_id], backend, by_question.get(q.question_id))
@@ -755,7 +828,8 @@ def summarise_generation(
             "abstained": counts[STATUS_NO_EVIDENCE],
         },
         "no_evidence_by_reason": {reason: reasons.get(reason, 0) for reason in NO_EVIDENCE_REASONS},
-        # A question with no [a-z0-9%$] token gets no lexical or hashed signal: its hits are ranked by position only.
+        # A question with no retrieval token gets no lexical or hashed signal: its hits are ranked by position only.
+        # A question with tokens is not thereby answered from the right passage.
         "questions_without_query_tokens": {"total": sum(without_tokens.values()), **without_tokens},
         "execution_failures_by_stage": dict(sorted(stages.items())),
         "injected_failures": [spec.as_dict() for spec in injections],
@@ -957,6 +1031,7 @@ def generate_run(
     cli_script: Path | None = None,
     code_root: Path | None = None,
     command: Sequence[str] | None = None,
+    text_policy: TextPolicy = DEFAULT_TEXT_POLICY,
 ) -> RunnerResult:
     """Run the offline pipeline once and save the predictions. See the module docstring for the overwrite policy.
 
@@ -972,7 +1047,7 @@ def generate_run(
     loaded_documents = {doc.doc_id: load_document(project_root, manifest.noisy_root, doc) for doc in manifest.documents}
     backend = backend or RuleBasedExtractiveBackend()
     settings = settings or engineering_retrieval_settings()
-    retrieval = describe_retrieval(settings)
+    retrieval = describe_retrieval(settings, text_policy)
     backend_identity = dict(backend.identity())
     _require(backend_identity.get("engineering_only") is True, "the answer backend must declare engineering_only: true")
     script_sha = sha256_file(cli_script) if cli_script is not None else None
@@ -999,7 +1074,7 @@ def generate_run(
             f"{run_dir} holds run_id {existing.config.get('run_id')!r}, this invocation names {run_id!r}",
         )
 
-    records = generate_records(manifest, loaded_documents, settings, backend, injections)
+    records = generate_records(manifest, loaded_documents, settings, backend, injections, text_policy)
     predictions_text = render_predictions(records)
     summary = summarise_generation(
         run_id=run_id,

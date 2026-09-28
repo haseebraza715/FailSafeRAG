@@ -56,6 +56,7 @@ import run_pilot_offline as cli
 
 from faar import pilot_runner as pr
 from faar.pilot_runner import RunnerRefusal
+from faar.text_units import LEGACY_TEXT_POLICY
 
 PILOT_ID = "fix_v1"
 MINERU_ROOT = "OHR-Bench/data/retrieval_base/MinerU"
@@ -353,21 +354,26 @@ def test_empty_pages_are_counted_but_the_rest_of_the_document_is_searched(tmp_pa
 
 
 @pytest.mark.parametrize(
-    ("page_text", "reason"),
+    ("page_text", "reason", "policy"),
     [
         # The pilot has this page: MinerU kept only two empty Markdown heading markers.
-        ("# \n\n#", "no_text_content"),
-        ("- | * |\n\n---", "no_text_content"),
-        # Han-only text is content that the engineering tokeniser cannot index.
-        ("在审题过程中应该遵循哪些步骤", "no_retrieval_tokens"),
+        ("# \n\n#", "no_text_content", None),
+        ("- | * |\n\n---", "no_text_content", None),
+        # Content that the tokenizer in use cannot index. Under multilingual-v1 only a stand-alone Arabic
+        # diacritic letter is left (U+FE70 becomes a space and a combining mark under NFKC).
+        ("\ufe70\ufe72", "no_retrieval_tokens", None),
+        # Han-only text is content that the original ASCII tokenizer cannot index.
+        ("在审题过程中应该遵循哪些步骤", "no_retrieval_tokens", LEGACY_TEXT_POLICY),
     ],
 )
-def test_a_document_without_a_retrieval_token_gives_no_evidence(tmp_path: Path, page_text: str, reason: str) -> None:
+def test_a_document_without_a_retrieval_token_gives_no_evidence(
+    tmp_path: Path, page_text: str, reason: str, policy: Any
+) -> None:
     """R3: rank_bm25 divides by zero on a corpus with no token; the runner returns no_evidence and says why."""
     project = Project(
         tmp_path / "p", {"law/symbols": [page_text]}, [{"question_id": "q1", "doc_id": "law/symbols", "question": QUESTION_TEXT}]
     ).write()
-    result, run_dir = generate(project)
+    result, run_dir = generate(project, **({"text_policy": policy} if policy else {}))
     (record,) = read_predictions(run_dir)
     assert record["status"] == "no_evidence"
     assert record["no_evidence_reason"] == reason
@@ -408,8 +414,14 @@ def test_run_config_states_that_no_retrieval_tokens_is_a_tokeniser_limit(project
     assert set(reasons) == {"no_text_chunks", "no_text_content", "no_retrieval_tokens", "no_hits"}
     assert "not missing OCR" in reasons["no_text_content"]
     assert "limitation of the engineering tokeniser, not an OCR condition" in reasons["no_retrieval_tokens"]
-    assert "Han-only" in reasons["no_retrieval_tokens"]
+    assert "Han-only" not in reasons["no_retrieval_tokens"]
     assert "OCR condition" in reasons["no_text_chunks"]
+
+
+def test_the_legacy_policy_still_records_han_only_text_as_a_tokeniser_limit(project: Project) -> None:
+    _, run_dir = generate(project, text_policy=LEGACY_TEXT_POLICY)
+    reasons = json.loads((run_dir / "run_config.json").read_text(encoding="utf-8"))["retrieval"]["no_evidence_reasons"]
+    assert "Han-only" in reasons["no_retrieval_tokens"]
 
 
 def test_exactly_one_terminal_record_per_question_in_manifest_order(project: Project) -> None:
@@ -806,20 +818,29 @@ def test_a_manifest_that_declares_another_noisy_text_root_is_refused(project: Pr
         generate(project)
 
 
-def test_questions_without_a_retrieval_token_are_counted(tmp_path: Path) -> None:
-    """R3: a Han-script question gets no lexical or hashed signal, so its record and the summary say so."""
+@pytest.mark.parametrize(
+    ("question", "policy"),
+    [
+        # Under the original ASCII tokenizer a Han-script question has no token.
+        ("保修期是多久？", LEGACY_TEXT_POLICY),
+        # Under multilingual-v1 only a question without a letter or digit has none.
+        ("？！ ... --", None),
+    ],
+)
+def test_questions_without_a_retrieval_token_are_counted(tmp_path: Path, question: str, policy: Any) -> None:
+    """R3: a question with no token gets no lexical or hashed signal, so its record and the summary say so."""
     project = Project(
         tmp_path / "p",
         {DOC_A: [WARRANTY_A]},
         [
             {"question_id": "q-latin", "doc_id": DOC_A, "question": QUESTION_TEXT},
-            {"question_id": "q-han", "doc_id": DOC_A, "question": "保修期是多久？"},
+            {"question_id": "q-none", "doc_id": DOC_A, "question": question},
         ],
     ).write()
-    result, run_dir = generate(project)
+    result, run_dir = generate(project, **({"text_policy": policy} if policy else {}))
     records = {r["question_id"]: r for r in read_predictions(run_dir)}
-    assert records["q-han"]["status"] == "answered"
-    assert records["q-han"]["query_retrieval_tokens"] == 0
+    assert records["q-none"]["status"] == "answered"
+    assert records["q-none"]["query_retrieval_tokens"] == 0
     assert records["q-latin"]["query_retrieval_tokens"] > 0
     assert result.summary["questions_without_query_tokens"] == {"total": 1, "answered": 1, "no_evidence": 0, "execution_failed": 0}
 
@@ -912,8 +933,9 @@ def test_run_config_records_provenance_and_settings(project: Project, tmp_path: 
     retrieval = config["retrieval"]
     assert retrieval["embedding_backend"] == "local-hash-v1"
     assert (retrieval["chunking"]["chunk_size_words"], retrieval["chunking"]["chunk_overlap_words"], retrieval["top_k"]) == (180, 40, 5)
-    assert retrieval["tokenisation"]["retrieval_tokeniser"] == "[a-z0-9%$]+"
-    assert "Han" in retrieval["tokenisation"]["han_script"]
+    assert retrieval["tokenisation"]["retrieval_tokeniser"] == "multilingual-v1"
+    assert retrieval["chunking"]["policy"] == "cjk-weighted-words-v1"
+    assert "bigrams" in retrieval["tokenisation"]["han_script"]
     assert "stable argsort" in retrieval["ranking"]["tie_breaking"]
     assert "not the approved scientific protocol" in retrieval["label"]
     assert config["answer_backend"]["engineering_only"] is True and config["answer_backend"]["model_calls"] is False
