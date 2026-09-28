@@ -30,6 +30,7 @@ Older 40-example mock-backend numbers in `docs/history/reports/` and
 | Configuration and locks | `config/`: split, checksums, OHR PDF source lock, model revisions, pilot configs |
 | Benchmark inputs | `OHR-Bench/` (vendored upstream QA and text; tracked), `data/ohr_bench_raw/pdfs.zip` (locked archive; ignored) |
 | Derived data | `data/benchmark_prep/`, `data/external/` (ignored); `data/phase0/` (prototype, tracked) |
+| Experiment runs and their state | [experiments/](experiments/README.md): `registry.jsonl` plus the run-record format |
 | Result payloads | `results/` (audit, pilot, smoke, environment); prototype outputs in `artifacts/` and `logs/` |
 | Current reports | [docs/reports/](docs/reports/index.md) |
 | History and the 2026-09-28 path map | [docs/history/](docs/history/README.md) |

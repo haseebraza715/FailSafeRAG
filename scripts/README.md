@@ -4,7 +4,7 @@ Run these commands from the repository root with the pinned virtual environment.
 
 | Directory | Purpose |
 | --- | --- |
-| `experiments/` | Baselines, evaluation, gate tuning, analysis, and paper artifacts |
+| `experiments/` | Baselines, evaluation, gate tuning, analysis, paper artifacts, and the run registry (`registry.py`) |
 | `data/` | Dataset splits, preparation, remapping, and asset registration |
 | `annotation/` | Failure sampling, OCR extraction, and agreement measurement |
 | `smoke/` | Bounded local smoke checks that do not count as paper results |
