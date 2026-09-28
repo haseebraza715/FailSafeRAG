@@ -13,7 +13,7 @@ visual fallback).
 | Local implementation and regression tests | Ready |
 | OHR data audit and locked PDF archive | Done ([report](docs/reports/data_audit.md)) |
 | Development pilot `ohr_dev_v1` selection and inspection packet | Frozen; no real-model run ([report](docs/reports/pilot_readiness.md)) |
-| Offline engineering path: `src/faar/pilot_runner.py`, official scorer `src/faar/ohr_scoring.py` | Exists. Current run: [`results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/`](results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/). It uses a rule-based extractor, no repair and no model call. It is an engineering check, not a baseline ([report](docs/reports/prebaseline-engineering.md)) |
+| Offline engineering path: `src/faar/pilot_runner.py`, official scorer `src/faar/ohr_scoring.py` | Exists. Current run: [`results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`](results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/). It uses a rule-based extractor, no repair and no model call. It is an engineering check, not a baseline ([report](docs/reports/prebaseline-engineering.md)) |
 | First real baseline (no recovery, real answer model, `ohr_dev_v1`) | Proposed in [study brief section 15](docs/research/study-brief.md#15-first-real-baseline-proposed-protocol). Nothing is approved, and no model call has run |
 | Bounded 108-page CUDA calibration on a shared cluster | Commands are ready. On hold until the lead approves it. It is not the automatic next step |
 | Full OHR validation preparation and B0-B4 paper runs | Not done |
@@ -96,8 +96,9 @@ The test setup has these safeguards:
 - `tests/test_b0_one_doc_smoke.py` skips one test when the prepared one-document smoke assets are absent, as in CI.
 
 **OpenMP on macOS.** The `faiss-cpu` and `torch` wheels each bundle their own
-`libomp.dylib`, and every macOS `faiss-cpu` wheel from 1.9.0 to 1.15.1 does so,
-so no pin avoids a second runtime. With the pinned versions, a process that
+`libomp.dylib`. Every macOS `faiss-cpu` wheel checked (1.9.0.post1, 1.10.0,
+1.11.0, 1.12.0, 1.13.2, 1.14.3 and 1.15.1) bundles one, so a faiss pin does not
+avoid a second runtime. With the pinned versions, a process that
 imports `faiss` and then runs a parallel torch operation, or the reverse,
 segfaults or hangs. `KMP_DUPLICATE_LIB_OK` does not prevent this, and a thread
 limit does. Run any macOS command that does real (sentence-transformers)

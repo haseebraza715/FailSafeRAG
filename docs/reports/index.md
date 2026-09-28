@@ -2,7 +2,7 @@
 
 Current reports on the data, the pilot, the agent instructions and the offline engineering path. Each names the command and result files
 it was built from. The current engineering run is
-[`results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/`](../../results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/).
+[`results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`](../../results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/).
 It is an engineering check, not a baseline. The first real baseline is only
 proposed, in [study brief section 15](../research/study-brief.md#15-first-real-baseline-proposed-protocol).
 

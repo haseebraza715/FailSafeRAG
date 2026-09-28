@@ -3,7 +3,7 @@
 ## Current status
 
 - The study design is [research/study-brief.md](research/study-brief.md). It is the only current plan, and it labels each rule Agreed, Proposed default or Lead decision. Section 15 proposes the first real baseline. Nothing in it is approved.
-- An offline engineering path exists (`src/faar/pilot_runner.py`, `src/faar/ohr_scoring.py`). Its current run is [`results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/`](../results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/). It uses a rule-based extractor, no repair and no model call, so it is an engineering check and not a baseline. See the [pre-baseline engineering report](reports/prebaseline-engineering.md).
+- An offline engineering path exists (`src/faar/pilot_runner.py`, `src/faar/ohr_scoring.py`). Its current run is [`results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`](../results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/). It uses a rule-based extractor, no repair and no model call, so it is an engineering check and not a baseline. See the [pre-baseline engineering report](reports/prebaseline-engineering.md).
 - No real-model run has happened.
 
 ## Cluster work
