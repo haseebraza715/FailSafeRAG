@@ -58,7 +58,12 @@ Adapter policy
 ``execution_failed`` rows score 0 (``scored_by: "failure_as_zero"``).
 ``answered`` rows and ``no_evidence`` rows score with the official metric on
 the answer string (``scored_by: "official"``); a ``no_evidence`` answer must be
-the empty string. The official metric gives an empty abstention EM 1 against a
+the empty string. ``answered_only`` averages the ``answered`` rows, including a
+blank answer. ``upstream_valid_only`` reproduces upstream's headline ``overall``:
+``evaluator.py`` drops every result whose generated text is blank
+(``remove_invalid``, with ``valid`` set in ``quest_answer.py``) before
+``compute_overall`` averages the rest. That view drops abstentions and failures,
+so report it only next to the all-question view. The official metric gives an empty abstention EM 1 against a
 reference that normalises to empty (5 of the 8498 ``qas_v2.json`` references,
 none of the 70 in the first pilot). Read the aggregates together with ``counts``.
 
@@ -94,6 +99,11 @@ UPSTREAM_CALLER_SHA256 = "1feaee1780ed7e3ea597559c3c3addfeb3596cb2b679c11fba885b
 STATUSES = ("answered", "no_evidence", "execution_failed")
 ALL_QUESTIONS_POLICY = (
     "execution_failed scored as 0; no_evidence scored by the official metric on the empty abstention"
+)
+UPSTREAM_VALID_ONLY_POLICY = (
+    "upstream OHR-Bench overall: mean over rows whose answer text is non-blank, as evaluator.remove_invalid keeps "
+    "results with valid = len(generated_text.strip()) != 0; drops abstentions, blank answers and execution failures, "
+    "so it is not the all-question view"
 )
 
 _PUNCTUATION = frozenset(string.punctuation)
@@ -258,6 +268,7 @@ def score_predictions(
     _check_ids(predictions, evaluation_questions)
 
     rows: list[dict[str, Any]] = []
+    valid: list[dict[str, Any]] = []
     counts = {"questions": len(predictions), "answered": 0, "no_evidence": 0, "execution_failed": 0, "abstained": 0}
     for record in predictions:
         question_id = record["question_id"]
@@ -274,6 +285,9 @@ def score_predictions(
         if record.get("abstained") is True:
             counts["abstained"] += 1
         rows.append({"question_id": question_id, "status": status, "em": em, "f1": f1, "scored_by": scored_by})
+        answer = record.get("answer")
+        if isinstance(answer, str) and answer.strip() and status != "execution_failed":
+            valid.append(rows[-1])
 
     answered = [row for row in rows if row["status"] == "answered"]
     return {
@@ -291,6 +305,12 @@ def score_predictions(
                 "denominator": len(answered),
                 "em": _mean([row["em"] for row in answered]) if answered else None,
                 "f1": _mean([row["f1"] for row in answered]) if answered else None,
+            },
+            "upstream_valid_only": {
+                "denominator": len(valid),
+                "em": _mean([row["em"] for row in valid]) if valid else None,
+                "f1": _mean([row["f1"] for row in valid]) if valid else None,
+                "policy": UPSTREAM_VALID_ONLY_POLICY,
             },
         },
     }

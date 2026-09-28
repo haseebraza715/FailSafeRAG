@@ -402,9 +402,31 @@ def test_answered_only_is_none_when_nothing_was_answered():
 
 def test_abstained_is_counted_from_the_flag_separately_from_no_evidence():
     evaluation = {"q1": _question("q1", "a"), "q2": _question("q2", "b")}
-    predictions = [_record("q1", "answered", "a", abstained=True), _record("q2", "no_evidence", "", abstained=False)]
+    evaluation["q3"] = _question("q3", "c")
+    predictions = [
+        _record("q1", "answered", "a", abstained=True),
+        _record("q2", "no_evidence", "", abstained=False),
+        _record("q3", "answered", "c", abstained=False),
+    ]
     counts = score_predictions(predictions, evaluation)["counts"]
-    assert (counts["answered"], counts["no_evidence"], counts["abstained"]) == (1, 1, 1)
+    assert (counts["answered"], counts["no_evidence"], counts["abstained"]) == (2, 1, 1)
+
+
+def test_upstream_valid_only_drops_blank_answers_like_evaluator_remove_invalid():
+    """Upstream evaluator.py keeps only results whose generated text is non-blank before compute_overall."""
+    evaluation = {q: _question(q, "abc") for q in ("q1", "q2", "q3", "q4")}
+    predictions = [
+        _record("q1", "answered", "abc"),
+        _record("q2", "answered", "  "),
+        _record("q3", "no_evidence", "", abstained=True),
+        _record("q4", "execution_failed", None),
+    ]
+    aggregates = score_predictions(predictions, evaluation)["aggregates"]
+    assert aggregates["answered_only"]["denominator"] == 2
+    assert aggregates["upstream_valid_only"]["denominator"] == 1
+    assert aggregates["upstream_valid_only"]["em"] == 1.0
+    assert "remove_invalid" in aggregates["upstream_valid_only"]["policy"]
+    assert aggregates["all_questions"]["denominator"] == 4
 
 
 def test_answered_empty_string_is_scored_and_stays_answered():
@@ -425,7 +447,8 @@ def test_result_keys_follow_the_contract():
     predictions, evaluation = _mixed_run()
     result = score_predictions(predictions, evaluation)
     assert set(result) == {"scorer", "rows", "counts", "aggregates"}
-    assert set(result["aggregates"]) == {"all_questions", "answered_only"}
+    assert set(result["aggregates"]) == {"all_questions", "answered_only", "upstream_valid_only"}
+    assert set(result["aggregates"]["upstream_valid_only"]) == {"denominator", "em", "f1", "policy"}
     assert set(result["aggregates"]["all_questions"]) == {"denominator", "em", "f1", "policy"}
     assert set(result["aggregates"]["answered_only"]) == {"denominator", "em", "f1"}
     assert all(set(row) == {"question_id", "status", "em", "f1", "scored_by"} for row in result["rows"])

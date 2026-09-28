@@ -14,6 +14,10 @@
  "value_format": "[python type name, value]",
  "cases": [
   {"id": "identical", "prediction": "Paris", "reference": "Paris", "upstream": {"normalize_prediction": "paris", "normalize_reference": "paris", "em": ["int", 1], "f1": ["float", 1.0]}},
+  {"id": "article_between_curly_quotes", "prediction": "x“a”y", "reference": "x“”y", "upstream": {"normalize_prediction": "x“ ”y", "normalize_reference": "x“”y", "em": ["int", 0], "f1": ["int", 0]}},
+  {"id": "noanswer_with_extra_words", "prediction": "noanswer here", "reference": "noanswer", "upstream": {"normalize_prediction": "noanswer here", "normalize_reference": "noanswer", "em": ["int", 0], "f1": ["int", 0]}},
+  {"id": "sharp_s_lower_not_casefold", "prediction": "Straße", "reference": "STRASSE", "upstream": {"normalize_prediction": "straße", "normalize_reference": "strasse", "em": ["int", 0], "f1": ["int", 0]}},
+  {"id": "ligature_lower_not_casefold", "prediction": "ﬁle", "reference": "file", "upstream": {"normalize_prediction": "ﬁle", "normalize_reference": "file", "em": ["int", 0], "f1": ["int", 0]}},
   {"id": "case", "prediction": "paris", "reference": "PARIS", "upstream": {"normalize_prediction": "paris", "normalize_reference": "paris", "em": ["int", 1], "f1": ["float", 1.0]}},
   {"id": "leading_article", "prediction": "The Eiffel Tower", "reference": "Eiffel Tower", "upstream": {"normalize_prediction": "eiffel tower", "normalize_reference": "eiffel tower", "em": ["int", 1], "f1": ["float", 1.0]}},
   {"id": "inner_articles", "prediction": "a cat and an owl", "reference": "cat and owl", "upstream": {"normalize_prediction": "cat and owl", "normalize_reference": "cat and owl", "em": ["int", 1], "f1": ["float", 1.0]}},

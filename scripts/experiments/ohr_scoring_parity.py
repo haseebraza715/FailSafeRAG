@@ -64,6 +64,11 @@ PINNED = {"jieba": "0.42.1", "regex": "2024.7.24"}
 EDGE_CASES: list[tuple[str, Any, Any]] = [
     # identity, case, articles
     ("identical", "Paris", "Paris"),
+    # reviewer mutants: articles replaced by a space, not deleted; noanswer in the yes/no rule; lower, not casefold
+    ("article_between_curly_quotes", "x\u201ca\u201dy", "x\u201c\u201dy"),
+    ("noanswer_with_extra_words", "noanswer here", "noanswer"),
+    ("sharp_s_lower_not_casefold", "Stra\u00dfe", "STRASSE"),
+    ("ligature_lower_not_casefold", "\ufb01le", "file"),
     ("case", "paris", "PARIS"),
     ("leading_article", "The Eiffel Tower", "Eiffel Tower"),
     ("inner_articles", "a cat and an owl", "cat and owl"),
