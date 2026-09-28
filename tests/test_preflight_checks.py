@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from importlib.util import module_from_spec, spec_from_file_location
@@ -75,6 +76,23 @@ def gpu_payload(devices: list[dict] | None = None, scheduler: dict | None = None
     }
 
 
+@pytest.fixture(autouse=True)
+def stub_docling_package(tmp_path_factory: pytest.TempPathFactory, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Make `docling` importable for the preflight dependency check.
+
+    Preflight only asks importlib whether the package exists, and docling is a
+    large GPU-stack dependency that the offline CI install leaves out. The stub
+    is on sys.path for in-process runs and on PYTHONPATH for subprocess runs.
+    test_run_checks_fails_when_a_required_dependency_is_missing covers the failing case.
+    """
+    stub_root = tmp_path_factory.mktemp("stub-docling")
+    (stub_root / "docling").mkdir()
+    (stub_root / "docling/__init__.py").write_text("")
+    monkeypatch.syspath_prepend(str(stub_root))
+    existing = os.environ.get("PYTHONPATH")
+    monkeypatch.setenv("PYTHONPATH", os.pathsep.join(part for part in (str(stub_root), existing) if part))
+
+
 @pytest.fixture
 def clean_env(monkeypatch: pytest.MonkeyPatch) -> None:
     for name in (
@@ -97,6 +115,18 @@ def clean_env(monkeypatch: pytest.MonkeyPatch) -> None:
     original_reachable = preflight._hf_repo_reachable
     monkeypatch.setattr(preflight, "_hf_repo_reachable", lambda repo, rev: (True, "HTTP 200"))
     monkeypatch.setattr(preflight, "_hf_repo_reachable_original", original_reachable, raising=False)
+
+
+def test_run_checks_fails_when_a_required_dependency_is_missing(
+    tmp_path: Path, clean_env, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    project = build_project(tmp_path)
+    monkeypatch.setattr(preflight, "_find_spec", lambda name: name != "pypdfium2")
+    report = preflight.run_checks(gpu_payload(), project_root=project, path=project, cuda=False)
+    matching = [check for check in report["checks"] if check["name"] == "dependencies"]
+    assert matching[0]["status"] == "fail"
+    assert matching[0]["measurement"] == {"missing": ["pypdfium2"]}
+    assert report["exit_code"] == 1
 
 
 def test_run_checks_passes_with_no_warnings(
@@ -312,7 +342,7 @@ def test_hf_access_uses_cdn_head_without_download(tmp_path: Path, clean_env, mon
     ]
 
 
-def test_cli_check_dry_run_writes_nothing(tmp_path: Path, capsys) -> None:
+def test_cli_check_dry_run_writes_nothing(tmp_path: Path, clean_env, capsys) -> None:
     project = build_project(tmp_path)
     report_path = tmp_path / "preflight_check.json"
     code = preflight.main(
@@ -335,7 +365,7 @@ def test_cli_check_dry_run_writes_nothing(tmp_path: Path, capsys) -> None:
     assert payload["mode"] == "check"
 
 
-def test_cli_check_writes_report_atomically(tmp_path: Path) -> None:
+def test_cli_check_writes_report_atomically(tmp_path: Path, clean_env) -> None:
     project = build_project(tmp_path)
     report_path = tmp_path / "preflight_check.json"
     code = preflight.main(
@@ -347,7 +377,7 @@ def test_cli_check_writes_report_atomically(tmp_path: Path) -> None:
     assert not list(tmp_path.glob(".preflight_check.json.*.tmp"))
 
 
-def test_cli_check_exit_code_matches_blocking_failure(tmp_path: Path) -> None:
+def test_cli_check_exit_code_matches_blocking_failure(tmp_path: Path, clean_env) -> None:
     project = build_project(tmp_path)
     (project / "config/datasets/ohr_split.json").unlink()
     code = preflight.main(
