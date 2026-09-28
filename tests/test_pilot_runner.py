@@ -852,6 +852,16 @@ def test_run_config_records_provenance_and_settings(project: Project, tmp_path: 
     assert "evaluation_manifest.json" in config["inputs_never_read"]
 
 
+def test_run_config_records_no_absolute_path_under_the_project_root(project: Project) -> None:
+    """O2: committed run records name paths relative to the project, so they carry no home directory."""
+    run_dir = project.root / "results" / "engineering" / "run-relative"
+    pr.generate_run(project_root=project.root, run_dir=run_dir, pilot_id=PILOT_ID, code_root=project.root)
+    text = (run_dir / "run_config.json").read_text(encoding="utf-8")
+    config = json.loads(text)
+    assert config["code"]["code_root"] == "."
+    assert str(project.root.resolve()) not in text
+
+
 def test_git_provenance_is_null_when_unknown(tmp_path: Path) -> None:
     """O2: no repository means unknown values, recorded as null."""
     assert pr.git_provenance(None) == {"commit": None, "dirty": None, "dirty_paths": None}

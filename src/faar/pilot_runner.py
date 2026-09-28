@@ -988,7 +988,11 @@ def generate_run(
             "code_identity": _measurement_code_digest(),
             "cli_script_sha256": script_sha,
         },
-        "code": {**git, "code_root": str(code_root) if code_root else None, "faar_package": str(Path(__file__).resolve().parent)},
+        "code": {
+            **git,
+            "code_root": _display_path(code_root, project_root) if code_root else None,
+            "faar_package": _display_path(Path(__file__).resolve().parent, code_root or project_root),
+        },
         "command": list(command) if command is not None else None,
         "run_dir": _display_path(run_dir, project_root),
         "runtime_manifest": {"path": _display_path(manifest_path, project_root), "sha256": manifest_sha},
