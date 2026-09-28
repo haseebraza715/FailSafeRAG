@@ -2,8 +2,9 @@
 
 This document defines the software and model identity checks required before a
 FAAR result can be reported. It complements `config/environment/constraints-aaai.txt`; it does not
-replace the experiment ordering or acceptance criteria in
-`docs/research/aaai-plan.md`.
+define the study design. The current design is
+[study-brief.md](study-brief.md). The earlier ordering in
+[aaai-plan.md](aaai-plan.md) is kept as evidence.
 
 ## Python environment
 

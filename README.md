@@ -24,8 +24,8 @@ Older 40-example mock-backend numbers in `docs/history/reports/` and
 
 | Need | Location |
 | --- | --- |
-| Research question, first-study scope, open decisions (current plan) | [docs/research/study-brief.md](docs/research/study-brief.md) |
-| Earlier fixed protocol and B0-B4 order; the study brief takes precedence where they conflict | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
+| Current study design: question, comparisons, scoring, decisions | [docs/research/study-brief.md](docs/research/study-brief.md) |
+| Earlier AAAI plan, kept as evidence; the study brief says which parts still apply | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
 | Code | `src/faar/` (package), `scripts/` (CLIs), `cluster/` (launcher and scheduler templates), `tests/` |
 | Configuration and locks | `config/`: split, checksums, OHR PDF source lock, model revisions, pilot configs |
 | Benchmark inputs | `OHR-Bench/` (vendored upstream QA and text; tracked), `data/ohr_bench_raw/pdfs.zip` (locked archive; ignored) |
@@ -110,5 +110,5 @@ stays blocked until those measurements are approved.
 - [Supervisor handoff](SUPERVISOR_HANDOFF.md)
 - [Shared-cluster runbook](docs/operations/runbook.md)
 - [Architecture](docs/architecture/overview.md)
-- [Experimental plan](docs/research/aaai-plan.md)
+- [Study design](docs/research/study-brief.md)
 - [Documentation index](docs/README.md)

@@ -11,8 +11,8 @@ Those two files are the operational source of truth.
 
 | Path | Contents |
 | --- | --- |
-| [research/study-brief.md](research/study-brief.md) | First-study research question, scope and open decisions |
-| [research/aaai-plan.md](research/aaai-plan.md) | Fixed experimental protocol and B0-B4 order |
+| [research/study-brief.md](research/study-brief.md) | Current study design: question, comparisons, scoring and decisions |
+| [research/aaai-plan.md](research/aaai-plan.md) | Earlier AAAI plan, kept as evidence; not the current protocol |
 | [research/aaai-reproducibility.md](research/aaai-reproducibility.md) | Environment, model pins, and identity checks |
 | [architecture/overview.md](architecture/overview.md) | Current system design |
 | [operations/runbook.md](operations/runbook.md) | Shared-cluster procedure |

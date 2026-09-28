@@ -91,13 +91,13 @@ Questions containing Han characters & 109 & 22 \\
 \end{enumerate}
 Random and typed recovery may invoke different numbers of visual calls, so we add a budget-matched comparison in which the policies are allowed the same number of visual calls.
 
-\paragraph{Retrieval scope.} Retrieval searches all pages of the complete benchmark document (or a declared fixed collection), never the gold evidence pages alone. \pending{choice between known-document QA and search across a fixed collection}
+\paragraph{Retrieval scope.} In the first study, retrieval searches all pages of the complete benchmark document that each question names, never the gold evidence pages alone. Search across a document collection is later work.
 
-\paragraph{Failure labels.} Diagnosis accuracy needs an independent failure label per case. Annotators inspect the page image and the OCR text and label word corruption, lost or misleading structure, missing content, adequate OCR, or uncertain/mixed, without seeing the controller's prediction. An inspection packet of 20 purposively sampled pilot cases exists; no labels have been collected. \pending{annotation protocol and agreement}
+\paragraph{Failure observations.} Testing the diagnosis needs observations made independently of the controller. Annotators compare the page image with the OCR text and mark every defect that applies: word corruption, lost or misleading structure, missing content, or apparently adequate OCR, with an explicit uncertain or mixed option. They then judge separately whether the evidence the question needs survives in the text. They do not see the controller's output. Because these categories do not map one to one onto the controller's three failure types, agreement will be reported per diagnostic signal rather than as a single accuracy. An inspection packet of 20 purposively sampled pilot cases exists; no labels have been collected. \pending{annotation protocol and agreement}
 
 \paragraph{Measurements.} For each policy, on paired questions:
 \begin{itemize}
-  \item answer accuracy (exact match and token F1), with paired uncertainty estimates;
+  \item answer accuracy (the official OHR-Bench exact match and F1), with paired uncertainty estimates that resample by document;
   \item successful repairs (initially wrong, correct after recovery) and damage (initially correct, wrong after recovery);
   \item diagnosis accuracy against the independent labels;
   \item recovery and visual calls, latency and monetary cost per question.
