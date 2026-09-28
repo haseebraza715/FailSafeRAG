@@ -39,13 +39,13 @@ task calls. `QuestAnswer.scoring` in `src/tasks/quest_answer.py` calls
 `config/ohr_pdf_source_lock.json`.
 
 - **Upstream identity.** On 2026-09-28 the lead fetched the upstream `common.py`, `quest_answer.py` and `evaluator.py` at that commit with `gh api`. Each has the same sha256 as the vendored copy under `OHR-Bench/` (`common.py`: `9fe7eb52...`).
-- **Licence.** The upstream repository has no licence file, and GitHub reports none. The README restricts the dataset to research use, and the Hugging Face dataset card declares CC-BY-4.0 for the dataset. The module credits the authors and pins the source. Redistribution terms for the code are a lead decision.
+- **Licence.** The upstream repository has no licence file, and GitHub reports none. The README restricts the dataset to research use, and the Hugging Face dataset card declares CC-BY-4.0 for the dataset. Neither covers the code. The [scorer provenance record](ohr-scorer-provenance.md) of 2026-09-29 traces each function to SQuAD v1.1, HotpotQA (Apache-2.0) or OHR-Bench, and records the open question. Redistribution terms for the code are a lead decision.
 - **Parity.** `scripts/experiments/ohr_scoring_parity.py` compares the module with the vendored upstream functions by value and by Python type. It uses `jieba==0.42.1` and `regex==2024.7.24`, the upstream pins. On 2026-09-28 it found 0 mismatches in 99,041 pairs:
   - 103 hand-written edge cases;
   - 11 variants of each of the 8,498 `qas_v2.json` references;
   - 8 variants of each of the 70 pilot references plus all 4,900 cross pairs.
 
-  After the review added four upstream-recorded edge cases, the committed fixture holds 105. CI runs the script.
+  After the review added four upstream-recorded edge cases, the committed fixture holds 105 and the script compares 107 edge cases. On 2026-09-29, at `8479309`, the same command reported 0 mismatches in 99,045 pairs (107 + 93,478 + 5,460). CI runs the script.
 - **Quirks kept.** ASCII punctuation is deleted without a space, so `1,000` equals `1000`, `3.5` equals `35` and `50%` equals `50`. An empty prediction against a reference that normalises to empty scores EM 1 and F1 0. 5 of the 8,498 references do so, and none of the 70 pilot references. The yes, no and noanswer rule applies on both sides. Text with a CJK character goes through `jieba.lcut`.
 - **Old normaliser.** `src/faar/metrics.py` gives a false perfect score only when the prediction and the reference both normalise to empty. 521 of 8,498 references and 7 of 70 pilot references normalise to empty under it.
 - **Aggregates.** `score_predictions` keeps every question in `all_questions` (denominator 70 for the pilot). It scores `execution_failed` as 0 and scores `no_evidence` by the official metric on the empty abstention. It also reports `answered_only` and `upstream_valid_only`. The second matches upstream's headline `overall`, which drops blank answers (`evaluator.remove_invalid`). Counts of `answered`, `no_evidence`, `execution_failed` and `abstained` are reported separately. No repair, damage or FAAR-comparison field exists.
@@ -191,8 +191,9 @@ edit, and again after the last run.
 
 ## Agent configuration
 
-- **Lead:** `claude-opus-5-5` at effort `high`, read from the session metadata. The user confirmed `high`.
-- **Workers 1 to 3** (environment, scoring, runner): the Agent tool's `model: sonnet`. A probe agent with the same setting reported `claude-sonnet-5-5`, which is its self-report. No effort was set per worker. These workers inherited the session effort `high`. An explicit definition did not load in time for them.
+- **Lead, requested:** the task prompt of 2026-09-28T20:23Z asked for `claude-opus-5-5` at effort High. The continuation prompt of 21:21Z said "Keep Opus 5.5 at Medium".
+- **Lead, observed:** the session metadata reported `claude-opus-5-5` at effort `high` throughout. The session tool refuses to change a session's own effort, so the lead could not switch to Medium itself. At 21:22Z the user wrote in the chat "its all good high is ok dont worry". That message is in the session transcript. The lead therefore ran at `high` for the whole task.
+- **Workers 1 to 3** (environment, scoring, runner): configured by the model alias only (`model: sonnet` in the Agent tool call). No explicit model ID and no per-worker effort were set. A probe agent with the same alias reported `claude-sonnet-5-5`, which is a self-report, not an independent check. They inherited the session effort `high`. The explicit `faar-worker` definition did not load in time for them.
 - **Worker 4** (review): the `faar-worker` agent definition sets `model: claude-sonnet-5-5` and `effort: high`. A probe of that definition reported `claude-sonnet-5-5`. The effective effort of any worker could not be confirmed independently, and an agent's self-report is not treated as confirmation.
 
 ## Limitations and decisions before real inference
@@ -211,4 +212,4 @@ These are the lead decisions from study brief section 12 that come first:
 4. The maximum execution-failure rate for a valid run.
 5. The gate threshold and where it is calibrated.
 6. The repair-comparison protocol and a longer-document development sample.
-7. The redistribution terms for the reimplemented OHR-Bench scoring code.
+7. The redistribution terms for the reimplemented OHR-Bench scoring code, and what to do about the public repository that already serves the vendored `OHR-Bench/` tree (see the [scorer provenance record](ohr-scorer-provenance.md)).
