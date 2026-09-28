@@ -12,11 +12,14 @@ visual fallback).
 | --- | --- |
 | Local implementation and regression tests | Ready |
 | OHR data audit and locked PDF archive | Done ([report](docs/reports/data_audit.md)) |
-| Development pilot `ohr_dev_v1` selection and inspection packet | Frozen; no model run ([report](docs/reports/pilot_readiness.md)) |
-| Bounded 108-page CUDA calibration on a shared cluster | Ready to run |
+| Development pilot `ohr_dev_v1` selection and inspection packet | Frozen; no real-model run ([report](docs/reports/pilot_readiness.md)) |
+| Offline engineering path: `src/faar/pilot_runner.py`, official scorer `src/faar/ohr_scoring.py` | Exists. Current run: [`results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/`](results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/). It uses a rule-based extractor, no repair and no model call. It is an engineering check, not a baseline ([report](docs/reports/prebaseline-engineering.md)) |
+| First real baseline (no recovery, real answer model, `ohr_dev_v1`) | Proposed in [study brief section 15](docs/research/study-brief.md#15-first-real-baseline-proposed-protocol). Nothing is approved, and no model call has run |
+| Bounded 108-page CUDA calibration on a shared cluster | Commands are ready. On hold until the lead approves it. It is not the automatic next step |
 | Full OHR validation preparation and B0-B4 paper runs | Not done |
 
-Real GPU calibration measurements and full validation results are still pending.
+Real-model results, GPU calibration measurements and full validation results
+are still pending. The study brief is the only current plan.
 Older 40-example mock-backend numbers in `docs/history/reports/` and
 `artifacts/phase3/` are prototype evidence only. They are not AAAI baselines.
 
@@ -100,8 +103,9 @@ Login-node preflight, no CUDA:
 .venv-aaai/bin/python cluster/preflight.py --check --no-cuda --project-root "$PWD"
 ```
 
-Allocated-GPU preflight, then the bounded 108-page calibration. Submit nothing
-else until the calibration report is approved.
+Allocated-GPU preflight, then the bounded 108-page calibration. These commands
+are available. Do not submit them until the lead approves the calibration, and
+submit nothing else until its report is approved.
 
 ```bash
 sbatch cluster/templates/slurm_preflight.sbatch
@@ -112,8 +116,9 @@ Edit partition, account, QOS, and `FAAR_GPU_BUDGET_GB` in those templates before
 submission. Exact procedure, resume, shard merge, and stop conditions are in
 [SUPERVISOR_HANDOFF.md](SUPERVISOR_HANDOFF.md) and
 [docs/operations/runbook.md](docs/operations/runbook.md).
-The next cluster-only work is that preflight and calibration. Full validation
-stays blocked until those measurements are approved.
+The calibration is the only cluster job prepared so far. It waits for the
+lead's approval, and full validation stays blocked until its measurements are
+approved.
 
 ## Documentation
 

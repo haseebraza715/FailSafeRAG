@@ -1,11 +1,19 @@
 # Documentation index
 
-Current cluster work starts at the repository root:
+## Current status
+
+- The study design is [research/study-brief.md](research/study-brief.md). It is the only current plan, and it labels each rule Agreed, Proposed default or Lead decision. Section 15 proposes the first real baseline. Nothing in it is approved.
+- An offline engineering path exists (`src/faar/pilot_runner.py`, `src/faar/ohr_scoring.py`). Its current run is [`results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/`](../results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/). It uses a rule-based extractor, no repair and no model call, so it is an engineering check and not a baseline. See the [pre-baseline engineering report](reports/prebaseline-engineering.md).
+- No real-model run has happened.
+
+## Cluster work
+
+The cluster commands are available:
 
 - [Supervisor handoff](../SUPERVISOR_HANDOFF.md)
 - [Shared-cluster runbook](operations/runbook.md)
 
-Those two files are the operational source of truth.
+Those two files are the operational source of truth for cluster procedure. GPU calibration is not the automatic next step. It waits for the lead's approval.
 
 ## Current
 
@@ -16,7 +24,7 @@ Those two files are the operational source of truth.
 | [research/aaai-reproducibility.md](research/aaai-reproducibility.md) | Environment, model pins, and identity checks |
 | [architecture/overview.md](architecture/overview.md) | Current system design |
 | [operations/runbook.md](operations/runbook.md) | Shared-cluster procedure |
-| [reports/](reports/index.md) | Current data audit and pilot readiness reports |
+| [reports/](reports/index.md) | Current data audit, pilot readiness and pre-baseline engineering reports |
 | [../experiments/README.md](../experiments/README.md) | Run registry and run-record format |
 | [../paper/README.md](../paper/README.md) | Current paper source and table/figure provenance |
 | [../cluster/README.md](../cluster/README.md) | Launcher, templates, and scheduler mechanics |
