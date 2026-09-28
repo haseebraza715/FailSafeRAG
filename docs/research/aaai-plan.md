@@ -1,5 +1,7 @@
 # FAAR -> AAAI: Full Experimental Plan
 
+> The current research plan is [study-brief.md](study-brief.md). Where this protocol conflicts with it, for example on changing the diagnosis module until FAAR beats B2, follow the study brief.
+
 Please work top to bottom, do not skip any phases.
 
 ## Stack Decisions

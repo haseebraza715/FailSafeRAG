@@ -24,8 +24,8 @@ Older 40-example mock-backend numbers in `docs/history/reports/` and
 
 | Need | Location |
 | --- | --- |
-| Research question, first-study scope, open decisions | [docs/research/study-brief.md](docs/research/study-brief.md) |
-| Fixed protocol and B0-B4 order | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
+| Research question, first-study scope, open decisions (current plan) | [docs/research/study-brief.md](docs/research/study-brief.md) |
+| Earlier fixed protocol and B0-B4 order; the study brief takes precedence where they conflict | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
 | Code | `src/faar/` (package), `scripts/` (CLIs), `cluster/` (launcher and scheduler templates), `tests/` |
 | Configuration and locks | `config/`: split, checksums, OHR PDF source lock, model revisions, pilot configs |
 | Benchmark inputs | `OHR-Bench/` (vendored upstream QA and text; tracked), `data/ohr_bench_raw/pdfs.zip` (locked archive; ignored) |
@@ -39,10 +39,9 @@ Older 40-example mock-backend numbers in `docs/history/reports/` and
 ## Repository
 
 - GitHub: <https://github.com/haseebraza715/FailSafeRAG>
-- Branch: `faar-aaai-experiments`
+- Branch: `main`
 
-Do not run the cluster workflow from `main` until this branch has been reviewed
-and merged. Do not edit `config/datasets/ohr_split.json` or the locked OHR QA file. Their SHA-256
+Record the commit SHA of the checkout with every returned result. Do not edit `config/datasets/ohr_split.json` or the locked OHR QA file. Their SHA-256
 checksums must remain:
 
 - `config/datasets/ohr_split.json`: `64583a532c5db5aa31e4cbb5cd9c7d894c7a2d5e8aa49f1a7f6041f54e714f53`
@@ -56,7 +55,7 @@ fails. The same command works on macOS for local checks and on Linux for Slurm.
 ```bash
 git clone https://github.com/haseebraza715/FailSafeRAG.git faar
 cd faar
-git checkout faar-aaai-experiments
+git checkout main
 python3.12 -m venv .venv-aaai
 .venv-aaai/bin/python -m pip install --upgrade pip
 .venv-aaai/bin/python -m pip install -c config/environment/constraints-aaai.txt -e '.[aaai]'

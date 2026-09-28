@@ -21,7 +21,7 @@ They are not paper baselines.
 ```bash
 git clone https://github.com/haseebraza715/FailSafeRAG.git faar
 cd faar
-git checkout faar-aaai-experiments
+git checkout main
 git rev-parse HEAD
 
 python3.12 -m venv .venv-aaai

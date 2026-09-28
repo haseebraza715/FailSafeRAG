@@ -19,6 +19,7 @@ them refer to the layout of their time; resolve moved paths with the map in
 | [legacy-agent-instructions.md](legacy-agent-instructions.md) | The former root `AGENT.MD` (git-ignored, never tracked), moved here byte for byte on 2026-09-28. Superseded by [../../AGENTS.md](../../AGENTS.md) |
 | [status-report-2026-08/](status-report-2026-08/) | "Verified experimental status" paper-style report (LaTeX and PDF, dated 12 August 2026). Not the paper; the current paper is [../../paper/main.tex](../../paper/main.tex) |
 | [workspace-migration-2026-09-28.md](workspace-migration-2026-09-28.md) | Reorganisation record: path map and cleanup ledger |
+| [branch-consolidation-2026-09-28.md](branch-consolidation-2026-09-28.md) | Starting branch tips, stashes, and how the branches were merged into `main` or retired |
 
 The prototype outputs these records describe remain at their original paths:
 `artifacts/`, `logs/` and `data/phase0/`.

@@ -12,7 +12,7 @@ approved. Do not submit validation, pilot, or B0-B4 jobs before then.
 ```bash
 git clone https://github.com/haseebraza715/FailSafeRAG.git faar
 cd faar
-git checkout faar-aaai-experiments
+git checkout main
 git rev-parse HEAD          # record this SHA; it goes into the calibration report
 ```
 
@@ -249,7 +249,7 @@ templates.
 
 ## 13. Handoff checklist
 
-- [ ] Cloned on branch `faar-aaai-experiments`; commit SHA recorded
+- [ ] Cloned on branch `main`; commit SHA recorded
 - [ ] Environment created; `pip check` clean; `pip-freeze.txt` saved
 - [ ] `.env` configured (names only; `.env` never committed)
 - [ ] Login-node preflight `--no-cuda` passes (exit 0/2)
