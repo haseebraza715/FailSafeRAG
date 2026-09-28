@@ -33,6 +33,7 @@ Older 40-example mock-backend numbers in `docs/history/reports/` and
 | Experiment runs and their state | [experiments/](experiments/README.md): `registry.jsonl` plus the run-record format |
 | Result payloads | `results/` (audit, pilot, smoke, environment); prototype outputs in `artifacts/` and `logs/` |
 | Current reports | [docs/reports/](docs/reports/index.md) |
+| Paper | [paper/main.tex](paper/main.tex) ([build and provenance](paper/README.md)) |
 | History and the 2026-09-28 path map | [docs/history/](docs/history/README.md) |
 
 ## Repository

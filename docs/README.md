@@ -18,6 +18,7 @@ Those two files are the operational source of truth.
 | [operations/runbook.md](operations/runbook.md) | Shared-cluster procedure |
 | [reports/](reports/index.md) | Current data audit and pilot readiness reports |
 | [../experiments/README.md](../experiments/README.md) | Run registry and run-record format |
+| [../paper/README.md](../paper/README.md) | Current paper source and table/figure provenance |
 | [../cluster/README.md](../cluster/README.md) | Launcher, templates, and scheduler mechanics |
 | [../annotation/README.md](../annotation/README.md) | Label study commands, after a real B0 exists |
 | [evidence/evidence-manifest.tsv](evidence/evidence-manifest.tsv) | Provenance of committed prototype assets |

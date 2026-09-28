@@ -1,0 +1,139 @@
+% FAAR paper: single current source. Build: see paper/README.md.
+% Every number below comes from a file named in the Evidence appendix.
+% Results are pending; do not add findings until a registered run supports them.
+\documentclass[10pt]{article}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{times}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage[numbers,sort]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\setlist{nosep}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\pending}[1]{\textbf{[Pending: #1]}}
+
+\title{Diagnosis-Based Recovery for OCR-Backed Document Question Answering}
+\author{FAAR project}
+\date{Working draft, 28 September 2026. Results pending.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Question answering over OCR text fails when recognition errors, lost structure or missing content hide the evidence a question needs. A pipeline can respond by retrying retrieval, correcting the text, or looking at the page image. This paper asks whether diagnosing the likely failure and choosing a matching repair answers more questions correctly than simpler recovery policies at comparable cost. We describe FAAR, a text-first controller with a quality gate and three typed recoveries, and a paired evaluation on OHR-Bench that compares no recovery, gate-triggered visual recovery, random recovery and typed recovery with the retriever, answer model, corpus and evidence budget held fixed. Diagnosis accuracy and repair effectiveness are measured separately. The data audit and a frozen development pilot are complete; no evaluation results exist yet. \pending{all results}
+\end{abstract}
+
+\section{Research question and motivation}
+
+Retrieval-augmented question answering over scanned or born-digital documents usually indexes OCR output. OCR-Hinders-RAG (OHR-Bench) shows that OCR noise degrades both retrieval and generation, and that the damage depends on the kind of noise \citep{zhang2025ocrhinders}. Other work reports similar sensitivity of language models to OCR errors \citep{piryani2025multiocrqa}. Visual document methods retrieve and read page images directly \citep{tanaka2025vdocrag,wang2025vidorag}; applying them to every question forgoes the cheaper text path even when it would suffice. Adaptive and corrective retrieval methods decide when to retrieve again or how to repair retrieved context \citep{jiang2023flare,asai2024selfrag,yan2024crag,jeong2024adaptiverag}, but they do not distinguish OCR failure types.
+
+Our question is:
+
+\begin{quote}
+When OCR-backed document question answering fails, does diagnosing the failure and choosing a matching recovery improve answers compared with a simple recovery policy, at comparable cost?
+\end{quote}
+
+The question has two links, and we test them separately: (1) whether the diagnosis matches an independently assessed failure, and (2) whether the selected action repairs the answer. Agreement between a diagnosis and the routing policy that consumes it proves neither. A null result is a valid outcome.
+
+\section{Method}
+
+FAAR retrieves from OCR text first. A quality gate inspects the question and the retrieved evidence and either answers directly or passes the case to diagnosis. The diagnosis assigns one of three failure types, and each type maps to one recovery:
+
+\begin{itemize}
+  \item \emph{semantic}: retry retrieval (backtracking);
+  \item \emph{word-level}: correct OCR noise in the retrieved text;
+  \item \emph{structural}: selective visual fallback on the page image.
+\end{itemize}
+
+Gold answers, evidence pages and clean ground-truth text never enter retrieval, gating or routing. Clean text is used only as a diagnostic reference condition, never as the input to a noisy-text recovery branch. The implementation, including the gate, the policy and provenance logging, is in the accompanying repository. \pending{final gate features and threshold, set on development data only}
+
+\section{Data}
+
+\paragraph{Benchmark.} The first study uses OHR-Bench \citep{zhang2025ocrhinders}. The locked question file contains 8,498 questions over 1,117 documents. Each question has an answer, evidence pages, a document type and an evidence source. The benchmark supplies ground-truth page text and MinerU OCR output for every document. We use MinerU as a fixed noisy-text condition; its engine version and settings are not published, which we report as a limitation.
+
+\paragraph{Audit.} A repeatable audit verified the locked question file, the fixed split, both text trees and the official PDF archive (1,516,951,813 bytes, SHA-256 locked) against their upstream sources. Every QA document maps to exactly one PDF whose page count equals its ground-truth page set (8,400 pages). Ground truth covers all questions. MinerU text is non-empty on the evidence pages of 8,256 questions; 237 have an empty MinerU evidence page and 5 a missing one. Missing or empty OCR is recorded as a condition of the noisy input and never filled from ground truth.
+
+\paragraph{Split.} The fixed split (seed 42) has 5,948 training, 1,274 validation and 1,276 test questions. It is question-disjoint but not document-disjoint: validation and test share 342 documents, and most validation and test questions concern documents that also appear in training. The split therefore supports claims about new questions on familiar documents, not about unseen documents.
+
+\paragraph{Development pilot.} Mechanism work uses a frozen pilot, \texttt{ohr\_dev\_v1}: 30 documents (70 questions, 54 pages) drawn by seed from the 343 documents whose questions all lie in the training split, stratified by document type, without using answers, evidence strings or model outputs. Table~\ref{tab:pilot} compares it with its pool. The pool is structurally unrepresentative: most documents are single pages and it contains no chart questions, so within-document retrieval is trivial for most pilot questions. Three source families in the pilot also occur in validation or test. The pilot is for development only and carries no evaluation claim.
+
+\begin{table}[t]
+\centering
+\caption{Composition of the development pilot and its eligible pool. Sample description, not results.}
+\label{tab:pilot}
+\small
+\begin{tabularx}{\linewidth}{@{}Yrr@{}}
+\toprule
+ & Eligible pool & Pilot \\
+\midrule
+Documents / questions / pages & 343 / 692 / 715 & 30 / 70 / 54 \\
+Single-page documents & 277 & 23 \\
+Evidence: text / table / formula / reading order / multi / chart & 483 / 73 / 75 / 57 / 4 / 0 & 42 / 11 / 3 / 12 / 2 / 0 \\
+Questions whose evidence page has empty MinerU text & 95 & 6 \\
+Questions containing Han characters & 109 & 22 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Experimental design}
+
+\paragraph{Compared policies.} All policies share the retriever, the answer model, the input corpus and the evidence budget where applicable:
+\begin{enumerate}[leftmargin=1.4em]
+  \item no recovery (text-only answer);
+  \item gate-triggered visual recovery (every gated case goes to the page image);
+  \item random recovery (a gated case receives a uniformly random recovery type), over several seeds fixed in advance;
+  \item typed recovery (FAAR).
+\end{enumerate}
+Random and typed recovery may invoke different numbers of visual calls, so we add a budget-matched comparison in which the policies are allowed the same number of visual calls.
+
+\paragraph{Retrieval scope.} Retrieval searches all pages of the complete benchmark document (or a declared fixed collection), never the gold evidence pages alone. \pending{choice between known-document QA and search across a fixed collection}
+
+\paragraph{Failure labels.} Diagnosis accuracy needs an independent failure label per case. Annotators inspect the page image and the OCR text and label word corruption, lost or misleading structure, missing content, adequate OCR, or uncertain/mixed, without seeing the controller's prediction. An inspection packet of 20 purposively sampled pilot cases exists; no labels have been collected. \pending{annotation protocol and agreement}
+
+\paragraph{Measurements.} For each policy, on paired questions:
+\begin{itemize}
+  \item answer accuracy (exact match and token F1), with paired uncertainty estimates;
+  \item successful repairs (initially wrong, correct after recovery) and damage (initially correct, wrong after recovery);
+  \item diagnosis accuracy against the independent labels;
+  \item recovery and visual calls, latency and monetary cost per question.
+\end{itemize}
+No success margin is set after seeing test results, and nothing is tuned on test outcomes.
+
+\section{Results}
+
+\pending{No evaluation has been run. Results will be reported only from runs registered in \texttt{experiments/registry.jsonl}. Earlier prototype numbers from a 40-example mock-backend evaluation are engineering evidence and are not reported here as results.}
+
+\section{Limitations}
+
+\begin{itemize}
+  \item The MinerU engine version and settings are unknown, and upstream publishes no manifest linking the PDF archive to a QA version.
+  \item The fixed split shares documents across training, validation and test, so it cannot support an unseen-document claim.
+  \item The development pilot is small, mostly single-page and has no chart questions; it cannot test semantic retrieval retry well.
+  \item Exact-substring comparisons between MinerU and ground truth are diagnostics only; they are not OCR accuracy or failure labels.
+  \item Page counts come from \texttt{pypdfium2}; page content has been inspected for only a few pilot cases.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\section{Evidence}
+\label{app:evidence}
+
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+\toprule
+Statement & Source \\
+\midrule
+QA, split, archive, coverage, page sets & \path{docs/reports/data_audit.md}; \path{results/data_audit/asset_manifest.json} \\
+Pilot selection and Table~\ref{tab:pilot} & \path{docs/reports/pilot_readiness.md}; \path{results/pilots/ohr_dev_v1/selection_record.json} \\
+Research question and design & \path{docs/research/study-brief.md} \\
+Run identities & \path{experiments/registry.jsonl} \\
+\bottomrule
+\end{tabularx}
+
+\end{document}
