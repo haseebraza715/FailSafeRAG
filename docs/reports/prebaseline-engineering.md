@@ -213,3 +213,80 @@ These are the lead decisions from study brief section 12 that come first:
 5. The gate threshold and where it is calibrated.
 6. The repair-comparison protocol and a longer-document development sample.
 7. The redistribution terms for the reimplemented OHR-Bench scoring code, and what to do about the public repository that already serves the vendored `OHR-Bench/` tree (see the [scorer provenance record](ohr-scorer-provenance.md)).
+
+## Extension of 2026-09-29: multilingual retrieval and readiness
+
+This section adds the work of 2026-09-29 on the same branch. The sections
+above describe the state on 2026-09-28 and stay as written, except for the
+dated corrections to the agent configuration and the parity count.
+
+### Multilingual retrieval
+
+- **The r3 problem.** In r3, 19 of 70 questions had no query token, because the retrieval tokeniser matched only `[a-z0-9%$]`. 18 of them were still answered from chunks ranked by position. An unspaced Chinese page also became one chunk, because chunks counted whitespace-separated words.
+- **What changed.** `src/faar/text_units.py` defines two versioned policies:
+  - Tokeniser `multilingual-v1`: NFKC, casefold, and removal of whitespace between CJK characters. Word tokens are runs of Unicode letters or digits plus `%` and `$`, and each CJK run becomes character bigrams. On pure-ASCII text it equals the old tokeniser.
+  - Chunk policy `cjk-weighted-words-v1`: two CJK characters weigh one word, so a chunk holds at most 360 CJK characters at the default size. Text without CJK gets the old boundaries.
+- **Scope.** The offline runner passes both policies explicitly. `HybridRetriever`, `LocalHashEmbedder` and `build_page_chunks` keep the old rules as defaults, and `graph.py`, `benchmarks.py` and `RetrievalSettings` are unchanged.
+- **Tests.** `tests/test_multilingual_retrieval.py` holds synthetic multi-page Chinese, mixed-language and English documents with distractors. The failing cases were reproduced on the old code first: 8 failed there. The tests check the following:
+  - the relevant passage ranks first;
+  - English results are identical under both tokenisers;
+  - numbers and `%`, repeated terms and symbol-only text behave as expected;
+  - chunk length stays bounded, ordering is deterministic across hash seeds, and hits stay inside documents;
+  - generation works with evaluation files absent.
+- **Why not jieba.** jieba segments by context, so the same phrase can get different tokens in a question and a passage. Bigrams have no state and need no dictionary.
+
+### macOS OpenMP
+
+- **Cause.** The `faiss-cpu` and `torch` macOS wheels each bundle a different `libomp.dylib`, and both load into one process. `scripts/diagnostics/openmp_check.py` reproduces the fault in fresh subprocesses. The lead reran it with 2 trials per case and got the same outcomes as Worker B's 5-trial run:
+  - With no setting, the faiss-then-torch order hangs and the torch-then-faiss order segfaults.
+  - `KMP_DUPLICATE_LIB_OK` alone does not help.
+  - A one-thread limit on both libraries, or `OMP_NUM_THREADS=1`, passes.
+  - Pointing faiss at torch's `libomp` in a scratch copy removed the fault, which confirms the cause.
+- **No dependency fix.** Every macOS faiss wheel checked (1.9.0.post1 to 1.15.1) bundles its own `libomp`, so no dependency pin fixes it.
+- **Supported execution.** The test setup keeps only the one-thread limit, and `KMP_DUPLICATE_LIB_OK` was removed. With the limit disabled, the suite still segfaults. Local-hash runs and `faar-demo --help` need no setting. On macOS, real sentence-transformers retrieval needs `OMP_NUM_THREADS=1`. That path was checked with stand-in models, not the real ones. Linux, the cluster and Intel macOS were not tested.
+
+### Scorer provenance
+
+The [scorer provenance record](ohr-scorer-provenance.md) traces
+`normalize_answer` and the exact-match comparison to the SQuAD v1.1 script, and
+`f1_score` with its yes, no and noanswer rule to HotpotQA (Apache-2.0).
+`has_chn_character`, the jieba branch and the -1 error return come from
+OHR-Bench, which has no licence. The module was written after reading the
+upstream file, so it is not a clean-room implementation. Permission for the
+OHR-only parts is unresolved. The record also notes that the GitHub repository
+is public and has served the vendored `OHR-Bench/` tree since `fc93503`. The
+scorer's behaviour did not change. At `8479309` and after the docstring change,
+the parity script reported 0 mismatches in 99,045 pairs.
+
+### First real baseline
+
+[Study brief section 15](../research/study-brief.md#15-first-real-baseline-proposed-protocol)
+proposes the protocol and lists the decisions. Nothing in it is approved, and no
+credential was obtained and no model called.
+
+### Run r4
+
+`2026-09-29-ohr-dev-v1-offline-engineering-r4`, code `ecaadd0`, output in
+`results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`, supersedes
+r3. It was registered before it started, so `experiments/registry.jsonl` was
+the only dirty path.
+
+| Measure | r3 | r4 |
+| --- | --- | --- |
+| `answered`, `no_evidence`, `execution_failed` | 63, 7, 0 | 63, 7, 0 |
+| `no_evidence` reasons: `no_text_chunks`, `no_text_content`, `no_retrieval_tokens`, `no_hits` | 6, 1, 0, 0 | 6, 1, 0, 0 |
+| Questions with no query token | 19 | 0 |
+| Chunks | 145 | 201 |
+| Evidence outside the question's document | 0 | 0 |
+| Longest answer (characters) | 8,545 | 2,254 |
+| Official EM, all questions | 4 of 70 | 4 of 70 |
+| Official F1, all questions | 0.0960 | 0.1142 |
+
+- **Answer changes.** 14 answers changed from r3, all on Han-script questions. The 48 non-Han questions got the same evidence and answers.
+- **Settings were not tuned.** The retrieval settings were not tuned to scores. The F1 change is not evidence about FAAR: the answer step is still the rule-based extractor, whose term matching is ASCII-only, so a Chinese question gets roughly the top-ranked chunk as its answer.
+- **Rerun checks.** A rerun into the r4 directory was a verified no-op. Running the new code into the r3 directory was refused (exit 1), and r3 is unchanged.
+
+### Agent configuration on 2026-09-29
+
+- **Lead, requested and observed:** the task prompt asked for `claude-opus-5-5` at High. The session metadata reported `claude-opus-5-5` and effort `high`.
+- **Workers A to E, configured:** every worker used the agent definition `faar-worker` in the workspace `.claude/agents/`. It sets `model: claude-sonnet-5-5` and `effort: high`. No runtime record of a worker's model or effort was available beyond that configuration, and a worker's statement about itself is not treated as confirmation.
