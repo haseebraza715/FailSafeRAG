@@ -24,20 +24,24 @@ for import_path in (SRC, *SCRIPT_DIRS):
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
 os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
 
-# macOS only. The faiss-cpu and torch wheels each bundle their own libomp.dylib.
-# When one process runs a FAISS search and later a multi-threaded torch operation,
-# the process segfaults or hangs (tests/test_bounded_memory_batches.py crashed in
-# the full suite after any test that used FAISS). With both runtimes limited to one
-# thread the crash does not occur. Linux wheels share one libgomp, so nothing is
-# set there. The limit is set through each library's API and not through
-# OMP_NUM_THREADS, because isolate_model_configuration deletes that variable before
-# each test and libomp reads it lazily at its first parallel region. With the
-# pinned torch 2.6.0 the thread limit alone is enough. Newer torch wheels (2.14
-# was tried) abort at the first parallel region with "OMP: Error #15" unless
-# KMP_DUPLICATE_LIB_OK is also set, so it is set here as well.
+# macOS only. The faiss-cpu and torch wheels each bundle their own libomp.dylib, so
+# one process holds two OpenMP runtimes. With the pinned versions (faiss-cpu
+# 1.9.0.post1, torch 2.6.0), importing faiss before torch is enough: the first torch
+# operation that runs in parallel (a tensor of more than 32768 elements) then
+# segfaults or hangs. In the other order, the first FAISS search on many queries
+# does. Limiting both libraries to one thread avoids it in either order, because
+# neither runtime then starts a thread pool. Limiting only one library fails in one
+# of the two orders. scripts/diagnostics/openmp_check.py reproduces the matrix.
+#
+# KMP_DUPLICATE_LIB_OK is not set. With these versions it changes nothing. A newer
+# torch (2.14 was tried) aborts with "OMP: Error #15" without it, so rerun the
+# diagnostic after any torch or faiss-cpu change. Nothing is set on Linux, which
+# this was not tested on.
+#
+# The limit goes through each library's API, not OMP_NUM_THREADS: the
+# isolate_model_configuration fixture deletes that variable before each test.
 MACOS_OPENMP_WORKAROUND = sys.platform == "darwin"
 if MACOS_OPENMP_WORKAROUND:
-    os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
     try:
         import faiss
         import torch
@@ -52,8 +56,8 @@ def pytest_report_header(config: pytest.Config) -> list[str]:
     lines = ["faar offline tests: HF_HUB_OFFLINE=1, non-loopback sockets blocked, real logs/ guarded"]
     if MACOS_OPENMP_WORKAROUND:
         lines.append(
-            "macOS OpenMP workaround active: faiss and torch limited to 1 thread, "
-            "KMP_DUPLICATE_LIB_OK set (their wheels each bundle libomp)"
+            "macOS OpenMP workaround active: faiss and torch limited to 1 thread "
+            "(their wheels each bundle libomp; see scripts/diagnostics/openmp_check.py)"
         )
     return lines
 
