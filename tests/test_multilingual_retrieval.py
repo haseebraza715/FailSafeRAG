@@ -237,6 +237,8 @@ def test_whitespace_between_han_characters_is_ignored() -> None:
 
 def test_kana_is_tokenized_like_han_and_hangul_words_stay_whole() -> None:
     assert multi("テスト") == ["テス", "スト"]
+    # The prolonged sound mark U+30FC belongs to the katakana run, so the word is not split at it.
+    assert multi("コンピューター") == ["コン", "ンピ", "ピュ", "ュー", "ータ", "ター"]
     assert multi("서울 시장") == ["서울", "시장"]
 
 
