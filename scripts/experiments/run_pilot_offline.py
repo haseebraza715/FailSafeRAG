@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import traceback
 from pathlib import Path
 from typing import NoReturn
 
@@ -23,7 +24,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from faar import pilot_runner
-from faar.pilot_runner import EXIT_EXECUTION_FAILED, EXIT_OK, EXIT_REFUSED, RunnerRefusal
+from faar.pilot_runner import EXIT_EXECUTION_FAILED, EXIT_INTERNAL_ERROR, EXIT_OK, EXIT_REFUSED, RunnerRefusal
 
 EPILOG = f"""\
 exit codes:
@@ -32,6 +33,8 @@ exit codes:
   {EXIT_REFUSED}  refusal, usage error or unreadable input; nothing was written
   {EXIT_EXECUTION_FAILED}  the run is complete but at least one question is execution_failed
      (for score: the scored run contains execution_failed questions)
+  {EXIT_INTERNAL_ERROR}  unexpected internal error (a traceback follows); the run directory may hold partial
+     files, which a later run refuses to reuse
 
 overwrite policy (generate and score never overwrite):
   new or empty --run-dir                 the run is written
@@ -41,7 +44,9 @@ overwrite policy (generate and score never overwrite):
                                          identical" without a write; different bytes
                                          are refused as nondeterministic
   partial, corrupt or unrecognised dir   refused
-  a --run-dir under results/pilots/      refused
+  a --run-dir under results/pilots/      refused (case-insensitive)
+  a --run-dir inside the project but     refused
+    outside results/engineering/<run_id>/
 
 The fingerprint covers the src/faar code, this script, the runtime manifest, every
 MinerU file hash, the retrieval settings, the answer backend and the injected failures.
@@ -134,6 +139,9 @@ def main(argv: list[str] | None = None) -> int:
     except RunnerRefusal as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return EXIT_REFUSED
+    except Exception:
+        traceback.print_exc()
+        return EXIT_INTERNAL_ERROR
     print(result.message)
     return result.exit_code
 

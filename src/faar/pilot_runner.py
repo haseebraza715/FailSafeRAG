@@ -47,6 +47,7 @@ import math
 import re
 import subprocess
 import sys
+import unicodedata
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -71,6 +72,10 @@ ENGINEERING_LABEL = (
 EXIT_OK = 0
 EXIT_REFUSED = 1
 EXIT_EXECUTION_FAILED = 2
+EXIT_INTERNAL_ERROR = 3
+
+# Generation reads noisy text only from this tree. A manifest cannot redirect it, for example to the gt text.
+NOISY_TEXT_ROOT = "OHR-Bench/data/retrieval_base/MinerU"
 
 STAGES = ("load", "retrieve", "answer")
 STATUS_ANSWERED = "answered"
@@ -78,9 +83,10 @@ STATUS_NO_EVIDENCE = "no_evidence"
 STATUS_EXECUTION_FAILED = "execution_failed"
 TERMINAL_STATUSES = (STATUS_ANSWERED, STATUS_NO_EVIDENCE, STATUS_EXECUTION_FAILED)
 NO_TEXT_CHUNKS = "no_text_chunks"
+NO_TEXT_CONTENT = "no_text_content"
 NO_RETRIEVAL_TOKENS = "no_retrieval_tokens"
 NO_HITS = "no_hits"
-NO_EVIDENCE_REASONS = (NO_TEXT_CHUNKS, NO_RETRIEVAL_TOKENS, NO_HITS)
+NO_EVIDENCE_REASONS = (NO_TEXT_CHUNKS, NO_TEXT_CONTENT, NO_RETRIEVAL_TOKENS, NO_HITS)
 
 RUN_CONFIG_NAME = "run_config.json"
 PREDICTIONS_NAME = "predictions.jsonl"
@@ -170,6 +176,7 @@ class LoadedDocument:
     undeclared_ocr_pages: int
     chunks: list[Chunk] = field(default_factory=list)
     chunks_with_tokens: int = 0
+    chunks_with_content: int = 0
 
     @property
     def ocr_condition(self) -> dict[str, int]:
@@ -223,6 +230,10 @@ def parse_runtime_manifest(payload: Any, *, expected_pilot_id: str | None = None
     noisy_source = sources.get("noisy_text") if isinstance(sources, dict) else None
     noisy_root = noisy_source.get("root") if isinstance(noisy_source, dict) else None
     _require(isinstance(noisy_root, str) and noisy_root != "", "runtime manifest declares no sources.noisy_text.root")
+    _require(
+        noisy_root == NOISY_TEXT_ROOT,
+        f"runtime manifest declares noisy text root {noisy_root!r}; generation reads noisy text only from {NOISY_TEXT_ROOT!r}",
+    )
 
     documents: list[RuntimeDocument] = []
     seen_docs: set[str] = set()
@@ -296,6 +307,11 @@ def load_runtime_manifest(path: Path, *, expected_pilot_id: str | None = None) -
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise RunnerRefusal(f"runtime manifest {path} is not valid JSON: {exc}") from exc
     return parse_runtime_manifest(payload, expected_pilot_id=expected_pilot_id), sha256_bytes(raw)
+
+
+def has_text_content(text: str) -> bool:
+    """Return True if ``text`` holds a letter or a digit in any script (Unicode category L or N)."""
+    return any(unicodedata.category(char)[0] in "LN" for char in text)
 
 
 def parse_page_inventory(payload: Any) -> dict[int, str]:
@@ -425,10 +441,15 @@ def describe_retrieval(settings: RetrievalSettings) -> dict[str, Any]:
         },
         "no_evidence_reasons": {
             NO_TEXT_CHUNKS: "every declared page has empty or missing OCR, so the document has zero chunks (an OCR condition)",
+            NO_TEXT_CONTENT: (
+                "the noisy text is non-empty but no chunk holds a letter or digit in any script (Unicode categories L and N), "
+                "for example only Markdown heading markers. The input holds no usable evidence text. This is not missing OCR: "
+                "the manifest records the page as ok because its text is non-empty"
+            ),
             NO_RETRIEVAL_TOKENS: (
-                "chunks exist but none holds a [a-z0-9%$] token, so BM25 cannot index the document (rank_bm25 divides by zero). "
-                "This is a limitation of the engineering tokeniser, not an OCR condition. Han-only and symbol-only text lands here. "
-                "The document is listed in generation_summary.json"
+                "chunks hold letters or digits but none holds a [a-z0-9%$] token, so BM25 cannot index the document "
+                "(rank_bm25 divides by zero). This is a limitation of the engineering tokeniser, not an OCR condition. "
+                "Han-only text lands here. The document is listed in generation_summary.json"
             ),
             NO_HITS: "the retriever returned zero hits",
         },
@@ -502,12 +523,15 @@ class _DocumentIndex:
             self._error, self._built, chunks = exc, True, []
         loaded.chunks = chunks
         loaded.chunks_with_tokens = sum(1 for chunk in chunks if _tokenize(chunk.text))
+        loaded.chunks_with_content = sum(1 for chunk in chunks if has_text_content(chunk.text))
 
     @property
     def empty_reason(self) -> str | None:
-        """Why the document cannot be searched: ``no_text_chunks``, ``no_retrieval_tokens`` or ``None``."""
+        """Why the document cannot be searched: ``no_text_chunks``, ``no_text_content``, ``no_retrieval_tokens`` or ``None``."""
         if not self._loaded.chunks:
             return NO_TEXT_CHUNKS
+        if not self._loaded.chunks_with_content:
+            return NO_TEXT_CONTENT
         if not self._loaded.chunks_with_tokens:
             return NO_RETRIEVAL_TOKENS
         return None
@@ -578,6 +602,12 @@ def _evidence_record(rank: int, hit: RetrievalHit) -> dict[str, Any]:
     }
 
 
+def _retrieval_tokens(text: str) -> list[str]:
+    from .retrieval import _tokenize
+
+    return _tokenize(text)
+
+
 def _record(question: RuntimeQuestion, status: str, loaded: LoadedDocument, **fields: Any) -> dict[str, Any]:
     record: dict[str, Any] = {
         "schema_version": RUN_SCHEMA_VERSION,
@@ -587,6 +617,7 @@ def _record(question: RuntimeQuestion, status: str, loaded: LoadedDocument, **fi
         "answer": None,
         "abstained": False,
         "no_evidence_reason": None,
+        "query_retrieval_tokens": len(_retrieval_tokens(question.question)),
         "answer_mode": None,
         "evidence": [],
         "ocr_condition": loaded.ocr_condition,
@@ -699,6 +730,10 @@ def summarise_generation(
         if record["failure"] is not None:
             stages[record["failure"]["stage"]] = stages.get(record["failure"]["stage"], 0) + 1
     failed = counts[STATUS_EXECUTION_FAILED]
+    without_tokens = {status: 0 for status in TERMINAL_STATUSES}
+    for record in records:
+        if record["query_retrieval_tokens"] == 0:
+            without_tokens[record["status"]] += 1
     pages = {status: 0 for status in OCR_STATUSES}
     for loaded in loaded_documents.values():
         for status in loaded.page_status.values():
@@ -720,6 +755,8 @@ def summarise_generation(
             "abstained": counts[STATUS_NO_EVIDENCE],
         },
         "no_evidence_by_reason": {reason: reasons.get(reason, 0) for reason in NO_EVIDENCE_REASONS},
+        # A question with no [a-z0-9%$] token gets no lexical or hashed signal: its hits are ranked by position only.
+        "questions_without_query_tokens": {"total": sum(without_tokens.values()), **without_tokens},
         "execution_failures_by_stage": dict(sorted(stages.items())),
         "injected_failures": [spec.as_dict() for spec in injections],
         "documents": len(loaded_documents),
@@ -780,7 +817,7 @@ def git_provenance(code_root: Path | None, exclude: Sequence[Path] = ()) -> dict
 
 
 def _package_versions() -> dict[str, str | None]:
-    versions: dict[str, str | None] = {"python": sys.version.split()[0]}
+    versions: dict[str, str | None] = {"python": sys.version.split()[0], "unicodedata": unicodedata.unidata_version}
     for name in ("numpy", "faiss-cpu", "rank-bm25"):
         try:
             versions[name] = importlib.metadata.version(name)
@@ -797,12 +834,26 @@ def _display_path(path: Path, root: Path) -> str:
 
 
 def refuse_pilot_directory(run_dir: Path, project_root: Path) -> None:
+    """Refuse a run directory in a frozen or shared location.
+
+    Path parts are compared case-folded, because a case variant such as
+    ``results/Pilots`` reaches the frozen directory on a case-insensitive
+    filesystem. Any path with a ``results/pilots`` pair is refused, inside or
+    outside the project. Inside the project root, only ``results/engineering/<run_id>/``
+    is allowed, so no run can land in ``config/``, ``OHR-Bench/``, ``annotation/``,
+    ``logs/`` or ``experiments/``.
+    """
     resolved = run_dir.resolve()
-    frozen = (project_root / "results" / "pilots").resolve()
-    parts = resolved.parts
-    in_pilots = resolved == frozen or frozen in resolved.parents
-    in_pilots = in_pilots or any(parts[i] == "results" and parts[i + 1] == "pilots" for i in range(len(parts) - 1))
+    folded = [part.casefold() for part in resolved.parts]
+    in_pilots = any(folded[i] == "results" and folded[i + 1] == "pilots" for i in range(len(folded) - 1))
     _require(not in_pilots, f"refusing {run_dir}: runs must not be written under results/pilots/. Use results/engineering/<run_id>/.")
+    root = [part.casefold() for part in project_root.resolve().parts]
+    if folded[: len(root)] == root:
+        inside = folded[len(root) :]
+        _require(
+            len(inside) >= 3 and inside[0] == "results" and inside[1] == "engineering",
+            f"refusing {run_dir}: a run inside the project must be under results/engineering/<run_id>/.",
+        )
 
 
 def _read_json_file(path: Path) -> Any:
@@ -888,6 +939,7 @@ def generation_fingerprint(
             "retrieval": dict(retrieval),
             "answer_backend": dict(backend),
             "injected_failures": [spec.as_dict() for spec in injections],
+            "environment": _package_versions(),
         }
     )
 
@@ -1002,6 +1054,7 @@ def generate_run(
                 "noisy_text_path": doc.noisy_path,
                 "noisy_text_sha256": doc.noisy_sha256,
                 "undeclared_ocr_pages": loaded_documents[doc.doc_id].undeclared_ocr_pages,
+                "chunks_with_text_content": loaded_documents[doc.doc_id].chunks_with_content,
                 "chunks_with_retrieval_tokens": loaded_documents[doc.doc_id].chunks_with_tokens,
                 **loaded_documents[doc.doc_id].ocr_condition,
             }
@@ -1014,6 +1067,13 @@ def generate_run(
         "inputs_read": [
             "runtime manifest",
             "MinerU JSON file of each declared document",
+        ],
+        "input_checks": [
+            f"sources.noisy_text.root must equal {NOISY_TEXT_ROOT}",
+            "every noisy text path must resolve inside that root",
+            "file and per-page hashes must match the runtime manifest",
+            "a runtime question may hold only question_id, doc_id and question",
+            "generate_run never receives an evaluation manifest path",
         ],
         "inputs_never_read": [
             "evaluation_manifest.json",
@@ -1078,6 +1138,7 @@ def score_run(
         result = scoring.score_predictions(predictions, evaluation["questions"])
     except ValueError as exc:
         raise RunnerRefusal(f"scoring refused the join: {exc}") from exc
+    _require(result.get("scorer") == scoring.scorer_identity(), "the scorer result names a different scorer identity")
     scores_text = "".join(_dumps(row, indent=None) + "\n" for row in result["rows"])
     summary = {
         "schema_version": RUN_SCHEMA_VERSION,
@@ -1086,6 +1147,8 @@ def score_run(
         "kind": RUN_KIND,
         "label": ENGINEERING_LABEL,
         "scorer": scoring.scorer_identity(),
+        # jieba sets the Chinese tokenisation, regex the article pattern and unicodedata the CJK test.
+        "scorer_environment": {**scoring.scorer_dependencies(), "unicodedata": unicodedata.unidata_version},
         "evaluation_manifest": {"path": _display_path(path, project_root), "sha256": sha256_bytes(evaluation_bytes)},
         "generation_fingerprint": existing.config["fingerprint"],
         "predictions_sha256": existing.summary["predictions_sha256"],

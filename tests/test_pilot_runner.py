@@ -46,6 +46,7 @@ import os
 import subprocess
 import sys
 import types
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -332,7 +333,7 @@ def test_a_document_with_only_empty_pages_gives_no_evidence_and_keeps_the_questi
     blank, ok = read_predictions(run_dir)
     assert blank["status"] == "no_evidence"
     assert blank["no_evidence_reason"] == "no_text_chunks"
-    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 1, "no_retrieval_tokens": 0, "no_hits": 0}
+    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 1, "no_text_content": 0, "no_retrieval_tokens": 0, "no_hits": 0}
     assert (blank["answer"], blank["abstained"], blank["evidence"], blank["failure"]) == ("", True, [], None)
     assert blank["ocr_condition"] == {"pages_total": 3, "pages_ok": 0, "pages_empty": 2, "pages_missing": 1, "chunks": 0}
     assert ok["status"] == "answered"
@@ -351,18 +352,29 @@ def test_empty_pages_are_counted_but_the_rest_of_the_document_is_searched(tmp_pa
     assert {e["page_idx"] for e in record["evidence"]} == {1}
 
 
-@pytest.mark.parametrize("page_text", ["# \n\n#", "在审题过程中应该遵循哪些步骤"])
-def test_a_document_without_a_retrieval_token_gives_no_evidence(tmp_path: Path, page_text: str) -> None:
-    """R3: the pilot has such a page. rank_bm25 divides by zero on it; the runner returns no_evidence and lists the document."""
+@pytest.mark.parametrize(
+    ("page_text", "reason"),
+    [
+        # The pilot has this page: MinerU kept only two empty Markdown heading markers.
+        ("# \n\n#", "no_text_content"),
+        ("- | * |\n\n---", "no_text_content"),
+        # Han-only text is content that the engineering tokeniser cannot index.
+        ("在审题过程中应该遵循哪些步骤", "no_retrieval_tokens"),
+    ],
+)
+def test_a_document_without_a_retrieval_token_gives_no_evidence(tmp_path: Path, page_text: str, reason: str) -> None:
+    """R3: rank_bm25 divides by zero on a corpus with no token; the runner returns no_evidence and says why."""
     project = Project(
         tmp_path / "p", {"law/symbols": [page_text]}, [{"question_id": "q1", "doc_id": "law/symbols", "question": QUESTION_TEXT}]
     ).write()
     result, run_dir = generate(project)
     (record,) = read_predictions(run_dir)
     assert record["status"] == "no_evidence"
-    assert record["no_evidence_reason"] == "no_retrieval_tokens"
+    assert record["no_evidence_reason"] == reason
     assert record["ocr_condition"]["chunks"] == 1
-    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_retrieval_tokens": 1, "no_hits": 0}
+    expected = {"no_text_chunks": 0, "no_text_content": 0, "no_retrieval_tokens": 0, "no_hits": 0}
+    expected[reason] = 1
+    assert result.summary["no_evidence_by_reason"] == expected
     assert result.summary["documents_with_chunks_but_no_retrieval_tokens"] == ["law/symbols"]
     assert result.exit_code == pr.EXIT_OK
 
@@ -377,7 +389,7 @@ def test_zero_hits_from_the_retriever_give_no_evidence_with_reason_no_hits(proje
     assert {r["status"] for r in records} == {"no_evidence"}
     assert {r["no_evidence_reason"] for r in records} == {"no_hits"}
     assert all(r["ocr_condition"]["chunks"] > 0 for r in records)
-    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_retrieval_tokens": 0, "no_hits": 3}
+    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_text_content": 0, "no_retrieval_tokens": 0, "no_hits": 3}
 
 
 def test_no_evidence_reason_is_null_unless_the_status_is_no_evidence(project: Project) -> None:
@@ -386,14 +398,15 @@ def test_no_evidence_reason_is_null_unless_the_status_is_no_evidence(project: Pr
     records = read_predictions(run_dir)
     assert {r["status"] for r in records} == {"answered", "execution_failed"}
     assert all(r["no_evidence_reason"] is None for r in records)
-    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_retrieval_tokens": 0, "no_hits": 0}
+    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_text_content": 0, "no_retrieval_tokens": 0, "no_hits": 0}
 
 
 def test_run_config_states_that_no_retrieval_tokens_is_a_tokeniser_limit(project: Project) -> None:
     """The config keeps a tokeniser limitation apart from an OCR condition."""
     _, run_dir = generate(project)
     reasons = json.loads((run_dir / "run_config.json").read_text(encoding="utf-8"))["retrieval"]["no_evidence_reasons"]
-    assert set(reasons) == {"no_text_chunks", "no_retrieval_tokens", "no_hits"}
+    assert set(reasons) == {"no_text_chunks", "no_text_content", "no_retrieval_tokens", "no_hits"}
+    assert "not missing OCR" in reasons["no_text_content"]
     assert "limitation of the engineering tokeniser, not an OCR condition" in reasons["no_retrieval_tokens"]
     assert "Han-only" in reasons["no_retrieval_tokens"]
     assert "OCR condition" in reasons["no_text_chunks"]
@@ -757,6 +770,60 @@ def test_a_results_pilots_path_outside_the_project_root_is_also_refused(project:
         pr.generate_run(project_root=project.root, run_dir=tmp_path / "elsewhere" / "results" / "pilots" / "run-z", pilot_id=PILOT_ID)
 
 
+@pytest.mark.parametrize("relative", ["results/Pilots/ohr_dev_v1/case-run", "RESULTS/pilots/x", "Results/PILOTS"])
+def test_a_case_variant_of_results_pilots_is_refused(project: Project, relative: str) -> None:
+    """D4: a case variant reaches the frozen directory on a case-insensitive filesystem, so it is refused too."""
+    with pytest.raises(RunnerRefusal, match="results/pilots"):
+        pr.generate_run(project_root=project.root, run_dir=project.root / relative, run_id="case-run", pilot_id=PILOT_ID)
+    assert not (project.root / "results" / "pilots" / "ohr_dev_v1" / "case-run").exists()
+
+
+@pytest.mark.parametrize(
+    "relative", ["config/rogue", "OHR-Bench/data/rogue", "annotation/rogue", "logs/rogue", "experiments/rogue", "results/rogue", "rogue"]
+)
+def test_a_run_directory_inside_the_project_must_be_under_results_engineering(project: Project, relative: str) -> None:
+    """D4: inside the project, only results/engineering/ may receive a run, so no frozen or shared directory can."""
+    run_dir = project.root / relative
+    existed = run_dir.exists()
+    with pytest.raises(RunnerRefusal, match="results/engineering"):
+        pr.generate_run(project_root=project.root, run_dir=run_dir, run_id="rogue", pilot_id=PILOT_ID)
+    assert run_dir.exists() == existed
+
+
+def test_a_run_directory_outside_the_project_is_allowed(project: Project, tmp_path: Path) -> None:
+    """D4: scratch runs outside the project root stay possible."""
+    result = pr.generate_run(project_root=project.root, run_dir=tmp_path / "scratch" / "run-s", pilot_id=PILOT_ID)
+    assert result.exit_code == pr.EXIT_OK
+
+
+@pytest.mark.parametrize("root", ["OHR-Bench/data/retrieval_base", "OHR-Bench/data/retrieval_base/gt", "OHR-Bench/data"])
+def test_a_manifest_that_declares_another_noisy_text_root_is_refused(project: Project, root: str) -> None:
+    """L3: generation reads noisy text only from the MinerU tree, so a manifest cannot redirect it to gt text."""
+    manifest = json.loads(project.runtime_manifest.read_text(encoding="utf-8"))
+    manifest["sources"]["noisy_text"]["root"] = root
+    project.runtime_manifest.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(RunnerRefusal, match="noisy text root"):
+        generate(project)
+
+
+def test_questions_without_a_retrieval_token_are_counted(tmp_path: Path) -> None:
+    """R3: a Han-script question gets no lexical or hashed signal, so its record and the summary say so."""
+    project = Project(
+        tmp_path / "p",
+        {DOC_A: [WARRANTY_A]},
+        [
+            {"question_id": "q-latin", "doc_id": DOC_A, "question": QUESTION_TEXT},
+            {"question_id": "q-han", "doc_id": DOC_A, "question": "保修期是多久？"},
+        ],
+    ).write()
+    result, run_dir = generate(project)
+    records = {r["question_id"]: r for r in read_predictions(run_dir)}
+    assert records["q-han"]["status"] == "answered"
+    assert records["q-han"]["query_retrieval_tokens"] == 0
+    assert records["q-latin"]["query_retrieval_tokens"] > 0
+    assert result.summary["questions_without_query_tokens"] == {"total": 1, "answered": 1, "no_evidence": 0, "execution_failed": 0}
+
+
 def test_an_invalid_run_id_is_refused(project: Project) -> None:
     """D4: the run id follows the registry pattern so a later registration accepts it."""
     with pytest.raises(RunnerRefusal, match="run_id"):
@@ -767,7 +834,10 @@ def test_an_invalid_run_id_is_refused(project: Project) -> None:
 # O1, O2
 # ---------------------------------------------------------------------------
 
-RECORD_KEYS = ["schema_version", "question_id", "doc_id", "status", "answer", "abstained", "no_evidence_reason", "answer_mode", "evidence", "ocr_condition", "failure"]
+RECORD_KEYS = [
+    "schema_version", "question_id", "doc_id", "status", "answer", "abstained", "no_evidence_reason",
+    "query_retrieval_tokens", "answer_mode", "evidence", "ocr_condition", "failure",
+]
 EVIDENCE_KEYS = ["rank", "chunk_id", "doc_id", "page_idx", "fused_score", "bm25_score", "dense_score"]
 OCR_KEYS = ["pages_total", "pages_ok", "pages_empty", "pages_missing", "chunks"]
 
@@ -919,6 +989,7 @@ def install_fake_scoring(monkeypatch: pytest.MonkeyPatch, *, calls: list[str] | 
         }
 
     module.scorer_identity = scorer_identity  # type: ignore[attr-defined]
+    module.scorer_dependencies = lambda: {"jieba": "fake", "regex": "fake"}  # type: ignore[attr-defined]
     module.score_predictions = score_predictions  # type: ignore[attr-defined]
     monkeypatch.setitem(sys.modules, "faar.ohr_scoring", module)
     return module
@@ -938,6 +1009,21 @@ def test_scoring_writes_scores_and_a_summary_with_identities(project: Project, m
     assert summary["generation_fingerprint"] == gen.summary["fingerprint"]
     assert summary["predictions_sha256"] == gen.summary["predictions_sha256"]
     assert summary["counts"]["questions"] == 3
+    assert summary["scorer_environment"]["jieba"] == "fake" and summary["scorer_environment"]["regex"] == "fake"
+    assert summary["scorer_environment"]["unicodedata"] == unicodedata.unidata_version
+
+
+def test_scoring_with_the_real_scorer_keeps_every_question(project: Project) -> None:
+    """S1, S2: the real faar.ohr_scoring joins the saved predictions; failures stay in the denominator."""
+    pytest.importorskip("jieba")
+    _, run_dir = generate(project, inject_failures=["q-a"])
+    result = pr.score_run(project_root=project.root, run_dir=run_dir)
+    assert result.exit_code == pr.EXIT_EXECUTION_FAILED
+    summary = json.loads((run_dir / "score_summary.json").read_text(encoding="utf-8"))
+    assert summary["scorer"]["name"] == "ohr-bench-official-qa"
+    assert summary["counts"]["questions"] == 3 and summary["counts"]["execution_failed"] == 1
+    assert summary["aggregates"]["all_questions"]["denominator"] == 3
+    assert set(summary["scorer_environment"]) >= {"jieba", "regex", "unicodedata"}
 
 
 def test_scoring_never_overwrites_and_verifies_identical_scores(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -1049,6 +1135,19 @@ def test_cli_exit_codes_separate_success_failure_and_refusal(project: Project, c
     assert cli.main(cli_args(project, "run-c0")) == 0
     assert "already complete, verified identical" in capsys.readouterr().out
     assert cli.main([*cli_args(project, "run-c3")[:-1], str(project.root / "results" / "pilots" / "run-c3")]) == 1
+
+
+def test_cli_reports_an_unexpected_error_with_its_own_exit_code(
+    project: Project, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """C1: an internal error is not reported as a clean refusal."""
+
+    def broken(**kwargs: Any) -> None:
+        raise KeyError("pilot_id")
+
+    monkeypatch.setattr(cli.pilot_runner, "generate_run", broken)
+    assert cli.main(cli_args(project, "run-err")) == 3
+    assert "KeyError" in capsys.readouterr().err
 
 
 def test_cli_usage_errors_exit_with_the_refusal_code(capsys: pytest.CaptureFixture[str]) -> None:
