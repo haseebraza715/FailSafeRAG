@@ -42,7 +42,7 @@ Follow [experiments/README.md](experiments/README.md) for every run that produce
 - Launch GPU or cluster jobs, paid API calls or large downloads only when the task authorizes them.
 - Work in this session only. Do not delegate to subagents or other agents unless the user asks for that.
 
-Checks that are safe to run locally:
+Checks that are safe to run locally are listed below. They assume `.venv-aaai` has the pinned `click`, `jieba` and `regex`. [README.md](README.md#local-checks-and-known-issues) shows how to add those pins, or how to build a fresh environment from the declared dependencies instead.
 
 ```bash
 .venv-aaai/bin/python -m pytest -q -p no:cacheprovider tests/<file>.py

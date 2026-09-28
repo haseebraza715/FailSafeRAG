@@ -79,10 +79,11 @@ uv venv --python 3.12 --seed .local/venv-prebaseline
 uv lock --check
 ```
 
-An older `.venv-aaai` built before `click` was pinned still has `click` 8.4.2.
-There `faar-demo --help` fails with `TypeError: Secondary flag is not valid for
-non-boolean flag`, and `tests/test_cli_help.py` fails. Install the pin with
-`.venv-aaai/bin/python -m pip install click==8.1.8`.
+An older `.venv-aaai` built before these pins has `click` 8.4.2 and lacks
+`jieba`. There `faar-demo --help` fails with `TypeError: Secondary flag is not
+valid for non-boolean flag`, and `tests/test_cli_help.py` and
+`tests/test_ohr_scoring.py` fail. Install the pinned packages with
+`.venv-aaai/bin/python -m pip install -c config/environment/constraints-aaai.txt click jieba regex pypdfium2`.
 
 The test setup has these safeguards:
 

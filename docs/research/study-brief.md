@@ -291,6 +291,12 @@ references, and 8 variants plus all cross pairs of the 70 pilot references.
 The upstream repository has no licence file for its code. The module credits
 the authors and pins the source, and redistribution terms are open (section 12).
 
+Upstream's headline `overall` is not an all-question mean. `evaluator.py`
+drops every result whose generated text is blank (`remove_invalid`, with
+`valid` set in `quest_answer.py`) before it averages. `score_predictions`
+reports that view as `upstream_valid_only`, with its denominator, and only next
+to the all-question view defined below.
+
 FAAR's own `src/faar/metrics.py` must not serve as the primary metric.
 `normalize_text` deletes every character outside `[a-z0-9]`
 (`metrics.py:8-11`). 521 of the 8,498 reference answers, and 7 of the 70 pilot
@@ -437,7 +443,8 @@ and changed the test setup. It did not change the controller, the graph or the
 existing runner. Against the table above:
 
 - **Search within the question's document, run the pilot from its manifests, keep gold data out of runtime.** `src/faar/pilot_runner.py` loads only `runtime_manifest.json` and the MinerU files, verifies their hashes, builds one retriever per document and refuses a hit from another document. Its runtime question type holds only `question_id`, `doc_id` and `question`. Tests in `tests/test_pilot_runner.py` check that generation opens no evaluation file and that poisoned evaluation files leave predictions byte-identical. The graph path (`graph.py`, `benchmarks.py`) is unchanged.
-- **Empty OCR and the no-evidence outcome.** In the offline path, empty and missing pages stay in the per-question OCR record and produce no chunk. A question with no usable text gets `no_evidence` with an abstention and a `no_evidence_reason`. The runner has no image path, so it shows no page as an image.
+- **Empty OCR and the no-evidence outcome.** In the offline path, empty and missing pages stay in the per-question OCR record and produce no chunk. A question with no usable text gets `no_evidence` with an abstention and a `no_evidence_reason`. The reasons are `no_text_chunks` (every page empty or missing), `no_text_content` (the text is non-empty but holds no letter or digit in any script, such as only Markdown heading markers), `no_retrieval_tokens` (the text has letters or digits, but none that the engineering tokeniser indexes, such as Han-only text) and `no_hits`. Only the first is an OCR status. The runner has no image path, so it shows no page as an image.
+- **Questions the engineering retriever cannot read.** Every record carries `query_retrieval_tokens`, and `generation_summary.json` counts questions with none. Such a question, for example one written only in Han script, gets hits ranked by position alone.
 - **Official scoring.** `src/faar/ohr_scoring.py` (section 8). `src/faar/metrics.py` is unchanged and must not serve as the primary metric.
 - **Finish runs with recorded failures.** The offline runner records `execution_failed` per question, finishes the run and exits with status 2 when any failure exists. `experiment_runner.py` still raises.
 - **CI.** Dependencies are declared (`pypdfium2`, `jieba`, `regex`, pinned `click`), the tests no longer need credentials or network, and the workflow has separate lint, package and offline-test jobs.
@@ -498,7 +505,9 @@ The prototype's 40-example mock evaluation and the August status report are in
 ## 14. Next assignment
 
 **Status.** The three engineering steps of the earlier assignment (environment,
-scoring, offline run) are done on `research/prebaseline-engineering`. The offline run uses
+scoring, offline run) are implemented on `research/prebaseline-engineering`.
+The environment step was accepted only when CI passed on the branch, and the
+pre-baseline engineering report records that CI run. The offline run uses
 the rule-based extractor and no repair. It is an `engineering_check` of the
 data flow, the record format and the scoring join. It is not a no-recovery
 baseline and not evidence about answer quality.
