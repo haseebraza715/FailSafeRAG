@@ -4,7 +4,6 @@ import hashlib
 import json
 import math
 import os
-import re
 import tempfile
 import zipfile
 from functools import lru_cache
@@ -26,6 +25,7 @@ from .resource_limits import (
     torch_device,
 )
 from .settings import RetrievalSettings
+from .text_units import LEGACY_TOKENIZER, check_tokenizer, tokenize
 from .types import Chunk, RetrievalHit
 
 MODEL_ALIASES = {
@@ -49,7 +49,8 @@ def _normalize_scores(values: np.ndarray) -> np.ndarray:
 
 
 def _tokenize(text: str) -> list[str]:
-    return re.findall(r"[a-z0-9%$]+", text.lower())
+    """The original ASCII token rule, kept under its old name."""
+    return tokenize(text, LEGACY_TOKENIZER)
 
 
 def _corpus_text_digest(chunks: list[Chunk]) -> str:
@@ -233,9 +234,16 @@ class _Embedder(Protocol):
 
 
 class LocalHashEmbedder:
-    """Deterministic dependency-free feature hashing for offline demos/tests."""
+    """Deterministic dependency-free feature hashing for offline demos/tests.
+
+    ``tokenizer`` names the token rule (see ``faar.text_units``). The default is
+    the original ASCII rule.
+    """
 
     dimensions = 256
+
+    def __init__(self, tokenizer: str = LEGACY_TOKENIZER) -> None:
+        self.tokenizer = check_tokenizer(tokenizer)
 
     def encode(
         self,
@@ -248,7 +256,7 @@ class LocalHashEmbedder:
         del convert_to_numpy, batch_size
         matrix = np.zeros((len(sentences), self.dimensions), dtype=np.float32)
         for row, sentence in enumerate(sentences):
-            for token in _tokenize(sentence):
+            for token in tokenize(sentence, self.tokenizer):
                 digest = blake2b(token.encode("utf-8"), digest_size=8).digest()
                 index = int.from_bytes(digest[:4], "big") % self.dimensions
                 sign = 1.0 if digest[4] & 1 else -1.0
@@ -270,7 +278,15 @@ class HybridRetriever:
         settings: RetrievalSettings,
         *,
         cache_dir: Path | None = None,
+        tokenizer: str = LEGACY_TOKENIZER,
     ) -> None:
+        """Index ``chunks``.
+
+        ``tokenizer`` names the token rule of BM25 and of the local-hash embedder
+        (see ``faar.text_units``). The default is the original ASCII rule. The
+        sentence-transformers backend embeds with its own model, so the rule
+        applies to BM25 only.
+        """
         if not chunks:
             raise ValueError("HybridRetriever requires at least one chunk")
         if len(chunks) > settings.max_chunks:
@@ -279,11 +295,12 @@ class HybridRetriever:
             )
         self.chunks = chunks
         self.settings = settings
-        self._bm25_tokens = [_tokenize(chunk.text) for chunk in chunks]
+        self.tokenizer = check_tokenizer(tokenizer)
+        self._bm25_tokens = [tokenize(chunk.text, self.tokenizer) for chunk in chunks]
         self._bm25 = BM25Okapi(self._bm25_tokens)
         self._local_hash = _uses_local_hash(settings)
         if self._local_hash:
-            self._embedder: _Embedder = LocalHashEmbedder()
+            self._embedder: _Embedder = LocalHashEmbedder(self.tokenizer)
             self._reranker = None
             corpus_embeddings = self._embedder.encode(
                 [chunk.text for chunk in chunks],
@@ -310,7 +327,7 @@ class HybridRetriever:
         if k <= 0:
             return []
         k = min(k, len(self.chunks))
-        bm25_scores = np.array(self._bm25.get_scores(_tokenize(query)), dtype=np.float32)
+        bm25_scores = np.array(self._bm25.get_scores(tokenize(query, self.tokenizer)), dtype=np.float32)
         if self._local_hash:
             query_embedding = self._embedder.encode(
                 [query],
