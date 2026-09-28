@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -15,6 +16,39 @@ SCRIPT_DIRS = (
 for import_path in (SRC, *SCRIPT_DIRS):
     if str(import_path) not in sys.path:
         sys.path.insert(0, str(import_path))
+
+# macOS only. The faiss-cpu and torch wheels each bundle their own libomp.dylib.
+# When one process runs a FAISS search and later a multi-threaded torch operation,
+# the process segfaults or hangs (tests/test_bounded_memory_batches.py crashed in
+# the full suite after any test that used FAISS). With both runtimes limited to one
+# thread the crash does not occur. Linux wheels share one libgomp, so nothing is
+# set there. The limit is set through each library's API and not through
+# OMP_NUM_THREADS, because isolate_model_configuration deletes that variable before
+# each test and libomp reads it lazily at its first parallel region. With the
+# pinned torch 2.6.0 the thread limit alone is enough. Newer torch wheels (2.14
+# was tried) abort at the first parallel region with "OMP: Error #15" unless
+# KMP_DUPLICATE_LIB_OK is also set, so it is set here as well.
+MACOS_OPENMP_WORKAROUND = sys.platform == "darwin"
+if MACOS_OPENMP_WORKAROUND:
+    os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+    try:
+        import faiss
+        import torch
+
+        faiss.omp_set_num_threads(1)
+        torch.set_num_threads(1)
+    except ImportError:
+        MACOS_OPENMP_WORKAROUND = False
+
+
+def pytest_report_header(config: pytest.Config) -> list[str]:
+    lines: list[str] = []
+    if MACOS_OPENMP_WORKAROUND:
+        lines.append(
+            "macOS OpenMP workaround active: faiss and torch limited to 1 thread, "
+            "KMP_DUPLICATE_LIB_OK set (their wheels each bundle libomp)"
+        )
+    return lines
 
 
 @pytest.fixture(autouse=True)
