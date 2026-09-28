@@ -67,20 +67,29 @@ commit `.env`. Local `pytest` is a code check, not a paper result.
 
 ### Local checks and known issues
 
-Run project scripts with `.venv-aaai/bin/python`. The system `python3` may be
-older than 3.12.
+Run project scripts with a Python 3.12 environment built from the declared
+dependencies. The system `python3` may be older than 3.12. To build a fresh
+environment the way CI does, without the CPU-only PyTorch index that CI adds:
 
 ```bash
-.venv-aaai/bin/python -m pytest -q -p no:cacheprovider --ignore=tests/test_bounded_memory_batches.py
-KMP_DUPLICATE_LIB_OK=TRUE OMP_NUM_THREADS=1 .venv-aaai/bin/python -m pytest -q -p no:cacheprovider tests/test_bounded_memory_batches.py
-.venv-aaai/bin/ruff check .
+uv venv --python 3.12 --seed .local/venv-prebaseline
+.local/venv-prebaseline/bin/python -m pip install -c config/environment/constraints-aaai.txt -e ".[test,lint]"
+.local/venv-prebaseline/bin/python -m pytest -q -ra -p no:cacheprovider
+.local/venv-prebaseline/bin/ruff check .
+uv lock --check
 ```
 
-These issues predate the current layout and are not regressions:
+An older `.venv-aaai` built before `click` was pinned still has `click` 8.4.2.
+There `faar-demo --help` fails with `TypeError: Secondary flag is not valid for
+non-boolean flag`, and `tests/test_cli_help.py` fails. Install the pin with
+`.venv-aaai/bin/python -m pip install click==8.1.8`.
 
-- On macOS the full suite segfaults in `tests/test_bounded_memory_batches.py` (OpenMP). Run that file separately, as above.
-- The suite appends mock entries to the git-ignored `logs/vlm_calls.jsonl`. Copy that file aside before a test run if you need it unchanged.
-- `faar-demo --help` fails with `TypeError: Secondary flag is not valid for non-boolean flag`. The installed `click` 8.4.2 is not pinned and is incompatible with the pinned `typer` 0.12.5.
+The test setup has these safeguards:
+
+- `tests/conftest.py` removes provider keys, blocks non-loopback network connections and sets `HF_HUB_OFFLINE=1`.
+- It sends API-call logs aimed at the repository's `logs/` to a temporary directory, and fails the run if any file under `logs/` changes.
+- On macOS it limits `faiss` and `torch` to one thread and sets `KMP_DUPLICATE_LIB_OK`, because their wheels each bundle `libomp`. Without that, the full suite segfaults in `tests/test_bounded_memory_batches.py`. The pytest header says when the workaround is active.
+- `tests/test_b0_one_doc_smoke.py` skips one test when the prepared one-document smoke assets are absent, as in CI.
 
 ## First cluster commands
 

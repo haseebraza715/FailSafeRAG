@@ -8,11 +8,12 @@ OCR, paid services or experiment runs.
 Each rule below carries one of three labels:
 
 - **Agreed:** the research lead has decided it. Change it only with the lead's approval.
-- **Recommended default:** proposed here. It applies to development work until the lead accepts, changes or rejects it.
+- **Proposed default:** a proposal, not an approved rule. Engineering and development work may use it provisionally and must say so in its run record. No scientific evaluation relies on it until the lead accepts, changes or rejects it.
 - **Lead decision:** open. Do not implement a choice until the lead makes it.
 
 Section 12 lists every rule with its label. Section 11 compares the intended
-behaviour with the code at commit `8832ce4`.
+behaviour with the code at commit `8832ce4` and notes what the pre-baseline
+engineering branch changed since then.
 
 ## 1. Question and claim
 
@@ -66,8 +67,19 @@ intact evidence on a badly damaged page.
 
 An OCR defect is not a retrieval failure. Whether retrieval missed the evidence
 is a fourth fact, and it exists only after retrieval has run. Call it a
-retrieval miss only when the run record shows that the retrieved chunks did not
-include the evidence page.
+page-level retrieval miss only when the run record shows that the retrieved
+chunks did not include the evidence page.
+
+Page coverage is weaker than evidence coverage. A retrieved chunk can come from
+the evidence page and still leave out the passage that holds the answer,
+because one page can produce several chunks. On a single-page document, page
+coverage is 1 by construction. A hit on the evidence page therefore does not
+show that the answer text reached the answer step, and it says nothing about
+whether that text survived OCR. Report page coverage, passage coverage (a
+retrieved chunk contains the answer evidence) and evidence survival (the
+evidence-impact observation) as separate quantities. Passage coverage needs a
+matching rule against `evidence_context` that the lead has not approved, so no
+current report measures it.
 
 **Controller categories are not observation categories.** The controller emits
 `semantic`, `word_level` or `structural` and maps each to one action:
@@ -81,7 +93,7 @@ The two schemes do not correspond one to one:
 - Missing content has no text-only repair. A visual reading can help only if the page is shown.
 - `semantic` has no human-observable counterpart. The current code assigns it whenever neither text signal fires (`src/faar/quality.py:96-103`).
 
-**Recommended default.** Compare the controller with people at the level of
+**Proposed default.** Compare the controller with people at the level of
 each signal: does the layout signal fire when a person saw lost structure, and
 does the corruption signal fire when a person saw word corruption? Report the
 agreement per signal, with mixed and uncertain cases as their own rows. Do not
@@ -144,7 +156,7 @@ with the answer model. A visual repair could look better only because a strong
 model wrote its answer. The rule-based extractor also cannot score term overlap
 for Han-script questions.
 
-**Recommended default.** Use one answer model for every condition. Keep the
+**Proposed default.** Use one answer model for every condition. Keep the
 recorded snapshot `gpt-4o-2024-11-20`, which `src/faar/settings.py:226` and the
 checks at `settings.py:306-308` already pin. The text condition gives it the
 retrieved text, and the visual condition gives it the same text plus page
@@ -168,10 +180,29 @@ Report cost per policy, per question and in total:
 - One-time preparation cost, such as rendering pages and building indexes, reported separately from per-question cost.
 
 Two policies are cost-matched only when the match is enforced and stated.
-**Recommended default:** match on visual requests with an identical image budget
+**Proposed default:** match on visual requests with an identical image budget
 per request. On the flagged set, restrict random and gate-triggered visual
 recovery to the number of visual requests FAAR made, choosing which cases get
 them by the seeded draw. Report dollar cost alongside the matched count.
+
+A visual-request limit matches one cost component. It does not match total
+cost. Two policies with the same number of visual requests can still differ in
+text-only requests, retries, input and output tokens, dollars and latency, for
+example when `correct_text` or `retry_retrieval` adds work that the visual
+policy does not. Call such a comparison "matched on visual requests", not
+"cost-matched", and report every component in the list above for each policy.
+Claim matched total cost only if a total budget is enforced and the recorded
+totals agree within a tolerance stated before the run.
+
+### When a budget runs out
+
+**Proposed default.** The lead has not set any budget value. When a run has a
+request or dollar budget and the budget runs out:
+
+1. The run sends no further paid request.
+2. Each remaining case that would have needed a request keeps its initial answer. Its record says `budget_exhausted`. That is a recorded recovery outcome, not a repair and not an `execution_failed` row.
+3. Cases consume the budget in an order fixed before the run, such as manifest order or the seeded draw, never in an order that depends on answers or scores.
+4. The run record reports how many cases each policy served and how many hit `budget_exhausted`. A comparison in which any policy ran out of budget is reported as budget-limited, with those counts next to the rates.
 
 ## 6. Development diagnostic: try every repair on the same cases
 
@@ -185,7 +216,8 @@ answers, diagnosis cannot help, whatever its accuracy.
 
 - Evaluation answers are joined only after all repairs have run, to score them.
 - The best repair per case in hindsight is a diagnostic upper bound. It is not a deployable policy, because choosing it needs the answer.
-- The result must not be used to tune anything that later runs on validation or test data.
+- The results may inform method development on development data, including changes to the diagnosis, the repairs or their settings. Record each change and the result that prompted it in the development log (section 9).
+- These results must never be used to choose or tune anything on validation or test outcomes. Validation and test data enter only after the method is frozen (section 9).
 
 ## 7. Empty evidence and failed execution
 
@@ -199,7 +231,7 @@ answers, diagnosis cannot help, whatever its accuracy.
 In the pilot, 6 of 54 pages have empty MinerU text, and they are the evidence
 pages of 6 questions.
 
-### Intended baseline behaviour (recommended default)
+### Intended baseline behaviour (proposed default)
 
 - Every question stays in the evaluation. Empty OCR is recorded per page and per question.
 - The complete PDF-derived page inventory is kept. A page with empty text produces no text chunk but remains addressable as an image.
@@ -231,7 +263,7 @@ These are implementation requirements for later work, or limitations to report:
 The runner currently refuses to finish when any question fails. It raises after
 checkpointing the completed rows (`src/faar/experiment_runner.py:220-225`), and
 a failed visual call raises before scoring (`experiment_runner.py:103-108`).
-**Recommended default:**
+**Proposed default:**
 
 1. Retry transient failures within the same run as new attempts (`experiments/README.md`).
 2. Record any question that still fails as `execution_failed`, with its reason.
@@ -246,24 +278,39 @@ Use the official OHR-Bench QA metrics: `exact_match_score` and `f1_score` in the
 vendored `OHR-Bench/src/metric/common.py`. Its normalisation lowercases the
 text and removes ASCII punctuation and English articles. It keeps Han
 characters, and F1 tokenises text that contains CJK characters with `jieba`.
-The data audit verified the vendored data files against upstream, not this code
-file. Confirm the file against upstream before the first scored run.
+The vendored `common.py` and its caller `src/tasks/quest_answer.py` are
+byte-identical to upstream `opendatalab/OHR-Bench` at commit `1f421eb`, the
+`commit_at_lookup` in `config/ohr_pdf_source_lock.json` (checked 2026-09-28).
+`QuestAnswer.scoring` calls exactly these two functions on the `answers`
+string. `src/faar/ohr_scoring.py` reimplements them without upstream's heavy
+imports, with `jieba==0.42.1` and `regex==2024.7.24` as upstream pins them.
+`scripts/experiments/ohr_scoring_parity.py` compares it with the vendored
+functions. On 2026-09-28 it found 0 mismatches in 99,041 pairs: 103
+hand-written edge cases, 11 variants of each of the 8,498 `qas_v2.json`
+references, and 8 variants plus all cross pairs of the 70 pilot references.
+The upstream repository has no licence file for its code. The module credits
+the authors and pins the source, and redistribution terms are open (section 12).
 
 FAAR's own `src/faar/metrics.py` must not serve as the primary metric.
 `normalize_text` deletes every character outside `[a-z0-9]`
 (`metrics.py:8-11`). 521 of the 8,498 reference answers, and 7 of the 70 pilot
-answers, normalise to an empty string. Any prediction, including an empty one,
-then scores EM 1 and F1 1 on them. 785 reference answers contain Han characters.
+answers, normalise to an empty string under it. On those references a
+prediction scores EM 1 and F1 1 exactly when the prediction also normalises to
+an empty string: an empty answer, an abstention, or an answer written only in
+Han script and punctuation. A prediction that keeps any ASCII letter or digit
+scores 0 on them. The false perfect score therefore requires both normalised
+strings to be empty. It is not given to every prediction. 785 reference answers
+contain Han characters.
 
 ### Rules for special cases
 
 | Case | Rule |
 | --- | --- |
 | Reference answers | Each QA row has one reference string (`answers`). If a later dataset has several, score against the best match. |
-| Numbers, units, percentages | The official metric compares normalised strings, so `1,000` and `1000` differ. Report a separate FAAR numeric match (parsed value, unit and percent sign, stated tolerance) as a secondary metric. Never replace the official score with it. |
+| Numbers, units, percentages | The official metric deletes every ASCII punctuation character, including `,`, `.`, `%` and `$`, before it compares strings. `1,000` and `1000` are therefore equal, and so are `3.5` and `35`, and `50%` and `50`. Keep this behaviour in the primary score. A separate FAAR numeric match (parsed value, unit and percent sign, stated tolerance) may be reported as a secondary metric. Never replace the official score with it. |
 | Han-script answers | Official normalisation and `jieba` F1. Report Han-script questions as their own row. |
 | Multi-part (`List`) answers | Official EM and F1 on the full string. A separate set-level F1 may be reported as secondary. |
-| Empty answer or abstention | Scored by the official metric (usually 0). Counted separately as `abstained` or `no_evidence`. |
+| Empty answer or abstention | Scored by the official metric. Counted separately as `abstained` or `no_evidence`. Official EM and F1 are 0, except that EM is 1 (and F1 stays 0) when the reference also normalises to an empty string. 5 of the 8,498 references do so under the official normalisation, and none of the 70 pilot references. |
 | Truncated or unparsable output | Scored as returned after extracting the answer field. Flagged in the row with an output status. |
 | API or infrastructure failure | `execution_failed`, as in section 7. Not an answer. |
 
@@ -304,9 +351,10 @@ either from it.
 - It has no chart questions.
 - A single page can still produce several chunks (180 words each by default, `src/faar/settings.py:102`), so retrieval can still pick the wrong passage on the right page.
 - Wrong-page retrieval and retrieval retry get little coverage.
+- Searching the complete document makes every evidence page a retrieval candidate. That is page coverage of the search space, not passage coverage of the results. On the 23 single-page documents every retrieved chunk is on the evidence page, whatever passage it holds (section 3).
 - Three source families also appear in validation or test, so the pilot cannot support claims about unseen publications.
 
-**Recommended default.** For retrieval-retry work, define a separately
+**Proposed default.** For retrieval-retry work, define a separately
 versioned development sample of longer, train-exclusive documents, with its own
 `pilot_id` and output directory. Do not create it until the lead approves it.
 
@@ -320,9 +368,19 @@ It must be visible.
 - Keep a short development log in the run records' `limitations` and `related_runs`, covering what was inspected, what changed and why.
 - Validation and test questions stay untouched: no runs, no output inspection and no threshold selection, until the lead freezes the protocol.
 
-**Lead decision.** Where the gate threshold is chosen. The recommended
-default is development (train) data only, with validation kept for one
-confirmation run. The earlier plan chose it on validation.
+### Freeze the method before evaluation
+
+**Agreed** (no tuning on test outcomes, section 2), with the procedure as a
+**proposed default**:
+
+1. Before any validation or test run, freeze the method: the code commit, settings, thresholds, prompts, answer model, budgets and page-selection policy.
+2. Register the frozen method in `experiments/registry.jsonl` and cite that record from every evaluation run.
+3. After the freeze, a change to any frozen item makes a new method version with its own record. Evaluation results already produced stay in the record and are reported.
+4. Never tune, select or change anything based on test-set outcomes. Validation outcomes are used only as the lead decides below.
+
+**Lead decision.** Where the gate threshold is chosen. The proposed default is
+development (train) data only, with validation kept for one confirmation run.
+The earlier plan chose it on validation.
 
 ## 10. Inspection procedure for the 20 pilot cases
 
@@ -334,8 +392,12 @@ the blank form `annotations.csv`. Nobody fills the form during design work.
 3. Then read the question and the reference answer, and judge whether the evidence the question needs survives in the noisy text: survives, damaged, lost, or uncertain. The current form has no column for this. Record it at the start of `notes` as `evidence: <value>` until a versioned form adds one.
 4. Put your name or initials in `annotator`. Never fill the form with a model's suggestions. Keep any model-generated note in a separate file, marked as such.
 
-No controller exists yet, so no prediction can leak. Once one does, annotators
-must not see its output.
+Controller code exists: the gate and diagnosis in `src/faar/quality.py` and
+the routing graph in `src/faar/graph.py`. It is not connected to the pilot
+manifests, and no registered run has produced a prediction for the pilot cases, so no
+controller output can reach annotators yet. The offline engineering runner
+(`src/faar/pilot_runner.py`) runs no gate, diagnosis or repair. Once the
+controller runs on the pilot, annotators must not see its output.
 
 These 20 cases were chosen purposively to cover categories. They are for
 development inspection only, and their proportions do not estimate how often
@@ -366,7 +428,21 @@ The table compares the intended behaviour with the code at `8832ce4`.
 | Damage rate on initially correct cases | `_harm_rate` counts any F1 drop over all rows (`final_analysis.py:124-144`) | Denominators as in section 8 | Test with hand-computed counts |
 | Finish runs with recorded failures | Runner raises after any failure (`experiment_runner.py:220-225`) | `execution_failed` rows and a completed or failed run status | Test with an injected API failure |
 | Enforced cost matching | Random recovery draws per question with no request budget (`graph.py:30-40`, `graph.py:124-131`) | Visual-request cap on the flagged set | Run records with matched request counts |
-| CI covers the tested code | CI installs `pip install -e . pytest ruff` (`.github/workflows/tests.yml:26`). Run 36459962433 on `8832ce4`: 18 failed, 863 passed, mostly for missing `pypdfium2`, one for a missing `OPENAI_API_KEY` | Install the dependencies the tests need, or skip tests explicitly when they are absent | A green CI run on `main` |
+| CI covers the tested code | CI installs `pip install -e . pytest ruff` (`.github/workflows/tests.yml:26`). Run 36459962433 on `8832ce4` (log read 2026-09-28): 18 failed, 863 passed, 6 skipped. 10 failures are `No module named 'pypdfium2'` (`tests/test_arxivqa_prepare.py`, `tests/test_external_assets.py`), 7 are in `tests/test_preflight_checks.py`, where the `dependencies` preflight check reports `docling` and `pypdfium2` missing, and 1 raises for a missing `OPENAI_API_KEY` (`tests/test_recovery_hardening.py`). The previous CI run on `main`, 31318349678 on `253b255`, passed. The 131 commits between the two were pushed together and had no CI run of their own, so the failures are cumulative and are not attributable to `8832ce4`, which changed only documentation | Declare and install the dependencies the tests need, and isolate tests from credentials | A green CI run on the branch |
+
+### Changes on the pre-baseline engineering branch
+
+The branch `research/prebaseline-engineering` added an offline engineering path
+and changed the test setup. It did not change the controller, the graph or the
+existing runner. Against the table above:
+
+- **Search within the question's document, run the pilot from its manifests, keep gold data out of runtime.** `src/faar/pilot_runner.py` loads only `runtime_manifest.json` and the MinerU files, verifies their hashes, builds one retriever per document and refuses a hit from another document. Its runtime question type holds only `question_id`, `doc_id` and `question`. Tests in `tests/test_pilot_runner.py` check that generation opens no evaluation file and that poisoned evaluation files leave predictions byte-identical. The graph path (`graph.py`, `benchmarks.py`) is unchanged.
+- **Empty OCR and the no-evidence outcome.** In the offline path, empty and missing pages stay in the per-question OCR record and produce no chunk. A question with no usable text gets `no_evidence` with an abstention and a `no_evidence_reason`. The runner has no image path, so it shows no page as an image.
+- **Official scoring.** `src/faar/ohr_scoring.py` (section 8). `src/faar/metrics.py` is unchanged and must not serve as the primary metric.
+- **Finish runs with recorded failures.** The offline runner records `execution_failed` per question, finishes the run and exits with status 2 when any failure exists. `experiment_runner.py` still raises.
+- **CI.** Dependencies are declared (`pypdfium2`, `jieba`, `regex`, pinned `click`), the tests no longer need credentials or network, and the workflow has separate lint, package and offline-test jobs.
+
+The remaining rows are unchanged.
 
 ## 12. Decisions
 
@@ -380,16 +456,19 @@ The table compares the intended behaviour with the code at `8832ce4`.
 | Empty OCR recorded, not excluded | Agreed |
 | Failed and negative runs kept | Agreed |
 | No tuning on test outcomes | Agreed |
-| Three observations kept apart; per-signal comparison with people | Recommended default |
-| Shared retrieval, initial answer, gate and budgets across policies | Recommended default |
-| Report end-to-end and flagged-set views | Recommended default |
-| One answer model, `gpt-4o-2024-11-20`, for text and visual conditions | Recommended default; spending needs lead approval |
-| Cost matching on visual requests with an identical image budget | Recommended default |
-| `no_evidence` outcome distinct from `execution_failed` | Recommended default |
-| Execution failures retried, then counted as incorrect and reported | Recommended default |
-| Official OHR-Bench EM and F1 primary; FAAR metrics secondary and labelled | Recommended default |
-| Document-level resampling for uncertainty | Recommended default |
-| Evidence-impact judgement recorded in `notes` until a versioned form exists | Recommended default |
+| Three observations kept apart; per-signal comparison with people | Proposed default |
+| Shared retrieval, initial answer, gate and budgets across policies | Proposed default |
+| Report end-to-end and flagged-set views | Proposed default |
+| One answer model, `gpt-4o-2024-11-20`, for text and visual conditions | Proposed default; spending needs lead approval |
+| Matching on visual requests with an identical image budget, reported as visual-request matching, not total-cost matching | Proposed default |
+| Budget exhaustion keeps the initial answer and records `budget_exhausted` | Proposed default |
+| Development all-repair results may inform method development, with each change logged | Proposed default |
+| Method frozen and registered before any validation or test run | Proposed default (no test-set tuning is agreed) |
+| `no_evidence` outcome distinct from `execution_failed` | Proposed default |
+| Execution failures retried, then counted as incorrect and reported | Proposed default |
+| Official OHR-Bench EM and F1 primary; FAAR metrics secondary and labelled | Proposed default |
+| Document-level resampling for uncertainty | Proposed default |
+| Evidence-impact judgement recorded in `notes` until a versioned form exists | Proposed default |
 | Answer prompt and API spending | Lead decision |
 | Image budget and page selection for documents longer than the budget | Lead decision |
 | Where the gate threshold is chosen | Lead decision |
@@ -397,6 +476,7 @@ The table compares the intended behaviour with the code at `8832ce4`.
 | A second, longer-document development sample | Lead decision |
 | When to run the all-repairs diagnostic (section 6) | Lead decision |
 | Claim scope: new questions on familiar documents, or unseen documents (needs a document-disjoint protocol) | Lead decision |
+| Licence terms for redistributing the reimplemented OHR-Bench scoring code outside the project | Lead decision |
 
 ## 13. Historical approaches
 
@@ -417,12 +497,19 @@ The prototype's 40-example mock evaluation and the August status report are in
 
 ## 14. Next assignment
 
-**Environment repair, then the baseline.** Do these in order, one branch and one
-focused commit per step:
+**Status.** The three engineering steps of the earlier assignment (environment,
+scoring, offline run) are done on `research/prebaseline-engineering`. The offline run uses
+the rule-based extractor and no repair. It is an `engineering_check` of the
+data flow, the record format and the scoring join. It is not a no-recovery
+baseline and not evidence about answer quality.
 
-1. **Environment.** Pin `click` in `config/environment/constraints-aaai.txt` so that `faar-demo --help` works with `typer` 0.12.5. Make CI install what the tests need, or mark the dependent tests as skipped when `pypdfium2` or an API key is absent. Reproduce each failure first. Accept the step when CI passes on the branch.
-2. **Scoring.** Add the official OHR-Bench metric as the primary scorer, and fix the denominators in section 8. Accept it when tests cover Han, numeric, empty and failed cases.
-3. **No-recovery baseline on `ohr_dev_v1`.** Load the pilot manifests with MinerU text, retrieve within each document, keep empty pages, return `no_evidence` when there is no text, and record failures. Use the rule-based extractor or a local stub only. Make no API call. Accept it when a registered `engineering_check` run covers all 70 questions with no gold field reachable at runtime.
+Before any real-model run, the lead decides the items marked "Lead decision" in
+section 12. The ones that block a first no-recovery baseline are:
 
-The answer model, spending and the all-repairs diagnostic wait for the lead's
-decisions in section 12.
+1. The answer model, its provider, the prompt and the token limits.
+2. The spending limit and the cost-accounting rules.
+3. The image budget and the page-selection policy for documents longer than the budget.
+4. The maximum execution-failure rate for a valid run.
+
+The gate threshold, the repair-comparison protocol (section 6), a longer-document
+development sample and the claim scope follow after the baseline.
