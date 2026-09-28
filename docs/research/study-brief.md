@@ -506,8 +506,9 @@ The prototype's 40-example mock evaluation and the August status report are in
 
 **Status.** The three engineering steps of the earlier assignment (environment,
 scoring, offline run) are implemented on `research/prebaseline-engineering`.
-The environment step was accepted only when CI passed on the branch, and the
-pre-baseline engineering report records that CI run. The offline run uses
+The environment step was accepted only when CI passed on the branch. The
+[pre-baseline engineering report](../reports/prebaseline-engineering.md) lists
+the checks, the registered runs and what they cannot show. The offline run uses
 the rule-based extractor and no repair. It is an `engineering_check` of the
 data flow, the record format and the scoring join. It is not a no-recovery
 baseline and not evidence about answer quality.

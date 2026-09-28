@@ -1,0 +1,214 @@
+# Pre-baseline engineering (2026-09-28)
+
+This report covers the branch `research/prebaseline-engineering` (draft PR
+[#2](https://github.com/haseebraza715/FailSafeRAG/pull/2)). The branch prepares
+offline infrastructure for the first FAAR study. It made no model call, paid
+request, OCR run, model download or GPU job. Its one pilot run uses a
+rule-based extractor and no repair. That run checks the data flow, the record
+format and the scoring join. It is not a baseline, and its answer score says
+nothing about whether FAAR improves answer quality.
+
+## What changed and why
+
+| Problem found | Evidence | Change |
+| --- | --- | --- |
+| CI failed on `main` (run 36459962433 on `8832ce4`: 18 failed, 863 passed, 6 skipped) | Saved log. 10 failures were `No module named 'pypdfium2'`. 7 were preflight tests whose `dependencies` check found `docling` and `pypdfium2` missing. 1 needed `OPENAI_API_KEY`. The previous run, 31318349678 on `253b255`, passed. The 131 commits between them had no CI run of their own. | `pypdfium2`, `jieba`, `regex` and `pillow` declared in the base dependencies. `test` and `lint` extras. Preflight tests stub `docling` and keep a test for a missing dependency. The OpenAI test uses a mocked client and asserts that the mock was called. |
+| `faar-demo --help` raised `TypeError: Secondary flag is not valid for non-boolean flag` | Reproduced with click 8.4.2 and 8.5.0 against typer 0.12.5 | `click==8.1.8` pinned. `tests/test_cli_help.py` renders help for every command. |
+| Tests wrote to the real `logs/vlm_calls.jsonl` | Reproduced: one test, and only when a key is set | `tests/conftest.py` redirects API-call logs to a temporary directory and fails the session if any file under `logs/` changes. |
+| Tests could reach the network and read real keys | Three preflight tests sent HEAD requests to huggingface.co | `tests/conftest.py` removes provider keys, blocks non-loopback connections and sets `HF_HUB_OFFLINE=1`. |
+| The full suite segfaulted on macOS | Reproduced. The `faiss-cpu` and `torch` wheels each bundle `libomp`. | On macOS only, `tests/conftest.py` limits both libraries to one thread and sets `KMP_DUPLICATE_LIB_OK`. The pytest header says so. No test is skipped. |
+| `uv.lock` was stale and `uv lock --check` failed | The lock described 9 packages with typer 0.26.8 | The lock was regenerated (279 packages) for Linux x86_64 and macOS arm64. `config/environment/constraints-*.txt` match it. |
+| The study brief overstated or misstated several points | Section-by-section review | See [the study brief changes](#study-brief-changes). |
+| No official OHR-Bench scorer | `src/faar/metrics.py` erases non-ASCII text | `src/faar/ohr_scoring.py` (see [scoring](#scoring)). |
+| No code could run the frozen pilot from its manifests | Study brief section 11 | `src/faar/pilot_runner.py` and `scripts/experiments/run_pilot_offline.py` (see [offline runner](#offline-runner)). |
+
+CI now has two jobs in `.github/workflows/tests.yml`:
+
+- **Lint and package checks:** `ruff`, `uv lock --check`, and a wheel and sdist build checked with `twine`.
+- **Offline tests:** an install with the CPU build of torch, `pip check`, a `faar-demo --help` smoke check, `registry.py check`, the full pytest suite and the scorer parity script.
+
+It needs no key, no network service beyond package indexes, and no ignored research data.
+
+## Scoring
+
+`src/faar/ohr_scoring.py` reimplements the two functions that the upstream QA
+task calls. `QuestAnswer.scoring` in `src/tasks/quest_answer.py` calls
+`exact_match_score` and `f1_score` from `src/metric/common.py` on the
+`answers` string. The upstream repository is `opendatalab/OHR-Bench` at
+`1f421eb428f9f5b8ac0bc8064d6ad1f13fab7af7`, the `commit_at_lookup` in
+`config/ohr_pdf_source_lock.json`.
+
+- **Upstream identity.** On 2026-09-28 the lead fetched the upstream `common.py`, `quest_answer.py` and `evaluator.py` at that commit with `gh api`. Each has the same sha256 as the vendored copy under `OHR-Bench/` (`common.py`: `9fe7eb52...`).
+- **Licence.** The upstream repository has no licence file, and GitHub reports none. The README restricts the dataset to research use, and the Hugging Face dataset card declares CC-BY-4.0 for the dataset. The module credits the authors and pins the source. Redistribution terms for the code are a lead decision.
+- **Parity.** `scripts/experiments/ohr_scoring_parity.py` compares the module with the vendored upstream functions by value and by Python type. It uses `jieba==0.42.1` and `regex==2024.7.24`, the upstream pins. On 2026-09-28 it found 0 mismatches in 99,041 pairs:
+  - 103 hand-written edge cases;
+  - 11 variants of each of the 8,498 `qas_v2.json` references;
+  - 8 variants of each of the 70 pilot references plus all 4,900 cross pairs.
+
+  After the review added four upstream-recorded edge cases, the committed fixture holds 105. CI runs the script.
+- **Quirks kept.** ASCII punctuation is deleted without a space, so `1,000` equals `1000`, `3.5` equals `35` and `50%` equals `50`. An empty prediction against a reference that normalises to empty scores EM 1 and F1 0. 5 of the 8,498 references do so, and none of the 70 pilot references. The yes, no and noanswer rule applies on both sides. Text with a CJK character goes through `jieba.lcut`.
+- **Old normaliser.** `src/faar/metrics.py` gives a false perfect score only when the prediction and the reference both normalise to empty. 521 of 8,498 references and 7 of 70 pilot references normalise to empty under it.
+- **Aggregates.** `score_predictions` keeps every question in `all_questions` (denominator 70 for the pilot). It scores `execution_failed` as 0 and scores `no_evidence` by the official metric on the empty abstention. It also reports `answered_only` and `upstream_valid_only`. The second matches upstream's headline `overall`, which drops blank answers (`evaluator.remove_invalid`). Counts of `answered`, `no_evidence`, `execution_failed` and `abstained` are reported separately. No repair, damage or FAAR-comparison field exists.
+- **Scorer environment.** `score_summary.json` records the jieba, regex and Unicode database versions.
+
+## Offline runner
+
+The runner writes to `results/engineering/<run_id>/`. The flow is:
+
+1. `generate` reads `results/pilots/ohr_dev_v1/runtime_manifest.json` and each document's MinerU file. It verifies the file hash and every page hash.
+2. It builds one local-hash retriever per document, retrieves within the question's own document, and answers with `faar.answering.answer_from_hits`.
+3. It writes `predictions.jsonl`, `run_config.json` and `generation_summary.json`.
+4. `score` joins the saved predictions to `evaluation_manifest.json` and writes `scores.jsonl` and `score_summary.json`.
+
+- **Separation.** `generate_run` never receives an evaluation path. The noisy-text root must equal `OHR-Bench/data/retrieval_base/MinerU`, and every noisy-text path must resolve inside it. A runtime question may hold only `question_id`, `doc_id` and `question`. Tests confirm three things:
+  - generation opens only the runtime manifest and the MinerU files;
+  - poisoned evaluation files leave predictions byte-identical;
+  - a manifest that points at the gt tree is refused.
+- **Scope.** A hit from another document raises and becomes `execution_failed`. The per-document index makes such a hit impossible in normal operation.
+- **Outcomes.** Every question gets exactly one record: `answered`, `no_evidence` or `execution_failed`. A failure is recorded per question and the run continues. The exit code is 0 for a clean run, 1 for a refusal, 2 when any `execution_failed` exists, and 3 for an internal error.
+- **No-evidence reasons.** Each `no_evidence` record has one reason:
+  - `no_text_chunks`: every page is empty or missing, which is an OCR status.
+  - `no_text_content`: the text is non-empty but holds no letter or digit in any script.
+  - `no_retrieval_tokens`: the text has content, but no token the engineering tokeniser indexes.
+  - `no_hits`: retrieval returned zero hits.
+- **Query tokens.** Every record has `query_retrieval_tokens`, and the summary counts questions with none. The retrieval tokeniser matches only `[a-z0-9%$]`, so a Han-only question gets hits ranked by position alone.
+- **Overwrite rules.** The runner never overwrites. For a run directory that already holds a run:
+  - With a different fingerprint, the run is refused.
+  - With the same fingerprint, it is regenerated in memory. Identical bytes are reported as "already complete, verified identical". Different bytes are refused.
+  - A partial directory is refused.
+
+  Inside the project, only `results/engineering/<run_id>/` is accepted. A path with a `results/pilots` pair is refused in any letter case.
+- **Provenance.** `run_config.json` records:
+  - the commit, the dirty flag and dirty paths;
+  - the fingerprint, which covers the `src/faar` code, the CLI script, the manifest and MinerU hashes, retrieval settings, backend, injected failures and package versions;
+  - the retrieval settings, labelled as engineering settings and not the approved protocol;
+  - the backend identity, with `engineering_only: true` and `model_calls: false`;
+  - the command.
+
+  Paths are relative to the project.
+
+## Pilot runs
+
+All three runs are `engineering_check` records in `experiments/registry.jsonl`.
+
+| run_id | Code | Outputs | Status |
+| --- | --- | --- | --- |
+| `2026-09-28-ohr-dev-v1-offline-engineering` | `8953dfd` | `.local/work/runs/` in the lead's checkout only. That directory is ignored by git and has no backup elsewhere (`backup: none`). | Completed. Not committed because its `run_config.json` recorded two absolute home-directory paths. |
+| `2026-09-28-ohr-dev-v1-offline-engineering-r2` | `58e1693` | `results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r2/` | Completed. Superseded by r3 after the review fixes. |
+| `2026-09-28-ohr-dev-v1-offline-engineering-r3` | `adfb2d3` | `results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/` | Completed. The current run. |
+
+Each run recorded one dirty path, `experiments/registry.jsonl`, because the
+registry line was written before the run started. All three produced the same
+answers. r3 differs from r2 only in the new `query_retrieval_tokens` field and
+in the reason recorded for one question.
+
+The r3 outcomes for the 70 questions are as follows.
+
+| Measure | Count |
+| --- | --- |
+| `answered` | 63 |
+| `no_evidence` | 7: 6 `no_text_chunks`, 1 `no_text_content`, 0 `no_retrieval_tokens`, 0 `no_hits` |
+| `execution_failed` | 0 |
+| `abstained` | 7 |
+| Questions without a retrieval token in the query | 19: 18 `answered`, 1 `no_evidence` |
+| Official EM, all questions | 4 of 70 (0.0571). F1 0.0960. |
+| Official EM, `answered_only` and `upstream_valid_only` | 4 of 63 (0.0635). F1 0.1066. |
+
+- **The 6 `no_text_chunks` questions.** Each is on a single-page document whose page has empty MinerU text: 4 GNHK handwriting pages and 2 OmniDocBench note pages.
+- **The `no_text_content` question.** Question `ecccdf67-bc03-447c-a990-d5989185f21a` is on `textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124`.
+  - Its one page has MinerU text `"# \n\n#"`: two empty Markdown heading markers. The runtime manifest calls the page `ok` because the text is non-empty.
+  - The gt reference page holds a full page of Chinese text. The lead read it for this diagnosis only, and no runtime code reads it.
+  - The noisy input therefore has no usable evidence for the question. The cause is lost content in the noisy text, not missing OCR and not a tokeniser limit.
+  - Before the review fix, the runner reported this case as `no_retrieval_tokens`.
+- **Rerun checks on the real pilot.**
+  - A rerun into the same directory was a verified no-op.
+  - Injecting one failure gave exit 2 and 1 `execution_failed`, and the scoring denominator stayed 70.
+  - A run directory under `results/pilots/` was refused.
+
+To reproduce r3 in a new directory, run the following. The fingerprint includes package versions, so a different environment gives a new fingerprint.
+
+```bash
+.local/venv-prebaseline/bin/python scripts/experiments/run_pilot_offline.py generate --run-dir results/engineering/<new_run_id>
+.local/venv-prebaseline/bin/python scripts/experiments/run_pilot_offline.py score --run-dir results/engineering/<new_run_id>
+```
+
+## Validation
+
+Local checks ran on macOS arm64 at `adfb2d3`, in `.local/venv-prebaseline`, a
+fresh environment built with
+`pip install -c config/environment/constraints-aaai.txt -e ".[test,lint]"`:
+
+- `pytest -q -ra -p no:cacheprovider`: 1197 passed, 0 skipped. The real `logs/vlm_calls.jsonl` was byte-identical before and after.
+- `ruff check .`, `pip check`, `uv lock --check`, `faar-demo --help` and `scripts/experiments/registry.py check` (0 errors) passed.
+- `scripts/experiments/ohr_scoring_parity.py` found 0 mismatches, and `--check-fixture` matched.
+
+Remote CI runs on every push to PR #2. On `9e9aa90`, the commit the reviewer
+saw, run 36484651758 passed both jobs. The offline tests there gave 1173
+passed and 1 skipped: the smoke test that needs local assets CI does not have.
+The PR records the CI result of its final commit. A report committed with the
+branch cannot record the CI result of its own commit.
+
+## Independent review
+
+A reviewer who wrote none of this code reviewed `9e9aa90`. It ran the suite in a clean clone under a no-network sandbox, fuzzed the scorer against upstream on 548,751 pairs with 0 mismatches, and ran 50 mutation tests. It found no critical issue and no route for gold data into generation through the committed manifests.
+
+| Finding | Disposition |
+| --- | --- |
+| M1: a case variant such as `results/Pilots` bypassed the frozen-directory refusal, and other shared directories were unprotected | Fixed. Case-folded check. Inside the project only `results/engineering/<run_id>/` is accepted. Tests cover case variants and `config/`, `OHR-Bench/`, `annotation/`, `logs/` and `experiments/`. |
+| M2: a crafted manifest could point generation at the gt text | Fixed. The noisy-text root is pinned. `run_config.json` lists the enforced input checks. |
+| M3: the brief called steps done before CI had run, and 18 answered questions had position-only retrieval that no record reported | Fixed. The brief ties acceptance to CI. Every record has `query_retrieval_tokens`, and the summary counts such questions. |
+| L1: `answered_only` is not upstream's headline aggregate | Fixed. `upstream_valid_only` added and documented. |
+| L2: scorer dependency versions not recorded | Fixed. They are in `score_summary.json`, with the Unicode database version. |
+| L3: `.local/` ignored only locally | Fixed. It is in `.gitignore`. |
+| L4: three scorer quirks and the `abstained` counter survived mutation | Fixed. Upstream-recorded fixture cases and a stronger counter test. CI runs the parity script. Two runner fingerprint terms that also survived mutation are covered by the code and manifest hashes, so they stay unchanged. |
+| L5: the fingerprint omitted library versions | Fixed. They are in the fingerprint. |
+| L6: exit code 1 covered both refusals and crashes | Fixed. Internal errors exit 3. |
+| L7: CI cancelled superseded runs on `main` too | Fixed. It now cancels only superseded pull request runs. Pinning actions to commit SHAs was not done: the workflow uses the maintained major tags of official GitHub actions, and SHA pinning is a separate supply-chain decision. |
+| L8: `AGENTS.md` commands assumed the old environment | Fixed. It points to the README steps. |
+
+## Study brief changes
+
+[study-brief.md](../research/study-brief.md) now does the following:
+
+- It labels unapproved defaults as proposed defaults.
+- It states the exact failure condition of the old normaliser and the verified numeric-punctuation behaviour.
+- It separates page coverage from passage and evidence coverage.
+- It separates a visual-request limit from matched total cost, and defines what happens when a budget runs out.
+- It allows development all-repair results to inform method development, with each change logged, and requires the method to be frozen before any validation or test run.
+- It describes the existing controller code as unconnected to the pilot, and the offline run as an engineering check.
+- It explains the CI failure from the log and the commit history.
+
+## Preservation
+
+The lead hashed 3,550 files under `config/`, `OHR-Bench/data/`, `data/`,
+`results/`, `artifacts/`, `annotation/`, `logs/` and `experiments/` before any
+edit, and again after the last run.
+
+- **Frozen research inputs are unchanged.** These are the source locks and split under `config/`, `OHR-Bench/data/` including `qas_v2.json` and the MinerU and gt trees, `results/pilots/ohr_dev_v1/` including annotations, `annotation/`, `data/` including `pdfs.zip`, and `logs/` including `vlm_calls.jsonl`.
+- **Environment pins changed as intended.** `config/environment/constraints-aaai.txt` and `constraints-py312.txt` changed. These are dependency pins, not research inputs.
+- **Records were added, not rewritten.** `experiments/registry.jsonl` gained 7 lines, and its first 7 lines are byte-identical to `e1d88a8`. `experiments/README.md` gained the new rows, and two run directories are new under `results/engineering/`.
+- **Local git state is intact.** Both stashes and the tag `recovery/laptop-2026-09-22-source-only` are intact.
+
+## Agent configuration
+
+- **Lead:** `claude-opus-5-5` at effort `high`, read from the session metadata. The user confirmed `high`.
+- **Workers 1 to 3** (environment, scoring, runner): the Agent tool's `model: sonnet`. A probe agent with the same setting reported `claude-sonnet-5-5`, which is its self-report. No effort was set per worker. These workers inherited the session effort `high`. An explicit definition did not load in time for them.
+- **Worker 4** (review): the `faar-worker` agent definition sets `model: claude-sonnet-5-5` and `effort: high`. A probe of that definition reported `claude-sonnet-5-5`. The effective effort of any worker could not be confirmed independently, and an agent's self-report is not treated as confirmation.
+
+## Limitations and decisions before real inference
+
+- The rule-based extractor returns long spans: 30 of the 63 r3 answers exceed 1,000 characters. Its EM measures nothing about FAAR.
+- Local-hash retrieval gives Han-script queries no signal, and 23 of the 30 pilot documents are single pages. No repair, gate or diagnosis ran.
+- The pilot has 70 questions, too few for significance or generalisation claims.
+- The lock covers Linux x86_64 and macOS arm64 only.
+- The local `.venv-aaai` still needs the new pins (see [README.md](../../README.md#local-checks-and-known-issues)).
+
+These are the lead decisions from study brief section 12 that come first:
+
+1. The answer model, its provider, the prompt and the token limits.
+2. The spending limit and the cost-accounting rules.
+3. The image budget and the page-selection policy for longer documents.
+4. The maximum execution-failure rate for a valid run.
+5. The gate threshold and where it is calibrated.
+6. The repair-comparison protocol and a longer-document development sample.
+7. The redistribution terms for the reimplemented OHR-Bench scoring code.
