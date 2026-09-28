@@ -13,7 +13,8 @@ Each rule below carries one of three labels:
 
 Section 12 lists every rule with its label. Section 11 compares the intended
 behaviour with the code at commit `8832ce4` and notes what the pre-baseline
-engineering branch changed since then.
+engineering branch changed since then. Section 15 proposes the protocol for the
+first real baseline and lists the decisions it needs.
 
 ## 1. Question and claim
 
@@ -395,7 +396,7 @@ the blank form `annotations.csv`. Nobody fills the form during design work.
 
 1. Open the case in `index.html`. Compare the page image with the MinerU text. Do not open the ground-truth reference yet.
 2. Mark each defect you see: word corruption, lost or misleading structure, missing content, or apparently adequate OCR. Mark more than one if several apply. Use uncertain or mixed when you cannot decide, and explain in `uncertainty_note`.
-3. Then read the question and the reference answer, and judge whether the evidence the question needs survives in the noisy text: survives, damaged, lost, or uncertain. The current form has no column for this. Record it at the start of `notes` as `evidence: <value>` until a versioned form adds one.
+3. Then read the question and the reference answer, and judge whether the evidence the question needs survives in the noisy text: survives, damaged, lost, or uncertain. The current form has no column for this. Record it at the start of `notes` as `evidence: <value>` until a versioned form adds one. For a case with several page rows, write it on the first row only. Section 15.14 lists the 20 cases and proposes a versioned form.
 4. Put your name or initials in `annotator`. Never fill the form with a model's suggestions. Keep any model-generated note in a separate file, marked as such.
 
 Controller code exists: the gate and diagnosis in `src/faar/quality.py` and
@@ -466,7 +467,7 @@ The remaining rows are unchanged.
 | Three observations kept apart; per-signal comparison with people | Proposed default |
 | Shared retrieval, initial answer, gate and budgets across policies | Proposed default |
 | Report end-to-end and flagged-set views | Proposed default |
-| One answer model, `gpt-4o-2024-11-20`, for text and visual conditions | Proposed default; spending needs lead approval |
+| One answer model, `gpt-4o-2024-11-20`, for text and visual conditions (options and recommendation: section 15.5) | Proposed default; spending needs lead approval |
 | Matching on visual requests with an identical image budget, reported as visual-request matching, not total-cost matching | Proposed default |
 | Budget exhaustion keeps the initial answer and records `budget_exhausted` | Proposed default |
 | Development all-repair results may inform method development, with each change logged | Proposed default |
@@ -476,14 +477,22 @@ The remaining rows are unchanged.
 | Official OHR-Bench EM and F1 primary; FAAR metrics secondary and labelled | Proposed default |
 | Document-level resampling for uncertainty | Proposed default |
 | Evidence-impact judgement recorded in `notes` until a versioned form exists | Proposed default |
-| Answer prompt and API spending | Lead decision |
+| First baseline: text-only, no recovery, real answer model, `development_pilot` run on `ohr_dev_v1` (section 15.1) | Proposed default |
+| The text-only baseline does not wait for the image budget decision (section 15.1) | Proposed default |
+| Runtime and evaluation inputs of the baseline (section 15.2) | Proposed default (applies the Agreed gold-data rule) |
+| Determinism settings, replay of saved responses, and per-attempt request records (sections 15.4 and 15.8) | Proposed default |
+| Prompt structure, `NO_ANSWER` abstention token, answers in the evidence's language (section 15.7) | Proposed default |
+| Token limits, timeout and retry values (section 15.7) | Proposed default |
+| Later policies reuse the baseline's retrieval and initial answers by run ID (section 15.9) | Proposed default |
+| Exact answer prompt text, spending cap value and API spending (section 15.7) | Lead decision |
 | Image budget and page selection for documents longer than the budget | Lead decision |
 | Where the gate threshold is chosen | Lead decision |
-| Maximum execution-failure rate for a valid run | Lead decision |
+| Maximum execution-failure rate for a valid run (suggestion in section 15.7) | Lead decision |
 | A second, longer-document development sample | Lead decision |
 | When to run the all-repairs diagnostic (section 6) | Lead decision |
 | Claim scope: new questions on familiar documents, or unseen documents (needs a document-disjoint protocol) | Lead decision |
 | Licence terms for redistributing the reimplemented OHR-Bench scoring code outside the project | Lead decision |
+| Create a versioned annotation form with an `evidence_impact` column (section 15.14) | Lead decision |
 
 ## 13. Historical approaches
 
@@ -513,13 +522,245 @@ the rule-based extractor and no repair. It is an `engineering_check` of the
 data flow, the record format and the scoring join. It is not a no-recovery
 baseline and not evidence about answer quality.
 
+Section 15 proposes a protocol for the first baseline and lists the decisions the
+lead must make. It approves nothing.
+
 Before any real-model run, the lead decides the items marked "Lead decision" in
 section 12. The ones that block a first no-recovery baseline are:
 
 1. The answer model, its provider, the prompt and the token limits.
 2. The spending limit and the cost-accounting rules.
-3. The image budget and the page-selection policy for documents longer than the budget.
+3. The image budget and the page-selection policy for documents longer than the budget. Section 15.1 proposes that a text-only baseline does not need it. A visual repair does.
 4. The maximum execution-failure rate for a valid run.
 
 The gate threshold, the repair-comparison protocol (section 6), a longer-document
 development sample and the claim scope follow after the baseline.
+
+## 15. First real baseline: proposed protocol
+
+**This section is a proposal.** The lead has approved none of its choices. It marks a rule Agreed only where sections 2 to 14 already agree it. It authorises no model call, no credentials and no spending. It rests on the code at `8479309` and on vendor documentation read on 2026-09-29. Every choice carries a label, and the decisions it leaves open are collected in section 15.13.
+
+### 15.1 What the first baseline measures
+
+**Proposed default.**
+
+- The first baseline is the "no recovery" policy of section 5 with a real answer model. For each of the 70 questions of `ohr_dev_v1` it retrieves within the question's document, sends the retrieved noisy text to one answer model, and scores the reply with the official OHR-Bench EM and F1 (section 8).
+- It is a `development_pilot` run (`experiments/README.md`), not a `scientific_evaluation`. It measures how one answer model reads the current noisy text under one retrieval setting. It says nothing about diagnosis or repair.
+- It sends text only. No image leaves the machine, so the image budget and page-selection decision (section 14, item 3) do not block it. That decision still blocks any visual repair.
+- Its answers become the shared initial answers of section 5. Later repair policies cite this run and never regenerate its answers (section 15.9).
+- A question with no usable text evidence (7 of 70 in r3: 6 empty pages and 1 page with no letter or digit) gets `no_evidence` with an abstention and no model call, as in the offline runner. It costs nothing and stays in every denominator.
+
+### 15.2 Runtime inputs and evaluation inputs
+
+**Proposed default.** This applies the Agreed rule that gold data stays outside runtime (section 2).
+
+| Runtime (the answer backend may receive) | Evaluation only (joined after the run) |
+| --- | --- |
+| Question text, document identity, page inventory with per-page OCR status | Gold answer (`answers`), `answer_form`, `evidence_context`, evidence pages |
+| Retrieved chunk text, page number and chunk ID | Clean reference text (`gt_reference`, `reference_text`) |
+| Prompt template, model identity, request settings, price table | Analysis flags: `evidence_source`, `question_scripts`, `multi_page_evidence`, `list_valued_evidence`, `evidence_page_ocr_status` |
+| | Inspection labels and `annotations.csv` |
+
+The backend receives `(question, hits)` and nothing else. It opens no file. The document name stays out of the prompt. Only the page number and chunk ID identify the evidence. Answer form, evidence type and script are evaluation fields, so the prompt cannot vary with them.
+
+### 15.3 Within-document retrieval
+
+**Agreed:** the search covers all pages of the document the question names (section 2). The rest is **Proposed default**, stated as policy.
+
+- One index per document, built from the noisy text of every page. A question never sees another document. Empty and missing pages produce no chunk and stay in the per-question OCR record.
+- The retrieval settings (chunk size, overlap, top-k, embedding and ranking method) are fixed and recorded before the run, hashed into the run fingerprint, and reused for every later policy. The current values are engineering settings and are not approved (`run_config.json` says so).
+- The retriever must give Han-script and mixed-language questions a real ranking signal before the first real run. In r3, 19 of 70 questions have no indexed query token and rank by position alone. A real-model run on that ranking would measure the retriever. That change is engineering work in progress, so this brief states the requirement and not the mechanism.
+- The retrieval result is saved once per question (chunk IDs, page indexes, scores, and a hash of each chunk text). The prompt is built from the saved result.
+- 23 of 30 pilot documents are single pages, so page coverage is 1 by construction there (section 3). The baseline can still miss the passage inside the page.
+
+### 15.4 Answer-model interface
+
+**Proposed default.** The real model plugs into the existing `AnswerBackend` protocol (`src/faar/pilot_runner.py:462-470`): `identity()` and `answer(question, hits)` returning `{"answer", "answer_mode"}`. Three code changes are needed first, and this brief makes none of them.
+
+1. `generate_run` refuses any backend that does not declare `engineering_only: true` (`pilot_runner.py:977`), and `RUN_KIND` is fixed at `engineering_check` (`pilot_runner.py:67`). A real backend needs an explicit kind (`development_pilot`) and a way to declare `model_calls: true`.
+2. The runner's overwrite policy regenerates a run in memory and compares bytes. A live API call does not reproduce byte for byte. A resumed or repeated run must replay the saved response records and never call the model again for a question that has a terminal record.
+3. `answer()` returns only the answer and its mode. Token counts, latency and retries need a side record (section 15.8), and `predictions.jsonl` needs the request IDs that point to it.
+
+**Identity record.** Provider, model ID as a dated snapshot, endpoint (Chat Completions or Responses), SDK version, prompt-template ID and its SHA-256, and every request parameter. The run fingerprint includes all of them.
+
+**Determinism settings.** For `gpt-4o-2024-11-20`: `temperature` 0, `top_p` left at the default, `seed` fixed, one request per attempt, no streaming. The API documents `seed` as best effort and marks it deprecated, and it marks `system_fingerprint` deprecated as well. Determinism is therefore recorded, not assumed. The run stores every raw response and the returned `system_fingerprint` when present. A probe of 10 questions sent 3 times each measures how often the answer text differs. Report that rate with the baseline. Some models cannot take these settings (section 15.5, option table).
+
+### 15.5 Answer-model options
+
+Sources were read on 2026-09-29. Prices are US dollars per 1M tokens. "Snapshot" means whether the documentation says the ID names fixed weights.
+
+| | A. `gpt-4o-2024-11-20` (OpenAI) | B. `claude-sonnet-5-5` (Anthropic) | C. `gpt-6-luna` (OpenAI) |
+| --- | --- | --- | --- |
+| Text and image input | Yes, text output | Yes, text output | Yes, text output |
+| Context, max output | 128,000; 16,384 | 1M; 128K | 1,050,000; 128,000 |
+| Input, output price | $2.50; $10.00 (cached input $1.25) | $2; $10 (cache read $0.20) | $0.10; $0.50 (cached input $0.01) |
+| Determinism controls | `temperature`, `seed` (best effort, marked deprecated), `system_fingerprint` (marked deprecated) | None. A non-default `temperature`, `top_p` or `top_k` returns a 400 error. Adaptive thinking is on | `temperature` and `top_p` only when `reasoning_effort` is `none`. `seed` appears only in the generic Chat Completions reference |
+| Snapshot stability | Dated ID. Listed as a GPT-4o snapshot. Not in the deprecations table. The sibling `gpt-4o-2024-05-13` shuts down 2026-10-23 | Each model ID is a pinned version. Retirement not sooner than 2027-09-28 | The model page lists only the undated ID `gpt-6-luna`. No dated snapshot is documented there |
+| Sources | [model page](https://developers.openai.com/api/docs/models/gpt-4o), [deprecations](https://developers.openai.com/api/docs/deprecations), [Chat Completions reference](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create) | [model page](https://platform.claude.com/docs/en/models/sonnet-5-5/overview), [model IDs](https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions), [deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations) | [model page](https://developers.openai.com/api/docs/models/gpt-6-luna), [GPT-6 guide](https://developers.openai.com/api/docs/guides/latest-model) |
+
+Notes on the table.
+
+- The OpenAI pricing page read the same day no longer lists text rates for `gpt-4o`. The rates in column A come from its model page and match `openai_cost_rates()` in `src/faar/api_logging.py:93-99`. Record the rates with the run, with their source and date.
+- Option A is not marked legacy or deprecated on its model page. The documentation does not show whether the lead's account can call it. Only a call shows that, and no call was made.
+- The repository's Anthropic path names `claude-sonnet-4-5` (`settings.py`). Anthropic lists `claude-sonnet-4-5-20250929` with a tentative retirement of not sooner than 2026-09-29. Do not use that path for the baseline.
+
+**Recommendation (Proposed default, not approved): option A.** It is the only option that takes `temperature` 0 and a seed with no other setting, on a dated snapshot, so repeatability can be measured. It is already pinned in the code (`settings.py:226`, `settings.py:306-308`) and in the brief, so nothing changes in the record. The estimate in section 15.6 is about $0.40 for the run. Judgment: it is an old model, and OpenAI is already retiring other GPT-4o snapshots. A retirement of `gpt-4o-2024-11-20` would force every later condition onto a successor and a rerun of the baseline. Option C is the cheap modern alternative, with `reasoning_effort` `none` so that `temperature` 0 is accepted, but no dated snapshot is documented. Option B documents a fixed version and a retirement date a year away, but it accepts no sampling control, and its thinking tokens bill as output. The choice matters less than using one model for every condition and recording it.
+
+### 15.6 Cost estimate
+
+For one run over `N` questions:
+
+`cost = Σ over requests (t_in × r_in + t_out × r_out) / 1,000,000`
+
+`expected cost ≈ N_model × (1 + ρ) × (T_in × r_in + T_out × r_out) / 1,000,000`
+
+`ceiling = N_model × A_max × (T_in,max × r_in + M_out × r_out) / 1,000,000`
+
+`N_model` is the number of questions that reach the model. It is 63 in r3, because the 7 `no_evidence` questions make no call. `ρ` is the mean number of billed retries per question. `A_max` is the attempts allowed per question. `T_in` and `T_out` are mean input and output tokens per request, `T_in,max` is the largest prompt, `M_out` is the output limit, and `r_in`, `r_out` are the recorded rates.
+
+**Worked example (an estimate, not a measurement), option A.**
+
+| Assumption | Value | Basis |
+| --- | --- | --- |
+| `N_model` | 70 | Overstates: r3 sent 63 questions to the answer step |
+| Evidence tokens | about 1,700 mean, 7,500 largest | Measured on 2026-09-29 as characters in the 5 retrieved chunks per question with the current chunker and retriever (mean 3,961 characters, maximum 8,545), converted at 4 characters per token for non-Han text and 1 token per Han character. The conversion is a rough assumption |
+| Instructions and question | 300 tokens | Assumed prompt length |
+| `T_in`, `T_in,max` | 2,000 and 7,800 | Sum of the two rows above, rounded |
+| `T_out`, `M_out` | 20 and 128 | Reference answers have a median of 2 words (non-Han), 13 of 55 have 8 or more |
+| `ρ` and `A_max` | 0.1 and 3 | Assumption. Timeouts may be billed |
+| Rates | $2.50 and $10.00 | Section 15.5 |
+
+- Expected: 70 × 1.1 × (2,000 × 2.50 + 20 × 10) / 1,000,000 = 77 × 0.0052 = about $0.40.
+- Ceiling: 70 × 3 × (7,800 × 2.50 + 128 × 10) / 1,000,000 = 210 × 0.02078 = about $4.36.
+- The same inputs at option C's rates give about $0.02 expected. At option B's rates they give about $0.32 before thinking tokens. Thinking tokens bill as output, so B's cost grows with the effort setting.
+
+Two things change these numbers. The Han-script text (21 of 63 questions had Han in the retrieved text) may cost more than one token per character, and the retrieval change now in progress alters the evidence length. Recompute with a dry run before any spending: build every prompt offline, count tokens with the provider's tokenizer, and print `expected` and `ceiling`. The dry run needs no key and no network.
+
+### 15.7 Prompt, answer format and failure handling
+
+**Prompt structure (Lead decision on the exact text; the structure is a Proposed default).**
+
+- One system message holds the rules. One user message holds the question and the evidence as numbered blocks, each headed by its page number and chunk ID, in rank order. No gold field, document name or answer form appears.
+- Rules: use only the evidence; reply with the shortest answer that a reader can check, copied from the evidence where possible; for a yes/no question reply `Yes` or `No`; for a list, give the items separated by commas; if the evidence does not contain the answer, reply with the abstention token `NO_ANSWER` and nothing else.
+- Language: copy the answer in the language and script of the evidence and never translate. This handles Chinese: the pilot has 22 Han-script questions but 15 Han-script references, so the question language does not predict the answer language.
+- Extraction: `answer` is the reply after removing surrounding whitespace and one leading `Answer:` label. The raw reply is stored unchanged. An exact reply of `NO_ANSWER` becomes `answer` = `""` with `abstained` = true and status `answered`, which the scorer reports under `abstained` and not under `no_evidence`. Any other text is the answer, even when it looks like a refusal.
+- Short answers suit most pilot references (median 2 words, 33 of 55 non-Han references have 3 words or fewer) and cost some F1 on the 13 with 8 or more words. That trade-off is part of what the development run shows. Prompt changes make a new run (section 9).
+
+**Limits, timeouts and retries (Proposed default; values reuse the existing recovery code).**
+
+| Setting | Value |
+| --- | --- |
+| Output limit | 128 tokens for option A. A reasoning model needs a larger limit because thinking tokens count |
+| Input limit | 12,000 tokens per request, counted locally before sending |
+| Request timeout | 60 seconds (`FAAR_VLM_TIMEOUT_SECONDS` default) |
+| Attempts per question | 3, with a base backoff of 2 seconds that doubles, plus jitter (`recovery.py`) |
+| Retried | timeouts, connection errors, HTTP 429 and 5xx |
+| Not retried | other 4xx errors, including authentication, unknown model and content-policy rejections |
+
+**Outcomes.**
+
+- A prompt over the input limit is not truncated and not sent. It is recorded as `execution_failed` with reason `prompt_over_limit`.
+- A non-retryable error on a question is `execution_failed` with the error type. Three consecutive authentication or unknown-model errors stop the run as `interrupted`, since every later request would fail. The unsent questions get no record from that attempt. The interrupted run is incomplete and is not a baseline. Resume it as a new attempt (`experiments/README.md`) after the cause is fixed.
+- An empty reply, a reply cut by the output limit (`finish_reason` `length`) or a refusal is an answer, scored as returned, with `output_status` set to `empty`, `truncated` or `refusal`. It is not an API failure.
+- No question is dropped. Every question ends in `answered`, `no_evidence` or `execution_failed`. In end-to-end accuracy `execution_failed` counts as incorrect and its rate is reported (sections 7 and 8).
+- The maximum execution-failure rate for a valid baseline is a **Lead decision**. Suggestion: any `execution_failed` question is retried as a new attempt after its cause is fixed, and a run with more than 3 of 70 (about 4%) still failing is `failed`. Failures in the shared initial answers propagate to every later policy.
+
+**Hard spending cap and what happens when it is reached.** The cap value is a **Lead decision**. Suggested first value: $2.00 for the main run, about five times the expected cost and below the $4.36 ceiling. This reuses "When a budget runs out" in section 5.
+
+1. Before each request the runner adds the largest possible cost of that request (counted input tokens times `r_in`, plus the output limit times `r_out`) to the spend so far. If the sum exceeds the cap, it sends nothing and stops sending.
+2. Each unserved question gets a terminal record with reason `budget_exhausted`, in manifest order. There is no earlier answer to keep, so the question has no answer. It counts as incorrect in the all-question view, and the run is reported as budget-limited with the counts of served and unserved questions. It is not a valid baseline.
+3. The lead may raise the cap and resume as a new attempt of the same run. The cap is an operating limit, so it stays out of the run identity and is recorded per attempt.
+4. The cap counts every attempt, including failed and retried ones, at the recorded rates.
+
+### 15.8 Records needed for later fair cost comparison
+
+**Proposed default.** Visual-request counts do not match total cost (section 5). The run writes `model_requests.jsonl` beside `predictions.jsonl`, with one line per attempt:
+
+- `question_id`, `attempt`, `request_hash`, prompt-template ID and SHA-256, the full prompt, and the parameters sent;
+- model requested and model returned, response ID, `system_fingerprint`, `finish_reason`;
+- start and end times in UTC and latency in milliseconds;
+- outcome (`ok`, error class, HTTP status), and whether the attempt was a retry;
+- `input_tokens`, `cached_input_tokens`, `output_tokens` and `reasoning_tokens` as the API reports them, `image_count` (0 in the baseline) and `image_detail`;
+- the rates used, with source URL and date, and the dollars computed from them;
+- the raw reply text.
+
+`predictions.jsonl` lists the attempt IDs of each question. Per question and per policy, report requests, retries, tokens, images, dollars and latency. Retrieval and index-build time are one-time and local, so they are reported separately. A later policy adds its own attempts to the shared initial cost. Report the total and the incremental cost, and compare policies on totals. Claim matched total cost only under the conditions in section 5.
+
+### 15.9 The later comparison: simple repair and diagnosis-selected repair
+
+**Proposed default.** After the baseline is accepted, the comparison of a simple repair policy (gate-triggered visual recovery or a single fixed text repair) with the diagnosis-selected repair follows section 5:
+
+- The baseline run supplies the shared retrieval and initial answer. Later runs cite its `run_id` and the hash of its `predictions.jsonl`, and reuse the records. If the prompt, the model or the retrieval setting changes, the initial answers are regenerated in a new baseline run and every policy restarts from it.
+- The gate runs once on the saved retrieval, and every policy acts on the same flagged set. The gate threshold is chosen on development data only (section 9).
+- Report both views: all eligible questions, and the flagged set with repairs, damage and cost. Cost matching follows section 5.
+- This section does not approve the gate, the diagnosis or any repair. Section 6 says when the all-repairs diagnostic may run.
+
+### 15.10 Role of the 70-question pilot
+
+**Proposed default.** The baseline is a development run. It can show:
+
+- that the whole path runs with a real model, including record formats, abstentions and failure handling;
+- the answer-format parse rate, the failure rate, tokens, dollars and latency per question;
+- a first EM and F1 with a wide interval. At EM 0.30 on 70 independent questions the 95% half-width is about 0.11, and it is wider because questions share documents (section 8);
+- whether the format choices in section 15.7 change scores. Each change is a new run.
+
+It cannot show:
+
+- significance, or a difference of a few points between two policies;
+- behaviour on unseen documents or publications (three source families also occur in validation or test);
+- how often failures occur in the benchmark (the pilot is a train-exclusive draw);
+- anything about diagnosis, repair, chart questions or long documents.
+
+### 15.11 Train, validation and test
+
+**Proposed default, consistent with the Agreed no-tuning rule (section 2).**
+
+- Development (train) data, including `ohr_dev_v1`, is where prompts, retrieval settings, thresholds and repairs are developed. Log each change (section 9).
+- Validation stays unused until the lead freezes the method (section 9, freeze procedure). It then gets one confirmation run. No threshold or setting is chosen on validation outcomes.
+- Test is run once, after the freeze, and never informs a choice.
+- The baseline prompt, model, retrieval settings and cap are part of the frozen method.
+
+### 15.12 Limits of a mostly single-page pilot
+
+- 23 of 30 documents are single pages, so choosing the right page is trivial for them. The baseline cannot say how well retrieval finds the right page in a long document.
+- With chunks of 180 whitespace words and five hits, a short page often reaches the model whole, so a baseline error there is mostly an answer-step or OCR error. Wrong-page retrieval and the retry repair get little coverage. A longer-document development sample is a separate **Lead decision** (section 9).
+- The pilot has no chart questions, 6 questions whose evidence page has empty text, and 22 Han-script questions. Report these groups as their own rows.
+- All figures depend on the MinerU version, which is unknown upstream.
+
+### 15.13 Decision list for the lead
+
+1. Choose the answer model. Proposed: option A (`gpt-4o-2024-11-20`). Confirm that the account can call it, since documentation cannot show that.
+2. Set the hard spending cap. Suggested: $2.00 for the main run, and $0.50 for the 10-question repeat probe (expected cost about $0.16).
+3. Approve the prompt structure and abstention token in section 15.7, after a dry run prints the real prompts for a few questions.
+4. Hold the first real run until Han-script and mixed questions get a retrieval signal, and approve the retrieval settings that run will use.
+5. Agree that the first baseline is text-only, so the image budget and page-selection decision wait for the visual repair.
+6. Set the maximum execution-failure rate. Suggested: at most 3 of 70 questions still failed after retries.
+7. Inspect and label the 20 cases in section 15.14. Decide whether a second person labels them blind.
+8. Decide whether to create the versioned annotation form in section 15.14 with an `evidence_impact` column.
+9. Say whether GPU calibration stays on hold. It is not needed for this baseline.
+10. Say whether to define the longer-document development sample now or after the baseline.
+
+### 15.14 Human inspection: what you check and label
+
+**Packet check on 2026-09-29.** Read-only, in the main checkout. `results/pilots/ohr_dev_v1/inspection/index.html` and `annotations.csv` are byte-identical to the copies committed at `8479309`.
+
+- `index.html` has 20 cases and 24 `<img>` references. All 24 files exist under `pages/`, they cover exactly the 17 files in `render_record.json`, and every PNG matches its recorded SHA-256. The page has no script and no remote reference.
+- `annotations.csv` has 24 rows (one per case and page) and 20 distinct cases. Its question IDs match `inspection_cases.json`. Its columns are `case`, `question_id`, `doc_id`, `page_idx`, `word_corruption`, `lost_or_misleading_structure`, `missing_content`, `apparently_adequate_ocr`, `uncertain_or_mixed`, `uncertainty_note`, `notes`, `annotator`. They match section 10, and no cell in the observation columns holds a value.
+- `pages/` is git-ignored. A fresh checkout shows broken images until `scripts/data/build_pilot.py` regenerates them from `data/ohr_bench_raw/pdfs.zip`. Open the packet from the main checkout.
+- Each case shows the question first, so the question is visible while you judge the text. The page's clean reference text and the gold answer sit in two collapsed sections. Keep both closed for step 1 of section 10.
+
+**What to inspect.** For each row, mark the defects you see on the page, then judge evidence impact once per case. Write `evidence: <survives|damaged|lost|uncertain>` at the start of `notes` on the first row of the case only.
+
+| Cases | Why selected | Rows | Notes |
+| --- | --- | --- | --- |
+| 1 to 3 | Empty MinerU text (GNHK handwriting, one notes page) | 3 | Do not infer a cause from absent text alone. Say whether the image holds text |
+| 4, 5 | Evidence on two pages of one document | 4 | Read both pages together |
+| 6, 7 | Two questions on the same two pages | 4 | The same two images appear twice. Label each case separately |
+| 8, 9, 13 | Han-script questions (13 also tests reading order) | 3 | Judge whether characters and order survive |
+| 10 | Table (Han) | 1 | Judge lost structure |
+| 11, 12 | Formula | 2 | Judge whether the formula survives as text |
+| 14 to 20 | Ordinary text cases | 7 | Include `apparently_adequate_ocr` where the text is fine |
+
+Also note wherever 150 DPI is too coarse to read the page (`pilot_readiness.md`). The eventual diagnosis study needs at least two independent labellers (section 10). One person's labels here are development inspection only. Do not fill any field from a model's suggestion.
+
+**Proposed versioned form (not created).** Section 10 step 3 stores evidence impact in free text. A new file `annotations_v2.csv` in a new directory (for example `results/pilots/ohr_dev_v1_inspection_v2/`, with its own version record) could add one case-level row per case with `evidence_impact` (survives, damaged, lost, uncertain), `evidence_impact_note`, `annotator` and `blind_to_reference` (yes or no), and keep the page-level defect rows as they are. The frozen `annotations.csv` and its schema stay unchanged. Creating the file is a **Lead decision**.
