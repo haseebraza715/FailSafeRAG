@@ -92,8 +92,22 @@ The test setup has these safeguards:
 
 - `tests/conftest.py` removes provider keys, blocks non-loopback network connections and sets `HF_HUB_OFFLINE=1`.
 - It sends API-call logs aimed at the repository's `logs/` to a temporary directory, and fails the run if any file under `logs/` changes.
-- On macOS it limits `faiss` and `torch` to one thread and sets `KMP_DUPLICATE_LIB_OK`, because their wheels each bundle `libomp`. Without that, the full suite segfaults in `tests/test_bounded_memory_batches.py`. The pytest header says when the workaround is active.
+- On macOS it limits `faiss` and `torch` to one thread, because their wheels each bundle a `libomp` and a process that runs both at full thread count segfaults or hangs. The pytest header says when the limit is active.
 - `tests/test_b0_one_doc_smoke.py` skips one test when the prepared one-document smoke assets are absent, as in CI.
+
+**OpenMP on macOS.** The `faiss-cpu` and `torch` wheels each bundle their own
+`libomp.dylib`, and every macOS `faiss-cpu` wheel from 1.9.0 to 1.15.1 does so,
+so no pin avoids a second runtime. With the pinned versions, a process that
+imports `faiss` and then runs a parallel torch operation, or the reverse,
+segfaults or hangs. `KMP_DUPLICATE_LIB_OK` does not prevent this, and a thread
+limit does. Run any macOS command that does real (sentence-transformers)
+retrieval with `OMP_NUM_THREADS=1`, for example
+`OMP_NUM_THREADS=1 faar-demo run-example ...`. That path was checked only with
+stand-in models, not the real ones. Local-hash runs such as
+`run_pilot_offline.py generate`, and `faar-demo --help`, need nothing. Linux and
+the cluster were not tested. To re-check after a dependency change, run
+`python scripts/diagnostics/openmp_check.py`. It prints a JSON report and takes
+about 6 minutes with the default 5 trials.
 
 ## First cluster commands
 
