@@ -44,7 +44,7 @@ is one commit on top of `origin/main`. It changes 136 files. It is a snapshot,
 not new work:
 
 - Every one of its 3,741 blobs already exists in the candidate's history. It holds no file content that the candidate lacks.
-- Its tree matches no single candidate commit. The closest is `22be5e2` (51 files differ). The differences are older documentation from before the reorganisations, and the absence of `scripts/data/*.py`, `results/environment/pip-freeze.txt` and `tests/test_corpus_cache.py`. That pattern fits a copy made while data paths were excluded.
+- Its tree matches no single candidate commit. The closest is `22be5e2` (51 files differ). Most differences are documentation from before the reorganisations. The snapshot also lacks 22 files that `22be5e2` has, among them the locked split `config/datasets/ohr_split.json`, `SUPERVISOR_HANDOFF.md`, the runbook, `.env.example`, the seven `scripts/data/*.py` scripts, `results/environment/pip-freeze.txt` and `tests/test_corpus_cache.py`. That pattern fits a copy made while `data/`-like paths were excluded.
 - Merging it would delete current scripts and research records without adding anything. It is not merged.
 
 The tag keeps the snapshot reachable on `origin` after the branch is deleted.
