@@ -331,6 +331,8 @@ def test_a_document_with_only_empty_pages_gives_no_evidence_and_keeps_the_questi
     result, run_dir = generate(project)
     blank, ok = read_predictions(run_dir)
     assert blank["status"] == "no_evidence"
+    assert blank["no_evidence_reason"] == "no_text_chunks"
+    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 1, "no_retrieval_tokens": 0, "no_hits": 0}
     assert (blank["answer"], blank["abstained"], blank["evidence"], blank["failure"]) == ("", True, [], None)
     assert blank["ocr_condition"] == {"pages_total": 3, "pages_ok": 0, "pages_empty": 2, "pages_missing": 1, "chunks": 0}
     assert ok["status"] == "answered"
@@ -358,9 +360,43 @@ def test_a_document_without_a_retrieval_token_gives_no_evidence(tmp_path: Path, 
     result, run_dir = generate(project)
     (record,) = read_predictions(run_dir)
     assert record["status"] == "no_evidence"
+    assert record["no_evidence_reason"] == "no_retrieval_tokens"
     assert record["ocr_condition"]["chunks"] == 1
+    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_retrieval_tokens": 1, "no_hits": 0}
     assert result.summary["documents_with_chunks_but_no_retrieval_tokens"] == ["law/symbols"]
     assert result.exit_code == pr.EXIT_OK
+
+
+def test_zero_hits_from_the_retriever_give_no_evidence_with_reason_no_hits(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The third reason: chunks with tokens exist but the retriever returns nothing."""
+    from faar.retrieval import HybridRetriever
+
+    monkeypatch.setattr(HybridRetriever, "retrieve", lambda self, query, top_k=None: [])
+    result, run_dir = generate(project)
+    records = read_predictions(run_dir)
+    assert {r["status"] for r in records} == {"no_evidence"}
+    assert {r["no_evidence_reason"] for r in records} == {"no_hits"}
+    assert all(r["ocr_condition"]["chunks"] > 0 for r in records)
+    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_retrieval_tokens": 0, "no_hits": 3}
+
+
+def test_no_evidence_reason_is_null_unless_the_status_is_no_evidence(project: Project) -> None:
+    """The reason field is null for answered and execution_failed records, and the summary counts stay zero."""
+    result, run_dir = generate(project, inject_failures=["q-a"])
+    records = read_predictions(run_dir)
+    assert {r["status"] for r in records} == {"answered", "execution_failed"}
+    assert all(r["no_evidence_reason"] is None for r in records)
+    assert result.summary["no_evidence_by_reason"] == {"no_text_chunks": 0, "no_retrieval_tokens": 0, "no_hits": 0}
+
+
+def test_run_config_states_that_no_retrieval_tokens_is_a_tokeniser_limit(project: Project) -> None:
+    """The config keeps a tokeniser limitation apart from an OCR condition."""
+    _, run_dir = generate(project)
+    reasons = json.loads((run_dir / "run_config.json").read_text(encoding="utf-8"))["retrieval"]["no_evidence_reasons"]
+    assert set(reasons) == {"no_text_chunks", "no_retrieval_tokens", "no_hits"}
+    assert "limitation of the engineering tokeniser, not an OCR condition" in reasons["no_retrieval_tokens"]
+    assert "Han-only" in reasons["no_retrieval_tokens"]
+    assert "OCR condition" in reasons["no_text_chunks"]
 
 
 def test_exactly_one_terminal_record_per_question_in_manifest_order(project: Project) -> None:
@@ -731,7 +767,7 @@ def test_an_invalid_run_id_is_refused(project: Project) -> None:
 # O1, O2
 # ---------------------------------------------------------------------------
 
-RECORD_KEYS = ["schema_version", "question_id", "doc_id", "status", "answer", "abstained", "answer_mode", "evidence", "ocr_condition", "failure"]
+RECORD_KEYS = ["schema_version", "question_id", "doc_id", "status", "answer", "abstained", "no_evidence_reason", "answer_mode", "evidence", "ocr_condition", "failure"]
 EVIDENCE_KEYS = ["rank", "chunk_id", "doc_id", "page_idx", "fused_score", "bm25_score", "dense_score"]
 OCR_KEYS = ["pages_total", "pages_ok", "pages_empty", "pages_missing", "chunks"]
 

@@ -77,6 +77,10 @@ STATUS_ANSWERED = "answered"
 STATUS_NO_EVIDENCE = "no_evidence"
 STATUS_EXECUTION_FAILED = "execution_failed"
 TERMINAL_STATUSES = (STATUS_ANSWERED, STATUS_NO_EVIDENCE, STATUS_EXECUTION_FAILED)
+NO_TEXT_CHUNKS = "no_text_chunks"
+NO_RETRIEVAL_TOKENS = "no_retrieval_tokens"
+NO_HITS = "no_hits"
+NO_EVIDENCE_REASONS = (NO_TEXT_CHUNKS, NO_RETRIEVAL_TOKENS, NO_HITS)
 
 RUN_CONFIG_NAME = "run_config.json"
 PREDICTIONS_NAME = "predictions.jsonl"
@@ -419,10 +423,15 @@ def describe_retrieval(settings: RetrievalSettings) -> dict[str, Any]:
             "order": "descending fused score",
             "tie_breaking": "numpy stable argsort: equal scores keep chunk order (page_idx ascending, then chunk_index)",
         },
-        "unindexable_documents": (
-            "a document with chunks but no [a-z0-9%$] token in any chunk cannot be indexed (rank_bm25 divides by zero); "
-            "its questions get no_evidence and the document is listed in generation_summary.json"
-        ),
+        "no_evidence_reasons": {
+            NO_TEXT_CHUNKS: "every declared page has empty or missing OCR, so the document has zero chunks (an OCR condition)",
+            NO_RETRIEVAL_TOKENS: (
+                "chunks exist but none holds a [a-z0-9%$] token, so BM25 cannot index the document (rank_bm25 divides by zero). "
+                "This is a limitation of the engineering tokeniser, not an OCR condition. Han-only and symbol-only text lands here. "
+                "The document is listed in generation_summary.json"
+            ),
+            NO_HITS: "the retriever returned zero hits",
+        },
         "top_k": settings.top_k,
         "max_chunks": settings.max_chunks,
         "evidence_limit": "at most top_k hits per question, all saved in predictions.jsonl with their scores",
@@ -493,6 +502,15 @@ class _DocumentIndex:
             self._error, self._built, chunks = exc, True, []
         loaded.chunks = chunks
         loaded.chunks_with_tokens = sum(1 for chunk in chunks if _tokenize(chunk.text))
+
+    @property
+    def empty_reason(self) -> str | None:
+        """Why the document cannot be searched: ``no_text_chunks``, ``no_retrieval_tokens`` or ``None``."""
+        if not self._loaded.chunks:
+            return NO_TEXT_CHUNKS
+        if not self._loaded.chunks_with_tokens:
+            return NO_RETRIEVAL_TOKENS
+        return None
 
     def retriever(self) -> Any:
         """Return the document's retriever, or ``None`` when no chunk holds a retrieval token.
@@ -568,6 +586,7 @@ def _record(question: RuntimeQuestion, status: str, loaded: LoadedDocument, **fi
         "status": status,
         "answer": None,
         "abstained": False,
+        "no_evidence_reason": None,
         "answer_mode": None,
         "evidence": [],
         "ocr_condition": loaded.ocr_condition,
@@ -611,7 +630,8 @@ def answer_question(
         stage = "answer"
         inject("answer")
         if not hits:
-            return _record(question, STATUS_NO_EVIDENCE, loaded, answer="", abstained=True)
+            reason = index.empty_reason or NO_HITS
+            return _record(question, STATUS_NO_EVIDENCE, loaded, answer="", abstained=True, no_evidence_reason=reason)
         result = backend.answer(question.question, hits)
         answer, mode = result.get("answer"), result.get("answer_mode")
         if not isinstance(answer, str) or not (mode is None or isinstance(mode, str)):
@@ -671,8 +691,11 @@ def summarise_generation(
 ) -> dict[str, Any]:
     counts = {status: 0 for status in TERMINAL_STATUSES}
     stages: dict[str, int] = {}
+    reasons: dict[str, int] = {}
     for record in records:
         counts[record["status"]] += 1
+        if record["no_evidence_reason"] is not None:
+            reasons[record["no_evidence_reason"]] = reasons.get(record["no_evidence_reason"], 0) + 1
         if record["failure"] is not None:
             stages[record["failure"]["stage"]] = stages.get(record["failure"]["stage"], 0) + 1
     failed = counts[STATUS_EXECUTION_FAILED]
@@ -696,6 +719,7 @@ def summarise_generation(
             "execution_failed": failed,
             "abstained": counts[STATUS_NO_EVIDENCE],
         },
+        "no_evidence_by_reason": {reason: reasons.get(reason, 0) for reason in NO_EVIDENCE_REASONS},
         "execution_failures_by_stage": dict(sorted(stages.items())),
         "injected_failures": [spec.as_dict() for spec in injections],
         "documents": len(loaded_documents),
