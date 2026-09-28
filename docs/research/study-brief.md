@@ -286,9 +286,11 @@ byte-identical to upstream `opendatalab/OHR-Bench` at commit `1f421eb`, the
 string. `src/faar/ohr_scoring.py` reimplements them without upstream's heavy
 imports, with `jieba==0.42.1` and `regex==2024.7.24` as upstream pins them.
 `scripts/experiments/ohr_scoring_parity.py` compares it with the vendored
-functions. On 2026-09-28 it found 0 mismatches in 99,041 pairs: 103
+functions. On 2026-09-29 it found 0 mismatches in 99,045 pairs: 107
 hand-written edge cases, 11 variants of each of the 8,498 `qas_v2.json`
 references, and 8 variants plus all cross pairs of the 70 pilot references.
+The [scorer provenance record](../reports/ohr-scorer-provenance.md) traces each
+function to SQuAD v1.1, HotpotQA or OHR-Bench.
 The upstream repository has no licence file for its code. The module credits
 the authors and pins the source, and redistribution terms are open (section 12).
 
