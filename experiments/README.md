@@ -29,7 +29,8 @@ error; an untracked one (ignored data, cluster outputs) is a warning.
 | `faar-ohr-108-calibration` | engineering_check | planned |
 | `2026-09-28-ohr-dev-v1-offline-engineering` | engineering_check | completed; outputs kept only in the ignored `.local/work/runs/` because its `run_config.json` records home-directory paths |
 | `2026-09-28-ohr-dev-v1-offline-engineering-r2` | engineering_check | completed; superseded by r3 after the review fixes |
-| `2026-09-28-ohr-dev-v1-offline-engineering-r3` | engineering_check | completed (rule-based extractor, no repair; not a baseline) |
+| `2026-09-28-ohr-dev-v1-offline-engineering-r3` | engineering_check | completed; superseded by r4, which adds multilingual retrieval |
+| `2026-09-29-ohr-dev-v1-offline-engineering-r4` | engineering_check | completed (rule-based extractor, no repair; not a baseline) |
 
 No scientific evaluation has run. This table is a convenience; the registry is
 authoritative.
