@@ -447,7 +447,7 @@ existing runner. Against the table above:
 
 - **Search within the question's document, run the pilot from its manifests, keep gold data out of runtime.** `src/faar/pilot_runner.py` loads only `runtime_manifest.json` and the MinerU files, verifies their hashes, builds one retriever per document and refuses a hit from another document. Its runtime question type holds only `question_id`, `doc_id` and `question`. Tests in `tests/test_pilot_runner.py` check that generation opens no evaluation file and that poisoned evaluation files leave predictions byte-identical. The graph path (`graph.py`, `benchmarks.py`) is unchanged.
 - **Empty OCR and the no-evidence outcome.** In the offline path, empty and missing pages stay in the per-question OCR record and produce no chunk. A question with no usable text gets `no_evidence` with an abstention and a `no_evidence_reason`. The reasons are `no_text_chunks` (every page empty or missing), `no_text_content` (the text is non-empty but holds no letter or digit in any script, such as only Markdown heading markers), `no_retrieval_tokens` (the text has letters or digits, but none that the engineering tokeniser indexes) and `no_hits`. Under the `multilingual-v1` tokeniser that the runner now uses, Han text is indexed, so `no_retrieval_tokens` is almost unreachable. Only the first is an OCR status. The runner has no image path, so it shows no page as an image.
-- **Multilingual retrieval.** The runner tokenises with `multilingual-v1` (NFKC, casefold, Unicode word tokens and CJK character bigrams) and chunks with `cjk-weighted-words-v1` (two CJK characters count as one word, so an unspaced Chinese page splits into chunks of at most 360 characters). Both are defined in `src/faar/text_units.py`. The graph path keeps the original ASCII tokeniser and whitespace chunks. Every record carries `query_retrieval_tokens`, and `generation_summary.json` counts questions with none. In r3, 19 of 70 questions had none. In r4, none has zero. Having tokens does not show that retrieval finds the evidence.
+- **Multilingual retrieval.** Known limit: Python's `\W` treats combining marks as non-word characters, so Devanagari, Arabic with vowel marks and Hebrew with niqqud split into single-letter tokens. The pilot has none of these scripts. The runner tokenises with `multilingual-v1` (NFKC, casefold, Unicode word tokens and CJK character bigrams) and chunks with `cjk-weighted-words-v1` (two CJK characters count as one word, so an unspaced Chinese page splits into chunks of at most 360 characters). Both are defined in `src/faar/text_units.py`. The graph path keeps the original ASCII tokeniser and whitespace chunks. Every record carries `query_retrieval_tokens`, and `generation_summary.json` counts questions with none. In r3, 19 of 70 questions had none. In r4, none has zero. Having tokens does not show that retrieval finds the evidence.
 - **Official scoring.** `src/faar/ohr_scoring.py` (section 8). `src/faar/metrics.py` is unchanged and must not serve as the primary metric.
 - **Finish runs with recorded failures.** The offline runner records `execution_failed` per question, finishes the run and exits with status 2 when any failure exists. `experiment_runner.py` still raises.
 - **CI.** Dependencies are declared (`pypdfium2`, `jieba`, `regex`, pinned `click`), the tests no longer need credentials or network, and the workflow has separate lint, package and offline-test jobs.
@@ -577,9 +577,9 @@ The backend receives `(question, hits)` and nothing else. It opens no file. The 
 
 ### 15.4 Answer-model interface
 
-**Proposed default.** The real model plugs into the existing `AnswerBackend` protocol (`src/faar/pilot_runner.py:462-470`): `identity()` and `answer(question, hits)` returning `{"answer", "answer_mode"}`. Three code changes are needed first, and this brief makes none of them.
+**Proposed default.** The real model plugs into the existing `AnswerBackend` protocol (the `AnswerBackend` class in `src/faar/pilot_runner.py`): `identity()` and `answer(question, hits)` returning `{"answer", "answer_mode"}`. Three code changes are needed first, and this brief makes none of them.
 
-1. `generate_run` refuses any backend that does not declare `engineering_only: true` (`pilot_runner.py:977`), and `RUN_KIND` is fixed at `engineering_check` (`pilot_runner.py:67`). A real backend needs an explicit kind (`development_pilot`) and a way to declare `model_calls: true`.
+1. `generate_run` refuses any backend that does not declare `engineering_only: true` (the `engineering_only` check in `generate_run`), and `RUN_KIND` is fixed at `engineering_check` (module constant in `pilot_runner.py`). A real backend needs an explicit kind (`development_pilot`) and a way to declare `model_calls: true`.
 2. The runner's overwrite policy regenerates a run in memory and compares bytes. A live API call does not reproduce byte for byte. A resumed or repeated run must replay the saved response records and never call the model again for a question that has a terminal record.
 3. `answer()` returns only the answer and its mode. Token counts, latency and retries need a side record (section 15.8), and `predictions.jsonl` needs the request IDs that point to it.
 
@@ -625,7 +625,7 @@ For one run over `N` questions:
 | Assumption | Value | Basis |
 | --- | --- | --- |
 | `N_model` | 70 | Overstates: r3 sent 63 questions to the answer step |
-| Evidence tokens | about 1,700 mean, 7,500 largest | Measured on 2026-09-29 as characters in the 5 retrieved chunks per question with the current chunker and retriever (mean 3,961 characters, maximum 8,545), converted at 4 characters per token for non-Han text and 1 token per Han character. The conversion is a rough assumption |
+| Evidence tokens | about 1,700 mean, 7,500 largest | Measured on 2026-09-29 as characters in the 5 retrieved chunks per question with the r3 chunker and retriever (mean 3,961 characters, maximum 8,545). With the r4 multilingual policy the figures are mean 3,190 and maximum 6,252, so the estimate below errs high, converted at 4 characters per token for non-Han text and 1 token per Han character. The conversion is a rough assumption |
 | Instructions and question | 300 tokens | Assumed prompt length |
 | `T_in`, `T_in,max` | 2,000 and 7,800 | Sum of the two rows above, rounded |
 | `T_out`, `M_out` | 20 and 128 | Reference answers have a median of 2 words (non-Han), 13 of 55 have 8 or more |
@@ -636,7 +636,7 @@ For one run over `N` questions:
 - Ceiling: 70 × 3 × (7,800 × 2.50 + 128 × 10) / 1,000,000 = 210 × 0.02078 = about $4.36.
 - The same inputs at option C's rates give about $0.02 expected. At option B's rates they give about $0.32 before thinking tokens. Thinking tokens bill as output, so B's cost grows with the effort setting.
 
-Two things change these numbers. The Han-script text (21 of 63 questions had Han in the retrieved text) may cost more than one token per character, and the retrieval change now in progress alters the evidence length. Recompute with a dry run before any spending: build every prompt offline, count tokens with the provider's tokenizer, and print `expected` and `ceiling`. The dry run needs no key and no network.
+Two things change these numbers. The Han-script text (21 of 63 questions had Han in the retrieved text) may cost more than one token per character, and the r4 retrieval change shortened the evidence (see the evidence-token row). Recompute with a dry run before any spending: build every prompt offline, count tokens with the provider's tokenizer, and print `expected` and `ceiling`. The dry run needs no key and no network.
 
 ### 15.7 Prompt, answer format and failure handling
 
@@ -734,7 +734,7 @@ It cannot show:
 1. Choose the answer model. Proposed: option A (`gpt-4o-2024-11-20`). Confirm that the account can call it, since documentation cannot show that.
 2. Set the hard spending cap. Suggested: $2.00 for the main run, and $0.50 for the 10-question repeat probe (expected cost about $0.16).
 3. Approve the prompt structure and abstention token in section 15.7, after a dry run prints the real prompts for a few questions.
-4. Hold the first real run until Han-script and mixed questions get a retrieval signal, and approve the retrieval settings that run will use.
+4. Approve the retrieval settings for the first real run. The r4 engineering run gives every question query tokens, but whether the retrieved chunks hold the evidence is not measured.
 5. Agree that the first baseline is text-only, so the image budget and page-selection decision wait for the visual repair.
 6. Set the maximum execution-failure rate. Suggested: at most 3 of 70 questions still failed after retries.
 7. Inspect and label the 20 cases in section 15.14. Decide whether a second person labels them blind.

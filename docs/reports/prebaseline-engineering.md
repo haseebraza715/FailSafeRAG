@@ -71,7 +71,7 @@ The runner writes to `results/engineering/<run_id>/`. The flow is:
   - `no_text_content`: the text is non-empty but holds no letter or digit in any script.
   - `no_retrieval_tokens`: the text has content, but no token the engineering tokeniser indexes.
   - `no_hits`: retrieval returned zero hits.
-- **Query tokens.** Every record has `query_retrieval_tokens`, and the summary counts questions with none. The retrieval tokeniser matches only `[a-z0-9%$]`, so a Han-only question gets hits ranked by position alone.
+- **Query tokens.** Every record has `query_retrieval_tokens`, and the summary counts questions with none. On 2026-09-28 the retrieval tokeniser matched only `[a-z0-9%$]`, so a Han-only question got hits ranked by position alone. The 2026-09-29 extension below replaces this with `multilingual-v1`.
 - **Overwrite rules.** The runner never overwrites. For a run directory that already holds a run:
   - With a different fingerprint, the run is refused.
   - With the same fingerprint, it is regenerated in memory. Identical bytes are reported as "already complete, verified identical". Different bytes are refused.
@@ -95,7 +95,7 @@ All three runs are `engineering_check` records in `experiments/registry.jsonl`.
 | --- | --- | --- | --- |
 | `2026-09-28-ohr-dev-v1-offline-engineering` | `8953dfd` | `.local/work/runs/` in the lead's checkout only. That directory is ignored by git and has no backup elsewhere (`backup: none`). | Completed. Not committed because its `run_config.json` recorded two absolute home-directory paths. |
 | `2026-09-28-ohr-dev-v1-offline-engineering-r2` | `58e1693` | `results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r2/` | Completed. Superseded by r3 after the review fixes. |
-| `2026-09-28-ohr-dev-v1-offline-engineering-r3` | `adfb2d3` | `results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/` | Completed. The current run. |
+| `2026-09-28-ohr-dev-v1-offline-engineering-r3` | `adfb2d3` | `results/engineering/2026-09-28-ohr-dev-v1-offline-engineering-r3/` | Completed. It was the current run on 2026-09-28, and r4 superseded it on 2026-09-29 (see the extension below). |
 
 Each run recorded one dirty path, `experiments/registry.jsonl`, because the
 registry line was written before the run started. All three produced the same
@@ -125,7 +125,7 @@ The r3 outcomes for the 70 questions are as follows.
   - Injecting one failure gave exit 2 and 1 `execution_failed`, and the scoring denominator stayed 70.
   - A run directory under `results/pilots/` was refused.
 
-To reproduce r3 in a new directory, run the following. The fingerprint includes package versions, so a different environment gives a new fingerprint.
+To reproduce r3 in a new directory, check out `adfb2d3` or `8479309` first, because the runner has no flag for the older retrieval policy and later code produces r4-style runs. Then run the following. The fingerprint includes package versions, so a different environment gives a new fingerprint.
 
 ```bash
 .local/venv-prebaseline/bin/python scripts/experiments/run_pilot_offline.py generate --run-dir results/engineering/<new_run_id>
@@ -199,7 +199,7 @@ edit, and again after the last run.
 ## Limitations and decisions before real inference
 
 - The rule-based extractor returns long spans: 30 of the 63 r3 answers exceed 1,000 characters. Its EM measures nothing about FAAR.
-- Local-hash retrieval gives Han-script queries no signal, and 23 of the 30 pilot documents are single pages. No repair, gate or diagnosis ran.
+- As of 2026-09-28, local-hash retrieval gave Han-script queries no signal. The extension below records the multilingual fix. 23 of the 30 pilot documents are single pages. No repair, gate or diagnosis ran.
 - The pilot has 70 questions, too few for significance or generalisation claims.
 - The lock covers Linux x86_64 and macOS arm64 only.
 - The local `.venv-aaai` still needs the new pins (see [README.md](../../README.md#local-checks-and-known-issues)).
@@ -268,8 +268,7 @@ credential was obtained and no model called.
 
 `2026-09-29-ohr-dev-v1-offline-engineering-r4`, code `ecaadd0`, output in
 `results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`, supersedes
-r3. It was registered before it started, so `experiments/registry.jsonl` was
-the only dirty path.
+r3. It was registered before it started. The registry attempt therefore says `dirty: false`, the state when the record was added, while `run_config.json` says `dirty: true` with `experiments/registry.jsonl` as the only dirty path. r2 and r3 have the same pattern.
 
 | Measure | r3 | r4 |
 | --- | --- | --- |
