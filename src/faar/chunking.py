@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 from .settings import RetrievalSettings
+from .text_units import CHUNK_POLICIES, LEGACY_CHUNK_POLICY, MULTILINGUAL_CHUNK_POLICY, chunk_spans
 from .types import Chunk, Phase0Example
 
 
@@ -36,7 +37,31 @@ def build_page_chunks(
     page_text: str,
     settings: RetrievalSettings,
     image_path: str | None = None,
+    chunk_policy: str = LEGACY_CHUNK_POLICY,
 ) -> list[Chunk]:
+    """Split one page into overlapping chunks.
+
+    ``chunk_policy`` names the boundary rule (see ``faar.text_units``). The default,
+    ``whitespace-words-v1``, is the original rule and the only one that ``faar.graph``
+    and ``faar.benchmarks`` use. ``cjk-weighted-words-v1`` counts each CJK character
+    as half a word, so an unspaced Chinese page still splits into bounded chunks.
+    Text without a CJK character gets the same chunks under both rules.
+    """
+    if chunk_policy not in CHUNK_POLICIES:
+        raise ValueError(f"unknown chunk policy {chunk_policy!r}; expected one of {', '.join(CHUNK_POLICIES)}")
+    if chunk_policy == MULTILINGUAL_CHUNK_POLICY:
+        spans = chunk_spans(page_text, settings.chunk_size_words, settings.chunk_overlap_words)
+        return [
+            Chunk(
+                chunk_id=f"{example_id}-p{page_id}-c{chunk_index}",
+                example_id=example_id,
+                doc_name=doc_name,
+                page_id=page_id,
+                text=" ".join(page_text[start:end].split()),
+                image_path=image_path,
+            )
+            for chunk_index, (start, end) in enumerate(spans)
+        ]
     chunks: list[Chunk] = []
     words = _tokenize_words(page_text)
     if not words:
