@@ -3,7 +3,7 @@
 This file is a dated implementation log, not the current cluster procedure.
 Start at [SUPERVISOR_HANDOFF.md](../../SUPERVISOR_HANDOFF.md) and
 [the shared-cluster runbook](../operations/runbook.md). The current experiment protocol is
-[docs/experiments/aaai-plan.md](../experiments/aaai-plan.md).
+[docs/research/aaai-plan.md](../research/aaai-plan.md).
 
 ---
 

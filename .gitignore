@@ -29,12 +29,7 @@ data/benchmark_prep/
 data/benchmark_assets_smoke/
 data/external/
 results/smoke/
-docs/output/pdf/*.aux
-docs/output/pdf/*.fls
-docs/output/pdf/*.fdb_latexmk
-docs/output/pdf/*.log
-docs/output/pdf/*.out
-docs/tmp/
+paper/build/
 OHR-Bench/.git/
 AGENT.MD
 *.partial

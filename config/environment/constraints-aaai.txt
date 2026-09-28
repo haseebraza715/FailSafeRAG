@@ -1,7 +1,7 @@
 # FAAR AAAI direct and compatibility-critical dependency constraints.
 # Target runtime: CPython 3.12.
 #
-# Install through the command in docs/experiments/aaai-reproducibility.md. A constraints
+# Install through the command in docs/research/aaai-reproducibility.md. A constraints
 # file limits versions but does not install packages that are not requested.
 
 # Plan-required experiment services and tools.

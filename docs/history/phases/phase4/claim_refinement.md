@@ -40,4 +40,4 @@ Phase 5 writing should treat the current evidence as:
 - insufficient support for quality-improvement claims over the naive baseline on the current 40-example slice;
 - motivation for larger or stratified reruns before thesis-level claim escalation.
 
-Use [Phase 5 Writing Plan](/docs/phases/phase5/writing_plan.md) as the default handoff document for drafting.
+Use [Phase 5 Writing Plan](/docs/history/phases/phase5/writing_plan.md) as the default handoff document for drafting.

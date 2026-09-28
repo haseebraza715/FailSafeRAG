@@ -19,7 +19,7 @@ mkdir -p results/environment
 ```
 
 A paper run is invalid if `pip check` fails or the freeze file is missing; see
-`docs/experiments/aaai-reproducibility.md`. The first command on the shared server is a
+`docs/research/aaai-reproducibility.md`. The first command on the shared server is a
 read-only hardware preflight. It does not download the benchmark, load FAAR,
 load a model, or use an API key. On a login node, skip CUDA:
 

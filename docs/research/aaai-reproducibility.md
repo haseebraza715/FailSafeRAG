@@ -3,7 +3,7 @@
 This document defines the software and model identity checks required before a
 FAAR result can be reported. It complements `config/environment/constraints-aaai.txt`; it does not
 replace the experiment ordering or acceptance criteria in
-`docs/experiments/aaai-plan.md`.
+`docs/research/aaai-plan.md`.
 
 ## Python environment
 

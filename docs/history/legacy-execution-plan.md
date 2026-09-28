@@ -2,7 +2,7 @@
 
 Superseded prototype execution plan. It is not the current AAAI cluster
 procedure. Start at [SUPERVISOR_HANDOFF.md](../../SUPERVISOR_HANDOFF.md).
-The current protocol is [docs/experiments/aaai-plan.md](../experiments/aaai-plan.md).
+The current protocol is [docs/research/aaai-plan.md](../research/aaai-plan.md).
 
 ---
 

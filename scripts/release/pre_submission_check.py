@@ -94,7 +94,7 @@ def main() -> None:
     root = args.root.resolve()
     paper = args.paper if args.paper.is_absolute() else root / args.paper
     allowed_checklist_references = {
-        "./docs/experiments/aaai-plan.md",
+        "./docs/research/aaai-plan.md",
         "./docs/history/aaai-execution-status.md",
         "./scripts/release/pre_submission_check.py",
     }

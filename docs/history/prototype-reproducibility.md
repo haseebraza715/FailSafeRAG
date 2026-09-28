@@ -2,7 +2,7 @@
 
 This page describes the older offline prototype path (`local-hash-v1`,
 `constraints-py312.txt`). Paper runs follow
-[docs/experiments/aaai-reproducibility.md](../experiments/aaai-reproducibility.md).
+[docs/research/aaai-reproducibility.md](../research/aaai-reproducibility.md).
 
 ---
 

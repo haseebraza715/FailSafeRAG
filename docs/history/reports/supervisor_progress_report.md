@@ -2,7 +2,7 @@
 
 > Historical prototype report dated April 21, 2026. It uses a 40-example
 > mock-backend evaluation and does not describe the current AAAI baseline or
-> cluster readiness. Use [SUPERVISOR_HANDOFF.md](../../SUPERVISOR_HANDOFF.md)
+> cluster readiness. Use [SUPERVISOR_HANDOFF.md](../../../SUPERVISOR_HANDOFF.md)
 > for the current status.
 
 ## FAAR: Failure-Aware Agentic Recovery for OCR-RAG
@@ -49,10 +49,10 @@ Current conclusion:
 | Phase | Status | What was done | Evidence |
 | --- | --- | --- | --- |
 | Phase 0 | Complete | Built and manually inspected a 40-example OCR-grounded slice with failure labels. | [manual_labels.csv](/data/phase0/manual_labels.csv), [sample_manifest.csv](/data/phase0/sample_manifest.csv) |
-| Phase 1 | Complete | Implemented FAAR controller graph with quality gate and typed actions. | [phase1 completion report](/docs/phases/phase1/completion_report.md) |
-| Phase 2 | Complete | Formalized framework and mapped theory directly to implementation. | [methodology formalization](/docs/phases/phase2/methodology_formalization.md), [code-math mapping](/docs/phases/phase2/code_math_mapping.md) |
-| Phase 3 | Complete | Executed benchmark matrix, ablations, and consolidated metrics exports. | [phase3 report](/docs/reports/phase3_report.md), [metrics_summary.json](/artifacts/phase3/metrics_summary.json) |
-| Phase 4 | Complete | Added claim-assessment module and supervisor-facing claim evidence artifacts. | [phase4 report](/docs/reports/phase4_report.md), [claim_assessment.json](/artifacts/phase4/claim_assessment.json) |
+| Phase 1 | Complete | Implemented FAAR controller graph with quality gate and typed actions. | [phase1 completion report](/docs/history/phases/phase1/completion_report.md) |
+| Phase 2 | Complete | Formalized framework and mapped theory directly to implementation. | [methodology formalization](/docs/history/phases/phase2/methodology_formalization.md), [code-math mapping](/docs/history/phases/phase2/code_math_mapping.md) |
+| Phase 3 | Complete | Executed benchmark matrix, ablations, and consolidated metrics exports. | [phase3 report](/docs/history/reports/phase3_report.md), [metrics_summary.json](/artifacts/phase3/metrics_summary.json) |
+| Phase 4 | Complete | Added claim-assessment module and supervisor-facing claim evidence artifacts. | [phase4 report](/docs/history/reports/phase4_report.md), [claim_assessment.json](/artifacts/phase4/claim_assessment.json) |
 
 ### Latest implementation cycle completed
 
@@ -217,11 +217,11 @@ The most defensible thesis position at this point is:
 
 ### Phase and report links
 
-- [phase1_report.md](/docs/reports/phase1_report.md)
-- [phase2_report.md](/docs/reports/phase2_report.md)
-- [phase3_report.md](/docs/reports/phase3_report.md)
-- [phase4_report.md](/docs/reports/phase4_report.md)
-- [Phase 5 Writing Plan](/docs/phases/phase5/writing_plan.md)
+- [phase1_report.md](/docs/history/reports/phase1_report.md)
+- [phase2_report.md](/docs/history/reports/phase2_report.md)
+- [phase3_report.md](/docs/history/reports/phase3_report.md)
+- [phase4_report.md](/docs/history/reports/phase4_report.md)
+- [Phase 5 Writing Plan](/docs/history/phases/phase5/writing_plan.md)
 
 ### Core artifacts used in this update
 

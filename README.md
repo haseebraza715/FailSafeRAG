@@ -11,12 +11,28 @@ visual fallback).
 | Stage | State |
 | --- | --- |
 | Local implementation and regression tests | Ready |
+| OHR data audit and locked PDF archive | Done ([report](docs/reports/data_audit.md)) |
+| Development pilot `ohr_dev_v1` selection and inspection packet | Frozen; no model run ([report](docs/reports/pilot_readiness.md)) |
 | Bounded 108-page CUDA calibration on a shared cluster | Ready to run |
 | Full OHR validation preparation and B0-B4 paper runs | Not done |
 
 Real GPU calibration measurements and full validation results are still pending.
-Older 40-example mock-backend numbers in `docs/reports/` and `artifacts/phase3/`
-are prototype evidence only. They are not AAAI baselines.
+Older 40-example mock-backend numbers in `docs/history/reports/` and
+`artifacts/phase3/` are prototype evidence only. They are not AAAI baselines.
+
+## Where things are
+
+| Need | Location |
+| --- | --- |
+| Research question, first-study scope, open decisions | [docs/research/study-brief.md](docs/research/study-brief.md) |
+| Fixed protocol and B0-B4 order | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
+| Code | `src/faar/` (package), `scripts/` (CLIs), `cluster/` (launcher and scheduler templates), `tests/` |
+| Configuration and locks | `config/`: split, checksums, OHR PDF source lock, model revisions, pilot configs |
+| Benchmark inputs | `OHR-Bench/` (vendored upstream QA and text; tracked), `data/ohr_bench_raw/pdfs.zip` (locked archive; ignored) |
+| Derived data | `data/benchmark_prep/`, `data/external/` (ignored); `data/phase0/` (prototype, tracked) |
+| Result payloads | `results/` (audit, pilot, smoke, environment); prototype outputs in `artifacts/` and `logs/` |
+| Current reports | [docs/reports/](docs/reports/index.md) |
+| History and the 2026-09-28 path map | [docs/history/](docs/history/README.md) |
 
 ## Repository
 
@@ -78,5 +94,5 @@ stays blocked until those measurements are approved.
 - [Supervisor handoff](SUPERVISOR_HANDOFF.md)
 - [Shared-cluster runbook](docs/operations/runbook.md)
 - [Architecture](docs/architecture/overview.md)
-- [Experimental plan](docs/experiments/aaai-plan.md)
+- [Experimental plan](docs/research/aaai-plan.md)
 - [Documentation index](docs/README.md)

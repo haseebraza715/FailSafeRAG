@@ -25,6 +25,6 @@ Phase 4 focused on claim refinement, decision hardening, and evidence alignment 
 
 ## Documentation
 
-- [Phase 4 Docs Index](/docs/phases/phase4/index.md)
-- [Claim Refinement Decisions](/docs/phases/phase4/claim_refinement.md)
-- [Testing and Verification](/docs/phases/phase4/testing_and_verification.md)
+- [Phase 4 Docs Index](/docs/history/phases/phase4/index.md)
+- [Claim Refinement Decisions](/docs/history/phases/phase4/claim_refinement.md)
+- [Testing and Verification](/docs/history/phases/phase4/testing_and_verification.md)

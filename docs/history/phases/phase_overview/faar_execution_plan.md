@@ -2,8 +2,8 @@
 
 This is a leftover pointer from an earlier docs migration. It is not the
 current cluster procedure. Start at
-[SUPERVISOR_HANDOFF.md](../../../SUPERVISOR_HANDOFF.md). The full legacy text
-is [docs/history/legacy-execution-plan.md](../../history/legacy-execution-plan.md).
+[SUPERVISOR_HANDOFF.md](../../../../SUPERVISOR_HANDOFF.md). The full legacy text
+is [docs/history/legacy-execution-plan.md](../../legacy-execution-plan.md).
 
 For full plan details, see:
 

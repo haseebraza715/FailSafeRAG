@@ -23,9 +23,9 @@ Turn Phases 0 through 4 into a supervisor-ready draft while keeping the narrativ
 
 - [README.md](/README.md)
 - [docs/architecture/overview.md](/docs/architecture/overview.md)
-- [docs/phases/phase2/methodology_formalization.md](/docs/phases/phase2/methodology_formalization.md)
-- [docs/reports/phase3_report.md](/docs/reports/phase3_report.md)
-- [docs/reports/phase4_report.md](/docs/reports/phase4_report.md)
+- [docs/phases/phase2/methodology_formalization.md](/docs/history/phases/phase2/methodology_formalization.md)
+- [docs/reports/phase3_report.md](/docs/history/reports/phase3_report.md)
+- [docs/reports/phase4_report.md](/docs/history/reports/phase4_report.md)
 - [artifacts/phase3/metrics_summary.json](/artifacts/phase3/metrics_summary.json)
 - [artifacts/phase4/claim_assessment.json](/artifacts/phase4/claim_assessment.json)
 
