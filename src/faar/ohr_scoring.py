@@ -19,11 +19,44 @@ The upstream file header credits Shichao Song, and the OHR-Bench README says the
 evaluation framework is based on CRUD_RAG (https://github.com/IAAR-Shanghai/CRUD_RAG).
 At that commit the GitHub repository has no LICENSE file, and GitHub reports no
 licence for it. The Hugging Face dataset card for ``opendatalab/OHR-Bench``
-declares ``cc-by-4.0`` for the dataset repository. This module credits the
-authors and pins the source; it does not claim upstream grants code reuse
-rights beyond that. The functions are short and follow the well-known SQuAD
-answer-normalisation layout. Check the terms before redistributing this module
-outside the project.
+declares ``cc-by-4.0`` for the dataset repository, which holds no source code.
+Neither statement grants the right to reuse the code. This module credits the
+authors and pins the source; it does not claim that upstream grants code reuse
+rights.
+
+Third-party origins
+-------------------
+``docs/reports/ohr-scorer-provenance.md`` records the evidence behind this
+section, with revisions and retrieval dates. No CRUD_RAG revision contains
+``normalize_answer``, ``exact_match_score`` or ``f1_score``. The functions here
+trace to these public sources, in this order:
+
+* ``normalize_answer`` and the exact-match comparison are the SQuAD v1.1
+  official evaluation script (CodaLab bundle 0xbcd57bee090b421c982906709c8c27e1,
+  no licence stated). The same functions are in the SQuAD v2.0 script in
+  https://github.com/rajpurkar/SQuAD-explorer, which carries an MIT LICENSE
+  ("Copyright (c) 2020 Pranav Rajpurkar").
+* The ``f1_score`` layout, including the ``yes``, ``no`` and ``noanswer`` rule,
+  matches ``f1_score`` in ``hotpot_evaluate_v1.py`` of
+  https://github.com/hotpotqa/hotpot at revision
+  3635853403a8735609ee997664e1528f4480762a. The repository carries an Apache
+  License 2.0 ``LICENSE.txt`` ("Copyright 2018 Zhilin Yang, Peng Qi, Saizheng
+  Zhang"). The file has no per-file header, and the repository has no NOTICE
+  file. This module changes that function: the zero result is the scalar ``0``,
+  only the F1 value is returned, and the CJK branch below is added.
+* ``has_chn_character``, the ``jieba.lcut`` branch of ``f1_score``, the 0/1
+  integer return of ``exact_match_score`` and the -1 return of
+  ``catch_all_exceptions`` come from OHR-Bench, which has no licence. No earlier
+  source was found for them. OHR-Bench added the CJK branch and
+  ``has_chn_character`` on 2025-03-10 (commit
+  92cf7be9e2cadc1478b917d76020491e376cea04). Its ``catch_all_exceptions`` changes
+  the CRUD_RAG decorator of the same name, which returns ``None`` on failure.
+
+This module was written after reading ``src/metric/common.py`` at the pinned
+commit. It is not a clean-room implementation. The attributions above credit the
+sources; they are not a finding that any licence covers this module. Do not
+redistribute this module outside the project until the open question in
+``docs/reports/ohr-scorer-provenance.md`` is settled.
 
 What the module preserves
 -------------------------
