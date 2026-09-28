@@ -1,0 +1,1844 @@
+{
+ "contract": "evaluation and inspection only; never an input to retrieval, gating, routing or recovery",
+ "kind": "evaluation",
+ "pilot_id": "ohr_dev_v1",
+ "questions": {
+  "3390ac10-6278-495a-b438-9b472a83c504": {
+   "answer_form": "String",
+   "answers": "Kenneth Turpin is a party to the agreement.",
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "doc_type": "law",
+   "evidence_context": "IN WITNESS WHEREOF the parties have duly executed this Agreement on the date first above written. VISUALANT INCORPORATED PER / s/ RONALD P. ERICKSON \title{ RONALD P. ERICKSON } Authorized Signatory \\section*{/ / KENNETH TURPIN} KENNETH TURPIN",
+   "evidence_page_no_raw": 2,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    2
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.json",
+    "sha256": "23745c077b4b0cfad9ce0aa57ba0cf5a485f33d1a18083cb581de18823ad56fc"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "339bfba4-d220-4c8e-a2d4-174a81cf8010": {
+   "answer_form": "Numeric",
+   "answers": "$10.00",
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "doc_type": "law",
+   "evidence_context": "NOW THEREFORE, in consideration of the sum of $ 10.00 paid by each party to the other, and the representations, warranties and covenants contained herein, the sufficiency of which is hereby acknowledged, the parties hereto agree as follows:",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.json",
+    "sha256": "23745c077b4b0cfad9ce0aa57ba0cf5a485f33d1a18083cb581de18823ad56fc"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "33a1d1c2-ad4a-4155-809f-cd8f739cd488": {
+   "answer_form": "Yes/No",
+   "answers": "Yes",
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "doc_type": "law",
+   "evidence_context": "whether or not such are made during or after working hours, on or off the Company's premises.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.json",
+    "sha256": "23745c077b4b0cfad9ce0aa57ba0cf5a485f33d1a18083cb581de18823ad56fc"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "3e896c64-e117-4ac3-919c-4ea3e1805081": {
+   "answer_form": "Free-form",
+   "answers": "沙门氏菌病可以通过消化道感染、交配或人工授精等途径传播，仔猪在感染初期表现为急性症状，包括体温升高、精神萎靡、便秘或腹泻，以及皮肤紫斑等，病程通常为3-5天，死亡率较高。",
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "病猪和带菌猪是本病的主要传染源从粪便，尿液，乳汁以及流产的胎儿、胎衣及羊水等排出大量的病菌。本病主要经消化道感染，还可以通过交配或人工授精等途径发生感染。",
+    "急性型(败血型);仔猪发病初期多为急性，体温升至以上，食欲不报，精神萎靡，初便秘，后腹泻，但也有不腹泻的。在鼻端、耳、颈、腹部及四技内调皮肤上出现紫斑。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "sha256": "7706532f1be301e8b6ad85f1265b1305d05317568d6af3842cfd94f65ed5cdf7"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "4bc7051b-9711-4924-80d5-59d4628d87fd": {
+   "answer_form": "String",
+   "answers": "Pavel Durov was ordered to pay bail of 5 million euros, or about \\$5.5 million.",
+   "doc_id": "news/08_29",
+   "doc_type": "news",
+   "evidence_context": "Laure Beccuau, the Paris ecutor, said in a statement that Mr Durov had been ordered to pay bail of 5 million euros, or about \\$5.5 million.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/08_29.json",
+    "sha256": "a873559383fad2cb603b9f3df4863783ecb2cfae25b2a39a699e1bafa1ab9efa"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "4bc8754f-28af-4080-8f40-0449d986ee5f": {
+   "answer_form": "String",
+   "answers": "up to 10 years",
+   "doc_id": "news/08_29",
+   "doc_type": "news",
+   "evidence_context": "He was charged on Wednesda with complicity in managing an online platform to enable illega transactions by an organized group, which could lead to a sentence of up to 10 years in prison.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/08_29.json",
+    "sha256": "a873559383fad2cb603b9f3df4863783ecb2cfae25b2a39a699e1bafa1ab9efa"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "4f1728e0-a481-4fc5-95d8-3d89694241b7": {
+   "answer_form": "String",
+   "answers": "Tucker Carlson",
+   "doc_id": "news/08_02",
+   "doc_type": "news",
+   "evidence_context": "Tucker Carlson, the former Fox News host who spoke at the Republican National Convention last month, said on his popular interview show that the vice president was 'sort of Black, sort of Indian.'",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/08_02.json",
+    "sha256": "06b415da8ebe0e58f9856166be83c8e1c1f55f4a5bb8b0f9130f96703fed1846"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "4f1be99c-316e-4285-b5b2-8dfec52d96b8": {
+   "answer_form": "Numeric",
+   "answers": "24",
+   "doc_id": "news/08_02",
+   "doc_type": "news",
+   "evidence_context": "The exchange took place at the international airport in Ankara, Turkey's capital, and involved even planes ferrying the 24 prisoners from the United States, Germany, Poland, Slovenia, Norway and Russia, according to the Turkish government.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/08_02.json",
+    "sha256": "06b415da8ebe0e58f9856166be83c8e1c1f55f4a5bb8b0f9130f96703fed1846"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "4f36d949-6bdb-46b7-8b41-7b8a62b6d721": {
+   "answer_form": "Yes/No",
+   "answers": "Yes",
+   "doc_id": "news/08_02",
+   "doc_type": "news",
+   "evidence_context": "Three years after withdrawing in Tokyo, Simone Biles earned the Olympic all-around gold medal, making her the third woman to do so twice.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/08_02.json",
+    "sha256": "06b415da8ebe0e58f9856166be83c8e1c1f55f4a5bb8b0f9130f96703fed1846"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "4fab2ad8-8091-421d-a637-c09facf606fc": {
+   "answer_form": "String",
+   "answers": "Los Angeles",
+   "doc_id": "news/07_10",
+   "doc_type": "news",
+   "evidence_context": "The Sixth Street Bridge in Los Angeles, known as the 'Ribbon of Light', has been cast into darkness after its wiring was stolen.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/07_10.json",
+    "sha256": "c4ef8077616c5b02f2c1fe366154c347778f201ed1382955d52482143427c093"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "4fac816c-e2d3-41cc-9883-502e7f320e78": {
+   "answer_form": "String",
+   "answers": "Bronze artwork",
+   "doc_id": "news/07_10",
+   "doc_type": "news",
+   "evidence_context": "And in Denver, two men were caught stealing bronze artwork from a Martin Luther King Jr. monument, causing roughly",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/07_10.json",
+    "sha256": "c4ef8077616c5b02f2c1fe366154c347778f201ed1382955d52482143427c093"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "4fb7c3bb-4408-404c-af44-6806c1378e75": {
+   "answer_form": "Numeric",
+   "answers": "$25 to $30 apiece",
+   "doc_id": "news/07_10",
+   "doc_type": "news",
+   "evidence_context": "In tightly blockaded Gaza, cigarettes have become increasingly scarce, now generally selling for $25 to $30 apiece.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/07_10.json",
+    "sha256": "c4ef8077616c5b02f2c1fe366154c347778f201ed1382955d52482143427c093"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "50e1fdda-86c3-4047-9758-9cc633f33b00": {
+   "answer_form": "String",
+   "answers": "Caspar Grosse",
+   "doc_id": "news/07_07",
+   "doc_type": "news",
+   "evidence_context": "Mr. Grosse said he was so upset by the episode that he confronted his commander.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/07_07.json",
+    "sha256": "90e11e8ac3488173a39ccc54e9d6f82bef8928251f8841270d27b84f6777b572"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "50ed6af2-235f-4be1-b8b5-5fb556d1079c": {
+   "answer_form": "String",
+   "answers": "a suburb in the Dallas-Fort Worth area",
+   "doc_id": "news/07_07",
+   "doc_type": "news",
+   "evidence_context": "Ryan P. Williams, the think tank's president, moved to a suburb in the Dallas-Fort Worth area.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/07_07.json",
+    "sha256": "90e11e8ac3488173a39ccc54e9d6f82bef8928251f8841270d27b84f6777b572"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "65ea29d1-adae-4e45-a036-e74be34d7804": {
+   "answer_form": "Yes/No",
+   "answers": "Yes",
+   "doc_id": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5",
+   "doc_type": "textbook",
+   "evidence_context": "The BASC-2 test manual reports the following technical adequacy means for this composite scale: alpha reliability, .97; test-retest reliability, .89; and inter-rater reliability, .61.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5.json",
+    "sha256": "c1c19f2784d67e083ff50601f962cefabb84e30caec67d745c95bd46f58e7d23"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "69199a8a-aea6-4315-88ef-444a6e63ffa4": {
+   "answer_form": "String",
+   "answers": "It increased from 15.4% in 2005 to 16.7% in 2014.",
+   "doc_id": "textbook/socialsci-177546.pdf_157",
+   "doc_type": "textbook",
+   "evidence_context": "In 2014, 16.7% of the country's new HIV diagnoses (7,391 of 44,071) were among people 50 and older, according to the Centers for Disease Control and Prevention (2014e). This was an increase from 15.4% in 2005.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/socialsci-177546.pdf_157.json",
+    "sha256": "c28b1104d03ad015891218d2c7ee0b00cf7118f2cf47a65bef3e0ef59e4f3a64"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "6ac85f42-a9c0-4dec-ac25-aad69dcc668f": {
+   "answer_form": "String",
+   "answers": "f(x) divides \\( x^{q^{k}}-x \\)",
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "doc_type": "textbook",
+   "evidence_context": "Since  \\( f(x) \\)  is the minimal polynomial for  \\( \u0007lpha \\)  it follows that  \\( f(x) \\)  divides  \\( x^{q^{k}}-x \\).",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174.json",
+    "sha256": "4a14ef5830f5313de7fd40a698040438f52061f6f9d2a13e7fc00067f25c23d4"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "6ae04d52-adb3-48cb-b315-8c0c66dd7794": {
+   "answer_form": "String",
+   "answers": "${\\frac{n}{d}}\\operatorname{tr}_{E/F}(\\alpha)={\\frac{n}{d}}c_{1}$",
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "doc_type": "textbook",
+   "evidence_context": "$$\\operatorname{tr}_{K/F}(\\alpha)=\\operatorname{tr}_{E/F}(\\operatorname{tr}_{K/E}(\\alpha))=\\operatorname{tr}_{E/F}\\!\\left({\\frac{n}{d}}\\,\\alpha\\right)={\\frac{n}{d}}\\operatorname{tr}_{E/F}(\\alpha)={\\frac{n}{d}}\\operatorname{c}_{1}.$$",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "formula",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174.json",
+    "sha256": "4a14ef5830f5313de7fd40a698040438f52061f6f9d2a13e7fc00067f25c23d4"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "6af79ad2-993e-48c6-a6b1-06e289110af0": {
+   "answer_form": "String",
+   "answers": "$q \\equiv 1 \\left(m\\right)$",
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "doc_type": "textbook",
+   "evidence_context": "Suppose that the coefficients are in  $F$, a finite field, with  $q$  elements and that  $q\\equiv1\\left(m\\right)$. We have to investigate the number  $N_{s}$  of elements in  $\\bar{H}_{f}(F_{s}).$",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "formula",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174.json",
+    "sha256": "4a14ef5830f5313de7fd40a698040438f52061f6f9d2a13e7fc00067f25c23d4"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "6b0bbdf8-3437-4798-8b5a-07c1234bf373": {
+   "answer_form": "String",
+   "answers": "$N_{E/F}(\\alpha)^{n/d}=c_{d}^{n/d}$",
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "doc_type": "textbook",
+   "evidence_context": "$$N_{K/F}(\\alpha)=N_{E/F}(N_{K/E}(\\alpha))=N_{E/F}(\\alpha^{n/d})=N_{E/F}(\\alpha)^{n/d}=c_{d}^{n/d}.$$",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "formula",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174.json",
+    "sha256": "4a14ef5830f5313de7fd40a698040438f52061f6f9d2a13e7fc00067f25c23d4"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "76a3d0f7-998d-476a-aac4-55c92f7a8e02": {
+   "answer_form": "String",
+   "answers": "tetra-",
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "doc_type": "textbook",
+   "evidence_context": "4 & tetra-",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/chem-323236.pdf_183.json",
+    "sha256": "639155871baaefcd0c97e6c7623e14090ef0c6c800e8a110d73f6a2696e4c1c3"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "76a933cf-65fd-4f69-93a2-5c9b6e3a52d7": {
+   "answer_form": "Numeric",
+   "answers": "18",
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "doc_type": "textbook",
+   "evidence_context": "A molecule of octane, which is a component of gasoline, $\\mathrm{C_{8}H_{18}}$.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/chem-323236.pdf_183.json",
+    "sha256": "639155871baaefcd0c97e6c7623e14090ef0c6c800e8a110d73f6a2696e4c1c3"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "7d154385-52fb-443b-9954-6eb400257ad1": {
+   "answer_form": "String",
+   "answers": "NPS and BLM",
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12",
+   "doc_type": "news",
+   "evidence_context": [
+    "All populations of the relict leopard frog occur on Federal land (Service, BLM, NPS, BR).",
+    "NPS and BLM manage all extant relict leopard frog sites except Pupfish Refuge and Corn Creek."
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12.json",
+    "sha256": "6c1751eeaef7ea18caba115f5e9ec9478b5e6c535267f5b822396a11db0a622f"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "843f2774-85f0-4f5e-ab99-017191bb94d6": {
+   "answer_form": "List",
+   "answers": "1. 对弗吉尼亚的植物进行了深入调查；2. 曾将其以正规植物学方式记录下的考察笔记和亲手绘制的植物图鉴交给约翰·雷，由后者编入《植物通史》第二卷（1680）。这是最早出现的有关美洲植物的专门书籍",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "1676 & 弗吉尼亚 & 约翰·班尼斯特（John Banister, 1654—1692） & 1. 对弗吉尼亚的植物进行了深入调查；2. 曾将其以正规植物学方式记录下的考察笔记和亲手绘制的植物图鉴交给约翰·雷，由后者编入《植物通史》第二卷（1680）。这是最早出现的有关美洲植物的专门书籍",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "843f36fb-80a4-4486-a135-3c36fed0fe37": {
+   "answer_form": "Numeric",
+   "answers": "108",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "1693-1695 & 北美洲的法国殖民地 & 查尔斯·普留米尔（Charles Plumier, 1646-1704） & 1693年出版了带有108幅插图的《美洲新植物志》（Nova Plantarum Americanarum Genera）",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "84403b37-b13b-4d4e-a368-f7d2d9732b86": {
+   "answer_form": "Numeric",
+   "answers": "7",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "1570-1577 & 墨西哥 & 弗朗西斯科·埃尔南德斯·托莱多博士（Dr. Francisco Hernández de Toledo, 1515—1578） & 1. 他在政府的“五年计划”支持下对墨西哥的自然科学开始了科研调查，其后又自费将调研延长两年；2. 整理成16卷套的《新西班牙动植物矿产志》（Plantas y Animales de la Nueva Espana）一书",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "8443e6fc-ddf7-413b-99bb-79250fe7e7c1": {
+   "answer_form": "Numeric",
+   "answers": "800",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "1687-1689 & 牙买加岛 & 汉斯·斯隆（Hans Sloane, 1660-1753） & 1. 牙买加岛植物最初的调查，采集了约800种植物标本，其中包括近百种蕨类植物，一举成为在植物学历史上开辟了这片处女地的著名植物学者和采集师；2. 1707年出版了《牙买加博物志》第1卷",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "8444d5a1-23cf-4c9b-b361-a95cba02ab71": {
+   "answer_form": "Numeric",
+   "answers": "1000",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "1690-1692 & 牙买加岛 & 杰纳斯·哈洛（Janes Harlow） & 对牙买加进一步开展植物考察，带回的20个大木箱中每箱分装了50株植物，此外还有大量植物标本",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "8445b560-af74-4c54-b7ca-306245f188ea": {
+   "answer_form": "Numeric",
+   "answers": "93",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "1690 & 西印度群岛东南端的巴巴多斯岛（Barbados） & 詹姆士·利德（James Rheed） & 1. 向国内发回了一份载有93种植物的目录；2. 将86种活体植物装运回国",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "844629d9-e065-41f1-a353-f41b1573ec4c": {
+   "answer_form": "Numeric",
+   "answers": "7",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "1637-1644 & 巴西 & 乔治·马可格拉夫（Georg Markgraf, 1611-1648） & 1. 马可格拉夫在艰难的战火岁月里坚持了7年的天文观察与植物采集工作；2. 皮索根据马可格拉夫的笔记于1648年出版了长达12卷的考察报告《巴西自然志》（Historia Naturalis Brasiliae），这是史上第一部对巴西动植物全面而系统的记录和介绍",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "8e391133-8339-4035-8252-5a3694211554": {
+   "answer_form": "List",
+   "answers": "Peak Clipping,Valley Filling,Load Shifting,Strategic Load Growth,Flexible Load Shape",
+   "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+   "doc_type": "finance",
+   "evidence_context": [
+    "(2) Peak Clipping - expenses related to explorations, development, analysis and implementation of means by which load shape might be modified by the reduction of peak load;",
+    "(3) Valley Filling - expenses related to exploration, development, analysis and implementation of means by which load shape might be modified by increasing offpeak loads.",
+    "(4) Load Shifting - expenses related to exploration, development, analysis and implementation of means by which load shape might be modified by shifting loads from on-peak to off-peak periods;",
+    "(5) Strategic Load Growth - expenses related to exploration, development, analysis and implementation of means by which load shape might be modified by a general increase in sales;",
+    "(6) Flexible Load Shape - expenses related to exploration, development, analysis and implementation of means by which load shape might be modified temporarily."
+   ],
+   "evidence_page_no_raw": 6,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    6
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/finance/DUDE_9b7a779d9329077be8a5346b722d6b34.json",
+    "sha256": "73b0c0d6efa6235ef606ed97d01e847b62d80a7e4f9d28c15732ffd8b351a11d"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "9033aa9f-c4c3-46a3-85e9-601ca9f4eec6": {
+   "answer_form": "String",
+   "answers": "$5 \\frac{1}{2}{ }^{\\prime \\prime} \\times \\frac{3}{4}$\" Whit. Hex. Bolt and Nut",
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "doc_type": "manual",
+   "evidence_context": "Remove tractor upper link arm and fit Upper Link Assembly (BZ-A11), using a $5 \\frac{1}{2}{ }^{\\prime \\prime} \\times \\frac{3}{4}$\" Whit. Hex. Bolt and Nut.",
+   "evidence_page_no_raw": 3,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    3
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/manual/DUDE_7c58b2a77575a7897197445460fc0285.json",
+    "sha256": "27fca44057846831dd8584037dbdecbd0c024fcf3e06449e71d562b183483908"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "903c205e-4096-4680-8dbc-f79de4cae32d": {
+   "answer_form": "String",
+   "answers": "$5 \\frac{1}{2}$\" $\\times \\frac{3}{4}$",
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "doc_type": "manual",
+   "evidence_context": "Attach the Upper Link Assembly to the lugs on the Tine Bar Assembly using the $5 \\frac{1}{2}$\" $\\times \\frac{3}{4}$\" Whit. Hex Bolt and Nut as illustrated in Figure 6.",
+   "evidence_page_no_raw": 5,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    5
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/manual/DUDE_7c58b2a77575a7897197445460fc0285.json",
+    "sha256": "27fca44057846831dd8584037dbdecbd0c024fcf3e06449e71d562b183483908"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "903dbc9b-9965-4d42-93e5-3530a75b8a95": {
+   "answer_form": "String",
+   "answers": "Dexta Tractor",
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "doc_type": "manual",
+   "evidence_context": "NOTE:- The $4'' \\times 1''$ Bolt and Nut is only used in conjunction with the Dexta Tractor.",
+   "evidence_page_no_raw": 5,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    5
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/manual/DUDE_7c58b2a77575a7897197445460fc0285.json",
+    "sha256": "27fca44057846831dd8584037dbdecbd0c024fcf3e06449e71d562b183483908"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "97078c0e-3812-4f4a-b9c3-2574c3eb9ff7": {
+   "answer_form": "String",
+   "answers": "She was no longer on the list of approved adjunct faculty.",
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "doc_type": "news",
+   "evidence_context": "The Personnel Action Form will not be signed and fully executed,\" Serna wrote. \"You are no longer on the list of approved adjunct faculty. Thank you.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/DUDE_4e51a6e4193828e37bfe5655919acbc8.json",
+    "sha256": "af3d0ccd1f1cc82f900cd23d0ae6e8b7aaa6dc526f90dbe5f646488b53840390"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "99e0aff2-f4f1-4be2-b904-753e088e0faf": {
+   "answer_form": "String",
+   "answers": "Because it unreasonably interferes with the use of such areas by others.",
+   "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+   "doc_type": "administration",
+   "evidence_context": "LYING DOWN ON THE GROUND, OR LYING DOWN ON BENCHES, SITTING AREAS OR WALKWAYS WHICH UNREASONABLY INTERFERES WITH THE USE OF BENCHES, SITTING AREAS OR WALKWAYS BY OTHERS.",
+   "evidence_page_no_raw": 1,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/administration/DUDE_aae11c0a8c4869c113687f3413f47300.json",
+    "sha256": "047c73a86ca527e827e9ddea53fb39a09bf317b01bc53b1a3908f7d4e1b69595"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "9c99bcfa-8c11-4c38-9280-dd7c8bf5d605": {
+   "answer_form": "String",
+   "answers": "约翰·班尼斯特将其考察笔记和绘制的植物图鉴交给约翰·雷，由后者编入《植物通史》第二卷（1680）。",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": "曾将其以正规植物学方式记录下的考察笔记和亲手绘制的植物图鉴交给约翰·雷，由后者编入《植物通史》第二卷（1680）。",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "9c9bb784-0ea2-41d4-993c-c52a23b37499": {
+   "answer_form": "List",
+   "answers": "汉斯·斯隆和杰纳斯·哈洛在牙买加岛进行了植物调查，汉斯·斯隆出版了《牙买加博物志》第1卷。",
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "evidence_context": [
+    "牙买加岛植物最初的调查，采集了约800种植物标本，其中包括近百种蕨类植物，一举成为在植物学历史上开辟了这片处女地的著名植物学者和采集师；2. 1707年出版了《牙买加博物志》第1卷。",
+    "对牙买加进一步开展植物考察，带回的20个大木箱中每箱分装了50株植物，此外还有大量植物标本。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "sha256": "62c5245c70966858c26251985c5f258f4223e7b480abba1ca1908bbdc5fb69dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "9cb9f9aa-bf4d-4eaa-81f2-005bc7537df5": {
+   "answer_form": "String",
+   "answers": "UK movies site, epub hub",
+   "doc_id": "textbook/GNHK_eng_AS_022",
+   "doc_type": "textbook",
+   "evidence_context": "There is UK movies site, epub hub and others that offer wide selection of genres of books.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GNHK_eng_AS_022.json",
+    "sha256": "a90f7539c3fe4d83408bd7318fde4b758d421dd9bdb680bd187113472cff09dd"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "9d99eb49-f01e-44df-b15f-d5e8fc3a49ce": {
+   "answer_form": "String",
+   "answers": "Conduct a thorough research",
+   "doc_id": "textbook/GNHK_eng_AF_046",
+   "doc_type": "textbook",
+   "evidence_context": "Steps to false %math% Conduct a though research %math% draft a business plan %math% choose a business name and registerit %math% lease a facility %math% employ experienced staff.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GNHK_eng_AF_046.json",
+    "sha256": "42fda05cd18196a74d50287499671c08ad37739c2e0b6fd50d0a371c0572eb5f"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "9e95f8bc-eade-486e-bc82-343d22faf888": {
+   "answer_form": "String",
+   "answers": "DNVGL, Bureau Veritas, Liyod's Register, ABS",
+   "doc_id": "textbook/GNHK_eng_NA_023",
+   "doc_type": "textbook",
+   "evidence_context": "MEPC 259 SCHEME B TYPE APPROVAL SCHEME B (SCHEME 'A') 95% - DNVGL - Bureau Veritas - Liyod's Register. - ABS",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GNHK_eng_NA_023.json",
+    "sha256": "974171f1446a40e793431c528127fa2874f544b9bfcf5a3968a3eaa004888c96"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "9f46ab56-9295-4da8-b229-3f56295c3860": {
+   "answer_form": "Numeric",
+   "answers": "54",
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "doc_type": "academic",
+   "evidence_context": "Hess pointed out that $54 \\%$ of his 513 maxillary molar specimens had four canals ${ }^{13}$.",
+   "evidence_page_no_raw": 3,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    3
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.json",
+    "sha256": "aedd33164c6823adcbdbc855479a43f0a0159105e4c71a8edb56c42ba0a53437"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "a0ec729f-b41c-480a-bcfb-8a406fda1a8b": {
+   "answer_form": "String",
+   "answers": "18 2959355",
+   "doc_id": "textbook/GNHK_eng_EU_310",
+   "doc_type": "textbook",
+   "evidence_context": "SCI Interiors. Ltd 88/89 Furze rd Sandyford Ind. Est. 18 2959355 info@sci.ie",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GNHK_eng_EU_310.json",
+    "sha256": "43c3ca119208fd964c5fac4885362755471f0e3fd3bbd7865cccb5bd1f79e834"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "a12ab315-2121-4e24-b76b-5e22f44cddbc": {
+   "answer_form": "String",
+   "answers": "新疆南部、黄河流域",
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "doc_type": "textbook",
+   "evidence_context": "我国三大产棉区：新疆南部、黄河流域。",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74.json",
+    "sha256": "8ed136eb693730698fe1f2b66cb4c2e0d93f4762ef6197f7262eb402465a9e4a"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "a1ab17c0-7662-49cc-9af9-5c78247f4d97": {
+   "answer_form": "String",
+   "answers": "Division",
+   "doc_id": "textbook/GNHK_eng_EU_137",
+   "doc_type": "textbook",
+   "evidence_context": "For 4 servings. How many for 12? ( experience he has to divide 12 by 4 = 3 4",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GNHK_eng_EU_137.json",
+    "sha256": "617c6baad631982165f0ec630edc2a81dc515fbaa1f597c61093dfc1f76466b0"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "a7005e84-52db-4271-931d-a9205b6fc91a": {
+   "answer_form": "Yes/No",
+   "answers": "No",
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+   "doc_type": "textbook",
+   "evidence_context": "few 、a few 与可数名词连用或代替可数的事物，Little、 a little与不可数名词连用或代替不可数的事物。",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46.json",
+    "sha256": "45d7a77f8c9447effe30ff6d2b6ae62c43049edc42245ce06a9ac27058a35ca2"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "b7ad5f22-7e21-476c-9933-ea8fb579e050": {
+   "answer_form": "String",
+   "answers": "Better evaluation",
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "doc_type": "academic",
+   "evidence_context": [
+    "Unlike the previous imaging technique, the oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins.",
+    "Dentascan now provides a better evaluation of the lesion."
+   ],
+   "evidence_page_no_raw": [
+    0,
+    2
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    2
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.json",
+    "sha256": "aedd33164c6823adcbdbc855479a43f0a0159105e4c71a8edb56c42ba0a53437"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b7aecd17-359b-4b98-adff-49878e2e9fde": {
+   "answer_form": "String",
+   "answers": "Three-plane imaging",
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "doc_type": "academic",
+   "evidence_context": [
+    "Dentascan is a computed tomography (CT) software program that allows the mandible and maxilla to be imaged in three planes: axial, panoramic and cross-sectional.",
+    "The Dentascan allows the clinician to perfectly locate the tooth on the dental arch, together with its position and in relation to adjacent teeth."
+   ],
+   "evidence_page_no_raw": [
+    0,
+    2
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    2
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.json",
+    "sha256": "aedd33164c6823adcbdbc855479a43f0a0159105e4c71a8edb56c42ba0a53437"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b7b6de06-f264-4539-bed9-373b5285b1a8": {
+   "answer_form": "String",
+   "answers": "An email from Anthony Sena stated Annette Rodriquez was not approved to teach.",
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "doc_type": "news",
+   "evidence_context": [
+    "Rodriguez was unaware that such a list existed, so she requested the document through the Inspection of Public Records Act on May 21.",
+    "An email from Anthony Sena, Northern's provost, to Franklin, confirmed as much."
+   ],
+   "evidence_page_no_raw": [
+    0,
+    1
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/DUDE_4e51a6e4193828e37bfe5655919acbc8.json",
+    "sha256": "af3d0ccd1f1cc82f900cd23d0ae6e8b7aaa6dc526f90dbe5f646488b53840390"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b7b738af-ad4c-4e38-aafe-76c5733ccb9e": {
+   "answer_form": "String",
+   "answers": "Serna decided not to sign the contract, which Rodriguez felt was outside his authority.",
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "doc_type": "news",
+   "evidence_context": [
+    "He responded on May 7 and informed her she is not approved and would not be teaching at the college anymore, effectively terminating her employment.",
+    "As you can see the vice president of advancement is clearly making academic hiring decisions, something which is far outside of his authority,\" Rodriguez wrote."
+   ],
+   "evidence_page_no_raw": [
+    0,
+    1
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/DUDE_4e51a6e4193828e37bfe5655919acbc8.json",
+    "sha256": "af3d0ccd1f1cc82f900cd23d0ae6e8b7aaa6dc526f90dbe5f646488b53840390"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b7bd77ce-af3a-4f3c-b86f-591a6cf81cbf": {
+   "answer_form": "String",
+   "answers": "The Ship Building Administration of the Navy Department of the USA was mentioned in association with overseeing personnel.",
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "doc_type": "administration",
+   "evidence_context": [
+    "Lt. Com. Smith of the Ship Building Administration of the Navy Department [sic, probably Bureau of Naval Yards and Docks] of the USA.",
+    "[11] Chief of Naval Operations."
+   ],
+   "evidence_page_no_raw": [
+    0,
+    1
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "multi",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77.json",
+    "sha256": "0168428efef25d423999307d28d6082aca163c3e7b61bf4d8d17ec1d4d4bf800"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b7bd7bec-4295-4976-b0ee-0dd8eff42770": {
+   "answer_form": "String",
+   "answers": "The Soviet Government Purchasing Commission was involved alongside the USA's Ship Building Administration.",
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "doc_type": "administration",
+   "evidence_context": [
+    "I am transmitting the text of a letter (translated from English) received by me from Admiral KING",
+    "[111] Chief of the Marine Dept. of the Naval, Marine, and Transportation Div. of the Soviet Government Purchasing Commission in the USA."
+   ],
+   "evidence_page_no_raw": [
+    0,
+    1
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "multi",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77.json",
+    "sha256": "0168428efef25d423999307d28d6082aca163c3e7b61bf4d8d17ec1d4d4bf800"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b839af51-a618-411f-8eb4-51b948d2339f": {
+   "answer_form": "Yes/No",
+   "answers": "Yes",
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "doc_type": "law",
+   "evidence_context": [
+    "NOW THEREFORE, in consideration of the sum of $ 10.00 paid by each party to the other, and the representations, warranties and covenants contained herein, the sufficiency of which is hereby acknowledged, the parties hereto agree as follows...",
+    "19. Acknowledgement. Turpin has carefully read and considered the terms of this Agreement and, having done so, understands the terms and agrees that the terms herein are fair and reasonable and are reasonably required for the protection of the interests of the Company."
+   ],
+   "evidence_page_no_raw": [
+    0,
+    2
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    2
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.json",
+    "sha256": "23745c077b4b0cfad9ce0aa57ba0cf5a485f33d1a18083cb581de18823ad56fc"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b89d6523-85c6-40cd-9d60-db0fd596f619": {
+   "answer_form": "String",
+   "answers": "Dentascan provides three-dimensional imaging which helps in diagnosis.",
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "doc_type": "academic",
+   "evidence_context": [
+    "Utility of Dentascan is not only confined to preoperative assessment of bone but it also find its usage in endodontology as extra canals are a common findings and missing these canals leads to endodontic treatment failure.",
+    "The CT scan in addition with Dentascan reconstructions gives a very good performance that should not be limited to a pre-implant evaluation."
+   ],
+   "evidence_page_no_raw": [
+    3,
+    4
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    3,
+    4
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.json",
+    "sha256": "aedd33164c6823adcbdbc855479a43f0a0159105e4c71a8edb56c42ba0a53437"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "b8cb2ea3-f2a6-4007-b0b1-cd3118fc45be": {
+   "answer_form": "String",
+   "answers": "State costs include responses to State notices, and Federal costs include studying federal rulemaking.",
+   "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+   "doc_type": "finance",
+   "evidence_context": [
+    "The cost of studying and responding to notices of inquiry or proposed Federal rulemaking or administrative or regulatory proceedings...",
+    "(2) State - All direct and indirect costs which are incurred for the purpose of an EEI or member company response to a State notice of inquiry or proposed State rulemaking or administrative, or regulatory proceeding..."
+   ],
+   "evidence_page_no_raw": [
+    4,
+    5
+   ],
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    4,
+    5
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/finance/DUDE_9b7a779d9329077be8a5346b722d6b34.json",
+    "sha256": "73b0c0d6efa6235ef606ed97d01e847b62d80a7e4f9d28c15732ffd8b351a11d"
+   },
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_scripts": []
+  },
+  "c124ca55-e0e8-4da1-8276-0e0749b4b7c4": {
+   "answer_form": "String",
+   "answers": "NPS and BLM",
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12",
+   "doc_type": "news",
+   "evidence_context": [
+    "All populations of the relict leopard frog occur on Federal land (Service, BLM, NPS, BR).",
+    "NPS and BLM manage all extant relict leopard frog sites except Pupfish Refuge and Corn Creek."
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12.json",
+    "sha256": "6c1751eeaef7ea18caba115f5e9ec9478b5e6c535267f5b822396a11db0a622f"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "c13a5633-1414-4d65-b83f-514c1dc5e898": {
+   "answer_form": "String",
+   "answers": "何仁芽几次带队到安乡县暗访，掌握大量第一手资料后，多次向县委、县政府提出整改要求，并提出对农民负担过重地方实行重点监控的建议。",
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "根据农民的上访，何仁芽几次带队到安乡县暗访，在掌握大量的第一手资料以后，多次向县委、县政府提出整改要求。",
+    "为视进减轻农民负担工作的平衡发展，他提出对农民负担过重地方实行重点监控的建议，得到了省委，省政府的采纳。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1.json",
+    "sha256": "9f537bd4b1a46bde73baa8c37a2b4153d6f45fd06149adf75da79cb604dbae14"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c13c0802-fe54-4c5c-bdb6-0b91133e156f": {
+   "answer_form": "String",
+   "answers": "提请纪检监察机关立案查处",
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "针对个别地方在落实种粮补贴政策时出现克扣，截留、抵扣粮补资金的情况，何仁芽会同省纠风办对岳阳，邵阳、衡阳等9个市州减负惠农致策落实情兄进行了多次抽查。并责成相关部门进行认真整改，还将检查的情况报告给了省委，省政府。",
+    "乡镇粮补资金被抵扣的同题，何仁芽四进岳阳县摸清情况后，提请纪检监察机关立案查处。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1.json",
+    "sha256": "9f537bd4b1a46bde73baa8c37a2b4153d6f45fd06149adf75da79cb604dbae14"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c13c36b1-9a26-4370-a351-c31601ffcd2c": {
+   "answer_form": "String",
+   "answers": "清退截留、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行了问责和纪律追究",
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "针对个别地方在落实种粮补贴政策时出现克扣，截留、抵扣粮补资金的情况，何仁芽会同省纠风办对岳阳，邵阳、衡阳等9个市州减负惠农致策落实情兄进行了多次抽查。并责成相关部门进行认真整改，还将检查的情况报告给了省委，省政府。",
+    "省政府领导根据何仁芽所提意见作出重要批示：岳阳市纪委立案查处后，当年清退截留、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行了同责和纪律追究，最终使问随得到彻底解决。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1.json",
+    "sha256": "9f537bd4b1a46bde73baa8c37a2b4153d6f45fd06149adf75da79cb604dbae14"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c1b4fda9-eb3b-411f-8e9e-5e99310b0509": {
+   "answer_form": "String",
+   "answers": "“先建后补”，“以奖代补”",
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "据了解，该县坚持走“龙头企业+养殖小区+适度规模养殖户”的路子，启动现代畜牧业生猪项目，现代农业生猪项目、秸秆养羊项目、生猪标准化养殖项目等有关项目，采政“先建后补”，“以奖代补”等形式支持适度规模养殖农户标准化圈舍",
+    "改造和养殖场建设。该县还积极采取招商引资、银企对接等方式先后引进铭泰牧业、伟帮牧业等公司投资建设大型规模养殖场。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "sha256": "7706532f1be301e8b6ad85f1265b1305d05317568d6af3842cfd94f65ed5cdf7"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c1b51377-737c-4de0-a057-13cd784cfe45": {
+   "answer_form": "String",
+   "answers": "招商引资、银企对接",
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "据了解，该县坚持走“龙头企业+养殖小区+适度规模养殖户”的路子，启动现代畜牧业生猪项目，现代农业生猪项目、秸秆养羊项目、生猪标准化养殖项目等有关项目，采政“先建后补”，“以奖代补”等形式支持适度规模养殖农户标准化圈舍",
+    "改造和养殖场建设。该县还积极采取招商引资、银企对接等方式先后引进铭泰牧业、伟帮牧业等公司投资建设大型规模养殖场。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "sha256": "7706532f1be301e8b6ad85f1265b1305d05317568d6af3842cfd94f65ed5cdf7"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c1bc68ba-2417-4739-9382-26867037b0ab": {
+   "answer_form": "String",
+   "answers": "外三元杂交肉猪、PIC优质配套系肉猪、安格斯和西门塔尔杂交肉牛、黑山羊、南江黄羊、波尔山羊",
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "该县在发展规模养殖过程中，牵佳跟踪服务这个畜牧业规模化养殖的“牛鼻子”。通过对圈舍周边环境的翔实考察，该县畜牧食品局按",
+    "重点推广外三元杂交肉猪和PIC优质配套系肉猪、安格斯和西门塔尔杂交肉牛及黑山羊、南江黄羊、波尔山羊等优质肉羊，着力优化畜禽品种。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "sha256": "7706532f1be301e8b6ad85f1265b1305d05317568d6af3842cfd94f65ed5cdf7"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c1bd4467-7db1-4e3f-9c91-7bc9fc625b02": {
+   "answer_form": "String",
+   "answers": "免费提供建设规划图纸",
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "该县在发展规模养殖过程中，牵佳跟踪服务这个畜牧业规模化养殖的“牛鼻子”。通过对圈舍周边环境的翔实考察，该县畜牧食品局按",
+    "在第一时间免费为规模养殖大户提供建设规划图纸。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "sha256": "7706532f1be301e8b6ad85f1265b1305d05317568d6af3842cfd94f65ed5cdf7"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c1bf5e37-8462-46db-bdd3-cb3c704b2b61": {
+   "answer_form": "String",
+   "answers": "抑制能量饲料投放量，一般不超过总食量的85%",
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "“二控”是；生长后期抑制能量饲料投放量，一般不超过总食量的85%。控制脂肪沉积，可提升瘦肉率含量。",
+    "“二控”是；生长后期抑制能量饲料投放量，一般不超过总食量的85%。控制脂肪沉积，可提升瘦肉率含量。"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "sha256": "7706532f1be301e8b6ad85f1265b1305d05317568d6af3842cfd94f65ed5cdf7"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "c1c1738c-b02c-4656-a0d9-d6388d4e6ecb": {
+   "answer_form": "String",
+   "answers": "0.2%~0.3%",
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "evidence_context": [
+    "“三加”是：适度合理投用添加剂。有些用户过量使用添加剂，导致效果低下和浪费。杜仲粉可促进肌肉纤维发育，今肉质鲜美。一般用量在0.2%~0.3%为宜；",
+    "“三加”是：适度合理投用添加剂。有些用户过量使用添加剂，导致效果低下和浪费。杜仲粉可促进肌肉纤维发育，今肉质鲜美。一般用量在0.2%~0.3%为宜；"
+   ],
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "sha256": "7706532f1be301e8b6ad85f1265b1305d05317568d6af3842cfd94f65ed5cdf7"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "ecb5f40d-0d22-47f5-91ca-8d78d531d37a": {
+   "answer_form": "String",
+   "answers": "Mr Rush",
+   "doc_id": "textbook/GNHK_eng_EU_099",
+   "doc_type": "textbook",
+   "evidence_context": "Liam looked at pictures in the Mr Men book, 'Mr Rush' and made up a story.",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GNHK_eng_EU_099.json",
+    "sha256": "3b7fac25019f1fa110724fc5b30c468f0075ee6387374dbba428774ba9749f4a"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7": {
+   "answer_form": "String",
+   "answers": "Christmas and adoration",
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "doc_type": "textbook",
+   "evidence_context": "Everybody belong belong body included Christ %NA% family connected CHRISTMAS life what CLASSICS about ADORATION %SC%",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/GNHK_eng_EU_298.json",
+    "sha256": "729cc8800294fee838755612ddb500c8b3b72f3ee848502235a248b197793147"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "eccc944b-bdbf-461d-be32-632c58943915": {
+   "answer_form": "String",
+   "answers": "Sahara Desert",
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+   "doc_type": "textbook",
+   "evidence_context": "世界最大的沙漠一撒哈拉大沙漠",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121.json",
+    "sha256": "3836e0bb3df8e88e3757246de7e3af2e70102e4a0b346d6a401d6b8c1b9bf85a"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": []
+  },
+  "ecccdf67-bc03-447c-a990-d5989185f21a": {
+   "answer_form": "String",
+   "answers": "1. 不急于作答，先将要作的题目全部从头到尾阅读一遍，确定先答哪些，后答哪些。2. 在具体解答某题之前，再将该题仔细阅读一遍，弄清题目的要求。",
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+   "doc_type": "textbook",
+   "evidence_context": "一般来说，审题应做到：\n\t(1)不急于作答，先将要作的题目全部从头到尾阅读一遍，看看究竟有些什么样的题目，然后本着先易后难先简后繁的原则，确定先答哪些，后答哪些，作到心中有底。\n\t(2)在具体解答某题之前，再将该题仔细阅读一遍，弄清题目的要求，全面",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124.json",
+    "sha256": "653b76f365504ee4e324408f071e8dbc4647aa9a12a23ea35e0875a369b1fc2f"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  },
+  "ecd44593-9f98-4aa0-9890-46dbf35c54ea": {
+   "answer_form": "String",
+   "answers": "两年三熟或一年两熟",
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "doc_type": "textbook",
+   "evidence_context": "北方地区 & 旱地 & 东北平原：一年一熟，华北平原：两年三熟或一年两熟 & 小麦、花生、大豆、甜菜、棉花 \\",
+   "evidence_page_no_raw": 0,
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "gt_reference": {
+    "page_ids": [
+     0
+    ],
+    "path": "OHR-Bench/data/retrieval_base/gt/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74.json",
+    "sha256": "8ed136eb693730698fe1f2b66cb4c2e0d93f4762ef6197f7262eb402465a9e4a"
+   },
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_scripts": [
+    "han"
+   ]
+  }
+ },
+ "reference_text": {
+  "source": "gt",
+  "tree_digest": {
+   "files": 1560,
+   "sha256_of_sorted_path_hash_lines": "0ead14d965030864274e5297a1f171c6fc347fc88e6c189c78f60e0e285d10c5"
+  }
+ },
+ "schema_version": 1
+}

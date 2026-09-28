@@ -1,0 +1,1427 @@
+{
+ "contract": "inputs a later system may read: question text, document identity, complete PDF page inventory and noisy-text references. No gold answers, evidence labels, evidence contexts, gt text or annotations.",
+ "documents": [
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "doc_type": "academic",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.json",
+    "problems": [],
+    "sha256": "407e83d4ed5fc2bcd9b8121e58cdf0a3f8ebba88940a52bc3d4870ae544da934",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "9fc608e8b480f874ccdeadf0d5ef2d5a7104bd277710270f18e6a3f9b91fba25",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "171ab2dc2365e9fd2e23a651314a8a98b3a7a21c789b1b6dcf8f78537607f495",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "0ef4fb727b0754c0232675ac84d8448f3f9c2738c60c45d1d3fac6a5add5b632",
+     "page_idx": 2,
+     "pdf_page_number": 3
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "81a4234dd53183c4869f056905728ada43cd3ec48c9732c87b59e8a162a87b61",
+     "page_idx": 3,
+     "pdf_page_number": 4
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "ab2806c0fb5107553260fbea440858b00773540d4d49864bd7ecf5687a5f1e58",
+     "page_idx": 4,
+     "pdf_page_number": 5
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 2821752,
+    "member": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.pdf",
+    "page_count": 5,
+    "sha256": "87250d7990435d0729b95d0fa9cbeeaa0115f6cf27fe91318a123c9636fbb87f"
+   },
+   "qa_doc_names": [
+    "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6"
+   ]
+  },
+  {
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "doc_type": "administration",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77.json",
+    "problems": [],
+    "sha256": "c586aa6ee639a464dd76fca1582b3deb5cbb84f296e952f8321594ee280c4e86",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "86112a7556394f86e943e48c9b079028af68b3327c37ef6c89ef966d775bcca7",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "581ad476a3809d0da3d5348e930db2b08fcd7409d8172d238e52a1e7754bb111",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 54740,
+    "member": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77.pdf",
+    "page_count": 2,
+    "sha256": "bcc3621ded04ad678f9bdf0ef87f7cabcbe27e517271e4813c6a9829c1e08ed1"
+   },
+   "qa_doc_names": [
+    "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77"
+   ]
+  },
+  {
+   "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+   "doc_type": "administration",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/administration/DUDE_aae11c0a8c4869c113687f3413f47300.json",
+    "problems": [],
+    "sha256": "1f25ec8f4d438889736a1b09f64f3cc4d30a9bb374431c6135ad6dcfdedf28b1",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "d4ac67c07bee125eecffc3a34706b0abec79d121412d5e5617e6f7884dd12d17",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "12a30338a1a3dc34017a2bf1012a6eea117540b71179d2df6b0ad0583117526e",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 201464,
+    "member": "administration/DUDE_aae11c0a8c4869c113687f3413f47300.pdf",
+    "page_count": 2,
+    "sha256": "99f9f349d2eb1d4b8ac2c893286890084a4f7f0bc349a999f5f50d0907839044"
+   },
+   "qa_doc_names": [
+    "administration/DUDE_aae11c0a8c4869c113687f3413f47300"
+   ]
+  },
+  {
+   "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+   "doc_type": "finance",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/finance/DUDE_9b7a779d9329077be8a5346b722d6b34.json",
+    "problems": [],
+    "sha256": "2d3e24011e972d0603b782e3d173e2c188b3db353e76e8af1a7d8dba2b589a8b",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "a207169e1d8bfaf2a414184d99a759f16386eaf32aac4d01294ecfe6bcb024c5",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "a749cb222aeab0127a9092f61ba84aa9dd38014de1cdbfceb60f0bca4547b666",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "9108e53de36d0bacee96a208184b116b503dae5e592090bae0866dbb10a1261a",
+     "page_idx": 2,
+     "pdf_page_number": 3
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "28ce7cbaf4d0d5e1653d1c8de7d3c074566e44514c4832ecbf8370ec62d261bb",
+     "page_idx": 3,
+     "pdf_page_number": 4
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "0d42c43ba1ed244629906cae871ae5c1c6c0e60b7b255d5517ada8d7ae8835fb",
+     "page_idx": 4,
+     "pdf_page_number": 5
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "fd6513a2f7926e27a374a771651165a035f5283a633ed0c896982e1c67bed575",
+     "page_idx": 5,
+     "pdf_page_number": 6
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "53d0b5942d0d8b43f70afe5fa0fc64f5e725eac6d6c4c9b0cea6ec937bfdfd31",
+     "page_idx": 6,
+     "pdf_page_number": 7
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "a819e435a08b2a44873f7d191bde3bc1e8cef34ad9252137ab787c21f61c1072",
+     "page_idx": 7,
+     "pdf_page_number": 8
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "b9223d769f0de6723e453f831bcca0dd648ee8a71a27a9a099af77ab3d224fff",
+     "page_idx": 8,
+     "pdf_page_number": 9
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 425226,
+    "member": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34.pdf",
+    "page_count": 9,
+    "sha256": "82c6fe56657bd3d2beb6f00b5736176afe4bb2f587888dbb7532c2a06f962dd3"
+   },
+   "qa_doc_names": [
+    "finance/DUDE_9b7a779d9329077be8a5346b722d6b34"
+   ]
+  },
+  {
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "doc_type": "law",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.json",
+    "problems": [],
+    "sha256": "73366749bcafeefa1dad508290a425293fee4f0349ca581e6ed4cb22ea8f0ab3",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "b276ce25f4d9ec11d30287da64244b9add7ccb4d839fb35553f4ff5833072348",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "40094ca9a053bf3e2ff71dd4e67475c97dd4eebbb4a386a85c4804d7025113c1",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "9339a296b0233ab84d22c61fcf16cd99a31f04be77e7b119f177567a8fb551f3",
+     "page_idx": 2,
+     "pdf_page_number": 3
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 48689,
+    "member": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.pdf",
+    "page_count": 3,
+    "sha256": "8ad8c7e21947e3cb21ae76e11746fd62ffcc30eaa3927684aac90727f78f726b"
+   },
+   "qa_doc_names": [
+    "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT"
+   ]
+  },
+  {
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "doc_type": "manual",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/manual/DUDE_7c58b2a77575a7897197445460fc0285.json",
+    "problems": [],
+    "sha256": "25a2c3ccec42764d9795464c22773304b7ef6fe60451748046c4ece8154acc06",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "eb8df447688fa0f069a30169385a6d58d4c072fb2a3eb2af466ef27b1bfa3a05",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "df659394b812d17d590cf637baa1db2d0bc24b32417ca494a8ff901c7a75439c",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "c3ee2d0c6666445a37f654c3804e9cea194cfad3f43725b07d98fc856dcfa3bb",
+     "page_idx": 2,
+     "pdf_page_number": 3
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "49ddf3611f7a2a1a54bad7f416ebbe2da1dad136fd83eb1c7c735e8e98ae7237",
+     "page_idx": 3,
+     "pdf_page_number": 4
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "a7804661597a227c6d34eaeb11a698e79ebaf7eebc3f4913c833faa5e2489890",
+     "page_idx": 4,
+     "pdf_page_number": 5
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "64728d63ef891846e49d51ed6f1f5d6da9f6a2f814e85dd982da3b30775bf001",
+     "page_idx": 5,
+     "pdf_page_number": 6
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "10a14ec99b48600ebd66996943315267e98bb20e6dc4fd70c24b8b81e40f7080",
+     "page_idx": 6,
+     "pdf_page_number": 7
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "f43d0442ce41e2005df8753e3798540336e7149e6fd37a9cb61f26bdd0bced52",
+     "page_idx": 7,
+     "pdf_page_number": 8
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 3771048,
+    "member": "manual/DUDE_7c58b2a77575a7897197445460fc0285.pdf",
+    "page_count": 8,
+    "sha256": "7591c131a673775e2af83844c957c3da90c53ec5be012499c373e9a9ee5020a4"
+   },
+   "qa_doc_names": [
+    "manual/DUDE_7c58b2a77575a7897197445460fc0285"
+   ]
+  },
+  {
+   "doc_id": "news/07_07",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/07_07.json",
+    "problems": [],
+    "sha256": "b4ff8c371239e95502ff37ccf0cea8578151f9456a003c210d94c683b901cf49",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "f783e417b350ef376afe5c5ba0811aac34046813462b8bd6703a7a1b008b9674",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 3330913,
+    "member": "news/07_07.pdf",
+    "page_count": 1,
+    "sha256": "de0bba87a3e24888c2edbf02260bcc66d15b7b03682c34b035bcb5524e32e323"
+   },
+   "qa_doc_names": [
+    "news/07_07"
+   ]
+  },
+  {
+   "doc_id": "news/07_10",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/07_10.json",
+    "problems": [],
+    "sha256": "fd49cce4fc9325531763f322d287fee56da138c63d663364bce2d1e5416026b0",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "824fbfff28d667bb9eaa9c9ff54cede688fcac45cdfc76da6397f17147cb1eae",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 2400593,
+    "member": "news/07_10.pdf",
+    "page_count": 1,
+    "sha256": "5f1e3d3da8dbec10f576b7783948eeacb78c0f8e9ab4245a6402fdeb0edf5e44"
+   },
+   "qa_doc_names": [
+    "news/07_10"
+   ]
+  },
+  {
+   "doc_id": "news/08_02",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/08_02.json",
+    "problems": [],
+    "sha256": "e44aa591e6c234601c2ed870be438c2c61ed6145dfc18b193095c14b6d6db693",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "34f49975eadd4fec3d899fd2d77c33c3c3c6656e7f1deca3539dc4bc91b4708f",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 2641620,
+    "member": "news/08_02.pdf",
+    "page_count": 1,
+    "sha256": "1faf9aa0cd13c291953fcf28bc423448c6b3372c5e5abdd23a8d50f6e8f5b7c7"
+   },
+   "qa_doc_names": [
+    "news/08_02"
+   ]
+  },
+  {
+   "doc_id": "news/08_29",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/08_29.json",
+    "problems": [],
+    "sha256": "21ea45ee7d8b066a90ec45a831c13b28c871f0eb68ad87a8ff71fa33203004e5",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "15c3d3d1d329cc09982a824c40501d5ae3291d9a8d63197f275085c47baa2ccd",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 2084585,
+    "member": "news/08_29.pdf",
+    "page_count": 1,
+    "sha256": "eec61544fbfc333b65646fe314068b4610e5cbedf2c53d28174cd796f2a0cdb9"
+   },
+   "qa_doc_names": [
+    "news/08_29"
+   ]
+  },
+  {
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/DUDE_4e51a6e4193828e37bfe5655919acbc8.json",
+    "problems": [],
+    "sha256": "8d542cfe515ade9ef2fbbe79466bac6d28716eb06f275b811e6c3450cd5a7299",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "f77022fcda0798ea1c9244e033f14698dc81e28efcb9c1c9ccc125cd5f2c3164",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "ba681f4911d3501b7f9a5f56fc8d208fb1a5bd50988bdba9a9bf56be4ce67043",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 509121,
+    "member": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8.pdf",
+    "page_count": 2,
+    "sha256": "c79e79587e52c43aece5277dd0d164531b5dcfd4b5e015f93f2c4875731dd9c1"
+   },
+   "qa_doc_names": [
+    "news/DUDE_4e51a6e4193828e37bfe5655919acbc8"
+   ]
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12.json",
+    "problems": [],
+    "sha256": "e4bf8cbf61eec0e7fab7bc6bbebd97124e07668b8b76467718a225cdb8d77672",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "67b6003051f0f4beb79dd93b82897bdfc4f91a8ff7d2fe45d9089ca5327d1167",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 63278,
+    "member": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12.pdf",
+    "page_count": 1,
+    "sha256": "1c0f094c85675b77320f18d499a4d81ebd758141301d9137da2f96ce3b89e0cd"
+   },
+   "qa_doc_names": [
+    "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12"
+   ]
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.json",
+    "problems": [],
+    "sha256": "1d3a7d3c83e31962c320781680ccd48d56d43b7b78787e81f10e76ade30c5839",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "e8548e67e290110ac6b3e7fc167cb14c1741f113107a283a0979f2ff5527a345",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 863654,
+    "member": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.pdf",
+    "page_count": 1,
+    "sha256": "be02c876529e3d2cd8dff647f17fd88c932dc4030b2954e307b2886d04ebf974"
+   },
+   "qa_doc_names": [
+    "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1"
+   ]
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1.json",
+    "problems": [],
+    "sha256": "48070b0d5be0f4a98aa49aca1a531c823a8eda5172a7f7adfd65365d001e99eb",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "727760759cf4470ab41267b5bf1b70c3e223ad9d3f87fec2f622669f2c1f4f98",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 967020,
+    "member": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1.pdf",
+    "page_count": 1,
+    "sha256": "1ecd87ddd4e1ab3d51d523576480a2f42da453b111691849d9fa9ef286aac296"
+   },
+   "qa_doc_names": [
+    "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1"
+   ]
+  },
+  {
+   "doc_id": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5.json",
+    "problems": [],
+    "sha256": "efc0e62eb778a425d202745298c154832c4f2cdf57c4195a107583193644b2dc",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "61cf3e5d6fb6f489408f8d8a8da5de447a68edb0aa577a5c0062fdf59e257394",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 704521,
+    "member": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5.pdf",
+    "page_count": 1,
+    "sha256": "ac8b1aad0b06073995ab879cfcd8402e265034258ff1a4bf6ceef3acdd0efe0e"
+   },
+   "qa_doc_names": [
+    "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_046",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_AF_046.json",
+    "problems": [],
+    "sha256": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "empty",
+     "ocr_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 152957,
+    "member": "textbook/GNHK_eng_AF_046.pdf",
+    "page_count": 1,
+    "sha256": "2982d3f1d70b22d8c752f5369309bc52565b225f73e6235d926c15e4450f549d"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_AF_046"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AS_022",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_AS_022.json",
+    "problems": [],
+    "sha256": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "empty",
+     "ocr_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 314532,
+    "member": "textbook/GNHK_eng_AS_022.pdf",
+    "page_count": 1,
+    "sha256": "b7cb97be56528bd9b37294cfbe864fac49e185c3c4ca249b6a01d7641ec55df8"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_AS_022"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_099",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_EU_099.json",
+    "problems": [],
+    "sha256": "8e764f5dd87a7fde32b801b5dede70b351232dc319c0b96495f92490eed3623c",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "40c49c3ce932dd56f61ac0b01e7fdc8b2d823e444508631eb2179f54f55d4b67",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 732564,
+    "member": "textbook/GNHK_eng_EU_099.pdf",
+    "page_count": 1,
+    "sha256": "9a0941e49ad0da07993ed1d61791a233b29eb0886a91d57cdc3444aec9576018"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_EU_099"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_137",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_EU_137.json",
+    "problems": [],
+    "sha256": "5e20593f5303d4ca00ddaac877a2eae5f4d6824629e62456ae260cd2d285f5f2",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "3af07678de1e000fc3bd3e3f6d31dc3a17457cbb939b2ea37ba271d480c150da",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 506263,
+    "member": "textbook/GNHK_eng_EU_137.pdf",
+    "page_count": 1,
+    "sha256": "2b9c80265f63dab96193e29babc081dac00eaad0da1e335a638245d5a7a5a1f9"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_EU_137"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_EU_298.json",
+    "problems": [],
+    "sha256": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "empty",
+     "ocr_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 110673,
+    "member": "textbook/GNHK_eng_EU_298.pdf",
+    "page_count": 1,
+    "sha256": "e77ba1802af64b4b369aeb83b0f0d73c2021fb4d511026921ecf061c5de02cf4"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_EU_298"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_310",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_EU_310.json",
+    "problems": [],
+    "sha256": "50f86828bf0f3118162da4a4e287196a3fe1622b0a9a718b74a81784a9d4f389",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "bc847e5bad6dff08a49eae5d6ce176b1a07d365dc2b91d138827cfa2e0ebb410",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 48468,
+    "member": "textbook/GNHK_eng_EU_310.pdf",
+    "page_count": 1,
+    "sha256": "55029bfa8e65f296c283fc1948a2dc2227c4087d7f2a08dc894fffce3f100313"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_EU_310"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_023",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_NA_023.json",
+    "problems": [],
+    "sha256": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "empty",
+     "ocr_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 133770,
+    "member": "textbook/GNHK_eng_NA_023.pdf",
+    "page_count": 1,
+    "sha256": "dc89eb8aec9f744e9dd3a87b20bd7655ee902add91dd3cf15db6978237f33e69"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_NA_023"
+   ]
+  },
+  {
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174.json",
+    "problems": [],
+    "sha256": "52a35fb261da558f6bafaaa91d31f17ab0e144692eb960688a9eaf78ac9e14b7",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "1f5eea78336d941f0b6d6b276574aa4afc1985ef1ccc84294fa0906141c2135d",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 207647,
+    "member": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174.pdf",
+    "page_count": 1,
+    "sha256": "13f62aaf34e56573c946980d9f34aab00c3dc06706c6354301ba785843a669dc"
+   },
+   "qa_doc_names": [
+    "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174"
+   ]
+  },
+  {
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/chem-323236.pdf_183.json",
+    "problems": [],
+    "sha256": "1b67f538be60d27c11c4742fd0cfc1eb1a5f6d330ac6718d0596bb857a80a9f1",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "929691cd68e51321ff7c8d6935f8b1a046525b973839807d003c14743f10f186",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 341185,
+    "member": "textbook/chem-323236.pdf_183.pdf",
+    "page_count": 1,
+    "sha256": "480aa7d8996ecb93917a2bff83c752a08add3248e3ed1468feffb39eb5395d0b"
+   },
+   "qa_doc_names": [
+    "textbook/chem-323236.pdf_183"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "problems": [],
+    "sha256": "f38d374932f0a718c0053b07e022b5fc00cc185668d2632c10c4ced69bbb3b7f",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "bfc7309246a0c59f3791478705cbc039f549883bf479f142e40ae9ca9449ba4c",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 630629,
+    "member": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.pdf",
+    "page_count": 1,
+    "sha256": "d16d33051e7aaf09877ac29ec7deca0fc22e5bbdac9dfb60bfe945eeed0fc3f0"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121.json",
+    "problems": [],
+    "sha256": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "empty",
+     "ocr_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 58067,
+    "member": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121.pdf",
+    "page_count": 1,
+    "sha256": "6653853be5f029ed7af979a03f2472db6938371fd7dfb222ec79ad7046f9b0d8"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124.json",
+    "problems": [],
+    "sha256": "56f8f08a6467706f8b21fde9b7782ad93d5dfbe2a3ed9d98f7416ab6de4cfee0",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "ca03491127ec60d5ea8c8caf54974e70dc9d69178e0625eaaaa21af9a40e6bc3",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 75012,
+    "member": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124.pdf",
+    "page_count": 1,
+    "sha256": "6a8e3c1c471040e6dfd10ea289ae874ec0d021a4e91dae5d3be38b5ff9ef4ebc"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74.json",
+    "problems": [],
+    "sha256": "06044e749c1bc841c7f195141f01c9a7092fe4ec8eaf8c8674fca683288a7ca3",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "6cee7808448e765ed13392f7aa7b2a48b86c5f642d2c90d9ef4a7ea267e351ae",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 61701,
+    "member": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74.pdf",
+    "page_count": 1,
+    "sha256": "0ffb22093297380ae7e3f55a1490fcab9e2b5216462d2446b1c1ebf3481e6e9b"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46.json",
+    "problems": [],
+    "sha256": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "empty",
+     "ocr_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 80403,
+    "member": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46.pdf",
+    "page_count": 1,
+    "sha256": "4c5fafab395983dfca6aeb3008c38553425286820efa519e7374d2eaeecb9a93"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46"
+   ]
+  },
+  {
+   "doc_id": "textbook/socialsci-177546.pdf_157",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/socialsci-177546.pdf_157.json",
+    "problems": [],
+    "sha256": "1b5c8a0de1401d46b6d051154baa3387a53e49fab97ced3ca5b077c579124db9",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "c5c574ac515b58cd5ad531b9761b40cbfcb6d696aa31b6377d7e19caf22f7d94",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 530050,
+    "member": "textbook/socialsci-177546.pdf_157.pdf",
+    "page_count": 1,
+    "sha256": "d82cd0cfb6ba4a69fe18c5d38e42ffb84bb8ba1fa3f5e75b86171977781a5d2e"
+   },
+   "qa_doc_names": [
+    "textbook/socialsci-177546.pdf_157"
+   ]
+  }
+ ],
+ "kind": "runtime",
+ "ocr_status_values": {
+  "empty": "noisy text entry present but blank",
+  "missing": "no noisy text entry for this PDF page",
+  "ok": "noisy text present and non-empty"
+ },
+ "page_convention": "page_idx is 0-based and equals the PDF page index; pdf_page_number = page_idx + 1",
+ "pilot_id": "ohr_dev_v1",
+ "questions": [
+  {
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "question": "What is the role of Kenneth Turpin in the agreement?",
+   "question_id": "3390ac10-6278-495a-b438-9b472a83c504"
+  },
+  {
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "question": "What is the monetary consideration exchanged between VISUALANT INCORPORATED and Kenneth Turpin in the agreement?",
+   "question_id": "339bfba4-d220-4c8e-a2d4-174a81cf8010"
+  },
+  {
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "question": "Does the definition of 'Work Product' in the agreement include items developed by Kenneth Turpin after working hours?",
+   "question_id": "33a1d1c2-ad4a-4155-809f-cd8f739cd488"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "question": "沙门氏菌病是如何通过不同途径传播并对仔猪产生急性影响的？",
+   "question_id": "3e896c64-e117-4ac3-919c-4ea3e1805081"
+  },
+  {
+   "doc_id": "news/08_29",
+   "question": "What consequence did Pavel Durov face in relation to the charges against him in France?",
+   "question_id": "4bc7051b-9711-4924-80d5-59d4628d87fd"
+  },
+  {
+   "doc_id": "news/08_29",
+   "question": "What is the potential prison sentence Pavel Durov could face due to the charges filed against him in France?",
+   "question_id": "4bc8754f-28af-4080-8f40-0449d986ee5f"
+  },
+  {
+   "doc_id": "news/08_02",
+   "question": "Who is aiming to suggest to Black voters that Kamala Harris shifts her personal identity for political advantage?",
+   "question_id": "4f1728e0-a481-4fc5-95d8-3d89694241b7"
+  },
+  {
+   "doc_id": "news/08_02",
+   "question": "How many prisoners were involved in the swap mediated by Turkey, according to the Turkish government?",
+   "question_id": "4f1be99c-316e-4285-b5b2-8dfec52d96b8"
+  },
+  {
+   "doc_id": "news/08_02",
+   "question": "Did Simone Biles earn the Olympic all-around gold medal twice?",
+   "question_id": "4f36d949-6bdb-46b7-8b41-7b8a62b6d721"
+  },
+  {
+   "doc_id": "news/07_10",
+   "question": "Where is the Sixth Street Bridge known as the 'Ribbon of Light' located?",
+   "question_id": "4fab2ad8-8091-421d-a637-c09facf606fc"
+  },
+  {
+   "doc_id": "news/07_10",
+   "question": "What were the two men in Denver accused of stealing from a Martin Luther King Jr. monument according to a report?",
+   "question_id": "4fac816c-e2d3-41cc-9883-502e7f320e78"
+  },
+  {
+   "doc_id": "news/07_10",
+   "question": "How much are cigarettes reportedly selling for in Gaza according to U.N. and Israel officials?",
+   "question_id": "4fb7c3bb-4408-404c-af44-6806c1378e75"
+  },
+  {
+   "doc_id": "news/07_07",
+   "question": "Who confronted his commander after witnessing the shooting of a wounded and unarmed Russian soldier in Ukraine?",
+   "question_id": "50e1fdda-86c3-4047-9758-9cc633f33b00"
+  },
+  {
+   "doc_id": "news/07_07",
+   "question": "Where did Ryan P. Williams, the president of the Claremont Institute, relocate to from Southern California?",
+   "question_id": "50ed6af2-235f-4be1-b8b5-5fb556d1079c"
+  },
+  {
+   "doc_id": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5",
+   "question": "Does the BASC-2 Teacher Report Scale-Child Form Adaptive Scale have higher alpha reliability compared to its inter-rater reliability?",
+   "question_id": "65ea29d1-adae-4e45-a036-e74be34d7804"
+  },
+  {
+   "doc_id": "textbook/socialsci-177546.pdf_157",
+   "question": "How did the percentage of new HIV diagnoses among people aged 50 and older in 2014 compare to that in 2005 according to the Centers for Disease Control and Prevention?",
+   "question_id": "69199a8a-aea6-4315-88ef-444a6e63ffa4"
+  },
+  {
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "question": "If \\( f(x) \\) is the minimal polynomial for \\( \u0007lpha \\), what does \\( f(x) \\) divide?",
+   "question_id": "6ac85f42-a9c0-4dec-ac25-aad69dcc668f"
+  },
+  {
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "question": "What is the value of $\\operatorname{tr}_{K/F}(\\alpha)$ in terms of $\\operatorname{tr}_{E/F}(\\alpha)$, $n$, and $d$?",
+   "question_id": "6ae04d52-adb3-48cb-b315-8c0c66dd7794"
+  },
+  {
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "question": "What is the condition on $q$ in relation to $m$ for the rationality of the zeta function associated to $a_{0} x_{0}^{m} + a_{1} x_{1}^{m} + \\cdots + a_{n} x_{n}^{m}$?",
+   "question_id": "6af79ad2-993e-48c6-a6b1-06e289110af0"
+  },
+  {
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "question": "How is $N_{K/F}(\\alpha)$ expressed in terms of $N_{E/F}(\\alpha)$ and $c_{d}$?",
+   "question_id": "6b0bbdf8-3437-4798-8b5a-07c1234bf373"
+  },
+  {
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "question": "What is the prefix used to specify a molecule with four atoms of an element according to Table 5.8.1?",
+   "question_id": "76a3d0f7-998d-476a-aac4-55c92f7a8e02"
+  },
+  {
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "question": "How many hydrogen atoms are contained in a molecule of octane, which is a component of gasoline?",
+   "question_id": "76a933cf-65fd-4f69-93a2-5c9b6e3a52d7"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12",
+   "question": "Which organizations manage all extant relict leopard frog sites except Pupfish Refuge and Corn Creek, and provide facilities essential for their population augmentation?",
+   "question_id": "7d154385-52fb-443b-9954-6eb400257ad1"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "约翰·班尼斯特在1676年对弗吉尼亚的植物进行了哪些具体工作？",
+   "question_id": "843f2774-85f0-4f5e-ab99-017191bb94d6"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "查尔斯·普留米尔在1693年出版的作品中包含了多少幅插图？",
+   "question_id": "843f36fb-80a4-4486-a135-3c36fed0fe37"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "弗朗西斯科·埃尔南德斯·托莱多博士在墨西哥的自然科学研究持续了多少年？",
+   "question_id": "84403b37-b13b-4d4e-a368-f7d2d9732b86"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "汉斯·斯隆在牙买加岛采集了多少种植物标本？",
+   "question_id": "8443e6fc-ddf7-413b-99bb-79250fe7e7c1"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "杰纳斯·哈洛在牙买加岛的植物考察中带回了多少株植物？",
+   "question_id": "8444d5a1-23cf-4c9b-b361-a95cba02ab71"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "詹姆士·利德在西印度群岛东南端的巴巴多斯岛发回了多少种植物的目录？",
+   "question_id": "8445b560-af74-4c54-b7ca-306245f188ea"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "乔治·马可格拉夫在巴西的天文观察与植物采集工作持续了多少年？",
+   "question_id": "844629d9-e065-41f1-a353-f41b1573ec4c"
+  },
+  {
+   "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+   "question": "What are the types of expenses related to modifying the load shape as defined by the Edison Electric Institute Audit Definitions?",
+   "question_id": "8e391133-8339-4035-8252-5a3694211554"
+  },
+  {
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "question": "What size and type of bolt and nut are required to fit the Upper Link Assembly (BZ-A11) to the FORDSON DEXTA tractor?",
+   "question_id": "9033aa9f-c4c3-46a3-85e9-601ca9f4eec6"
+  },
+  {
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "question": "What size of Whitworth hex bolt and nut is used to attach the Upper Link Assembly to the lugs on the Tine Bar Assembly?",
+   "question_id": "903c205e-4096-4680-8dbc-f79de4cae32d"
+  },
+  {
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "question": "Which tractor model requires the use of the $4'' \\times 1''$ bolt and nut for attachment?",
+   "question_id": "903dbc9b-9965-4d42-93e5-3530a75b8a95"
+  },
+  {
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "question": "What was the reason given by Ricky Serna for Annette Rodriguez no longer being able to teach at Northern New Mexico College?",
+   "question_id": "97078c0e-3812-4f4a-b9c3-2574c3eb9ff7"
+  },
+  {
+   "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+   "question": "Why is lying down on benches, sitting areas, or walkways in Zuccotti Park considered prohibited behavior?",
+   "question_id": "99e0aff2-f4f1-4be2-b904-753e088e0faf"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "约翰·班尼斯特在弗吉尼亚的工作成果是如何被记录和传播的？",
+   "question_id": "9c99bcfa-8c11-4c38-9280-dd7c8bf5d605"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "在17世纪，哪些植物学家在牙买加岛进行了植物调查，并出版了相关著作？",
+   "question_id": "9c9bb784-0ea2-41d4-993c-c52a23b37499"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AS_022",
+   "question": "What are two examples of websites mentioned in the document where free books can be downloaded?",
+   "question_id": "9cb9f9aa-bf4d-4eaa-81f2-005bc7537df5"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_046",
+   "question": "What is the first step mentioned to start a matred line?",
+   "question_id": "9d99eb49-f01e-44df-b15f-d5e8fc3a49ce"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_023",
+   "question": "Which classification societies are mentioned in the MEPC 259 SCHEME B TYPE APPROVAL SCHEME B?",
+   "question_id": "9e95f8bc-eade-486e-bc82-343d22faf888"
+  },
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "question": "What is the percentage of maxillary molar specimens that had four canals according to Hess's findings?",
+   "question_id": "9f46ab56-9295-4da8-b229-3f56295c3860"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_310",
+   "question": "What is the phone number for SCI Interiors Ltd located at 88/89 Furze Rd, Sandyford Ind. Est.?",
+   "question_id": "a0ec729f-b41c-480a-bcfb-8a406fda1a8b"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "question": "我国三大产棉区包括哪些地区？",
+   "question_id": "a12ab315-2121-4e24-b76b-5e22f44cddbc"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_137",
+   "question": "What mathematical operation is required to determine the number of servings needed when scaling from 4 servings to 12 servings?",
+   "question_id": "a1ab17c0-7662-49cc-9af9-5c78247f4d97"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+   "question": "Can 'little' be used with countable nouns?",
+   "question_id": "a7005e84-52db-4271-931d-a9205b6fc91a"
+  },
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "question": "How does Dentascan improve the evaluation of oral scc compared to past methods?",
+   "question_id": "b7ad5f22-7e21-476c-9933-ea8fb579e050"
+  },
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "question": "In what ways has Dentascan improved the imaging of the mandibular region, particularly for surgical planning?",
+   "question_id": "b7aecd17-359b-4b98-adff-49878e2e9fde"
+  },
+  {
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "question": "Why was Annette Rodriguez not approved to teach at Northern New Mexico College, and who communicated this decision?",
+   "question_id": "b7b6de06-f264-4539-bed9-373b5285b1a8"
+  },
+  {
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "question": "What role did Ricky Serna have regarding the teaching approval for Annette Rodriguez at Northern New Mexico College, and how did it conflict with Rodriguez's perspective?",
+   "question_id": "b7b738af-ad4c-4e38-aafe-76c5733ccb9e"
+  },
+  {
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "question": "Who was responsible for overseeing the personnel in the USA according to a letter involving Admiral King and Minakov?",
+   "question_id": "b7bd77ce-af3a-4f3c-b86f-591a6cf81cbf"
+  },
+  {
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "question": "In the interactions between Admiral King and Minakov mentioned in a letter, which organization was involved alongside the USA's Ship Building Administration?",
+   "question_id": "b7bd7bec-4295-4976-b0ee-0dd8eff42770"
+  },
+  {
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "question": "Does Turpin agree that the terms of the Agreement are fair and reasonable for protecting the interests of Visualant Incorporated?",
+   "question_id": "b839af51-a618-411f-8eb4-51b948d2339f"
+  },
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "question": "How does Dentascan enhance the evaluation of dental structures compared to conventional radiographs, especially when assessing complex cases?",
+   "question_id": "b89d6523-85c6-40cd-9d60-db0fd596f619"
+  },
+  {
+   "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+   "question": "What is the scope of costs categorized under State-level regulatory policy research by the Edison Electric Institute as per NARUC reporting, and how do they contrast with federal-level regulatory policy research?",
+   "question_id": "b8cb2ea3-f2a6-4007-b0b1-cd3118fc45be"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12",
+   "question": "Which federal agencies manage the populations of the relict leopard frog, excluding the Pupfish Refuge and Corn Creek?",
+   "question_id": "c124ca55-e0e8-4da1-8276-0e0749b4b7c4"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "question": "何仁芽在发现安乡县农民负担过重的问题后，采取了哪些具体措施来推动整改？",
+   "question_id": "c13a5633-1414-4d65-b83f-514c1dc5e898"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "question": "何仁芽在岳阳县发现粮补资金被抵扣问题后，采取了哪些措施？",
+   "question_id": "c13c0802-fe54-4c5c-bdb6-0b91133e156f"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "question": "岳阳市纪委在何仁芽提请立案查处后，采取了哪些具体行动来处理粮补资金被抵扣的问题？",
+   "question_id": "c13c36b1-9a26-4370-a351-c31601ffcd2c"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "question": "该县通过哪些方式支持适度规模养殖农户进行标准化圈舍改造和养殖场建设？",
+   "question_id": "c1b4fda9-eb3b-411f-8e9e-5e99310b0509"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "question": "该县通过哪些措施引进大型规模养殖场的投资？",
+   "question_id": "c1b51377-737c-4de0-a057-13cd784cfe45"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "question": "该县在发展规模养殖过程中，重点推广了哪些优质肉猪和肉羊品种？",
+   "question_id": "c1bc68ba-2417-4739-9382-26867037b0ab"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "question": "该县畜牧食品局在规模养殖过程中提供了哪些免费服务？",
+   "question_id": "c1bd4467-7db1-4e3f-9c91-7bc9fc625b02"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "question": "在瘦肉型猪的饲养管理中，如何控制生长后期的能量饲料投放量以提高瘦肉率？",
+   "question_id": "c1bf5e37-8462-46db-bdd3-cb3c704b2b61"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "question": "在瘦肉型猪的饲养过程中，杜仲粉的推荐用量是多少以促进肌肉纤维发育？",
+   "question_id": "c1c1738c-b02c-4656-a0d9-d6388d4e6ecb"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_099",
+   "question": "What is the title of the book that Liam looked at pictures in?",
+   "question_id": "ecb5f40d-0d22-47f5-91ca-8d78d531d37a"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "question": "What is the central theme of the document?",
+   "question_id": "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+   "question": "What is the largest desert in the world?",
+   "question_id": "eccc944b-bdbf-461d-be32-632c58943915"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+   "question": "在审题过程中，应该遵循哪些步骤来确保答题质量？",
+   "question_id": "ecccdf67-bc03-447c-a990-d5989185f21a"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "question": "在北方地区，华北平原的作物熟制是什么？",
+   "question_id": "ecd44593-9f98-4aa0-9890-46dbf35c54ea"
+  }
+ ],
+ "schema_version": 1,
+ "sources": {
+  "noisy_text": {
+   "limitation": "MinerU engine version and settings are unknown; bytes match the upstream repository",
+   "root": "OHR-Bench/data/retrieval_base/MinerU",
+   "source": "MinerU",
+   "tree_digest": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "a0d022f0359f127d8b90af8ebbb4fafe7ac541549f90f4ccf0c3ae83231bd18c"
+   },
+   "upstream_reference": "config/ohr_pdf_source_lock.json"
+  },
+  "pdf_archive": {
+   "local_path": "data/ohr_bench_raw/pdfs.zip",
+   "lock": "config/ohr_pdf_source_lock.json",
+   "sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783"
+  }
+ }
+}

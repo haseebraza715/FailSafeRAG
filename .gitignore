@@ -45,3 +45,6 @@ results/calibration/
 results/baselines/
 results/environment/preflight*.json
 cluster/preflight_*.json
+
+# Rendered pilot pages are derived from the OHR PDFs; regenerate with scripts/data/build_pilot.py.
+results/pilots/*/inspection/pages/

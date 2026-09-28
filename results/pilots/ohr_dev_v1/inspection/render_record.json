@@ -1,0 +1,233 @@
+{
+ "crops": [],
+ "dpi": 150,
+ "dpi_note": "150 DPI is an inspection choice, not a frozen model-input setting",
+ "elapsed_sec_including_archive_reads": 7.89,
+ "image_format": "png",
+ "note": "measured on a small purposive sample; not an estimate of full-dataset storage or compute",
+ "pages": [
+  {
+   "bytes": 930562,
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "file": "pages/831ee938058c_p0.png",
+   "height": 1834,
+   "page_idx": 0,
+   "png_sha256": "0a8f6349fc47351e598e9c560cfd1e841d5a78174e99728d537db03702739644",
+   "render_sec": 0.515,
+   "source_member": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77.pdf",
+   "source_sha256": "bcc3621ded04ad678f9bdf0ef87f7cabcbe27e517271e4813c6a9829c1e08ed1",
+   "width": 1417
+  },
+  {
+   "bytes": 313103,
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "file": "pages/831ee938058c_p1.png",
+   "height": 1834,
+   "page_idx": 1,
+   "png_sha256": "3a0224c0207f3f964bd2b0afcd14063b4d3be190a83798437fdde59818712fea",
+   "render_sec": 0.172,
+   "source_member": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77.pdf",
+   "source_sha256": "bcc3621ded04ad678f9bdf0ef87f7cabcbe27e517271e4813c6a9829c1e08ed1",
+   "width": 1417
+  },
+  {
+   "bytes": 755066,
+   "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+   "file": "pages/f078ec9d688d_p1.png",
+   "height": 1651,
+   "page_idx": 1,
+   "png_sha256": "a9dd293665c21f54530d691c8440a65618f231c83e092e985c549fd82635e2cf",
+   "render_sec": 0.211,
+   "source_member": "administration/DUDE_aae11c0a8c4869c113687f3413f47300.pdf",
+   "source_sha256": "99f9f349d2eb1d4b8ac2c893286890084a4f7f0bc349a999f5f50d0907839044",
+   "width": 1275
+  },
+  {
+   "bytes": 392543,
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "file": "pages/f05d69fe37f7_p0.png",
+   "height": 1755,
+   "page_idx": 0,
+   "png_sha256": "4e3ef336d0278e81025eae3d36a32be84c8d869b9fca246635928f45b12ca36d",
+   "render_sec": 0.118,
+   "source_member": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.pdf",
+   "source_sha256": "8ad8c7e21947e3cb21ae76e11746fd62ffcc30eaa3927684aac90727f78f726b",
+   "width": 1240
+  },
+  {
+   "bytes": 251130,
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "file": "pages/f05d69fe37f7_p2.png",
+   "height": 1755,
+   "page_idx": 2,
+   "png_sha256": "f83c31c8f0b64e4e628da0d5a961b79a1e6e8598c3d10583172d1ec34df650c2",
+   "render_sec": 0.104,
+   "source_member": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT.pdf",
+   "source_sha256": "8ad8c7e21947e3cb21ae76e11746fd62ffcc30eaa3927684aac90727f78f726b",
+   "width": 1240
+  },
+  {
+   "bytes": 5412255,
+   "doc_id": "news/08_02",
+   "file": "pages/ced6f84f9f82_p0.png",
+   "height": 3298,
+   "page_idx": 0,
+   "png_sha256": "835726fbb0446e851b37a9b79144df4a38264e4db231f30a93e98a490b31c14b",
+   "render_sec": 0.984,
+   "source_member": "news/08_02.pdf",
+   "source_sha256": "1faf9aa0cd13c291953fcf28bc423448c6b3372c5e5abdd23a8d50f6e8f5b7c7",
+   "width": 1832
+  },
+  {
+   "bytes": 2160731,
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "file": "pages/ed1ac6075b08_p0.png",
+   "height": 1651,
+   "page_idx": 0,
+   "png_sha256": "90e99e6246443a6a8a743ac44e2ed89c4d2f7ec1203cc3c1d42671f925fb66c8",
+   "render_sec": 0.428,
+   "source_member": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8.pdf",
+   "source_sha256": "c79e79587e52c43aece5277dd0d164531b5dcfd4b5e015f93f2c4875731dd9c1",
+   "width": 1275
+  },
+  {
+   "bytes": 2912862,
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "file": "pages/ed1ac6075b08_p1.png",
+   "height": 1651,
+   "page_idx": 1,
+   "png_sha256": "86156ff4bceb05d1720532a1423145437756812251a7acd8be757e065e0203a9",
+   "render_sec": 0.593,
+   "source_member": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8.pdf",
+   "source_sha256": "c79e79587e52c43aece5277dd0d164531b5dcfd4b5e015f93f2c4875731dd9c1",
+   "width": 1275
+  },
+  {
+   "bytes": 3398078,
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "file": "pages/db8db059e940_p0.png",
+   "height": 2955,
+   "page_idx": 0,
+   "png_sha256": "2b13a8528494650acae2ae3d364aa1be719671ac39c9fd83ae832f5e776d0dd4",
+   "render_sec": 0.598,
+   "source_member": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1.pdf",
+   "source_sha256": "be02c876529e3d2cd8dff647f17fd88c932dc4030b2954e307b2886d04ebf974",
+   "width": 2066
+  },
+  {
+   "bytes": 4385656,
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "file": "pages/3f1b02dcd914_p0.png",
+   "height": 2955,
+   "page_idx": 0,
+   "png_sha256": "1c5cfc49533db3b00a056af9309100e0f39c577aae98c153a1754742bea126fb",
+   "render_sec": 0.691,
+   "source_member": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1.pdf",
+   "source_sha256": "1ecd87ddd4e1ab3d51d523576480a2f42da453b111691849d9fa9ef286aac296",
+   "width": 2066
+  },
+  {
+   "bytes": 4300276,
+   "doc_id": "textbook/GNHK_eng_AS_022",
+   "file": "pages/ece23208a272_p0.png",
+   "height": 3073,
+   "page_idx": 0,
+   "png_sha256": "2b9946e37c59b68dcc515d9e81168543198961f66a0f68020b968108c39d374e",
+   "render_sec": 1.453,
+   "source_member": "textbook/GNHK_eng_AS_022.pdf",
+   "source_sha256": "b7cb97be56528bd9b37294cfbe864fac49e185c3c4ca249b6a01d7641ec55df8",
+   "width": 2305
+  },
+  {
+   "bytes": 1131471,
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "file": "pages/46966036c648_p0.png",
+   "height": 1620,
+   "page_idx": 0,
+   "png_sha256": "e919e9307504c6477a76f5dfbac92f0d379f8b20ebc219abe32c8c6e5914f516",
+   "render_sec": 0.396,
+   "source_member": "textbook/GNHK_eng_EU_298.pdf",
+   "source_sha256": "e77ba1802af64b4b369aeb83b0f0d73c2021fb4d511026921ecf061c5de02cf4",
+   "width": 1985
+  },
+  {
+   "bytes": 609735,
+   "doc_id": "textbook/GNHK_eng_EU_310",
+   "file": "pages/449aa037e4ac_p0.png",
+   "height": 698,
+   "page_idx": 0,
+   "png_sha256": "deee5359a67894cea9093feff217d3de33bbdcb2d997dfe7d1d8295f8043d885",
+   "render_sec": 0.184,
+   "source_member": "textbook/GNHK_eng_EU_310.pdf",
+   "source_sha256": "55029bfa8e65f296c283fc1948a2dc2227c4087d7f2a08dc894fffce3f100313",
+   "width": 1200
+  },
+  {
+   "bytes": 1455851,
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "file": "pages/6210fd7671a4_p0.png",
+   "height": 2818,
+   "page_idx": 0,
+   "png_sha256": "e2674bbba19ee6fd4a402ae1e4e702762057b7088690ea797b51f39e024a1c84",
+   "render_sec": 0.436,
+   "source_member": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174.pdf",
+   "source_sha256": "13f62aaf34e56573c946980d9f34aab00c3dc06706c6354301ba785843a669dc",
+   "width": 1872
+  },
+  {
+   "bytes": 2247424,
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "file": "pages/34bd89712a12_p0.png",
+   "height": 3438,
+   "page_idx": 0,
+   "png_sha256": "f78d8d8180b86d3565a42fa9447e72bef88b69384ffd3d0b40407599401da67e",
+   "render_sec": 0.757,
+   "source_member": "textbook/chem-323236.pdf_183.pdf",
+   "source_sha256": "480aa7d8996ecb93917a2bff83c752a08add3248e3ed1468feffb39eb5395d0b",
+   "width": 2657
+  },
+  {
+   "bytes": 301197,
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "file": "pages/cd495fcc3c77_p0.png",
+   "height": 1400,
+   "page_idx": 0,
+   "png_sha256": "d55e3ec43f1e0ce226483b75960bb60a80e751042df3d029dee4471ec19f5989",
+   "render_sec": 0.086,
+   "source_member": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.pdf",
+   "source_sha256": "d16d33051e7aaf09877ac29ec7deca0fc22e5bbdac9dfb60bfe945eeed0fc3f0",
+   "width": 992
+  },
+  {
+   "bytes": 597497,
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+   "file": "pages/c7c7581d90d8_p0.png",
+   "height": 1095,
+   "page_idx": 0,
+   "png_sha256": "65ef200503395af99c6b8e612b18a59ef356b9af4141bbf48cbc78104e876266",
+   "render_sec": 0.139,
+   "source_member": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46.pdf",
+   "source_sha256": "4c5fafab395983dfca6aeb3008c38553425286820efa519e7374d2eaeecb9a93",
+   "width": 774
+  }
+ ],
+ "per_page_bytes": {
+  "max": 5412255,
+  "median": 1131471,
+  "min": 251130
+ },
+ "renderer": {
+  "package": "pypdfium2",
+  "pdfium_build": "6462",
+  "pillow": "10.4.0",
+  "version": "4.30.0"
+ },
+ "schema_version": 1,
+ "selection_digest": "2e2d5061debfb935eb5cdea27cea61273c8064b308e5af5f018d351f458cdd92",
+ "total_image_bytes": 31555437,
+ "unique_pages": 17,
+ "volatile": [
+  "elapsed_sec_including_archive_reads",
+  "pages[].render_sec"
+ ]
+}

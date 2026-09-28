@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "pilot_id": "ohr_dev_v1",
+  "purpose": "development pilot for FAAR mechanism work; not a final benchmark and not an unseen-publication evaluation",
+  "dataset": "OHR-Bench",
+  "qa_source": "OHR-Bench/data/qas_v2.json",
+  "split": "config/datasets/ohr_split.json",
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "noisy_text_source": "MinerU",
+  "reference_text_source": "gt",
+  "output_dir": "results/pilots/ohr_dev_v1",
+  "selection": {
+    "algorithm": "stratified-hash-rank-v1",
+    "seed": 42,
+    "documents": 30,
+    "pool": "train_exclusive",
+    "stratify_by": "doc_type",
+    "minimum_per_available_stratum": 1
+  },
+  "inspection": {
+    "algorithm": "purposive-quota-hash-rank-v1",
+    "cases": 20,
+    "page_budget": 60,
+    "dpi": 150,
+    "image_format": "png",
+    "category_quotas": [
+      ["ocr_gap", 3],
+      ["multi_page_evidence", 2],
+      ["multi_evidence_source", 2],
+      ["han_script", 2],
+      ["table", 2],
+      ["formula", 2],
+      ["chart", 2],
+      ["reading_order", 2],
+      ["text", 3]
+    ]
+  }
+}

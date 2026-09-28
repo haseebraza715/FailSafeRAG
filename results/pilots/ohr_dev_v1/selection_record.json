@@ -1,0 +1,705 @@
+{
+ "algorithm": {
+  "allocation": "per-stratum minimum of 1 where feasible, then largest remainder against proportional quotas; ties -> larger pool, then stratum name",
+  "eligibility_rule": "one raw QA name, exactly one source PDF candidate with audit status verified_complete, and a gt reference; missing or empty OCR never excludes",
+  "identity_rule": "canonical doc id = NFC of the gt inventory key the QA doc_name resolves to (exact, documented alias, or Unicode NFC), as recorded by the asset audit",
+  "inputs_used": "document identity, doc type and source status only; never answers, evidence strings, string-match results or model outputs",
+  "name": "stratified-hash-rank-v1",
+  "pool_rule": "documents all of whose questions are in the train split",
+  "within_stratum": "ascending sha256(seed, 'select', doc_id); independent of input order"
+ },
+ "allocation": [
+  {
+   "allocated": 1,
+   "doc_type": "academic",
+   "eligible_documents": 10,
+   "proportional_quota": 0.8746
+  },
+  {
+   "allocated": 2,
+   "doc_type": "administration",
+   "eligible_documents": 22,
+   "proportional_quota": 1.9242
+  },
+  {
+   "allocated": 1,
+   "doc_type": "finance",
+   "eligible_documents": 4,
+   "proportional_quota": 0.3499
+  },
+  {
+   "allocated": 1,
+   "doc_type": "law",
+   "eligible_documents": 12,
+   "proportional_quota": 1.0496
+  },
+  {
+   "allocated": 1,
+   "doc_type": "manual",
+   "eligible_documents": 18,
+   "proportional_quota": 1.5743
+  },
+  {
+   "allocated": 8,
+   "doc_type": "news",
+   "eligible_documents": 89,
+   "proportional_quota": 7.7843
+  },
+  {
+   "allocated": 16,
+   "doc_type": "textbook",
+   "eligible_documents": 188,
+   "proportional_quota": 16.4431
+  }
+ ],
+ "composition": {
+  "eligible_pool": {
+   "doc_type": {
+    "academic": 10,
+    "administration": 22,
+    "finance": 4,
+    "law": 12,
+    "manual": 18,
+    "news": 89,
+    "textbook": 188
+   },
+   "documents": 343,
+   "documents_with_empty_ocr_pages": 105,
+   "documents_with_missing_ocr_pages": 2,
+   "evidence_page_ocr_status": {
+    "empty": 95,
+    "ok": 597
+   },
+   "evidence_source": {
+    "formula": 75,
+    "multi": 4,
+    "reading_order": 57,
+    "table": 73,
+    "text": 483
+   },
+   "list_valued_evidence": 46,
+   "multi_page_evidence": 46,
+   "ocr_pages": {
+    "empty": 131,
+    "missing": 2,
+    "ok": 582
+   },
+   "page_count_bins": {
+    "1": 277,
+    "2-5": 43,
+    "21-50": 1,
+    "6-20": 22
+   },
+   "pages": 715,
+   "question_scripts": {
+    "han": 109,
+    "none": 583
+   },
+   "questions": 692
+  },
+  "note": "sample descriptions, not accuracy results",
+  "pilot": {
+   "doc_type": {
+    "academic": 1,
+    "administration": 2,
+    "finance": 1,
+    "law": 1,
+    "manual": 1,
+    "news": 8,
+    "textbook": 16
+   },
+   "documents": 30,
+   "documents_with_empty_ocr_pages": 6,
+   "documents_with_missing_ocr_pages": 0,
+   "evidence_page_ocr_status": {
+    "empty": 6,
+    "ok": 64
+   },
+   "evidence_source": {
+    "formula": 3,
+    "multi": 2,
+    "reading_order": 12,
+    "table": 11,
+    "text": 42
+   },
+   "list_valued_evidence": 9,
+   "multi_page_evidence": 9,
+   "ocr_pages": {
+    "empty": 6,
+    "missing": 0,
+    "ok": 48
+   },
+   "page_count_bins": {
+    "1": 23,
+    "2-5": 5,
+    "6-20": 2
+   },
+   "pages": 54,
+   "question_scripts": {
+    "han": 22,
+    "none": 48
+   },
+   "questions": 70
+  }
+ },
+ "config": {
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "dataset": "OHR-Bench",
+  "inspection": {
+   "algorithm": "purposive-quota-hash-rank-v1",
+   "cases": 20,
+   "category_quotas": [
+    [
+     "ocr_gap",
+     3
+    ],
+    [
+     "multi_page_evidence",
+     2
+    ],
+    [
+     "multi_evidence_source",
+     2
+    ],
+    [
+     "han_script",
+     2
+    ],
+    [
+     "table",
+     2
+    ],
+    [
+     "formula",
+     2
+    ],
+    [
+     "chart",
+     2
+    ],
+    [
+     "reading_order",
+     2
+    ],
+    [
+     "text",
+     3
+    ]
+   ],
+   "dpi": 150,
+   "image_format": "png",
+   "page_budget": 60
+  },
+  "noisy_text_source": "MinerU",
+  "output_dir": "results/pilots/ohr_dev_v1",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "pilot_id": "ohr_dev_v1",
+  "purpose": "development pilot for FAAR mechanism work; not a final benchmark and not an unseen-publication evaluation",
+  "qa_source": "OHR-Bench/data/qas_v2.json",
+  "reference_text_source": "gt",
+  "schema_version": 1,
+  "selection": {
+   "algorithm": "stratified-hash-rank-v1",
+   "documents": 30,
+   "minimum_per_available_stratum": 1,
+   "pool": "train_exclusive",
+   "seed": 42,
+   "stratify_by": "doc_type"
+  },
+  "split": "config/datasets/ohr_split.json"
+ },
+ "config_sha256": "07739741441b5c1add44d484fd83956ac0caf1a9f31084ecb1b912d425a54221",
+ "manifest_digests": {
+  "evaluation": "d69598f5cfcad1e2b9d74923f393852b47052f318eba548a603974f3a8e55171",
+  "runtime": "48170abaff88e03b067e3d7f189f3cb218d6a2ddaeb625e21ac26ab21c910b1e"
+ },
+ "pilot_id": "ohr_dev_v1",
+ "pool": {
+  "eligible_documents": 343,
+  "eligible_sha256": "c00ab2c7d9882ec1bf0f9bc3da786ad03ae41ad4981e43d3b85cb2bfb85957d9",
+  "source_exclusions": [],
+  "train_exclusive_documents": 343
+ },
+ "schema_version": 1,
+ "seed": 42,
+ "selected_documents": [
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "doc_type": "academic",
+   "rank_key": "17be124c8b974de228b89e77a1cac52bc715517b80ddb80544fa3a28d7cd3937"
+  },
+  {
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "doc_type": "administration",
+   "rank_key": "0c2e2269b2b80be7270fb270c773a4f16793ca1f1be1a951fcc954293c8afa99"
+  },
+  {
+   "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+   "doc_type": "administration",
+   "rank_key": "0491828369bac57daaeac716069fa90fdcc581985816ed73ae8d66d5ecc41e77"
+  },
+  {
+   "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+   "doc_type": "finance",
+   "rank_key": "1ad7b6af786178fe523ef26d6017fbab4fde1192256d011b3dfa41f285dbe040"
+  },
+  {
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "1cd3c1e66a16956f9c3a104bfda3a9609c61098e3f91a3f30340c8afeba66d5a"
+  },
+  {
+   "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+   "doc_type": "manual",
+   "rank_key": "1100d4533aca25a37b90e3d01ea48631f97444dd2b962263cd3861563da6ffe4"
+  },
+  {
+   "doc_id": "news/07_07",
+   "doc_type": "news",
+   "rank_key": "1f571a3deabc98a14e8449f9dd9d23ef6cded1b0f7e8c0c26be21bf9b3bbd80a"
+  },
+  {
+   "doc_id": "news/07_10",
+   "doc_type": "news",
+   "rank_key": "06853cf74e8d222c26c5059c9804a49d2811f42549c890cdb0d6625f99cd7a15"
+  },
+  {
+   "doc_id": "news/08_02",
+   "doc_type": "news",
+   "rank_key": "04b7b9ac0f3ee417e2d39110551098e3a0bcd297bbac25b86b348765a58bb2dd"
+  },
+  {
+   "doc_id": "news/08_29",
+   "doc_type": "news",
+   "rank_key": "20543e23ee330fc06b8f1bff0f9b8c5710d4c742d090a3a87f7fe85b286fc04c"
+  },
+  {
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "doc_type": "news",
+   "rank_key": "0d04d4a143105ce2885ac24d3a224cb57ef71bf18bef326cf08a87cad287ce74"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12",
+   "doc_type": "news",
+   "rank_key": "0a12201d574a0ff4623a14ed0ddae70e2a8e7ac91ff6111a35cc3323f43bcab2"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "doc_type": "news",
+   "rank_key": "0580844f0d6be10e9ce6b5704dcd434e9cf62b4d69c75bf76cc000fb8a67fcbf"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "doc_type": "news",
+   "rank_key": "089d738e85b3df2fad98a75fcb8613f8a20ccdbaaa2c9cf4391fb22ef865d98b"
+  },
+  {
+   "doc_id": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5",
+   "doc_type": "textbook",
+   "rank_key": "08a474ffb319fb5579c1e30013a0a9dd63de152469b866b388b46b2ef80573ce"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_046",
+   "doc_type": "textbook",
+   "rank_key": "16e8482cdd742bdbf076766703c5474c246fcb5f8a62f1358c2a08b6e99a58f5"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AS_022",
+   "doc_type": "textbook",
+   "rank_key": "07b2defeca4232634e87a564dc28d8c41e2b1ea430a52d97c7bb71ed24c9045c"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_099",
+   "doc_type": "textbook",
+   "rank_key": "042e5e913063487ca48ab47bd115e818154798ea364c140370d507860c642358"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_137",
+   "doc_type": "textbook",
+   "rank_key": "16baa5f4f4b4d34ea46da460280e73c5563f4a5bb22024a0bf26a0edf1f98156"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "doc_type": "textbook",
+   "rank_key": "0586a2cef222abc1588f770b6e59f7493ea7568dab190c99e90942b094744757"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_310",
+   "doc_type": "textbook",
+   "rank_key": "1139f5ee9ef4f11367e6d8b7ef436d5e599f65849d328eb4afdb26e1787d67d4"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_023",
+   "doc_type": "textbook",
+   "rank_key": "050fa3aed315786c475a86d41a8757d4f8abb449fd42b82eaeab2880bb3dac6c"
+  },
+  {
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "doc_type": "textbook",
+   "rank_key": "0501729d66a83dabc7599d41bafe5bb6c5ab81c1d2cb20cbc4022ae072daae7f"
+  },
+  {
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "doc_type": "textbook",
+   "rank_key": "002a784b0c8a4f00cf5917a990d53e6575c41942b5182164107f4d359360f8a0"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "rank_key": "054790bd47fc85d9d56ce800cd660ccd79790e3c8bce0c16337c01edf38cdbfc"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+   "doc_type": "textbook",
+   "rank_key": "1a45427dbaacdbbdb38ab1f9ad38df83f68b47c40f450a0eb4138ea4a2f87f85"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+   "doc_type": "textbook",
+   "rank_key": "1851008d8d27b041c11dc5155313c3bdd95edb738d50a4ddc9104116e486313a"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "doc_type": "textbook",
+   "rank_key": "1654157d88f6f92e70279c8997b53cd832e406023ed2da6af2e0ce90883e4a26"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+   "doc_type": "textbook",
+   "rank_key": "173284c634341bdbdb0d727ce6dc1fd48c77add0429a5e0899ab1347cde4676e"
+  },
+  {
+   "doc_id": "textbook/socialsci-177546.pdf_157",
+   "doc_type": "textbook",
+   "rank_key": "03694dae410b281fbfb80c29d01f12a0eb208289425aa91f88459fa494ae89ac"
+  }
+ ],
+ "selected_question_ids": [
+  "3390ac10-6278-495a-b438-9b472a83c504",
+  "339bfba4-d220-4c8e-a2d4-174a81cf8010",
+  "33a1d1c2-ad4a-4155-809f-cd8f739cd488",
+  "3e896c64-e117-4ac3-919c-4ea3e1805081",
+  "4bc7051b-9711-4924-80d5-59d4628d87fd",
+  "4bc8754f-28af-4080-8f40-0449d986ee5f",
+  "4f1728e0-a481-4fc5-95d8-3d89694241b7",
+  "4f1be99c-316e-4285-b5b2-8dfec52d96b8",
+  "4f36d949-6bdb-46b7-8b41-7b8a62b6d721",
+  "4fab2ad8-8091-421d-a637-c09facf606fc",
+  "4fac816c-e2d3-41cc-9883-502e7f320e78",
+  "4fb7c3bb-4408-404c-af44-6806c1378e75",
+  "50e1fdda-86c3-4047-9758-9cc633f33b00",
+  "50ed6af2-235f-4be1-b8b5-5fb556d1079c",
+  "65ea29d1-adae-4e45-a036-e74be34d7804",
+  "69199a8a-aea6-4315-88ef-444a6e63ffa4",
+  "6ac85f42-a9c0-4dec-ac25-aad69dcc668f",
+  "6ae04d52-adb3-48cb-b315-8c0c66dd7794",
+  "6af79ad2-993e-48c6-a6b1-06e289110af0",
+  "6b0bbdf8-3437-4798-8b5a-07c1234bf373",
+  "76a3d0f7-998d-476a-aac4-55c92f7a8e02",
+  "76a933cf-65fd-4f69-93a2-5c9b6e3a52d7",
+  "7d154385-52fb-443b-9954-6eb400257ad1",
+  "843f2774-85f0-4f5e-ab99-017191bb94d6",
+  "843f36fb-80a4-4486-a135-3c36fed0fe37",
+  "84403b37-b13b-4d4e-a368-f7d2d9732b86",
+  "8443e6fc-ddf7-413b-99bb-79250fe7e7c1",
+  "8444d5a1-23cf-4c9b-b361-a95cba02ab71",
+  "8445b560-af74-4c54-b7ca-306245f188ea",
+  "844629d9-e065-41f1-a353-f41b1573ec4c",
+  "8e391133-8339-4035-8252-5a3694211554",
+  "9033aa9f-c4c3-46a3-85e9-601ca9f4eec6",
+  "903c205e-4096-4680-8dbc-f79de4cae32d",
+  "903dbc9b-9965-4d42-93e5-3530a75b8a95",
+  "97078c0e-3812-4f4a-b9c3-2574c3eb9ff7",
+  "99e0aff2-f4f1-4be2-b904-753e088e0faf",
+  "9c99bcfa-8c11-4c38-9280-dd7c8bf5d605",
+  "9c9bb784-0ea2-41d4-993c-c52a23b37499",
+  "9cb9f9aa-bf4d-4eaa-81f2-005bc7537df5",
+  "9d99eb49-f01e-44df-b15f-d5e8fc3a49ce",
+  "9e95f8bc-eade-486e-bc82-343d22faf888",
+  "9f46ab56-9295-4da8-b229-3f56295c3860",
+  "a0ec729f-b41c-480a-bcfb-8a406fda1a8b",
+  "a12ab315-2121-4e24-b76b-5e22f44cddbc",
+  "a1ab17c0-7662-49cc-9af9-5c78247f4d97",
+  "a7005e84-52db-4271-931d-a9205b6fc91a",
+  "b7ad5f22-7e21-476c-9933-ea8fb579e050",
+  "b7aecd17-359b-4b98-adff-49878e2e9fde",
+  "b7b6de06-f264-4539-bed9-373b5285b1a8",
+  "b7b738af-ad4c-4e38-aafe-76c5733ccb9e",
+  "b7bd77ce-af3a-4f3c-b86f-591a6cf81cbf",
+  "b7bd7bec-4295-4976-b0ee-0dd8eff42770",
+  "b839af51-a618-411f-8eb4-51b948d2339f",
+  "b89d6523-85c6-40cd-9d60-db0fd596f619",
+  "b8cb2ea3-f2a6-4007-b0b1-cd3118fc45be",
+  "c124ca55-e0e8-4da1-8276-0e0749b4b7c4",
+  "c13a5633-1414-4d65-b83f-514c1dc5e898",
+  "c13c0802-fe54-4c5c-bdb6-0b91133e156f",
+  "c13c36b1-9a26-4370-a351-c31601ffcd2c",
+  "c1b4fda9-eb3b-411f-8e9e-5e99310b0509",
+  "c1b51377-737c-4de0-a057-13cd784cfe45",
+  "c1bc68ba-2417-4739-9382-26867037b0ab",
+  "c1bd4467-7db1-4e3f-9c91-7bc9fc625b02",
+  "c1bf5e37-8462-46db-bdd3-cb3c704b2b61",
+  "c1c1738c-b02c-4656-a0d9-d6388d4e6ecb",
+  "ecb5f40d-0d22-47f5-91ca-8d78d531d37a",
+  "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7",
+  "eccc944b-bdbf-461d-be32-632c58943915",
+  "ecccdf67-bc03-447c-a990-d5989185f21a",
+  "ecd44593-9f98-4aa0-9890-46dbf35c54ea"
+ ],
+ "selection_digest": "2e2d5061debfb935eb5cdea27cea61273c8064b308e5af5f018d351f458cdd92",
+ "source_family_overlap": {
+  "confidence": "uncertain: inferred from naming conventions, not upstream metadata; no other grouping (e.g. company filings, GNHK writers) is attempted",
+  "families": [
+   {
+    "family": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_1",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_10",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_11",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_14",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_2",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_4",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_5",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_8",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_9"
+    ]
+   },
+   {
+    "family": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf",
+    "pilot_documents": [
+     "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf",
+    "pilot_documents": [
+     "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/chem-323236.pdf",
+    "pilot_documents": [
+     "textbook/chem-323236.pdf_183"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf",
+    "pilot_documents": [
+     "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_120",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_13",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_37",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_58",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_59",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_76",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_79",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_80",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_81",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_9",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_96",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_97"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_112",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_117",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_26",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_3",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_68",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_69",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_73",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_91",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_93"
+    ]
+   },
+   {
+    "family": "textbook/socialsci-177546.pdf",
+    "pilot_documents": [
+     "textbook/socialsci-177546.pdf_157"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   }
+  ],
+  "families_shared_with_val_or_test": [
+   {
+    "family": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_1",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_10",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_11",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_14",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_2",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_4",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_5",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_8",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_9"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_120",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_13",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_37",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_58",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_59",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_76",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_79",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_80",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_81",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_9",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_96",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_97"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_112",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_117",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_26",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_3",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_68",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_69",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_73",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_91",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_93"
+    ]
+   }
+  ],
+  "families_with_several_pilot_documents": [
+   {
+    "family": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_120",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_13",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_37",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_58",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_59",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_76",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_79",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_80",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_81",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_9",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_96",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_97"
+    ]
+   }
+  ],
+  "pilot_documents_in_families": 12,
+  "rules": {
+   "omnidocbench_hex_page": "'omnidocbench_<collection>_<32-hex id>_<page>': page of one source; family is collection + id",
+   "pdf_page_suffix": "'<publication>.pdf_<page>': page excerpt of one publication; family strips '_<page>'"
+  }
+ },
+ "sources": {
+  "audit_content_sha256": "7bb6df50f543f2c4130409f46e98865a34d2316e7c7e6ceba4e87f0c2557e04b",
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "pdf_archive_sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "pdf_source_lock_sha256": "6f562ba33c413101ce04a177a8dfcec03301590a33f5c76cca8d3413f51b4df6",
+  "qa_sha256": "2446db28741fa9f392067ee7aae7f3b05e0d85c584069a50ddd5b1b5bc783f58",
+  "split_sha256": "64583a532c5db5aa31e4cbb5cd9c7d894c7a2d5e8aa49f1a7f6041f54e714f53",
+  "text_tree_digests": {
+   "OHR-Bench/data/retrieval_base/MinerU": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "a0d022f0359f127d8b90af8ebbb4fafe7ac541549f90f4ccf0c3ae83231bd18c"
+   },
+   "OHR-Bench/data/retrieval_base/gt": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "0ead14d965030864274e5297a1f171c6fc347fc88e6c189c78f60e0e285d10c5"
+   }
+  }
+ },
+ "volatile": {
+  "generated_at_utc": "2026-09-28T16:26:57+00:00",
+  "repository": {
+   "available": true,
+   "branch": "hardening/review-pass",
+   "commit": "22be5e29be5e75191c7979b9414dc9f041b72987",
+   "dirty": true,
+   "dirty_paths": [
+    "SUPERVISOR_HANDOFF.md",
+    "cluster/README.md",
+    "config/ohr_pdf_source_lock.json",
+    "config/pilots/",
+    "docs/experiments/study-brief.md",
+    "docs/operations/runbook.md",
+    "docs/paper/faar_aaai_findings.tex",
+    "docs/reports/data_audit.md",
+    "docs/reports/index.md",
+    "results/data_audit/",
+    "results/pilots/",
+    "scripts/data/audit_assets.py",
+    "scripts/data/build_pilot.py",
+    "tests/test_audit_assets.py"
+   ]
+  }
+ }
+}

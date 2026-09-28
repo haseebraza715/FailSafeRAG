@@ -1,0 +1,484 @@
+{
+ "algorithm": "purposive-quota-hash-rank-v1",
+ "cases": [
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "textbook/GNHK_eng_AS_022",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "9cb9f9aa-bf4d-4eaa-81f2-005bc7537df5",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "a7005e84-52db-4271-931d-a9205b6fc91a",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "text"
+   ],
+   "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b7b6de06-f264-4539-bed9-373b5285b1a8",
+   "question_scripts": [],
+   "selected_for": "multi_page_evidence"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "text"
+   ],
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    2
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b839af51-a618-411f-8eb4-51b948d2339f",
+   "question_scripts": [],
+   "selected_for": "multi_page_evidence"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "multi_evidence_source"
+   ],
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "multi",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b7bd7bec-4295-4976-b0ee-0dd8eff42770",
+   "question_scripts": [],
+   "selected_for": "multi_evidence_source"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "multi_evidence_source"
+   ],
+   "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "multi",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b7bd77ce-af3a-4f3c-b86f-591a6cf81cbf",
+   "question_scripts": [],
+   "selected_for": "multi_evidence_source"
+  },
+  {
+   "categories": [
+    "han_script",
+    "table"
+   ],
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "844629d9-e065-41f1-a353-f41b1573ec4c",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "han_script"
+  },
+  {
+   "categories": [
+    "han_script",
+    "reading_order"
+   ],
+   "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "c1bd4467-7db1-4e3f-9c91-7bc9fc625b02",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "han_script"
+  },
+  {
+   "categories": [
+    "han_script",
+    "table"
+   ],
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "8445b560-af74-4c54-b7ca-306245f188ea",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "table"
+  },
+  {
+   "categories": [
+    "formula"
+   ],
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "formula",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "6b0bbdf8-3437-4798-8b5a-07c1234bf373",
+   "question_scripts": [],
+   "selected_for": "formula"
+  },
+  {
+   "categories": [
+    "formula"
+   ],
+   "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "formula",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "6af79ad2-993e-48c6-a6b1-06e289110af0",
+   "question_scripts": [],
+   "selected_for": "formula"
+  },
+  {
+   "categories": [
+    "han_script",
+    "reading_order"
+   ],
+   "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "c13c36b1-9a26-4370-a351-c31601ffcd2c",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "reading_order"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "news/08_02",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "4f1728e0-a481-4fc5-95d8-3d89694241b7",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "339bfba4-d220-4c8e-a2d4-174a81cf8010",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "76a933cf-65fd-4f69-93a2-5c9b6e3a52d7",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "textbook/GNHK_eng_EU_310",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "a0ec729f-b41c-480a-bcfb-8a406fda1a8b",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "99e0aff2-f4f1-4be2-b904-753e088e0faf",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "table"
+   ],
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "76a3d0f7-998d-476a-aac4-55c92f7a8e02",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "33a1d1c2-ad4a-4155-809f-cd8f739cd488",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  }
+ ],
+ "category_report": [
+  {
+   "available_in_pilot": 6,
+   "cases_covering": 3,
+   "category": "ocr_gap",
+   "quota": 3
+  },
+  {
+   "available_in_pilot": 9,
+   "cases_covering": 2,
+   "category": "multi_page_evidence",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 2,
+   "cases_covering": 2,
+   "category": "multi_evidence_source",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 22,
+   "cases_covering": 2,
+   "category": "han_script",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 11,
+   "cases_covering": 2,
+   "category": "table",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 3,
+   "cases_covering": 2,
+   "category": "formula",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 0,
+   "cases_covering": 0,
+   "category": "chart",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 12,
+   "cases_covering": 2,
+   "category": "reading_order",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 42,
+   "cases_covering": 5,
+   "category": "text",
+   "quota": 3
+  }
+ ],
+ "inspection_digest": "0b483b25ccdc116705c894bb7cfd1e9cff11fb7dfb58c42488538da731e73ada",
+ "pilot_id": "ohr_dev_v1",
+ "procedure": "questions ranked by sha256(seed, 'inspect', question_id); category quotas filled in the configured order (a case counts toward every category it has); remaining slots topped up in rank order; a case whose new evidence pages exceed the page budget is skipped for the next-ranked one",
+ "schema_version": 1,
+ "selection_digest": "2e2d5061debfb935eb5cdea27cea61273c8064b308e5af5f018d351f458cdd92",
+ "skipped_for_page_budget": [],
+ "unavailable_categories": [
+  "chart"
+ ],
+ "unique_pages": [
+  [
+   "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   0
+  ],
+  [
+   "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+   1
+  ],
+  [
+   "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+   1
+  ],
+  [
+   "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   0
+  ],
+  [
+   "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+   2
+  ],
+  [
+   "news/08_02",
+   0
+  ],
+  [
+   "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   0
+  ],
+  [
+   "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+   1
+  ],
+  [
+   "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+   0
+  ],
+  [
+   "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+   0
+  ],
+  [
+   "textbook/GNHK_eng_AS_022",
+   0
+  ],
+  [
+   "textbook/GNHK_eng_EU_298",
+   0
+  ],
+  [
+   "textbook/GNHK_eng_EU_310",
+   0
+  ],
+  [
+   "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+   0
+  ],
+  [
+   "textbook/chem-323236.pdf_183",
+   0
+  ],
+  [
+   "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   0
+  ],
+  [
+   "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+   0
+  ]
+ ],
+ "warning": "purposive inspection sample; its category proportions are not prevalence estimates"
+}
