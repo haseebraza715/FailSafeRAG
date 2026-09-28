@@ -272,8 +272,10 @@ Never send `.env`, keys, model caches, or the raw dataset.
 
 ## 15. Dataset warning
 
-**Do not transfer or duplicate the full ~200 GB OHR dataset before the
-storage and cache strategy is agreed.** The calibration needs only the OHR
+**Inventory the source archive and measure generated storage before transferring
+or duplicating the corpus.** The compressed archive is 1,516,951,813 bytes
+(`config/ohr_pdf_source_lock.json`). The earlier ~200 GB figure is unmeasured and must
+not be used as a dataset size or hardware requirement. The calibration needs only the OHR
 archive, the fixed split, the QA source, and the per-document page inventory
 (section 3). Validation assets are produced on the cluster scratch and only
 the final manifest plus measurements are returned. Confirm quota and scratch

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "dataset": "OHR-Bench",
+  "pdf_archive": {
+    "source": "huggingface-dataset",
+    "repository": "opendatalab/OHR-Bench",
+    "revision": "7f833e3eda9a571a9ea545a8f6d476fa1685033d",
+    "revision_note": "dataset main at lookup; pdfs.zip was last changed by commit 80aca2bb4025c435cfc5cb920157431eae5ae876 (2025-03-10T05:32:49Z, 'Upload folder using huggingface_hub') and is unchanged at this revision",
+    "filename": "pdfs.zip",
+    "url": "https://huggingface.co/datasets/opendatalab/OHR-Bench/resolve/7f833e3eda9a571a9ea545a8f6d476fa1685033d/pdfs.zip",
+    "local_path": "data/ohr_bench_raw/pdfs.zip",
+    "declared_size_bytes": 1516951813,
+    "upstream_lfs_sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783",
+    "observed_size_bytes": 1516951813,
+    "sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783",
+    "upstream_checksum_match": true,
+    "zip_crc_check": "passed (zipfile.testzip over all members)",
+    "retrieved_at_utc": "2026-09-28T15:59:56Z",
+    "retrieval_method": "curl -L of the pinned resolve URL to pdfs.zip.partial; size and SHA-256 compared with Hugging Face paths-info LFS metadata and the X-Linked-Size / X-Linked-ETag response headers before renaming"
+  },
+  "qa_and_text_reference": {
+    "source": "github",
+    "repository": "opendatalab/OHR-Bench",
+    "commit_at_lookup": "1f421eb428f9f5b8ac0bc8064d6ad1f13fab7af7",
+    "qas_v2_json": {
+      "path": "data/qas_v2.json",
+      "git_blob_sha1": "6fc22e117f6acc5284f298defdec835af35722f9",
+      "last_changed_by": "798dd3db7c27bb07019ff6b3661abd37cedae145 (2025-03-14T18:26:09Z, 'fix qas_v2')"
+    },
+    "retrieval_base_last_changed_by": "92cf7be9e2cadc1478b917d76020491e376cea04 (2025-03-10T12:26:04Z, 'updates OHRBench-v2')",
+    "retrieval_base_category_tree_sha1": {
+      "gt/academic": "79624b87bd7148415b50c80b15928cfd265a1b09",
+      "gt/administration": "4192243e0fa6fb313e427d490bc2091c12978fe8",
+      "gt/finance": "62fa09cee19164d7d7a433fad3b7584f25f13a14",
+      "gt/law": "addf141ecd38c59a26e703279025aa33b10bebbf",
+      "gt/manual": "b725ef5b74a74ec85b4f730de31092543bd74ecc",
+      "gt/news": "c78a5c7bb7edaeb73112c38b2b59709f7d158398",
+      "gt/notes": "9d2d20c8447276d79997f5ae179f229eeb6bb839",
+      "gt/paper": "4e94cd2ebb943f7859ad561e227258ad1167b4b7",
+      "gt/textbook": "e90acdff38803db8725af6d0565d4db2575277e7",
+      "MinerU/academic": "95aa4a4cfe60390317521a498946c8e55e1a3e2c",
+      "MinerU/administration": "d48ae33bc2019455d8ba187e1962ffae0526d09f",
+      "MinerU/finance": "bc2bee45ab162a9fd9209b2732205fa7b50d4dec",
+      "MinerU/law": "046c168aac52c2fdf5d3373538cf0e2853dd8172",
+      "MinerU/manual": "848477a18f7dee7f7f69ef6ccea92b693beabfee",
+      "MinerU/news": "e3dd08cbf521ad7cbcca364032c2314b9631a86c",
+      "MinerU/notes": "726c32a5f3e1f57039621b0ce0888f06c17c32d0",
+      "MinerU/paper": "5880bc2a8e2f231b679ca562bcbef26663044e37",
+      "MinerU/textbook": "6122dce804ef4c148c1f060eb2cf007cf15f846e"
+    },
+    "upstream_name_forms": {
+      "(Springer_Monographs_in_Mathematics)_Kazuyuki_SaitÃ´,_J._D._Maitland_Wright_-_Monotone_Complete_C_-algebras_and_Generic_Dynamics-Springer_(2015).pdf_122.json": "NFD"
+    },
+    "note": "The local checkout stores the Springer textbook file name in NFC; upstream git records it in NFD, as qas_v2.json does. File contents are identical."
+  },
+  "relationship_to_locked_qa": {
+    "locked_qa_sha256": "2446db28741fa9f392067ee7aae7f3b05e0d85c584069a50ddd5b1b5bc783f58",
+    "evidence": [
+      "local qas_v2.json git blob equals upstream GitHub data/qas_v2.json at commit_at_lookup",
+      "the PDF archive and retrieval_base were both last changed on 2025-03-10 during the upstream 'OHRBench-v2' update, before the 2025-03-14 qas_v2 fix",
+      "audit checks archive member names and PDF page counts against the gt page inventories"
+    ],
+    "unresolved": [
+      "upstream publishes no manifest tying pdfs.zip to a specific qas_v2.json version; compatibility rests on the structural checks above",
+      "a Hugging Face LFS checksum identifies the bytes the host serves; it does not authenticate who produced the archive",
+      "the MinerU engine version and settings behind retrieval_base/MinerU are not recorded upstream"
+    ]
+  }
+}

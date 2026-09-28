@@ -214,7 +214,9 @@ point.
 
 ## Shared-server calibration before data transfer
 
-Do not transfer or expand a 200 GB dataset first. Use the existing OHR archive
+Do not transfer or expand the full dataset first; the earlier 200 GB figure is
+an unmeasured estimate. Use the locked OHR archive
+(`config/ohr_pdf_source_lock.json`, default path `data/ohr_bench_raw/pdfs.zip`)
 to run one complete 108-page document through PDF extraction, Docling, page
 rendering, and pinned GOT-OCR. This is calibration evidence, not a paper
 result. Run the preflight in the actual scheduler allocation, choose the
@@ -413,7 +415,7 @@ launcher derives the memory/GPU ones when unset:
 | `FAAR_VLM_RETRY_BACKOFF_SECONDS` | 2.0 | exponential backoff base with jitter |
 | `FAAR_VLM_TIMEOUT_SECONDS` | 60 | per-request VLM timeout |
 | `FAAR_CACHE_DIR` | `<project_root>/cache` | corpus-embedding cache root |
-| `FAAR_PDF_ROOT` | `data/ohr_bench_raw/pdfs.zip` | filesystem PDF source root for asset preparation |
+| `FAAR_PDF_ROOT` | unset | filesystem PDF source root for asset preparation |
 | `FAAR_PDF_ZIP` | `data/ohr_bench_raw/pdfs.zip` | PDF archive path for asset preparation |
 | `FAAR_DOCUMENT_INVENTORY` | `OHR-Bench/data/retrieval_base/gt` | per-document page inventory directory |
 | `FAAR_LOG_INTERVAL_SECONDS` | 60 | progress-line interval |

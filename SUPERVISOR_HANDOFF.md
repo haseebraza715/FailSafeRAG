@@ -40,8 +40,10 @@ RAM allocation, scratch path, and quota before submission.
 Calibration needs the tracked split and checksum files, OHR QA metadata, page
 inventory, and the OHR PDF archive. Supply the archive at
 `data/ohr_bench_raw/pdfs.zip` or set `FAAR_PDF_ROOT` / `FAAR_PDF_ZIP`. The
-development archive is about 1.4 GB. Do not copy a 200 GB expanded corpus before
-the calibration measures generated storage.
+official archive is locked in `config/ohr_pdf_source_lock.json`: Hugging Face
+`opendatalab/OHR-Bench` revision `7f833e3e`, 1,516,951,813 bytes compressed.
+The earlier 200 GB expanded-corpus figure is unmeasured. Measure generated
+storage on a small sample before allocating space.
 
 Set these values in the ignored `.env` file or scheduler environment.
 Slurm/PBS templates source `.env` after `cd`, and cluster entry points load it
