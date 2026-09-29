@@ -21,6 +21,11 @@ Layout of the output
 4. One section per record with the question, action, evidence ids and pages,
    the exact system and user messages, and the hashes.
 
+The document line and the evidence table show the full ``doc_id`` and chunk ids,
+because this file is a local review aid. The fenced system and user messages are
+the exact prompt, which shows a chunk label (the chunk id without its
+``<doc_id>-`` prefix, see ``faar.answer_prompt``) and no document name.
+
 Case-type index
 ---------------
 The index classifies from the question text and the evidence text only. It never
@@ -56,6 +61,9 @@ Ways this module could fail (each is covered in tests/test_prompt_preview.py)
   V6. The longest-evidence entry is wrong, or a skipped question crashes the index.
   V7. Token estimates read as tokenizer counts.
   V8. The output depends on dict order in a way that changes between runs.
+  V9. The preview reads a file, needs a provider, or embeds an HTML app or an external asset.
+  V10. The tables show a chunk label instead of the chunk id, or the prompt shows the document name, so a
+       reviewer cannot tell what the record holds from what the model would read.
 """
 
 from __future__ import annotations

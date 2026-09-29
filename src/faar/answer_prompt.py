@@ -18,14 +18,24 @@ Message layout
 The system message holds the rules and the injection warning. The user message
 holds the question, then one block per evidence chunk in the order given::
 
-    [Evidence 2] page 5, chunk c-0012
+    [Evidence 2] page 5, chunk p4-c2
     ~~~~
     ...document text, copied unchanged...
     ~~~~
 
-The page number is ``page_idx + 1``. No document name, answer form or other
-gold field enters the prompt: ``build_prompt`` accepts only the question text
-and the evidence blocks.
+The page number is ``page_idx + 1``.
+
+The chunk label is the chunk id with the leading ``<doc_id>-`` removed.
+``faar.chunking`` builds chunk ids as ``<doc_id>-p<page>-c<n>``, and a document
+id can carry a file name and a domain folder, so the full id would put the
+document name into every prompt. ``build_prompt`` refuses a block whose chunk id
+does not start with ``doc_id + "-"``, and a block whose label would repeat the
+``doc_id``, so a label cannot carry a name by accident. The full chunk id stays
+in ``evidence_sha256`` and in the run records.
+
+No document name, answer form or other gold field enters the prompt:
+``build_prompt`` accepts only the question text and the evidence blocks, and
+uses ``EvidenceBlock.doc_id`` only to strip the prefix.
 
 Delimiter rule
 --------------
@@ -46,7 +56,7 @@ Hashes
 ------
 ``prompt_sha256`` is the SHA-256 of the canonical JSON of the two messages.
 ``evidence_sha256`` is the SHA-256 of the canonical JSON of
-``[[rank, chunk_id, text], ...]``. Canonical JSON means sorted keys, compact
+``[[rank, chunk_id, text], ...]``, with the full chunk id. Canonical JSON means sorted keys, compact
 separators, ``ensure_ascii=False`` and UTF-8 bytes, the same convention as
 ``faar.run_io.canonical_digest``. ``TEMPLATE_SHA256`` covers the template id,
 both message templates, the block template and the fence settings.
@@ -64,6 +74,9 @@ Prompt content
       its block or ends it early.
   P5. Empty evidence, out-of-order ranks, or a chunk id that breaks the header
       line silently produce a prompt.
+  P6. The document name reaches the prompt through the chunk id in the block
+      header, or a chunk id that does not start with its ``doc_id`` is shown
+      whole because the prefix strip silently does nothing.
 Hashes
   H1. The same input gives a different hash on a second call.
   H2. Changing the wording or a fence setting does not change the template hash.
@@ -133,7 +146,7 @@ USER_TEMPLATE = (
     "Question:\n"
     "{question}\n"
     "\n"
-    "Evidence, best match first. There are {count} blocks. Each block has a number, a page number and a chunk ID, "
+    "Evidence, best match first. There are {count} blocks. Each block has a number, a page number and a chunk label, "
     "then the document text between two fence lines.\n"
     "\n"
     "{blocks}\n"
@@ -141,8 +154,8 @@ USER_TEMPLATE = (
     f"Answer the question using only the evidence. If the evidence lacks the answer, reply {ABSTENTION_TOKEN}."
 )
 
-# Placeholders: {number}, {page}, {chunk_id}, {fence}, {text}.
-BLOCK_TEMPLATE = "[Evidence {number}] page {page}, chunk {chunk_id}\n{fence}\n{text}\n{fence}"
+# Placeholders: {number}, {page}, {label}, {fence}, {text}. {label} is the chunk id without its "<doc_id>-" prefix.
+BLOCK_TEMPLATE = "[Evidence {number}] page {page}, chunk {label}\n{fence}\n{text}\n{fence}"
 
 BLOCK_SEPARATOR = "\n\n"
 
@@ -201,6 +214,25 @@ def _is_header_safe(chunk_id: str) -> bool:
     return bool(chunk_id) and len(chunk_id.splitlines()) == 1 and "\x00" not in chunk_id and chunk_id == chunk_id.strip()
 
 
+def chunk_label(block: EvidenceBlock) -> str:
+    """Return the chunk id without its ``<doc_id>-`` prefix: the part of the id the prompt may show.
+
+    Raises ``ValueError`` when ``doc_id`` is empty, when the chunk id does not start with
+    ``doc_id + "-"`` (exact case), when nothing is left after the prefix, or when the label
+    still contains the ``doc_id``.
+    """
+    prefix = f"{block.doc_id}-"
+    if not block.doc_id or not block.chunk_id.startswith(prefix) or len(block.chunk_id) == len(prefix):
+        raise ValueError(
+            f"chunk_id {block.chunk_id!r} must start with its doc_id {block.doc_id!r} and '-' and have a label after "
+            "it, so the prompt can show the label without the document name."
+        )
+    label = block.chunk_id[len(prefix) :]
+    if block.doc_id in label:
+        raise ValueError(f"chunk_id {block.chunk_id!r} repeats its doc_id {block.doc_id!r} after the prefix.")
+    return label
+
+
 def _check_evidence(evidence: Sequence[EvidenceBlock]) -> None:
     if not evidence:
         raise ValueError("build_prompt needs at least one evidence block; a question with no evidence is not sent.")
@@ -213,6 +245,7 @@ def _check_evidence(evidence: Sequence[EvidenceBlock]) -> None:
         previous_rank = block.rank
         if not _is_header_safe(block.chunk_id):
             raise ValueError(f"chunk_id {block.chunk_id!r} must be non-empty, single-line and free of edge whitespace.")
+        chunk_label(block)
         if block.page_idx < 0:
             raise ValueError(f"page_idx must not be negative (chunk {block.chunk_id!r}).")
         try:
@@ -226,8 +259,10 @@ def build_prompt(question: str, evidence: Sequence[EvidenceBlock]) -> PromptPayl
 
     The function takes the question text and the evidence blocks and nothing
     else, so no gold field can enter. It raises ``ValueError`` for empty
-    evidence, ranks that do not increase, and a chunk id that cannot sit on one
-    header line. Evidence text is inserted unchanged.
+    evidence, ranks that do not increase, a chunk id that cannot sit on one
+    header line, and a chunk id that does not start with its ``doc_id`` and
+    ``-`` (see ``chunk_label``). The header shows the chunk label, never the
+    document name. Evidence text is inserted unchanged.
     """
     if not isinstance(question, str):
         raise TypeError("question must be a string.")
@@ -241,7 +276,7 @@ def build_prompt(question: str, evidence: Sequence[EvidenceBlock]) -> PromptPayl
         BLOCK_TEMPLATE.format(
             number=number,
             page=block.page_idx + 1,
-            chunk_id=block.chunk_id,
+            label=chunk_label(block),
             fence=fence_for(block.text),
             text=block.text,
         )
