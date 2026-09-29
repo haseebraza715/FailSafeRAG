@@ -186,6 +186,12 @@ END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTE
 # or configuration is the only way on, and the identity checks already demand a new run for that.
 # Stopping cannot undo a charge that was already incurred. The ceiling guarantee rests on provider-reported
 # usage and on valid bounds, and this check can only act on what the provider reports.
+#
+# The event log has no hash chain. The stop protects against the code's own behaviour and honest operation.
+# Loading a run refuses a run_config.json whose identity no longer matches its identity_sha256, and refuses a
+# response_saved event that differs from its hash-pinned response file. A file edit that keeps every one of
+# those cross-checks consistent (for example rewriting the event, the response file and its hash together) is
+# out of scope: nothing here detects it, and nothing here claims to.
 VIOLATION_INPUT_BOUND = "input_bound_exceeded"
 VIOLATION_RETURNED_MODEL = "returned_model_mismatch"
 # Every anomaly kind that SafetyLedger reports is blocking today: a measured cost that differs from the cost
@@ -197,6 +203,10 @@ FAILURE_SAFETY_STOP = "safety_stop"
 SAFETY_LIMIT_NOTE = (
     "Stopping cannot undo a charge already incurred. The ceiling guarantee depends on provider-reported usage "
     "and on valid bounds."
+)
+SAFETY_MODEL_NOTE = (
+    "The returned-model check is an exact match, so the configured model must be the dated snapshot the provider "
+    "returns (for example gpt-4o-2024-11-20). A configured alias such as gpt-4o stops the run after the first response."
 )
 SAFETY_NO_CLEAR_NOTE = (
     "Resuming, raising the safety ceiling, reconcile and reopen do not clear the violation. "
@@ -1357,8 +1367,30 @@ def _response_path(run_dir: Path, attempt_id: str) -> Path:
     return run_dir / RESPONSES_DIR / f"{attempt_id}.json"
 
 
+def _event_differences(event: Mapping[str, Any], fields: Mapping[str, Any]) -> list[str]:
+    """Names of the ``response_saved`` fields on which the event differs from the fields rebuilt from its file.
+
+    Values are compared as JSON text, so ``0`` does not pass for ``False`` and ``1`` does not pass for ``1.0``.
+    """
+    return sorted(
+        key
+        for key, value in fields.items()
+        if key not in event or json.dumps(event[key], sort_keys=True) != json.dumps(value, sort_keys=True)
+    )
+
+
 def verify_saved_responses(run_dir: Path, view_states: Mapping[str, RequestState]) -> None:
-    """Every ``response_saved`` event must point to a response file with the recorded hash."""
+    """Every ``response_saved`` event must match its response file, and the file must have the recorded hash.
+
+    The file is the stronger evidence: it holds the provider's whole payload and its hash is in the event.
+    The event's copy of the fields that the safety stop reads (``returned_model``, ``usage``,
+    ``input_bound_exceeded``, ``measured_cost``, ``answer``, ``output_status`` and the rest of
+    :func:`saved_event_fields`) is rebuilt from the file, and any difference refuses the run.
+
+    ``attempts.jsonl`` has no hash chain, so this cannot detect an edit that keeps every cross-check
+    consistent, for example one that rewrites the event, the response file and its recorded hash together.
+    The stop protects against the code's own behaviour and honest operation, not against file editing.
+    """
     for state in view_states.values():
         saved = state.saved
         if saved is None:
@@ -1367,12 +1399,23 @@ def verify_saved_responses(run_dir: Path, view_states: Mapping[str, RequestState
         assert event is not None
         path = run_dir / event["response_file"]
         try:
-            actual = sha256_file(path)
+            raw = path.read_bytes()
         except OSError as exc:
             raise RunnerRefusal(f"{path} is missing or unreadable ({exc}); event {event['seq']} records it as saved.") from exc
+        actual = sha256_bytes(raw)
         _refuse(
             actual == event["response_sha256"],
             f"{path} has sha256 {actual}, event {event['seq']} records {event['response_sha256']}. The response file changed.",
+        )
+        try:
+            fields = saved_event_fields(json.loads(raw.decode("utf-8")), actual)
+        except (UnicodeDecodeError, json.JSONDecodeError, KeyError, TypeError, AttributeError) as exc:
+            raise RunnerRefusal(f"{path} is not a response file ({exc!r}); event {event['seq']} records it as saved.") from exc
+        differences = _event_differences(event, fields)
+        _refuse(
+            not differences,
+            f"event {event['seq']} differs from its response file {path} in {', '.join(differences)}. "
+            "The response file is the stronger evidence, so the event log was edited or is wrong. Nothing was dispatched.",
         )
 
 
@@ -1385,6 +1428,13 @@ def load_run(run_dir: Path, *, verify: bool = True) -> RunView:
         config = json.loads((run_dir / RUN_CONFIG_NAME).read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise RunnerRefusal(f"{run_dir / RUN_CONFIG_NAME} is corrupt: {exc}") from exc
+    _refuse(
+        isinstance(config, dict)
+        and isinstance(config.get("identity"), dict)
+        and canonical_digest(config["identity"]) == config.get("identity_sha256"),
+        f"{run_dir / RUN_CONFIG_NAME} holds an identity that does not match its identity_sha256; the stored identity "
+        "was edited. Nothing was dispatched. Keep this directory as the record and start a successor run.",
+    )
     requests, requests_bytes = _read_requests(run_dir)
     _refuse(
         sha256_bytes(requests_bytes) == config.get("requests_sha256"),
@@ -1972,11 +2022,11 @@ def quarantine_uncommitted_tail(run_dir: Path, view: RunView, invocation_id: str
     }
 
 
-def _read_recoverable_response(run_dir: Path, attempt: AttemptState) -> tuple[dict[str, Any], bytes] | None:
+def _read_recoverable_response(run_dir: Path, state: RequestState, attempt: AttemptState) -> tuple[dict[str, Any], bytes] | None:
     """The parsed response file of an attempt that has ``dispatch_started`` and no resolving event, or None.
 
     None when the file is absent or is not valid JSON. Raises :class:`RunnerRefusal` for a file that parses
-    but names another attempt.
+    but names another attempt, question or request, or lacks a field that ``response_saved`` copies from it.
     """
     path = _response_path(run_dir, attempt.attempt_id)
     if not path.exists():
@@ -1984,12 +2034,23 @@ def _read_recoverable_response(run_dir: Path, attempt: AttemptState) -> tuple[di
     try:
         raw = path.read_bytes()
         payload = json.loads(raw.decode("utf-8"))
-        _refuse(
-            isinstance(payload, dict) and payload.get("attempt_id") == attempt.attempt_id,
-            f"{path} does not describe attempt {attempt.attempt_id}",
-        )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         return None
+    _refuse(isinstance(payload, dict), f"response file {path} is not a JSON object")
+    for key, expected in (
+        ("attempt_id", attempt.attempt_id),
+        ("attempt", attempt.attempt),
+        ("question_id", state.question_id),
+        ("request_id", state.request_id),
+    ):
+        _refuse(
+            key in payload and json.dumps(payload[key]) == json.dumps(expected),
+            f"response file {path} does not describe attempt {attempt.attempt_id}: {key} is {payload.get(key)!r}, expected {expected!r}",
+        )
+    try:
+        saved_event_fields(payload, sha256_bytes(raw))
+    except KeyError as exc:
+        raise RunnerRefusal(f"response file {path} lacks the field {exc}, so its event cannot be rebuilt from it") from exc
     return payload, raw
 
 
@@ -2004,7 +2065,7 @@ def recover_open_attempts(view: RunView, log: EventLog, run_dir: Path) -> list[s
     handled: list[str] = []
     for state in view.ordered_states:
         for attempt in state.orphans:
-            found = _read_recoverable_response(run_dir, attempt)
+            found = _read_recoverable_response(run_dir, state, attempt)
             payload, raw = found if found is not None else (None, b"")
             if payload is not None:
                 event = log.append(
@@ -2051,14 +2112,11 @@ def _recoverable_saved_events(view: RunView) -> list[dict[str, Any]]:
     events: list[dict[str, Any]] = []
     for state in view.ordered_states:
         for attempt in state.orphans:
-            found = _read_recoverable_response(view.run_dir, attempt)
+            found = _read_recoverable_response(view.run_dir, state, attempt)
             if found is None:
                 continue
             payload, raw = found
-            try:
-                fields = saved_event_fields(payload, sha256_bytes(raw))
-            except KeyError:
-                continue
+            fields = saved_event_fields(payload, sha256_bytes(raw))
             events.append({"event": EVENT_RESPONSE_SAVED, **fields, "recovered": True})
     return events
 
@@ -2138,10 +2196,15 @@ def describe_violations(violations: Sequence[Mapping[str, Any]]) -> str:
     )
 
 
+def model_note(violations: Sequence[Mapping[str, Any]]) -> str:
+    """The exact-match warning, only when a returned-model mismatch is among the violations."""
+    return SAFETY_MODEL_NOTE if any(v["condition"] == VIOLATION_RETURNED_MODEL for v in violations) else ""
+
+
 def safety_stop_message(run_dir: Path, violations: Sequence[Mapping[str, Any]]) -> str:
     return (
         f"run in {run_dir} is safety_stopped, so no request was sent. Violations: {describe_violations(violations)}. "
-        f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE}"
+        f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE} {model_note(violations)}".rstrip()
     )
 
 
@@ -2506,7 +2569,7 @@ def _run_message(summary: Mapping[str, Any], run_dir: Path) -> str:
     if summary.get("safety_violations"):
         message += (
             f" Safety stop, no further request was sent: {describe_violations(summary['safety_violations'])}. "
-            f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE}"
+            f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE} {model_note(summary['safety_violations'])}".rstrip()
         )
     return message
 
@@ -2795,7 +2858,7 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
     if safety and not active:
         actions.append(
             f"safety stop: {describe_violations(safety)}. {SAFETY_NO_CLEAR_NOTE} Keep this directory as the record of what "
-            f"happened. {SAFETY_LIMIT_NOTE}"
+            f"happened. {SAFETY_LIMIT_NOTE} {model_note(safety)}".rstrip()
         )
     if view.last_end_reason == END_CIRCUIT and not active and not safety:
         actions.append(
@@ -2863,7 +2926,7 @@ def format_status(status: Mapping[str, Any]) -> str:
         lines.insert(
             1,
             f"SAFETY STOP: {len(status['safety_violations'])} violation(s). No further request will be sent for this run. "
-            f"{SAFETY_LIMIT_NOTE}",
+            f"{SAFETY_LIMIT_NOTE} {model_note(status['safety_violations'])}".rstrip(),
         )
     for attempt_id in status["in_flight"]:
         lines.append(f"in flight: {attempt_id} (dispatched, no result yet; its process is still running)")
