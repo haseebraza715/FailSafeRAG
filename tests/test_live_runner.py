@@ -60,7 +60,7 @@ import run_pilot_live as cli
 from faar import live_runner as lr
 from faar import pilot_runner as pr
 from faar.answer_providers import FakeProvider, FakeStep, SimulatedCrash
-from faar.live_contract import MODE_FAKE
+from faar.live_contract import MODE_FAKE, ProviderError
 from faar.pilot_runner import RunnerRefusal
 
 PILOT_ID = "fix_v1"
@@ -2675,20 +2675,25 @@ def test_a_successful_response_resets_the_count(project: Project) -> None:
     assert _ended(run_dir)["circuit_breaker"] == {"consecutive_failures": 2, "threshold": 3}
 
 
-def test_a_not_sent_retry_resets_the_count(project: Project) -> None:
-    """M5: connect errors are retryable and provably unsent, so they show the fault is not systematic at the provider."""
+def test_only_a_saved_response_resets_the_count(project: Project) -> None:
+    """M5, N5: a saved answer resets the count; a question that exhausted its unsent retries still counts."""
     steps = {
         "q1": [FakeStep("timeout_unknown")],
         "q2": [FakeStep("timeout_unknown")],
-        "q3": [FakeStep("connect_error")] * 3,
+        "q3": [FakeStep("answer", text="twelve months")],
         "q4": [FakeStep("timeout_unknown")],
         "q6": [FakeStep("timeout_unknown")],
     }
     rig = Rig(steps)
     go(project, rig)
     run_dir = project.run_dir("run-a")
-    assert rig.sent(run_dir) == ["q1", "q2", "q3", "q3", "q3", "q4", "q6"]
+    assert rig.sent(run_dir) == ["q1", "q2", "q3", "q4", "q6"]
     assert _ended(run_dir)["reason"] == "needs_reconciliation"
+    tripped = Rig({"q1": [FakeStep("timeout_unknown")], "q2": [FakeStep("timeout_unknown")], "q3": [FakeStep("connect_error")] * 3})
+    go(project, tripped, name="run-b")
+    run_b = project.run_dir("run-b")
+    assert tripped.sent(run_b) == ["q1", "q2", "q3", "q3", "q3"]
+    assert _ended(run_b)["reason"] == "circuit_breaker"
 
 
 def test_the_threshold_is_part_of_the_run_identity(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -2883,3 +2888,44 @@ def test_a_recorded_unknown_outcome_stays_unknown_while_the_lock_is_held(project
         holder.release()
     assert status["requests"]["unknown"] == 1 and status["requests"]["in_flight"] == 0
     assert status["awaiting_reconciliation"] == by_question_attempts(run_dir, "q2")
+
+
+def test_a_network_outage_that_fails_questions_before_sending_trips_the_circuit_breaker(project: Project) -> None:
+    """Connect errors never leave the machine, but three questions failing in a row still share a cause."""
+    outage = [FakeStep("connect_error")] * 3
+    rig = Rig(steps={"q1": outage, "q2": outage, "q3": outage})
+    result = go(project, rig)
+    run_dir = project.run_dir("run-a")
+    ended = [e for e in events_of(run_dir) if e["event"] == "invocation_ended"][-1]
+    assert ended["reason"] == "circuit_breaker"
+    assert set(rig.sent(run_dir)) == {"q1", "q2", "q3"}, "q4 and q6 are not attempted after the breaker trips"
+    assert result.exit_code == lr.EXIT_NEEDS_ATTENTION
+
+
+def test_an_unknown_outcome_keeps_the_provider_payload_as_billing_evidence(project: Project) -> None:
+    """A malformed 200 reply may carry usage that was billed; the payload stays in the event log."""
+
+    class Malformed:
+        def send(self, request: Any) -> Any:
+            raise ProviderError(
+                "200 reply without a choice message",
+                kind="malformed_response",
+                outcome="unknown",
+                retryable=False,
+                raw={"reason": "no choices", "payload": {"id": "chatcmpl-x", "usage": {"prompt_tokens": 11, "completion_tokens": 3}}},
+            )
+
+    lr.execute_run(options(project), provider_factory=lambda ctx: Malformed(), descriptor={"adapter": "malformed"}, sleep=lambda s: None, environ={})
+    unknown = [e for e in events_of(project.run_dir("run-a")) if e["event"] == "outcome_unknown"]
+    assert unknown and unknown[0]["provider_raw"]["payload"]["usage"] == {"prompt_tokens": 11, "completion_tokens": 3}
+
+
+def test_status_on_a_scored_run_does_not_advise_reopen(project: Project) -> None:
+    """A scored run is final, so status must not suggest a command that refuses."""
+    rig = Rig(steps={"q1": [FakeStep("non_retryable_error")]})
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    lr.score_run_live(project_root=project.root, run_dir=run_dir)
+    status = lr.run_status(run_dir)
+    assert status["scored"] is True
+    assert not any("reopen" in step for step in status["next"])

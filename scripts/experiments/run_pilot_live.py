@@ -60,10 +60,12 @@ exit codes:
   {EXIT_NEEDS_ATTENTION}  needs_reconciliation, stopped or incomplete: an attempt has an unknown outcome, a provider error
      stopped the run, the circuit breaker tripped, or the invocation was interrupted; run status, then reconcile or run again
 
-circuit_breaker: an invocation stops (end reason circuit_breaker, run state stopped, exit {EXIT_NEEDS_ATTENTION}) after
-{live_runner.CIRCUIT_BREAKER_THRESHOLD} consecutive attempts that each ended with an unknown outcome, a rejection that failed its question, or an
-exception that is not a provider error. A saved response, or a retryable failure that never left the process,
-resets the count. The number is part of the run identity, and invocation_ended records the count and the number.
+circuit_breaker: an invocation stops (end reason circuit_breaker, exit {EXIT_NEEDS_ATTENTION}) after
+{live_runner.CIRCUIT_BREAKER_THRESHOLD} consecutive counted attempts: an unknown outcome, a failure that ended its question (rejected or
+never sent), or an exception that is not a provider error. Only a saved response resets the count; retried
+attempts neither add to it nor reset it. The run state is needs_reconciliation when a counted attempt has an
+unknown outcome, and stopped otherwise. The number is part of the run identity, and invocation_ended records
+the count and the number.
 
 run directories:
   fake mode   results/engineering/<run_id>/ inside the project, or any directory outside it

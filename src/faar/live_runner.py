@@ -78,8 +78,6 @@ from .live_contract import (
     MODE_FAKE,
     MODE_LIVE,
     MODES,
-    OUTCOME_NOT_SENT,
-    OUTCOME_REJECTED,
     OUTCOME_UNKNOWN,
     EvidenceBlock,
     PriceTable,
@@ -170,17 +168,18 @@ END_INTERRUPTED = "interrupted"
 END_CIRCUIT = "circuit_breaker"
 END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTERRUPTED, END_CIRCUIT)
 
-# Circuit breaker. An invocation stops after this many consecutive attempts that each ended with an unknown
-# outcome, a rejection that failed its question (decision fail_question), or an exception that is not a
-# ProviderError. A saved response, or a retryable failure that provably never left the process, resets the
-# count. Other outcomes leave it alone. The number is part of the run identity (the retry section).
+# Circuit breaker. An invocation stops after this many consecutive counted attempts: an unknown outcome, a
+# failure that ended its question (decision fail_question, whether rejected or never sent), or an exception that
+# is not a ProviderError. Only a saved response resets the count. A retried attempt neither adds to it nor resets
+# it, so a network outage that fails question after question still trips it. The number is part of the run
+# identity (the retry section).
 CIRCUIT_BREAKER_THRESHOLD = 3
 CIRCUIT_BREAKER_COUNTS = (
     "outcome unknown",
-    "rejected with decision fail_question",
+    "any failure with decision fail_question, rejected or not_sent",
     "exception that is not a ProviderError",
 )
-CIRCUIT_BREAKER_RESETS = ("saved response", "not_sent failure with decision retry")
+CIRCUIT_BREAKER_RESETS = ("saved response",)
 
 STATUS_ANSWERED = "answered"
 STATUS_NO_EVIDENCE = "no_evidence"
@@ -1620,6 +1619,26 @@ def _initialise(
     atomic_write_text(run_dir / RUN_CONFIG_NAME, _dumps(run_config) + "\n")
 
 
+
+PROVIDER_RAW_LIMIT = 20_000
+
+
+def _bounded_raw(raw: Any) -> Any:
+    """The provider payload of an unknown outcome, kept as evidence for reconciliation and billing checks.
+
+    It is stored as JSON when it serialises and fits in ``PROVIDER_RAW_LIMIT`` characters; otherwise a
+    truncated text form is stored with a marker, so the event log line stays bounded.
+    """
+    if not raw:
+        return None
+    try:
+        text = json.dumps(raw, ensure_ascii=False, allow_nan=False, sort_keys=True)
+    except (TypeError, ValueError):
+        return {"unserialisable": True, "text": repr(raw)[:PROVIDER_RAW_LIMIT]}
+    if len(text) <= PROVIDER_RAW_LIMIT:
+        return json.loads(text)
+    return {"truncated": True, "text": text[:PROVIDER_RAW_LIMIT]}
+
 class _Driver:
     """One invocation. Holds the run lock for its whole life."""
 
@@ -1722,10 +1741,8 @@ class _Driver:
             except ProviderError as error:
                 latency = int((self.clock() - started) * 1000)
                 step = self._record_error(state, attempt_state, error, latency)
-                counted = step == "unknown" or (error.outcome == OUTCOME_REJECTED and step == DECISION_FAIL)
-                if step == DECISION_RETRY and error.outcome == OUTCOME_NOT_SENT:
-                    self.consecutive_failures = 0
-                elif counted:
+                counted = step == "unknown" or step == DECISION_FAIL
+                if counted:
                     self.consecutive_failures += 1
                 if step == DECISION_RETRY:
                     continue
@@ -1767,7 +1784,9 @@ class _Driver:
     def _record_error(self, state: RequestState, attempt: AttemptState, error: ProviderError, latency: int) -> str:
         """Record a provider error. Returns ``retry``, ``fail_question``, ``stop_run`` or ``unknown``."""
         if error.outcome == OUTCOME_UNKNOWN:
-            self._record_unknown(state, attempt, kind=error.kind, message=str(error), latency=latency)
+            self._record_unknown(
+                state, attempt, kind=error.kind, message=str(error), latency=latency, provider_raw=_bounded_raw(error.raw)
+            )
             return "unknown"
         decision = self.services.retry_policy.decide(error, state.attempts_in_window)
         action = decision.action
@@ -2578,7 +2597,7 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
         )
     if by_status[REQUEST_PENDING] and not active:
         actions.append("run again to serve the pending questions")
-    if by_status[REQUEST_FAILED] and not active:
+    if by_status[REQUEST_FAILED] and not active and not is_scored(run_dir):
         actions.append("after fixing the cause, reopen an execution_failed question to give it further attempts")
     return {
         "run_id": view.config["run_id"],
