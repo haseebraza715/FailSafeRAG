@@ -3326,3 +3326,136 @@ def test_the_cli_exits_with_the_safety_code_and_the_help_documents_it(
     assert f"{SAFETY_EXIT} safety_stopped" in text
     for phrase in ("safety_stop", "successor run", "do not clear the violation", "cannot undo a charge", "provider-reported usage"):
         assert phrase in text
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: records edited to clear a safety stop (H1)
+#
+# Ways the stop could be cleared by an edit, written before the fix.
+#   T1. run_config.json names another model in identity.provider.model while identity_sha256 stays. The
+#       returned-model check then compares against the edited name and the violation disappears.
+#   T2. A response_saved event in attempts.jsonl is edited (returned_model, usage, input_bound_exceeded,
+#       measured_cost, answer, output_status) while the hash-pinned response file keeps the original.
+#   T3. The edit is accepted by run but not by status or export, or the reverse.
+#   T4. A refusal happens after the provider factory was called or after a request was sent.
+#
+# The event log has no hash chain, so an edit that keeps every cross-check consistent is out of scope.
+# ---------------------------------------------------------------------------
+
+
+def _offending_run(project: Project) -> tuple[Path, Rig]:
+    rig = Rig({"q1": [FakeStep("answer", text="x", returned_model="fake-answer-model-2")]})
+    assert go(project, rig, services=bound_one_services()).exit_code == SAFETY_EXIT
+    return project.run_dir("run-a"), rig
+
+
+def _rewrite_saved_events(run_dir: Path, edit: Any) -> None:
+    path = run_dir / "attempts.jsonl"
+    out = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        record = json.loads(line)
+        if record["event"] == "response_saved":
+            edit(record)
+        out.append(json.dumps(record, separators=(",", ":")))
+    path.write_text("\n".join(out) + "\n", encoding="utf-8")
+
+
+def _assert_every_command_refuses(project: Project, run_dir: Path, rig: Rig, match: str) -> None:
+    fresh = Rig(rig.steps)  # the same script and services, so the refusal cannot come from a changed run identity
+    with pytest.raises(RunnerRefusal, match=match):
+        go(project, fresh, services=bound_one_services())
+    assert fresh.factory_calls == 0 and fresh.providers == []
+    with pytest.raises(RunnerRefusal, match=match):
+        lr.run_status(run_dir, bound_one_services())
+    with pytest.raises(RunnerRefusal, match=match):
+        lr.export_run(run_dir, bound_one_services())
+
+
+def test_an_edited_identity_in_run_config_is_refused_by_every_command(project: Project) -> None:
+    """T1, T4: the stored model is changed to the returned one; identity_sha256 no longer matches the identity."""
+    run_dir, rig = _offending_run(project)
+    config = json.loads((run_dir / "run_config.json").read_text(encoding="utf-8"))
+    config["identity"]["provider"]["model"] = "fake-answer-model-2"
+    (run_dir / "run_config.json").write_text(json.dumps(config, indent=1), encoding="utf-8")
+    before = strip_lock(file_snapshot(run_dir))
+    _assert_every_command_refuses(project, run_dir, rig, "run_config.json.*identity")
+    assert strip_lock(file_snapshot(run_dir)) == before
+
+
+@pytest.mark.parametrize(
+    "edit",
+    [
+        lambda e: e.update(returned_model=lr.FAKE_CONFIG.model),
+        lambda e: e["usage"].update(input_tokens=1),
+        lambda e: e.update(input_bound_exceeded=False),
+        lambda e: e.update(measured_cost=None),
+        lambda e: e.update(answer="something else"),
+        lambda e: e.update(output_status="empty"),
+    ],
+    ids=["returned_model", "usage", "input_bound_exceeded", "measured_cost", "answer", "output_status"],
+)
+def test_an_event_that_disagrees_with_its_hash_pinned_response_file_is_refused(project: Project, edit: Any) -> None:
+    """T2, T3, T4: the response file is the stronger evidence. Any field that differs refuses run, status and export."""
+    run_dir, rig = _offending_run(project)
+    _rewrite_saved_events(run_dir, edit)
+    before = strip_lock(file_snapshot(run_dir))
+    _assert_every_command_refuses(project, run_dir, rig, "response file")
+    assert strip_lock(file_snapshot(run_dir)) == before
+    assert len(rig.sent(run_dir)) == 1, "no dispatch after the edit"
+
+
+def test_an_unedited_stopped_run_still_reports_the_stop_after_the_new_checks(project: Project) -> None:
+    run_dir, rig = _offending_run(project)
+    fresh = Rig(rig.steps)
+    assert go(project, fresh, services=bound_one_services()).exit_code == SAFETY_EXIT and fresh.factory_calls == 0
+    assert lr.run_status(run_dir, bound_one_services())["run_state"] == SAFETY_STATE
+    assert lr.export_run(run_dir, bound_one_services()).exit_code == SAFETY_EXIT
+
+
+@pytest.mark.parametrize("damage", ["question_id", "request_id", "attempt", "missing_field"])
+def test_a_recoverable_response_file_that_names_another_question_or_lacks_fields_is_refused(project: Project, damage: str) -> None:
+    """T2: the file of an attempt whose event was lost must describe that attempt, and must hold every field recovery copies."""
+    rig = Rig({"q1": [FakeStep("answer", text="x", returned_model="fake-answer-model-2")]})
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, crash_hook=crash_at(lr.CRASH_AFTER_RESPONSE_FILE, "q1"))
+    run_dir = project.run_dir("run-a")
+    path = next((run_dir / "responses").iterdir())
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if damage == "missing_field":
+        del payload["usage"]
+    else:
+        payload[damage] = "q3" if damage == "question_id" else ("f" * 32 if damage == "request_id" else 7)
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    before = strip_lock(file_snapshot(run_dir))
+    fresh = Rig(rig.steps)
+    with pytest.raises(RunnerRefusal, match="response file"):
+        go(project, fresh)
+    assert fresh.factory_calls == 0
+    with pytest.raises(RunnerRefusal, match="response file"):
+        lr.run_status(run_dir)
+    with pytest.raises(RunnerRefusal, match="response file"):
+        lr.export_run(run_dir)
+    assert strip_lock(file_snapshot(run_dir)) == before
+
+
+def test_the_messages_and_help_state_the_exact_model_match_and_the_limit_of_the_event_log(
+    project: Project, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """H1.3, L6: the stop is an exact string match, and it does not defend against consistent file edits."""
+    run_dir, rig = _offending_run(project)
+    for text in (
+        " ".join(lr.format_status(lr.run_status(run_dir, bound_one_services())).split()),
+        " ".join(go(project, Rig(rig.steps), services=bound_one_services()).message.split()),
+    ):
+        assert "exact match" in text and "dated snapshot" in text and "alias" in text
+    bound_only = Rig()
+    go(project, bound_only, "run-b", services=bound_one_services())
+    status_text = " ".join(lr.format_status(lr.run_status(project.run_dir("run-b"), bound_one_services())).split())
+    assert "exact match" not in status_text, "the model note appears only for a returned_model_mismatch"
+    with pytest.raises(SystemExit):
+        cli.main(["run", "--help"])
+    help_text = " ".join(capsys.readouterr().out.split())
+    for phrase in ("exact match", "dated snapshot", "no hash chain", "honest operation", "out of scope"):
+        assert phrase in help_text, phrase
+    source = Path(lr.__file__).read_text(encoding="utf-8")
+    assert "no hash chain" in source

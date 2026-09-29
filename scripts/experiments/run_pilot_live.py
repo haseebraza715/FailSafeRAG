@@ -76,6 +76,14 @@ do not clear the violation, and score refuses the run. The only way on is a succ
 corrected code or configuration; the identity checks below stay in force. Stopping cannot undo a charge already
 incurred, and the ceiling guarantee depends on provider-reported usage and on valid bounds.
 
+The returned-model check is an exact match. The configured model must be the dated snapshot the provider returns (for
+example gpt-4o-2024-11-20). A configured alias such as gpt-4o stops the run after the first response.
+
+The event log (attempts.jsonl) has no hash chain. The stop protects against the code's own behaviour and honest
+operation. run, status and export refuse a run_config.json whose identity no longer matches its identity_sha256, and a
+response_saved event that differs from its hash-pinned response file. A file edit that keeps every cross-check
+consistent is out of scope and is not detected.
+
 circuit_breaker: an invocation stops (end reason circuit_breaker, exit {EXIT_NEEDS_ATTENTION}) after
 {live_runner.CIRCUIT_BREAKER_THRESHOLD} consecutive counted attempts: an unknown outcome, a failure that ended its question (rejected or
 never sent), or an exception that is not a provider error. Only a saved response resets the count; retried
