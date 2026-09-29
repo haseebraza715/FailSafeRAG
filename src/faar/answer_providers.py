@@ -82,6 +82,11 @@ OpenAI adapter
        blocks non-loopback sockets.
   O11. Importing the module builds no client and imports neither `openai` nor `httpx`.
   O12. `identity()` never touches the API key.
+  O13. A proxy or gateway may echo the API key in an error message, a header or a body. The adapter takes the
+       key from the client it holds (`client.api_key`, when it is a string of at least 8 characters) and
+       replaces every occurrence with `[redacted-api-key]` in the `ProviderError` message and in `raw`,
+       nested strings and dict keys included. The replacement runs before a text is cut to its size limit,
+       so a key that straddles the cut leaves no fragment. The key itself is never stored, logged or returned.
 """
 
 from __future__ import annotations
@@ -515,6 +520,9 @@ class OpenAIChatProvider:
                 "client must not follow redirects: pass http_client=httpx.Client(follow_redirects=False), "
                 f"found follow_redirects={follows!r}"
             )
+        # Kept only to scrub error records. `identity()` and every record leave it out.
+        key = getattr(client, "api_key", None)
+        self._secret = key if isinstance(key, str) and len(key) >= _MIN_SECRET_LENGTH else None
         self._model = model
         self._params = dict(params)
         self._client = client
@@ -559,11 +567,11 @@ class OpenAIChatProvider:
         try:
             completion = self._client.chat.completions.create(**call)
         except Exception as exc:
-            raise classify_openai_error(exc) from exc
-        return self._to_response(completion)
+            raise classify_openai_error(exc, secret=self._secret) from exc
+        return self._to_response(completion, self._secret)
 
     @staticmethod
-    def _to_response(completion: Any) -> ProviderResponse:
+    def _to_response(completion: Any, secret: str | None = None) -> ProviderResponse:
         dump = getattr(completion, "model_dump", None)
         if not callable(dump):
             # The SDK returns the body text when a 200 reply is not JSON. A reply arrived, so the
@@ -573,7 +581,7 @@ class OpenAIChatProvider:
                 kind=KIND_MALFORMED_RESPONSE,
                 outcome=OUTCOME_UNKNOWN,
                 retryable=False,
-                raw={"body_excerpt": str(completion)[:2000]},
+                raw={"body_excerpt": _scrub(str(completion), secret)[:2000]},
             )
         raw: dict[str, Any] = dump(mode="json")
         choices = raw.get("choices")
@@ -585,6 +593,7 @@ class OpenAIChatProvider:
         elif not isinstance(choices[0].get("message"), Mapping):
             reason = "choices[0] has no message object"
         if reason is not None:
+            raw = _scrub(raw, secret)
             # A reply arrived, so the attempt may have been billed, but it holds no assistant message to
             # record as an answer. The raw payload (with any usage) stays on the error for the operator.
             raise ProviderError(
@@ -643,6 +652,22 @@ _QUOTA_CODES = (
 _OVERLOAD_CODE = "server_is_overloaded"
 _BODY_LIMIT = 4000
 _HEADER_LIMIT = 200
+REDACTED_API_KEY = "[redacted-api-key]"
+# A shorter value would also match ordinary text and would garble the record.
+_MIN_SECRET_LENGTH = 8
+
+
+def _scrub(value: Any, secret: str | None) -> Any:
+    """Replace every occurrence of ``secret`` in ``value``: strings, nested lists and dicts, and dict keys."""
+    if secret is None:
+        return value
+    if isinstance(value, str):
+        return value.replace(secret, REDACTED_API_KEY)
+    if isinstance(value, Mapping):
+        return {_scrub(key, secret): _scrub(item, secret) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_scrub(item, secret) for item in value]
+    return value
 
 
 def _clip(text: str) -> str:
@@ -678,9 +703,9 @@ def _bounded_body(body: Any) -> Any:
     return {"truncated": True, "length": len(text), "text": text[:_BODY_LIMIT]}
 
 
-def _header(headers: Any, name: str) -> str | None:
+def _header(headers: Any, name: str, secret: str | None = None) -> str | None:
     value = headers.get(name)
-    return None if value is None else str(value)[:_HEADER_LIMIT]
+    return None if value is None else _scrub(str(value), secret)[:_HEADER_LIMIT]
 
 
 # Which HTTP statuses count as `rejected` and which as `unknown`.
@@ -741,11 +766,11 @@ def _header(headers: Any, name: str) -> str | None:
 #
 # 429 is the one row that could go the other way. If OpenAI states that a rate-limited request is never
 # processed, change the rate-limit branch below and `STATUS_CASES` in tests/test_answer_providers.py.
-def _classify_status(exc: Any) -> ProviderError:
+def _classify_status(exc: Any, secret: str | None = None) -> ProviderError:
     status = int(exc.status_code)
     code = exc.code if isinstance(exc.code, str) else None
     error_type = exc.type if isinstance(exc.type, str) else None
-    message = _clip(str(exc.message))
+    message = _clip(_scrub(str(exc.message), secret))
     headers = exc.response.headers
     lowered = message.lower()
     # Diagnostics for reconciliation. The headers are the provider's response headers, never the request's,
@@ -753,12 +778,12 @@ def _classify_status(exc: Any) -> ProviderError:
     raw = {
         "error_class": type(exc).__name__,
         "http_status": status,
-        "x_request_id": _header(headers, "x-request-id"),
-        "retry_after": _header(headers, "retry-after"),
-        "x_should_retry": _header(headers, "x-should-retry"),
-        "error_code": code,
-        "error_type": error_type,
-        "body": _bounded_body(exc.body),
+        "x_request_id": _header(headers, "x-request-id", secret),
+        "retry_after": _header(headers, "retry-after", secret),
+        "x_should_retry": _header(headers, "x-should-retry", secret),
+        "error_code": _scrub(code, secret),
+        "error_type": _scrub(error_type, secret),
+        "body": _bounded_body(_scrub(exc.body, secret)),
     }
     server_forbids_retry = headers.get("x-should-retry") == "false"
 
@@ -774,7 +799,7 @@ def _classify_status(exc: Any) -> ProviderError:
         # The request reached a server. With redirects switched off (the constructor checks) the reply
         # arrives here. Nothing shows the request was not processed, and a resend would go to the same
         # address. The `location` header stays for the operator, clipped.
-        raw["location"] = _header(headers, "location")
+        raw["location"] = _header(headers, "location", secret)
         return build(KIND_REDIRECT, OUTCOME_UNKNOWN, False)
     if status in (401, 403):
         return build(KIND_AUTH, OUTCOME_REJECTED, False)
@@ -805,9 +830,11 @@ def _classify_status(exc: Any) -> ProviderError:
     return build(KIND_CLIENT_ERROR, OUTCOME_REJECTED, False)
 
 
-def _classify_transport(exc: Exception, cause: BaseException | None, httpx: Any, *, timed_out: bool) -> ProviderError:
+def _classify_transport(
+    exc: Exception, cause: BaseException | None, httpx: Any, *, timed_out: bool, secret: str | None = None
+) -> ProviderError:
     """Place a connection-level failure by the httpx exception the SDK wrapped."""
-    detail = _clip(f"{type(cause).__name__}: {cause}" if cause is not None else str(exc))
+    detail = _clip(_scrub(f"{type(cause).__name__}: {cause}" if cause is not None else str(exc), secret))
     raw = {"error_class": type(exc).__name__, "cause_class": type(cause).__name__ if cause is not None else None}
 
     def build(kind: str, outcome: str, retryable: bool) -> ProviderError:
@@ -828,11 +855,14 @@ def _classify_transport(exc: Exception, cause: BaseException | None, httpx: Any,
     return build(KIND_CONNECTION_LOST, OUTCOME_UNKNOWN, False)
 
 
-def classify_openai_error(exc: BaseException) -> ProviderError:
+def classify_openai_error(exc: BaseException, *, secret: str | None = None) -> ProviderError:
     """Map an exception raised by `client.chat.completions.create` to a `ProviderError`.
 
     Conservative rule: say `not_sent` only for failures that happen before any request byte is
     written; say `rejected` only when a status code arrived; everything else is `unknown`.
+
+    ``secret`` is the client's API key. Every occurrence in the message and `raw` becomes
+    `[redacted-api-key]` before the texts are cut to their size limits.
     """
     import httpx
     import openai
@@ -840,22 +870,24 @@ def classify_openai_error(exc: BaseException) -> ProviderError:
     if isinstance(exc, ProviderError):
         return exc
     if isinstance(exc, openai.APIStatusError):
-        return _classify_status(exc)
+        return _classify_status(exc, secret)
     if isinstance(exc, openai.APIResponseValidationError):
         return ProviderError(
-            _clip(str(exc)),
+            _clip(_scrub(str(exc), secret)),
             kind=KIND_MALFORMED_RESPONSE,
             outcome=OUTCOME_UNKNOWN,
             retryable=False,
             http_status=getattr(exc, "status_code", None),
-            raw={"error_class": type(exc).__name__, "body": _json_safe(exc.body)},
+            raw={"error_class": type(exc).__name__, "body": _scrub(_json_safe(exc.body), secret)},
         )
     if isinstance(exc, openai.APIConnectionError):  # includes APITimeoutError
-        return _classify_transport(exc, exc.__cause__, httpx, timed_out=isinstance(exc, openai.APITimeoutError))
+        return _classify_transport(
+            exc, exc.__cause__, httpx, timed_out=isinstance(exc, openai.APITimeoutError), secret=secret
+        )
     if isinstance(exc, httpx.TransportError):  # a caller that bypassed the SDK wrapper
-        return _classify_transport(exc, exc, httpx, timed_out=False)
+        return _classify_transport(exc, exc, httpx, timed_out=False, secret=secret)
     return ProviderError(
-        _clip(f"{type(exc).__name__}: {exc}"),
+        _clip(_scrub(f"{type(exc).__name__}: {exc}", secret)),
         kind=KIND_UNEXPECTED,
         outcome=OUTCOME_UNKNOWN,
         retryable=False,
