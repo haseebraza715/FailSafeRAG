@@ -181,7 +181,9 @@ def build_parser() -> argparse.ArgumentParser:
     score = command(
         "score",
         "score the exported predictions",
-        "Join predictions to the evaluation manifest with faar.ohr_scoring. Scoring is final for a run.",
+        "Join predictions to the evaluation manifest with faar.ohr_scoring. Scores only a run whose state is complete "
+        "(every question answered, no_evidence or execution_failed; none pending, unknown or unserved). Scoring is "
+        "final for a run: afterwards run, reconcile, reopen and any export that would change a file are refused.",
     )
     project(score)
     score.add_argument("--run-dir", type=Path, required=True)

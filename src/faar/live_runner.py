@@ -605,16 +605,48 @@ def refuse_output_location(out_dir: Path, project_root: Path) -> None:
         )
 
 
+def refuse_frozen_pilots_path(run_dir: Path) -> None:
+    """Refuse any path with a ``results/pilots`` pair, in any letter case, anywhere in it."""
+    folded = [part.casefold() for part in _absolute(run_dir).resolve().parts]
+    in_pilots = any(folded[i] == "results" and folded[i + 1] == "pilots" for i in range(len(folded) - 1))
+    _refuse(not in_pilots, f"refusing {run_dir}: runs must not be written under results/pilots/.")
+
+
+def require_initialised_run(run_dir: Path) -> Path:
+    """Check a run directory before a command creates or opens ``run.lock`` in it.
+
+    ``RunLock`` creates its file, so a mistyped path would gain a ``run.lock`` (and a frozen directory would
+    be written to). Every command that takes the lock calls this first: the path must not sit under
+    ``results/pilots/`` and the directory must hold ``run_config.json``. Nothing is created or changed.
+    """
+    run_dir = _absolute(run_dir)
+    refuse_frozen_pilots_path(run_dir)
+    _refuse(run_dir.is_dir(), f"{run_dir} is not a run directory")
+    _refuse((run_dir / RUN_CONFIG_NAME).is_file(), f"{run_dir} holds no {RUN_CONFIG_NAME}; it is not an initialised run.")
+    return run_dir
+
+
+def is_scored(run_dir: Path) -> bool:
+    """True once ``score`` wrote either score file. A scored run is final."""
+    return (run_dir / SCORES_NAME).exists() or (run_dir / SCORE_SUMMARY_NAME).exists()
+
+
+def refuse_if_scored(run_dir: Path, what: str) -> None:
+    _refuse(
+        not is_scored(run_dir),
+        f"{run_dir} has been scored, so {what} is refused. Scoring is final for a run: the scores describe these "
+        "predictions. Start a new run directory to continue.",
+    )
+
+
 def refuse_run_directory(run_dir: Path, project_root: Path, mode: str) -> None:
     """A fake run lives under results/engineering/<run_id>/, a live run under results/development/<run_id>/.
 
     Outside the project root any directory is allowed. Anywhere, a ``results/pilots`` pair is refused
     (case-insensitive, because ``results/Pilots`` reaches the frozen directory on a case-insensitive filesystem).
     """
-    resolved = _absolute(run_dir).resolve()
-    folded = [part.casefold() for part in resolved.parts]
-    in_pilots = any(folded[i] == "results" and folded[i + 1] == "pilots" for i in range(len(folded) - 1))
-    _refuse(not in_pilots, f"refusing {run_dir}: runs must not be written under results/pilots/.")
+    refuse_frozen_pilots_path(run_dir)
+    folded = [part.casefold() for part in _absolute(run_dir).resolve().parts]
     root = [part.casefold() for part in project_root.resolve().parts]
     if folded[: len(root)] == root:
         area = "engineering" if mode == MODE_FAKE else "development"
@@ -2394,6 +2426,7 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
         "last_invocation_ended": view.last_end_reason,
         "uncommitted_tail_bytes": len(view.uncommitted_tail),
         "lock_held": lock_is_held(run_dir),
+        "scored": is_scored(run_dir),
         "predictions_current": _file_matches(run_dir / PREDICTIONS_NAME, summary["predictions_sha256"]),
         "next": actions,
     }
@@ -2418,6 +2451,7 @@ def format_status(status: Mapping[str, Any]) -> str:
         f"safety ceiling: {status['safety_ceiling']['amount'] if status['safety_ceiling'] else None}",
         f"last invocation ended: {status['last_invocation_ended']}",
         f"lock held by a running invocation: {status['lock_held']}",
+        f"scored: {'yes, the run is final' if status['scored'] else 'no'}",
         f"predictions.jsonl matches the records: {status['predictions_current']}",
     ]
     if status["uncommitted_tail_bytes"]:
@@ -2430,18 +2464,42 @@ def format_status(status: Mapping[str, Any]) -> str:
 
 
 def export_run(run_dir: Path, services: Services | None = None) -> LiveResult:
-    """Rebuild ``predictions.jsonl`` and ``run_summary.json`` from the records. Safe to repeat."""
+    """Rebuild ``predictions.jsonl`` and ``run_summary.json`` from the records. Safe to repeat.
+
+    After ``score`` the exports are final. A repeat that would write byte-identical files succeeds and
+    writes nothing. Any other export of a scored run is refused.
+    """
     services = services or Services.default()
-    run_dir = _absolute(run_dir)
-    _refuse(run_dir.is_dir(), f"{run_dir} is not a run directory")
+    run_dir = require_initialised_run(run_dir)
     lock = RunLock(run_dir, uuid.uuid4().hex)
     lock.acquire()
     try:
         view = load_run(run_dir)
+        if is_scored(run_dir):
+            text, summary = export_view(view, services)
+            summary_text = _dumps(summary) + "\n"
+            same = (
+                _read_text_or_none(run_dir / PREDICTIONS_NAME) == text
+                and _read_text_or_none(run_dir / RUN_SUMMARY_NAME) == summary_text
+            )
+            refuse_if_scored_unless(same, run_dir, "an export that would change the exports")
+            return LiveResult(summary["exit_code"], "exports unchanged (the run is scored). " + _run_message(summary, run_dir), summary)
         _, summary = write_export(view, services)
     finally:
         lock.release()
     return LiveResult(summary["exit_code"], "exported. " + _run_message(summary, run_dir), summary)
+
+
+def refuse_if_scored_unless(condition: bool, run_dir: Path, what: str) -> None:
+    if not condition:
+        refuse_if_scored(run_dir, what)
+
+
+def _read_text_or_none(path: Path) -> str | None:
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError:
+        return None
 
 
 def reconcile_attempt(
@@ -2464,11 +2522,12 @@ def reconcile_attempt(
     run_dir = _absolute(run_dir)
     _refuse(resolution in RESOLUTIONS, f"resolution must be one of {RESOLUTIONS}")
     _refuse(bool(note and note.strip()), "--note TEXT is required: say what you checked and what you found")
-    _refuse(run_dir.is_dir(), f"{run_dir} is not a run directory")
+    run_dir = require_initialised_run(run_dir)
     invocation_id = uuid.uuid4().hex
     lock = RunLock(run_dir, invocation_id)
     lock.acquire()
     try:
+        refuse_if_scored(run_dir, "reconcile")
         view = load_run(run_dir)
         tail = quarantine_uncommitted_tail(run_dir, view, invocation_id)
         target = next((s for s in view.ordered_states if any(a.attempt_id == attempt_id for a in s.attempts)), None)
@@ -2528,21 +2587,36 @@ def score_run_live(
 ) -> LiveResult:
     """Export, then join predictions to the evaluation manifest with ``faar.ohr_scoring.score_predictions``.
 
-    This is the only command that opens the evaluation manifest. Existing score files are never
-    overwritten: identical bytes report "already scored", different bytes are refused.
+    This is the only command that opens the evaluation manifest. It scores only a run whose state is
+    ``complete``. Scoring is final: existing score files are never overwritten (identical bytes report
+    "already scored", different bytes are refused), and a scored run's exports are never rewritten.
     """
     import importlib
     import unicodedata
 
     services = services or Services.default()
     project_root = project_root.resolve()
-    run_dir = _absolute(run_dir)
-    _refuse(run_dir.is_dir(), f"{run_dir} is not a run directory")
+    run_dir = require_initialised_run(run_dir)
     lock = RunLock(run_dir, uuid.uuid4().hex)
     lock.acquire()
     try:
         view = load_run(run_dir)
-        predictions_text, run_summary = write_export(view, services)
+        scored = is_scored(run_dir)
+        _refuse(
+            scored or view.run_state == RUN_COMPLETE,
+            f"score needs a complete run, and this run is {view.run_state}. Serve the pending questions, "
+            "reconcile the unknown attempts or reopen the failed questions first. Nothing was written.",
+        )
+        if scored:
+            # Scores are final: rebuild in memory and compare, never rewrite the exports.
+            predictions_text, run_summary = export_view(view, services)
+            _refuse(
+                _read_text_or_none(run_dir / PREDICTIONS_NAME) == predictions_text
+                and _read_text_or_none(run_dir / RUN_SUMMARY_NAME) == _dumps(run_summary) + "\n",
+                f"{run_dir} has been scored and its exports no longer match the records. Nothing was written.",
+            )
+        else:
+            predictions_text, run_summary = write_export(view, services)
         pilot_id = view.config["pilot_id"]
         path = evaluation_manifest_path or project_root / "results" / "pilots" / pilot_id / "evaluation_manifest.json"
         try:
