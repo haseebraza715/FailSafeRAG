@@ -842,8 +842,14 @@ def prepare_requests(
             f"question {question.question_id}: the prompt names template {payload.template_id}/{payload.template_sha256}, "
             f"the run identity names {services.template_id}/{services.template_sha256}",
         )
-        upper = services.input_token_upper_bound(payload.messages())
-        cost = services.request_cost_upper_bound(upper, config.max_output_tokens, config.prices)
+        try:
+            upper = services.input_token_upper_bound(payload.messages())
+            cost = services.request_cost_upper_bound(upper, config.max_output_tokens, config.prices)
+        except (ValueError, TypeError) as exc:
+            raise RunnerRefusal(
+                f"question {question.question_id}: the input bound or cost bound cannot be computed ({exc}). "
+                "A missing or non-finite price, max_output_tokens or input bound refuses the run (contract rule 6)."
+            ) from exc
         _refuse(
             isinstance(cost, float) and math.isfinite(cost) and cost >= 0,
             f"question {question.question_id}: the cost bound {cost!r} is not a finite number",

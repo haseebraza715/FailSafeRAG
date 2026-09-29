@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
 import sys
 import traceback
 from pathlib import Path
@@ -31,6 +32,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from faar import live_runner
+from faar.answer_providers import SimulatedCrash
 from faar.live_runner import (
     EXIT_BUDGET_LIMITED,
     EXIT_EXECUTION_FAILED,
@@ -51,6 +53,7 @@ exit codes:
   {EXIT_REFUSED}  refusal, usage error or unreadable input; nothing was dispatched (also: another invocation holds the run lock)
   {EXIT_EXECUTION_FAILED}  the run is complete but at least one question is execution_failed
   {EXIT_INTERNAL_ERROR}  unexpected internal error (a traceback follows); the run directory keeps every record written so far
+     (a fake script's crash_after_send step kills the process with SIGKILL instead, like a real crash)
   {EXIT_BUDGET_LIMITED}  budget_limited: the safety ceiling stopped the run; unserved questions are execution_failed with unserved true
   {EXIT_NEEDS_ATTENTION}  needs_reconciliation, stopped or incomplete: an attempt has an unknown outcome, a provider error
      stopped the run, or the invocation was interrupted; run status, then reconcile or run again
@@ -256,6 +259,11 @@ def main(argv: list[str] | None = None) -> int:
     except RunnerRefusal as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return EXIT_REFUSED
+    except SimulatedCrash as exc:
+        # A fake script's crash_after_send step. Die the way a killed process does: no cleanup, no exit code.
+        print(f"simulated crash: {exc}", file=sys.stderr, flush=True)
+        os.kill(os.getpid(), signal.SIGKILL)
+        raise
     except Exception:
         traceback.print_exc()
         return EXIT_INTERNAL_ERROR

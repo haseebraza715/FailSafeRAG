@@ -643,11 +643,12 @@ def test_a_successful_question_is_never_sent_again_on_resume(project: Project) -
 )
 def test_an_incompatible_resume_is_refused_before_any_dispatch(project: Project, change: str, tmp_path: Path) -> None:
     """D2: a change to the prompt template, evidence, model config, retry parameters, prices, code or adapter refuses the resume."""
+    # The first invocation dies before q3, so the run has pending work that a compatible resume would send.
     rig = Rig()
-    go(project, rig, crash_hook=None)
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, crash_hook=crash_at(lr.CRASH_BEFORE_DISPATCH, "q3"))
     run_dir = project.run_dir("run-a")
-    # Reopen the run as if it were unfinished: a resume that passed identity would have work to do only if questions were pending.
-    # Identity is checked first, so a finished run is enough to prove the refusal.
+    sent_before = rig.sent(run_dir)
     before = file_snapshot(run_dir)
     services = None
     kwargs: dict[str, Any] = {}
@@ -671,7 +672,8 @@ def test_an_incompatible_resume_is_refused_before_any_dispatch(project: Project,
     elif change == "code":
         script = tmp_path / "cli.py"
         script.write_text("print('a')")
-        go(project, Rig(), "run-c", cli_script=script)
+        with pytest.raises(SimulatedCrash):
+            go(project, Rig(), "run-c", cli_script=script, crash_hook=crash_at(lr.CRASH_BEFORE_DISPATCH, "q3"))
         script.write_text("print('b')")
         rig2 = Rig()
         with pytest.raises(RunnerRefusal, match="different identity.*code.cli_script_sha256"):
@@ -691,7 +693,7 @@ def test_an_incompatible_resume_is_refused_before_any_dispatch(project: Project,
             sleep=lambda s: None,
             environ={},
         )
-    assert rig2.factory_calls == 0 and rig2.providers == []
+    assert rig2.factory_calls == 0 and rig2.providers == [] and rig.sent(run_dir) == sent_before
     assert strip_lock(file_snapshot(run_dir)) == strip_lock(before)
     assert "Nothing was dispatched" in str(excinfo.value) or change == "evidence"
 
@@ -896,9 +898,91 @@ def run_driver(project: Project, body: str, *, stdin: str | None = None) -> subp
     return subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, env=env, input=stdin, timeout=120)
 
 
+def test_ctrl_c_ends_the_invocation_as_interrupted_and_marks_the_open_attempt_unknown(project: Project) -> None:
+    """W2 by signal: KeyboardInterrupt during dispatch records outcome_unknown at once, ends the invocation and exports."""
+
+    def interrupt(name: str, info: Mapping[str, Any]) -> None:
+        if name == lr.CRASH_AFTER_DISPATCH and info["question_id"] == "q3":
+            raise KeyboardInterrupt
+
+    rig = Rig()
+    result = go(project, rig, crash_hook=interrupt)
+    run_dir = project.run_dir("run-a")
+    assert names(run_dir, "q3") == ["dispatch_started", "outcome_unknown"]
+    assert events_of(run_dir)[-1]["reason"] == "interrupted" and result.exit_code == lr.EXIT_NEEDS_ATTENTION
+    assert rig.sent(run_dir) == ["q1", "q2"] and by_question(run_dir)["q3"]["awaiting_reconciliation"] is True
+    assert by_question(run_dir)["q4"]["unserved"] is True
+
+
+def test_a_provider_that_raises_something_other_than_provider_error_leaves_the_outcome_unknown(project: Project) -> None:
+    """A bug in a provider after send may hide a processed request, so it is unknown, not retried and not a crash."""
+
+    class Broken:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def send(self, request: Any) -> Any:
+            self.calls += 1
+            raise RuntimeError("adapter bug")
+
+    broken = Broken()
+    result = lr.execute_run(
+        options(project), provider_factory=lambda ctx: broken, descriptor={"adapter": "broken"}, sleep=lambda s: None, environ={}
+    )
+    run_dir = project.run_dir("run-a")
+    assert broken.calls == 5, "every question is tried once and none is retried"
+    unknown = [e for e in events_of(run_dir) if e["event"] == "outcome_unknown"]
+    assert len(unknown) == 5 and unknown[0]["kind"] == "provider_exception" and "adapter bug" in unknown[0]["message"]
+    assert result.exit_code == lr.EXIT_NEEDS_ATTENTION
+
+
+def test_the_response_file_keeps_the_raw_payload_and_the_parsed_fields(project: Project) -> None:
+    """The raw provider payload is stored unchanged next to the parsed answer, before the response_saved event names it."""
+    rig = Rig(steps={"q1": [FakeStep("answer", text="Answer:  twelve months  "), ]})
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    event = next(e for e in events_of(run_dir) if e["event"] == "response_saved" and e["question_id"] == "q1")
+    payload = json.loads((run_dir / event["response_file"]).read_text())
+    assert payload["provider_response"]["text"] == "Answer:  twelve months  "
+    assert payload["answer"] == "twelve months" == event["answer"] and payload["output_status"] == "ok"
+    assert payload["provider_response"]["raw"]["simulated"] is True and payload["provider_response"]["raw"]["choices"]
+    assert payload["usage"] == event["usage"] and payload["measured_cost"] == event["measured_cost"]
+    assert payload["attempt_id"] == event["attempt_id"]
+
+
+@pytest.mark.parametrize(
+    ("step", "output_status", "answer", "abstained"),
+    [
+        (FakeStep("abstain"), "abstained", "", True),
+        (FakeStep("empty"), "empty", "", False),
+        (FakeStep("truncated"), "truncated", "FAKE PARTIAL ANSWER", False),
+        (FakeStep("refusal"), "refusal", "", False),
+    ],
+)
+def test_an_abstention_an_empty_reply_a_cut_reply_and_a_refusal_are_answers(project: Project, step: FakeStep, output_status: str, answer: str, abstained: bool) -> None:
+    """Study brief 15.7: these are scored as returned with an output status. They are not API failures and not no_evidence."""
+    go(project, Rig(steps={"q1": [step]}))
+    record = by_question(project.run_dir("run-a"))["q1"]
+    assert (record["status"], record["output_status"], record["answer"], record["abstained"]) == ("answered", output_status, answer, abstained)
+    assert record["failure"] is None and record["no_evidence_reason"] is None
+
+
 # ---------------------------------------------------------------------------
 # Unknown outcomes and reconcile
 # ---------------------------------------------------------------------------
+
+
+def test_reconcile_can_resolve_an_orphaned_dispatch_before_any_new_run(project: Project) -> None:
+    """After a crash in window 2, reconcile itself records outcome_unknown and then the resolution."""
+    rig = Rig()
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, crash_hook=crash_at(lr.CRASH_AFTER_DISPATCH, "q3"))
+    run_dir = project.run_dir("run-a")
+    request = next(r for r in requests_of(run_dir) if r["question_id"] == "q3")
+    result = lr.reconcile_attempt(run_dir=run_dir, attempt_id=f"{request['request_id']}-a1", resolution="mark_failed", note="crashed mid-dispatch; provider shows nothing")
+    assert names(run_dir, "q3") == ["dispatch_started", "outcome_unknown", "reconciled"]
+    assert by_question(run_dir)["q3"]["failure"]["type"] == "outcome_unknown_marked_failed"
+    assert result.summary["run_state"] == "incomplete", "q4 and q6 are still pending"
 
 
 def test_an_unknown_outcome_is_not_resent_and_other_questions_continue(project: Project) -> None:
@@ -1298,6 +1382,37 @@ def test_a_torn_final_line_is_ignored_reported_and_moved_aside_on_the_next_run(p
     assert len(events) > committed and [e["seq"] for e in events] == list(range(1, len(events) + 1))
     start = next(e for e in events if e["event"] == "invocation_started" and e["seq"] == committed + 1)
     assert start["recovered_uncommitted_tail"] == {"file": side[0].name, "bytes": len(torn), "sha256": sha256_bytes(torn)}
+
+
+def test_a_complete_final_line_without_a_newline_is_still_uncommitted(project: Project) -> None:
+    """E1: only a newline commits a line. A parseable last line without one is set aside, not trusted."""
+    go(project, Rig())
+    run_dir = project.run_dir("run-a")
+    last = (run_dir / "attempts.jsonl").read_bytes().rstrip(b"\n")
+    (run_dir / "attempts.jsonl").write_bytes(last)
+    committed = len(events_of(run_dir))
+    assert committed == len(last.splitlines()) - 1
+    assert lr.run_status(run_dir)["uncommitted_tail_bytes"] == len(last.splitlines()[-1])
+    go(project, Rig())
+    assert len(list(run_dir.glob("attempts.uncommitted.*"))) == 1
+    assert [e["event"] for e in events_of(run_dir)][-2:] == ["invocation_started", "invocation_ended"]
+
+
+def test_a_ceiling_flag_that_disagrees_with_the_price_table_is_refused_by_the_ledger(project: Project) -> None:
+    """The ledger rejects a log whose ceiling is not in the price table's simulated currency. The driver refuses with exit 1."""
+    go(project, Rig())
+    run_dir = project.run_dir("run-a")
+    lines = (run_dir / "attempts.jsonl").read_bytes().splitlines(keepends=True)
+    first = json.loads(lines[0])
+    first["safety_ceiling"]["simulated"] = False
+    lines[0] = (json.dumps(first) + "\n").encode()
+    (run_dir / "attempts.jsonl").write_bytes(b"".join(lines))
+    rig = Rig()
+    with pytest.raises(RunnerRefusal, match="ledger refused"):
+        go(project, rig)
+    with pytest.raises(RunnerRefusal, match="ledger refused"):
+        lr.run_status(run_dir)
+    assert rig.factory_calls == 0
 
 
 @pytest.mark.parametrize(
@@ -1758,6 +1873,39 @@ def test_the_cli_budget_limited_exit_code(project: Project) -> None:
     args = ["run", "--project-root", str(project.root), "--pilot-id", PILOT_ID, "--run-dir", str(project.run_dir("cli-budget")),
             "--fake-script", str(fake), "--safety-ceiling", str(costs["q1"] + 0.000001)]
     assert cli.main(args) == 4
+
+
+def test_a_cli_process_killed_by_a_fake_crash_step_resumes_in_a_fresh_process(project: Project) -> None:
+    """W3 end to end through the CLI: crash_after_send kills the process with SIGKILL, and a new process resumes."""
+    fake = write_fake_script(project, {"q3": [{"kind": "crash_after_send"}]})
+    run_dir = project.run_dir("cli-kill")
+    command = [
+        sys.executable, str(SCRIPTS_DIR / "run_pilot_live.py"), "run", "--project-root", str(project.root), "--pilot-id", PILOT_ID,
+        "--run-dir", str(run_dir), "--fake-script", str(fake), "--safety-ceiling", "10",
+    ]
+    env = {**os.environ, "PYTHONPATH": str(SRC_DIR)}
+    first = subprocess.run(command, capture_output=True, text=True, env=env, timeout=120)
+    assert first.returncode == -9 and "simulated crash" in first.stderr
+    assert names(run_dir, "q3") == ["dispatch_started"] and not (run_dir / "predictions.jsonl").exists()
+    second = subprocess.run(command, capture_output=True, text=True, env=env, timeout=120)
+    assert second.returncode == lr.EXIT_NEEDS_ATTENTION, second.stdout + second.stderr
+    assert names(run_dir, "q3") == ["dispatch_started", "outcome_unknown"]
+    assert [p for p in by_question(run_dir).values() if p["status"] == "answered"].__len__() == 4
+
+
+def test_a_price_or_bound_that_cannot_be_computed_refuses_the_run_before_anything_is_written(project: Project) -> None:
+    """Contract rule 6: a non-finite price refuses. It is not an internal error and it writes nothing."""
+    nan_prices = lr.PriceTable(**{**lr.FAKE_CONFIG.prices.as_dict(), "input_per_million": float("nan")})
+    config = lr.ProviderConfig(**{**vars(lr.FAKE_CONFIG), "prices": nan_prices})
+    rig = Rig()
+    with pytest.raises(RunnerRefusal, match="cannot be computed"):
+        go(project, rig, config=config)
+    assert rig.factory_calls == 0 and not project.run_dir("run-a").exists()
+
+
+def test_the_cli_refuses_status_on_a_directory_that_is_not_a_run(project: Project, capsys: pytest.CaptureFixture[str]) -> None:
+    assert cli.main(["status", "--run-dir", str(project.root)]) == 1
+    assert "not an initialised run" in capsys.readouterr().err
 
 
 def test_the_cli_reports_an_internal_error_with_exit_3(project: Project, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
