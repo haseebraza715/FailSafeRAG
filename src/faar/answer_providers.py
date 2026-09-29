@@ -654,57 +654,59 @@ def _header(headers: Any, name: str) -> str | None:
     return None if value is None else str(value)[:_HEADER_LIMIT]
 
 
-# Which HTTP statuses count as `rejected` (the request was not processed) and which as `unknown`.
+# Which HTTP statuses count as `rejected` and which as `unknown`.
 #
-# The test is proof that the request was not processed, not a recommendation to try again. A resend is
-# safe only after proof, because OpenAI documents no idempotency key for Chat Completions. Without proof
-# the outcome is `unknown`: the run driver never resends the request, keeps its reservation and waits for
-# `reconcile`. Retrieved 2026-09-29.
+# `rejected` needs proof that the provider did not process the request. A recommendation to try again
+# is not proof. OpenAI documents no idempotency key for Chat Completions, so a resend after an
+# unprocessed-looking failure can bill twice. Without proof the outcome is `unknown`: the run driver
+# never resends the request, keeps its reservation and waits for `reconcile`.
 #
-#   E1  OpenAI, Error codes. https://developers.openai.com/api/docs/guides/error-codes
-#       The page lists 400 (service_tier), 401, 403, 429 (credit_balance_exhausted, rate limit, slow_down,
-#       spend and usage limits), 500 and 503 (server_is_overloaded). It has no 502, 504, 408 or 409 entry
-#       and no statement on billing of failed requests. For 500 it says "Retry your request after a brief
-#       wait", which is a retry recommendation. For 429 it says to follow `Retry-After`, also a
-#       recommendation. For billing, spend and quota errors it says "Retrying billing, spend, or quota
-#       errors won't restore API access".
-#   E2  OpenAI, Error codes, section "503 - Model temporarily overloaded". "The requested model does not
-#       have enough capacity to process your request at the moment." This is the only OpenAI text that
-#       says a failed request was not processed, and only for type `service_unavailable_error` with code
-#       `server_is_overloaded`.
-#   E3  OpenAI, Rate limits, section "How do I retry?" (https://developers.openai.com/api/docs/guides/rate-limits).
-#       "unsuccessful requests contribute to your per-minute limit". The guide also says the limit uses
-#       max_tokens plus an estimate from the character count, which suggests a check before generation. It
-#       never says a 429 request was not processed or not billed.
-#   E4  RFC 9110 (https://www.rfc-editor.org/rfc/rfc9110.html), retrieved as text. 15.5.9 (408): the server
-#       "did not receive a complete request message", and the client MAY repeat it. 15.5.10 (409): the
-#       user "might be able to resolve the conflict and resubmit". 15.6.1 (500): an "unexpected condition
-#       that prevented it from fulfilling the request". 15.6.3 (502): a gateway "received an invalid
-#       response from an inbound server". 15.6.4 (503): "unable to handle the request due to a temporary
-#       overload or scheduled maintenance". 15.6.5 (504): no "timely response from an upstream server".
-#       9.2.2: a client "SHOULD NOT automatically retry a request with a non-idempotent method unless it
-#       has some means to know that ... the original request was never applied" and "some means to detect
-#       that the original request was never applied". No 5xx definition says the request was not applied.
-#   E5  openai-python 1.68.2, `_base_client.py` `_should_retry`: it resends on x-should-retry "true", on
-#       408, 409, 429 and any status of 500 or more. It is a client default for retrying, and this adapter
-#       turns it off (`max_retries=0`). It is not documentation that those requests were not processed.
-#   E6  RFC 9110 15.5.1, 15.5.2, 15.5.4, 15.5.5 and 15.5.21: a 400 or 422 server "cannot or will not
-#       process" the request, and 401, 403 and 404 refuse it for credentials, permission or target. Other
-#       4xx codes are client errors (15.5). No resend follows from these, so a wrong `rejected` here costs
-#       no second charge. The reservation is kept for every `rejected` attempt.
+# Sources, all retrieved 2026-09-29:
+#   E1  OpenAI, Error codes, https://developers.openai.com/api/docs/guides/error-codes. Entries exist for
+#       400 (service_tier), 401, 403, 429 (credit_balance_exhausted, rate limit, slow_down, spend and
+#       usage limits), 500 and 503 (server_is_overloaded). There is no 502, 504, 408 or 409 entry and no
+#       statement on billing failed requests. 500: "Retry your request after a brief wait". 429: "follow
+#       the Retry-After header". Both are retry recommendations. Billing, spend and quota errors: "Retrying
+#       billing, spend, or quota errors won't restore API access".
+#   E2  Same page, section "503 - Model temporarily overloaded": the model "does not have enough capacity
+#       to process your request at the moment". It is the only OpenAI text that says a failed request was
+#       not processed, and it covers type service_unavailable_error with code server_is_overloaded only.
+#   E3  OpenAI, Rate limits, https://developers.openai.com/api/docs/guides/rate-limits. Section "Retrying
+#       with exponential backoff": "unsuccessful requests contribute to your per-minute limit". Section
+#       "What are some steps I can take to mitigate this?": the limit is computed from max_tokens and a
+#       character-count estimate, which suggests a check before generation. The guide never says a 429
+#       request was not processed or not billed.
+#   E4  RFC 9110, https://www.rfc-editor.org/rfc/rfc9110.html. 15.5.9 (408): the server "did not receive a
+#       complete request message", and the client MAY repeat it. 15.5.10 (409): "the user might be able to
+#       resolve the conflict and resubmit". 15.6.1 (500): an "unexpected condition that prevented it from
+#       fulfilling the request". 15.6.3 (502): a gateway "received an invalid response from an inbound
+#       server". 15.6.4 (503): "unable to handle the request due to a temporary overload or scheduled
+#       maintenance". 15.6.5 (504): no "timely response from an upstream server". None of the 5xx
+#       definitions says the request was not applied. 9.2.2: a client "SHOULD NOT automatically retry a
+#       request with a non-idempotent method unless it has some means to know that the request semantics
+#       are actually idempotent ... or some means to detect that the original request was never applied".
+#   E5  openai-python 1.68.2, `_base_client.py` `_should_retry`: it resends on `x-should-retry: true`, on
+#       408, 409, 429 and on every status from 500. That is a client default for retrying. This adapter
+#       turns it off with `max_retries=0`, and the code is not documentation that the request was not
+#       processed.
+#   E6  RFC 9110 15.5.1 (400): the server "cannot or will not process the request". 15.5.2 (401): "the
+#       request has not been applied". 15.5.4 (403): the server "refuses to fulfill it". 15.5.21 (422):
+#       the server "was unable to process the contained instructions". 15.5.5 (404) and the rest of 15.5
+#       are client errors. A non-retryable `rejected` never causes a resend, so a wrong `rejected` here
+#       adds no second charge. The reservation is kept for every `rejected` attempt anyway.
 #
-#   status               outcome   retry  source
-#   408                  rejected  yes    E4 15.5.9, the server never got a complete request
-#   503 server_is_overloaded rejected yes E2
-#   503 other, 500, 502, other 5xx    unknown no  E1, E4, E5 (recommendation only)
-#   504, 522, 524        unknown   no     a gateway can give up after the provider finished
-#   429 rate limit       unknown   no     E1 and E3 recommend waiting, none says "not processed"
-#   429 quota or billing rejected  no     E1, stops the run
-#   409                  unknown   no     E4 15.5.10, a conflict is resolved by the user, not resent blindly
-#   400, 422, 401, 403, 404, other 4xx  rejected no  E6
+#   status                                      outcome   retry  basis
+#   408                                         rejected  yes    E4 15.5.9
+#   503 with code server_is_overloaded          rejected  yes    E2
+#   500, 502, 503 otherwise, other 5xx          unknown   no     E1, E4, E5: recommendation only
+#   504, 522, 524                               unknown   no     a gateway can give up after the provider finished
+#   429 rate limit                              unknown   no     E1 and E3 recommend waiting, none says "not processed"
+#   429 quota, billing, spend, usage limit      rejected  no     E1, stops the run
+#   409                                         unknown   no     E4 15.5.10: a person resolves a conflict
+#   400, 401, 403, 404, 422, other 4xx          rejected  no     E6
 #
-# 429 is the one row that could reasonably go the other way. If OpenAI states that a rate-limited request is
-# never processed, change the rate-limit branch below and `STATUS_CASES` in tests/test_answer_providers.py.
+# 429 is the one row that could go the other way. If OpenAI states that a rate-limited request is never
+# processed, change the rate-limit branch below and `STATUS_CASES` in tests/test_answer_providers.py.
 def _classify_status(exc: Any) -> ProviderError:
     status = int(exc.status_code)
     code = exc.code if isinstance(exc.code, str) else None
