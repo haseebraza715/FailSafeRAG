@@ -1,7 +1,7 @@
 """Tests for faar.answer_providers.
 
 The failure list these tests cover is in the docstring of `faar/answer_providers.py`
-(items F1-F10 for the fake provider, O1-O12 for the OpenAI adapter). No test sends a
+(items F1-F10 for the fake provider, O1-O13 for the OpenAI adapter). No test sends a
 request: the OpenAI client gets an `httpx.MockTransport`, and the conftest blocks
 non-loopback sockets besides.
 """
@@ -124,7 +124,7 @@ def test_fake_missing_usage_is_none_not_zero() -> None:
 @pytest.mark.parametrize(
     ("step", "kind", "outcome", "retryable", "status"),
     [
-        (FakeStep("retryable_error"), "rate_limit", "rejected", True, 429),
+        (FakeStep("retryable_error"), "transient_status", "rejected", True, 408),
         (FakeStep("retryable_error", http_status=503), "server_error", "rejected", True, 503),
         (FakeStep("non_retryable_error"), "bad_request", "rejected", False, 400),
         (FakeStep("auth_error"), "auth", "rejected", False, 401),
@@ -247,7 +247,9 @@ def completion_payload(**overrides: Any) -> dict[str, Any]:
     return payload
 
 
-def mock_client(handler: Callable[[httpx.Request], httpx.Response]) -> tuple[openai.OpenAI, list[httpx.Request]]:
+def mock_client(
+    handler: Callable[[httpx.Request], httpx.Response], *, api_key: str = "test-not-a-key", follow_redirects: bool = False
+) -> tuple[openai.OpenAI, list[httpx.Request]]:
     seen: list[httpx.Request] = []
 
     def recording(request: httpx.Request) -> httpx.Response:
@@ -255,15 +257,21 @@ def mock_client(handler: Callable[[httpx.Request], httpx.Response]) -> tuple[ope
         return handler(request)
 
     client = openai.OpenAI(
-        api_key="test-not-a-key",
-        http_client=httpx.Client(transport=httpx.MockTransport(recording)),
+        api_key=api_key,
+        http_client=httpx.Client(transport=httpx.MockTransport(recording), follow_redirects=follow_redirects),
         max_retries=0,
     )
     return client, seen
 
 
-def adapter(handler: Callable[[httpx.Request], httpx.Response], params: dict | None = None, **kwargs: Any) -> tuple[OpenAIChatProvider, list[httpx.Request]]:
-    client, seen = mock_client(handler)
+def adapter(
+    handler: Callable[[httpx.Request], httpx.Response],
+    params: dict | None = None,
+    *,
+    api_key: str = "test-not-a-key",
+    **kwargs: Any,
+) -> tuple[OpenAIChatProvider, list[httpx.Request]]:
+    client, seen = mock_client(handler, api_key=api_key)
     return OpenAIChatProvider("gpt-test", params or {}, client=client, **kwargs), seen
 
 
@@ -384,6 +392,23 @@ def test_200_reply_without_a_choice_message_is_a_malformed_response_not_an_answe
         assert error.raw["payload"]["usage"]["prompt_tokens"] == 120  # the reply was billed; the raw keeps the usage
 
 
+@pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
+def test_a_malformed_200_puts_usage_id_and_model_at_the_top_of_raw() -> None:
+    """A later bound on the payload's size must not drop the evidence of what the reply cost."""
+    body = completion_payload(choices=[])
+    provider, _ = adapter(lambda request: httpx.Response(200, json=body))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    raw = info.value.raw
+    assert raw["usage"] == raw["payload"]["usage"]  # the SDK's dump adds None-valued detail fields
+    assert (raw["usage"]["prompt_tokens"], raw["usage"]["completion_tokens"], raw["usage"]["total_tokens"]) == (120, 9, 129)
+    assert (raw["id"], raw["model"]) == ("chatcmpl-test-1", "gpt-test-2026-01-01")
+    provider, _ = adapter(lambda request: httpx.Response(200, json={"foo": 1}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert (info.value.raw["usage"], info.value.raw["id"], info.value.raw["model"]) == (None, None, None)
+
+
 def test_null_content_with_a_refusal_string_stays_a_response() -> None:
     payload = completion_payload()
     payload["choices"][0]["message"] = {"role": "assistant", "content": None, "refusal": "No."}
@@ -468,6 +493,158 @@ def test_status_errors_are_classified(status: int, body: dict, kind: str, outcom
     assert error.raw["x_request_id"] == "req_9"
     assert error.raw["retry_after"] == "3"
     assert "test-not-a-key" not in json.dumps(error.raw) + str(error)
+
+# --------------------------------------------------------------------------- redirects (M2)
+
+
+@pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+def test_a_redirect_reply_is_one_unknown_attempt_and_is_not_followed(status: int) -> None:
+    """The request reached a server. Nothing shows it was not processed, so no resend and no follow."""
+    target = "http://127.0.0.1:9/elsewhere"
+    provider, seen = adapter(lambda request: httpx.Response(status, headers={"location": target, "x-request-id": "req_3xx"}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert len(seen) == 1, "a redirect must be neither followed nor retried"
+    error = info.value
+    assert (error.kind, error.outcome, error.retryable, error.http_status) == ("redirect", "unknown", False, status)
+    assert error.raw["location"] == target
+    assert error.raw["x_request_id"] == "req_3xx"
+    assert error.raw["http_status"] == status
+
+
+def test_a_redirect_location_is_clipped_and_a_redirect_without_location_is_still_unknown() -> None:
+    provider, seen = adapter(lambda request: httpx.Response(302, headers={"location": "http://127.0.0.1:9/" + "a" * 5000}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert len(info.value.raw["location"]) <= 200
+    provider, seen = adapter(lambda request: httpx.Response(300))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert (info.value.outcome, info.value.retryable, info.value.raw["location"]) == ("unknown", False, None)
+
+
+def test_a_redirect_goes_to_reconcile_not_to_a_retry() -> None:
+    from faar.retry_policy import RetryPolicy
+
+    provider, seen = adapter(lambda request: httpx.Response(307, headers={"location": "http://127.0.0.1:9/x"}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert RetryPolicy().decide(info.value, 1).action == "reconcile"
+    assert len(seen) == 1
+
+
+def test_a_client_that_follows_redirects_is_refused_at_construction() -> None:
+    client, seen = mock_client(lambda request: httpx.Response(302, headers={"location": "http://127.0.0.1:9/x"}), follow_redirects=True)
+    with pytest.raises(ValueError, match="follow redirects"):
+        OpenAIChatProvider("gpt-test", {}, client=client)
+    assert seen == []
+
+
+def test_the_sdk_default_http_client_follows_redirects_and_is_refused() -> None:
+    client = openai.OpenAI(api_key="test-not-a-key", max_retries=0)
+    with pytest.raises(ValueError, match="follow redirects"):
+        OpenAIChatProvider("gpt-test", {}, client=client)
+
+
+def test_a_client_whose_redirect_setting_cannot_be_read_is_refused() -> None:
+    class Opaque:
+        max_retries = 0
+        api_key = "test-not-a-key"
+
+    with pytest.raises(ValueError, match="follow redirects"):
+        OpenAIChatProvider("gpt-test", {}, client=Opaque())
+
+
+def test_a_following_client_would_have_sent_a_second_request() -> None:
+    """Why the refusal exists: with follow_redirects=True the same reply costs two requests."""
+    client, seen = mock_client(
+        lambda request: httpx.Response(200, json=completion_payload())
+        if request.url.path.endswith("/elsewhere")
+        else httpx.Response(307, headers={"location": "http://127.0.0.1:9/elsewhere"}),
+        follow_redirects=True,
+    )
+    client.chat.completions.create(model="m", messages=[{"role": "user", "content": "q"}])
+    assert len(seen) == 2
+
+# --------------------------------------------------------------------------- API key scrub (L4)
+
+ECHOED_KEY = "sk-test-echoed-0123456789"
+
+
+def test_an_api_key_echoed_by_a_proxy_is_replaced_in_the_message_and_the_raw() -> None:
+    header_echo = {"x-request-id": "req_echo", "x-debug": f"Bearer {ECHOED_KEY}", "location": f"http://127.0.0.1:9/?key={ECHOED_KEY}"}
+    cases = [
+        (401, {"json": error_body(f"Incorrect API key provided: {ECHOED_KEY}.", code="invalid_api_key")}),
+        (502, {"json": {"error": {"message": "bad", "type": "server_error", "code": None, "detail": {"echo": [f"Authorization: Bearer {ECHOED_KEY}"]}}}}),
+        (502, {"text": f"<html>upstream saw {ECHOED_KEY}</html>"}),
+        (500, {"json": error_body("ok", code=f"code-{ECHOED_KEY}", type_=f"type-{ECHOED_KEY}")}),
+        (302, {"headers": header_echo}),
+    ]
+    for status, kwargs in cases:
+        provider, seen = adapter(lambda request, s=status, k=kwargs: httpx.Response(s, **k), api_key=ECHOED_KEY)
+        with pytest.raises(ProviderError) as info:
+            provider.send(make_request())
+        error = info.value
+        assert len(seen) == 1
+        assert ECHOED_KEY not in str(error), (status, kwargs)
+        assert ECHOED_KEY not in json.dumps(error.raw), (status, kwargs)
+        assert "[redacted-api-key]" in str(error) + json.dumps(error.raw), (status, kwargs)
+        assert error.outcome in ("rejected", "unknown") and error.http_status == status
+
+
+def test_a_key_that_straddles_a_size_limit_is_still_removed() -> None:
+    """The scrub runs before the message and body are cut to their limits, so no fragment of the key survives a cut.
+
+    Each case first runs with a different client key, to show that the cut really lands inside the echoed key.
+    """
+    message_prefix = "Error code: 401 - {'error': {'message': '"  # how the SDK renders the message
+    message = "x" * (995 - len(message_prefix)) + ECHOED_KEY
+    body = {"error": {"message": "y" * (3995 - len('{"message": "')) + ECHOED_KEY, "type": "server_error", "code": None}}
+    cases = [
+        (401, error_body(message), lambda error: str(error)),
+        (502, body, lambda error: json.dumps(error.raw)),
+    ]
+    for status, payload, stored in cases:
+        control, _ = adapter(lambda request, s=status, p=payload: httpx.Response(s, json=p), api_key="a-different-key-1234")
+        with pytest.raises(ProviderError) as info:
+            control.send(make_request())
+        assert ECHOED_KEY[:4] in stored(info.value), "the cut must land inside the key for this test to mean anything"
+        provider, _ = adapter(lambda request, s=status, p=payload: httpx.Response(s, json=p), api_key=ECHOED_KEY)
+        with pytest.raises(ProviderError) as info:
+            provider.send(make_request())
+        assert ECHOED_KEY[:4] not in stored(info.value).replace("[redacted-api-key]", ""), status
+
+
+def test_an_api_key_in_a_transport_error_or_a_malformed_reply_is_replaced() -> None:
+    def refuse(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError(f"proxy rejected {ECHOED_KEY}", request=request)
+
+    provider, _ = adapter(refuse, api_key=ECHOED_KEY)
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert ECHOED_KEY not in str(info.value) + json.dumps(info.value.raw)
+    provider, _ = adapter(lambda request: httpx.Response(200, text=f"<html>{ECHOED_KEY}</html>", headers={"content-type": "text/html"}), api_key=ECHOED_KEY)
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert ECHOED_KEY not in str(info.value) + json.dumps(info.value.raw)
+    body = completion_payload(choices=[], id=f"id-{ECHOED_KEY}")
+    provider, _ = adapter(lambda request: httpx.Response(200, json=body), api_key=ECHOED_KEY)
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert ECHOED_KEY not in str(info.value) + json.dumps(info.value.raw)
+
+
+def test_a_key_shorter_than_eight_characters_is_not_scrubbed() -> None:
+    """A short value would also match ordinary text, so the scrub leaves it alone."""
+    provider, _ = adapter(lambda request: httpx.Response(401, json=error_body("bad key abc1234")), api_key="abc1234")
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert "abc1234" in str(info.value) and "[redacted-api-key]" not in str(info.value)
+
+
+def test_the_provider_never_exposes_the_key() -> None:
+    provider, _ = adapter(lambda request: httpx.Response(200, json=completion_payload()), api_key=ECHOED_KEY)
+    assert ECHOED_KEY not in json.dumps(provider.identity()) and ECHOED_KEY not in repr(provider)
 
 
 def test_only_documented_not_processed_statuses_are_retryable() -> None:

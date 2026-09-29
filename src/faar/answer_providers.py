@@ -49,7 +49,8 @@ OpenAI adapter
       a choice without a `message` object raise `ProviderError(kind="malformed_response",
       outcome="unknown", retryable=False)` with the payload in `raw`. A message whose `content`
       is null stays a response (a refusal string is the usual reason), and the reply parser
-      classifies it.
+      classifies it. The error's `raw` holds `reason`, `payload`, and the payload's `usage`, `id` and
+      `model` as top-level fields (None when absent).
   O5. A status counts as `rejected` only when a source shows the provider did not process the request.
       A retry recommendation does not show that. OpenAI's error-codes page, `Retry-After` and the
       SDK's default retry set (408, 409, 429, 5xx, and `x-should-retry: true`) say when a retry is
@@ -67,6 +68,11 @@ OpenAI adapter
       error we cannot place are `unknown` and not retryable.
   O8. The SDK's own retries never run: a client with `max_retries != 0` is refused, because a hidden
       retry would break attempt accounting.
+  O8b. Redirects are never followed. A client whose httpx client follows redirects, or whose setting cannot
+      be read, is refused at construction (the SDK's default client follows them). A 3xx reply that
+      reaches the adapter is `unknown` and not retryable, kind `redirect`, with the `location` header
+      (clipped) and the request id in `raw`. The request reached a server, and nothing shows it was not
+      processed, so a resend or a follow could bill twice and could send the prompt to another host.
   O9. The request carries the model, messages, `max_tokens` and per-request timeout, and nothing
       else unless the caller configured it. `params` and `request.params` may hold only the keys
       in `faar.live_contract.ALLOWED_OPENAI_PARAMS`. Any other key (`service_tier`, `tools`,
@@ -76,6 +82,11 @@ OpenAI adapter
        blocks non-loopback sockets.
   O11. Importing the module builds no client and imports neither `openai` nor `httpx`.
   O12. `identity()` never touches the API key.
+  O13. A proxy or gateway may echo the API key in an error message, a header or a body. The adapter takes the
+       key from the client it holds (`client.api_key`, when it is a string of at least 8 characters) and
+       replaces every occurrence with `[redacted-api-key]` in the `ProviderError` message and in `raw`,
+       nested strings and dict keys included. The replacement runs before a text is cut to its size limit,
+       so a key that straddles the cut leaves no fragment. The key itself is never stored, logged or returned.
 """
 
 from __future__ import annotations
@@ -109,7 +120,10 @@ KIND_GATEWAY_TIMEOUT = "gateway_timeout"  # HTTP 504, 522, 524
 # Gateway statuses that can follow a request the provider accepted: 504 (gateway timeout) and the
 # Cloudflare origin timeouts 522 and 524.
 _GATEWAY_TIMEOUT_STATUSES = (504, 522, 524)
-KIND_TRANSIENT_STATUS = "transient_status"  # HTTP 408 or 409
+# HTTP 408 (`rejected`, retryable) and HTTP 409 (`unknown`, not retryable). The name is older than the 409
+# decision and is kept: tests/test_retry_policy.py and the fake's 408 step use the string "transient_status".
+KIND_TRANSIENT_STATUS = "transient_status"
+KIND_REDIRECT = "redirect"  # HTTP 3xx: the request reached a server, which sent us elsewhere
 KIND_QUOTA = "quota"
 KIND_BAD_REQUEST = "bad_request"
 KIND_CLIENT_ERROR = "client_error"  # other 4xx
@@ -174,13 +188,13 @@ class FakeStep:
     """One scripted outcome for one attempt.
 
     `text` overrides the reply text of answer-like kinds. `returned_model` overrides the model
-    the fake reports back. `http_status` overrides the status of `retryable_error` (default 429)
+    the fake reports back. `http_status` overrides the status of `retryable_error` (default 408)
     and `non_retryable_error` (default 400). `message` overrides the refusal text or error message.
 
     `retryable_error` exercises the driver's retry path. It is a `rejected`, retryable failure whatever
     status it carries. The real adapter yields that only for HTTP 408 and for 503 with code
-    `server_is_overloaded`. It reports a real 429 or 502 as `unknown`. Use `timeout_unknown` or
-    `ambiguous` to script those.
+    `server_is_overloaded`, so the fake matches the real adapter only for those two. A real 429 or 502 is
+    `unknown` and not retryable. Use `timeout_unknown` or `ambiguous` to script an unknown outcome.
     """
 
     kind: str
@@ -286,10 +300,10 @@ class FakeProvider:
         if kind == "crash_after_send":
             raise SimulatedCrash(f"simulated crash after send of {request.attempt_id}")
         if kind == "retryable_error":
-            status = step.http_status or 429
+            status = step.http_status or 408
             raise _fake_error(
                 step,
-                kind=KIND_RATE_LIMIT if status == 429 else KIND_SERVER_ERROR,
+                kind=KIND_TRANSIENT_STATUS if status == 408 else KIND_RATE_LIMIT if status == 429 else KIND_SERVER_ERROR,
                 outcome=OUTCOME_REJECTED,
                 retryable=True,
                 status=status,
@@ -465,7 +479,9 @@ class OpenAIChatProvider:
 
     `client` is an already-built `openai.OpenAI` (the caller decides where credentials and the
     transport come from). It must have `max_retries=0`: the SDK's hidden retries would send extra
-    requests that the run driver could neither count nor bound.
+    requests that the run driver could neither count nor bound. Its httpx client must not follow
+    redirects: a followed redirect is a second request, possibly to another host, that the driver
+    could neither count nor bound. The constructor refuses a client that does.
 
     `token_limit_param` names the request field that carries `max_output_tokens`. The default,
     `max_tokens`, is deprecated by OpenAI and rejected by o-series models, which need
@@ -494,6 +510,19 @@ class OpenAIChatProvider:
         retries = getattr(client, "max_retries", None)
         if retries != 0:
             raise ValueError(f"client must be built with max_retries=0, found {retries!r}")
+        # openai-python 1.68.2 keeps the httpx client in `client._client` (_base_client.py:825) and
+        # httpx keeps the setting in `follow_redirects` (httpx/_client.py:213). The SDK's own default client
+        # sets it to True (_base_client.py:754), so the caller must pass `http_client`. Anything but an
+        # explicit False, including a client we cannot inspect, is refused.
+        follows = getattr(getattr(client, "_client", None), "follow_redirects", None)
+        if follows is not False:
+            raise ValueError(
+                "client must not follow redirects: pass http_client=httpx.Client(follow_redirects=False), "
+                f"found follow_redirects={follows!r}"
+            )
+        # Kept only to scrub error records. `identity()` and every record leave it out.
+        key = getattr(client, "api_key", None)
+        self._secret = key if isinstance(key, str) and len(key) >= _MIN_SECRET_LENGTH else None
         self._model = model
         self._params = dict(params)
         self._client = client
@@ -538,11 +567,11 @@ class OpenAIChatProvider:
         try:
             completion = self._client.chat.completions.create(**call)
         except Exception as exc:
-            raise classify_openai_error(exc) from exc
-        return self._to_response(completion)
+            raise classify_openai_error(exc, secret=self._secret) from exc
+        return self._to_response(completion, self._secret)
 
     @staticmethod
-    def _to_response(completion: Any) -> ProviderResponse:
+    def _to_response(completion: Any, secret: str | None = None) -> ProviderResponse:
         dump = getattr(completion, "model_dump", None)
         if not callable(dump):
             # The SDK returns the body text when a 200 reply is not JSON. A reply arrived, so the
@@ -552,7 +581,7 @@ class OpenAIChatProvider:
                 kind=KIND_MALFORMED_RESPONSE,
                 outcome=OUTCOME_UNKNOWN,
                 retryable=False,
-                raw={"body_excerpt": str(completion)[:2000]},
+                raw={"body_excerpt": _scrub(str(completion), secret)[:2000]},
             )
         raw: dict[str, Any] = dump(mode="json")
         choices = raw.get("choices")
@@ -564,6 +593,7 @@ class OpenAIChatProvider:
         elif not isinstance(choices[0].get("message"), Mapping):
             reason = "choices[0] has no message object"
         if reason is not None:
+            raw = _scrub(raw, secret)
             # A reply arrived, so the attempt may have been billed, but it holds no assistant message to
             # record as an answer. The raw payload (with any usage) stays on the error for the operator.
             raise ProviderError(
@@ -571,7 +601,15 @@ class OpenAIChatProvider:
                 kind=KIND_MALFORMED_RESPONSE,
                 outcome=OUTCOME_UNKNOWN,
                 retryable=False,
-                raw={"reason": reason, "payload": raw},
+                # `usage`, `id` and `model` sit beside the payload so that a later bound on the payload's
+                # size cannot drop what the reply cost and which request it was.
+                raw={
+                    "reason": reason,
+                    "usage": raw.get("usage"),
+                    "id": raw.get("id"),
+                    "model": raw.get("model"),
+                    "payload": raw,
+                },
             )
         choice = _mapping(choices[0])
         message = _mapping(choice.get("message"))
@@ -614,6 +652,22 @@ _QUOTA_CODES = (
 _OVERLOAD_CODE = "server_is_overloaded"
 _BODY_LIMIT = 4000
 _HEADER_LIMIT = 200
+REDACTED_API_KEY = "[redacted-api-key]"
+# A shorter value would also match ordinary text and would garble the record.
+_MIN_SECRET_LENGTH = 8
+
+
+def _scrub(value: Any, secret: str | None) -> Any:
+    """Replace every occurrence of ``secret`` in ``value``: strings, nested lists and dicts, and dict keys."""
+    if secret is None:
+        return value
+    if isinstance(value, str):
+        return value.replace(secret, REDACTED_API_KEY)
+    if isinstance(value, Mapping):
+        return {_scrub(key, secret): _scrub(item, secret) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_scrub(item, secret) for item in value]
+    return value
 
 
 def _clip(text: str) -> str:
@@ -649,9 +703,9 @@ def _bounded_body(body: Any) -> Any:
     return {"truncated": True, "length": len(text), "text": text[:_BODY_LIMIT]}
 
 
-def _header(headers: Any, name: str) -> str | None:
+def _header(headers: Any, name: str, secret: str | None = None) -> str | None:
     value = headers.get(name)
-    return None if value is None else str(value)[:_HEADER_LIMIT]
+    return None if value is None else _scrub(str(value), secret)[:_HEADER_LIMIT]
 
 
 # Which HTTP statuses count as `rejected` and which as `unknown`.
@@ -694,6 +748,10 @@ def _header(headers: Any, name: str) -> str | None:
 #       the server "was unable to process the contained instructions". 15.5.5 (404) and the rest of 15.5
 #       are client errors. A non-retryable `rejected` never causes a resend, so a wrong `rejected` here
 #       adds no second charge. The reservation is kept for every `rejected` attempt anyway.
+#   E7  RFC 9110 15.4 (3xx): "further action needs to be taken by the user agent in order to fulfill the
+#       request". 15.4.4 (303): the redirect target gives "an indirect response to the original request",
+#       and it is "primarily used" to send the output of a POST action elsewhere, so the POST was
+#       processed. No 3xx definition says the request was not applied.
 #
 #   status                                      outcome   retry  basis
 #   408                                         rejected  yes    E4 15.5.9
@@ -703,15 +761,27 @@ def _header(headers: Any, name: str) -> str | None:
 #   429 rate limit                              unknown   no     E1 and E3 recommend waiting, none says "not processed"
 #   429 quota, billing, spend, usage limit      rejected  no     E1, stops the run
 #   409                                         unknown   no     E4 15.5.10: a person resolves a conflict
+#   3xx (redirects are never followed)          unknown   no     E7, E4 9.2.2: the request reached a server
 #   400, 401, 403, 404, 422, other 4xx          rejected  no     E6
+#
+# Residual risk. HTTP 408 and HTTP 503 with code `server_is_overloaded` are the only statuses the run driver
+# retries, and each carries a small chance of a second charge:
+#   * 408. RFC 9110 15.5.9 describes a server that "did not receive a complete request message". The RFC does
+#     not say which server. An intermediary in front of the provider can also send 408, and the provider may
+#     have received and processed the request by then.
+#   * 503 `server_is_overloaded`. The OpenAI page (E2) says the model "does not have enough capacity to
+#     process your request". It says nothing about billing, and it does not promise that the request never
+#     started.
+# The evidence makes both cases unlikely to have been processed. It does not make them impossible.
+# `RetryPolicy.max_attempts` limits how many times one question can pay that risk.
 #
 # 429 is the one row that could go the other way. If OpenAI states that a rate-limited request is never
 # processed, change the rate-limit branch below and `STATUS_CASES` in tests/test_answer_providers.py.
-def _classify_status(exc: Any) -> ProviderError:
+def _classify_status(exc: Any, secret: str | None = None) -> ProviderError:
     status = int(exc.status_code)
     code = exc.code if isinstance(exc.code, str) else None
     error_type = exc.type if isinstance(exc.type, str) else None
-    message = _clip(str(exc.message))
+    message = _clip(_scrub(str(exc.message), secret))
     headers = exc.response.headers
     lowered = message.lower()
     # Diagnostics for reconciliation. The headers are the provider's response headers, never the request's,
@@ -719,12 +789,12 @@ def _classify_status(exc: Any) -> ProviderError:
     raw = {
         "error_class": type(exc).__name__,
         "http_status": status,
-        "x_request_id": _header(headers, "x-request-id"),
-        "retry_after": _header(headers, "retry-after"),
-        "x_should_retry": _header(headers, "x-should-retry"),
-        "error_code": code,
-        "error_type": error_type,
-        "body": _bounded_body(exc.body),
+        "x_request_id": _header(headers, "x-request-id", secret),
+        "retry_after": _header(headers, "retry-after", secret),
+        "x_should_retry": _header(headers, "x-should-retry", secret),
+        "error_code": _scrub(code, secret),
+        "error_type": _scrub(error_type, secret),
+        "body": _bounded_body(_scrub(exc.body, secret)),
     }
     server_forbids_retry = headers.get("x-should-retry") == "false"
 
@@ -736,6 +806,12 @@ def _classify_status(exc: Any) -> ProviderError:
     is_missing_model = code == "model_not_found" or (status == 404 and code is None and "model" in lowered)
     if is_missing_model and status in (400, 403, 404):
         return build(KIND_UNKNOWN_MODEL, OUTCOME_REJECTED, False)
+    if 300 <= status < 400:
+        # The request reached a server. With redirects switched off (the constructor checks) the reply
+        # arrives here. Nothing shows the request was not processed, and a resend would go to the same
+        # address. The `location` header stays for the operator, clipped.
+        raw["location"] = _header(headers, "location", secret)
+        return build(KIND_REDIRECT, OUTCOME_UNKNOWN, False)
     if status in (401, 403):
         return build(KIND_AUTH, OUTCOME_REJECTED, False)
     if status == 429:
@@ -765,9 +841,11 @@ def _classify_status(exc: Any) -> ProviderError:
     return build(KIND_CLIENT_ERROR, OUTCOME_REJECTED, False)
 
 
-def _classify_transport(exc: Exception, cause: BaseException | None, httpx: Any, *, timed_out: bool) -> ProviderError:
+def _classify_transport(
+    exc: Exception, cause: BaseException | None, httpx: Any, *, timed_out: bool, secret: str | None = None
+) -> ProviderError:
     """Place a connection-level failure by the httpx exception the SDK wrapped."""
-    detail = _clip(f"{type(cause).__name__}: {cause}" if cause is not None else str(exc))
+    detail = _clip(_scrub(f"{type(cause).__name__}: {cause}" if cause is not None else str(exc), secret))
     raw = {"error_class": type(exc).__name__, "cause_class": type(cause).__name__ if cause is not None else None}
 
     def build(kind: str, outcome: str, retryable: bool) -> ProviderError:
@@ -788,11 +866,14 @@ def _classify_transport(exc: Exception, cause: BaseException | None, httpx: Any,
     return build(KIND_CONNECTION_LOST, OUTCOME_UNKNOWN, False)
 
 
-def classify_openai_error(exc: BaseException) -> ProviderError:
+def classify_openai_error(exc: BaseException, *, secret: str | None = None) -> ProviderError:
     """Map an exception raised by `client.chat.completions.create` to a `ProviderError`.
 
     Conservative rule: say `not_sent` only for failures that happen before any request byte is
     written; say `rejected` only when a status code arrived; everything else is `unknown`.
+
+    ``secret`` is the client's API key. Every occurrence in the message and `raw` becomes
+    `[redacted-api-key]` before the texts are cut to their size limits.
     """
     import httpx
     import openai
@@ -800,22 +881,24 @@ def classify_openai_error(exc: BaseException) -> ProviderError:
     if isinstance(exc, ProviderError):
         return exc
     if isinstance(exc, openai.APIStatusError):
-        return _classify_status(exc)
+        return _classify_status(exc, secret)
     if isinstance(exc, openai.APIResponseValidationError):
         return ProviderError(
-            _clip(str(exc)),
+            _clip(_scrub(str(exc), secret)),
             kind=KIND_MALFORMED_RESPONSE,
             outcome=OUTCOME_UNKNOWN,
             retryable=False,
             http_status=getattr(exc, "status_code", None),
-            raw={"error_class": type(exc).__name__, "body": _json_safe(exc.body)},
+            raw={"error_class": type(exc).__name__, "body": _scrub(_json_safe(exc.body), secret)},
         )
     if isinstance(exc, openai.APIConnectionError):  # includes APITimeoutError
-        return _classify_transport(exc, exc.__cause__, httpx, timed_out=isinstance(exc, openai.APITimeoutError))
+        return _classify_transport(
+            exc, exc.__cause__, httpx, timed_out=isinstance(exc, openai.APITimeoutError), secret=secret
+        )
     if isinstance(exc, httpx.TransportError):  # a caller that bypassed the SDK wrapper
-        return _classify_transport(exc, exc, httpx, timed_out=False)
+        return _classify_transport(exc, exc, httpx, timed_out=False, secret=secret)
     return ProviderError(
-        _clip(f"{type(exc).__name__}: {exc}"),
+        _clip(_scrub(f"{type(exc).__name__}: {exc}", secret)),
         kind=KIND_UNEXPECTED,
         outcome=OUTCOME_UNKNOWN,
         retryable=False,
