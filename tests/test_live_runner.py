@@ -3566,3 +3566,19 @@ def test_a_restart_after_a_crash_before_the_event_moves_a_torn_tail_aside_and_ke
     recovered = next(e for e in events_of(run_dir) if e["event"] == "response_saved")
     assert recovered["recovered"] is True and recovered["recovered_uncommitted_tail"]["bytes"] > 0
     assert by_question(run_dir)["q1"]["status"] == "answered"
+
+
+def test_score_after_a_crash_before_the_last_event_advises_run_not_reconcile(project: Project) -> None:
+    """The last answer sits only in its response file: score must say to run once, not to reconcile."""
+    rig = Rig()
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, crash_hook=crash_at(lr.CRASH_AFTER_RESPONSE_FILE, "q6"))
+    run_dir = project.run_dir("run-a")
+    with pytest.raises(RunnerRefusal) as refused:
+        lr.score_run_live(project_root=project.root, run_dir=run_dir)
+    message = str(refused.value)
+    assert "run" in message and "record" in message and "reconcile the unknown" not in message
+    fresh = Rig(rig.steps)
+    go(project, fresh)
+    assert fresh.sent(run_dir) == [], "recording the recovered response sends nothing"
+    assert lr.score_run_live(project_root=project.root, run_dir=run_dir).exit_code == lr.EXIT_OK

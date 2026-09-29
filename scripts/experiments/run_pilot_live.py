@@ -71,7 +71,8 @@ invocation_ended lists the violations by attempt id and condition. The response 
 responses/ with its usage, cost, model and provider payload. The run state is safety_stopped and valid_baseline is false.
 Every question stays in predictions.jsonl; the ones not served are execution_failed with unserved true and failure type
 safety_stop, never abstentions. Every later run, status and export rebuilds the violation from the records. run then
-builds no provider, sends nothing and exits {EXIT_SAFETY_STOPPED}. Resuming, --raise-safety-ceiling with a note, reconcile and reopen
+builds no provider, sends nothing and exits {EXIT_SAFETY_STOPPED}. It may append the recovered event of a response
+file written before a crash and rewrite the exports from the records. Resuming, --raise-safety-ceiling with a note, reconcile and reopen
 do not clear the violation, and score refuses the run. The only way on is a successor run in a new run directory with
 corrected code or configuration; the identity checks below stay in force. Stopping cannot undo a charge already
 incurred, and the ceiling guarantee depends on provider-reported usage and on valid bounds.

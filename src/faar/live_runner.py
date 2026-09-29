@@ -2840,7 +2840,8 @@ def _execute_locked(
         )
         services.ledger_from_events(view.events, config.prices)  # a corrupt ledger refuses here, before any dispatch
         # A stored safety violation ends the run before any provider exists and before the ceiling is decided,
-        # so a raised ceiling is neither recorded nor able to lift the stop. Nothing is written.
+        # so a raised ceiling is neither recorded nor able to lift the stop. The only writes are the append-only
+        # recovery of a response file whose event was lost, and the exports rebuilt from the records.
         violations = assess_safety(view, services)
         if violations:
             stopped_summary = _record_stopped_restart(run_dir, view, services, invocation_id)
@@ -3286,6 +3287,15 @@ def score_run_live(
             f"score needs a complete run, and this run is {RUN_SAFETY_STOPPED}: "
             f"{describe_violations(view.safety_violations or [])}. {SAFETY_NO_CLEAR_NOTE} Nothing was written.",
         )
+        if not scored and view.run_state != RUN_COMPLETE:
+            folded = fold_recoverable_responses(view)
+            assess_safety(folded, services)
+            _refuse(
+                folded.run_state != RUN_COMPLETE,
+                f"score needs a complete run, and this run is {view.run_state} only because a response file was written "
+                "but its event was not (the process stopped in between). Run the same `run` command once to record "
+                "the recovered response; it sends nothing. Nothing was written.",
+            )
         _refuse(
             scored or view.run_state == RUN_COMPLETE,
             f"score needs a complete run, and this run is {view.run_state}. Serve the pending questions, "
