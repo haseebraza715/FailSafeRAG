@@ -2052,6 +2052,25 @@ def build_prediction(state: RequestState, *, run_state: str, last_reason: str | 
     return record
 
 
+VALID_BASELINE_MEANS = (
+    "valid_baseline checks mechanical completeness only. It is true when the run is live, its state is complete, "
+    "no question is execution_failed, every returned model equals the requested model, no response reported more "
+    "input tokens than the input bound and the safety ledger reports no anomaly. It does not mean the prompt, "
+    "the model, the retrieval settings or the budget are approved."
+)
+
+
+def returned_model_matches(requested: str, returned: str | None) -> bool:
+    """The rule for a saved response: the returned model string must equal the requested one exactly.
+
+    A requested dated snapshot (``gpt-4o-2024-11-20``) is returned unchanged, so it matches. No alias mapping
+    is defined: a run that requests an alias and gets a dated snapshot back counts as a mismatch, so a
+    baseline must name the snapshot it wants. A response without a returned model cannot be checked and
+    counts as a mismatch.
+    """
+    return bool(returned) and returned == requested
+
+
 def summarise_run(view: RunView, predictions_text: str, services: Services) -> dict[str, Any]:
     predictions = [json.loads(line) for line in predictions_text.splitlines()]
     counts = {STATUS_ANSWERED: 0, STATUS_NO_EVIDENCE: 0, STATUS_EXECUTION_FAILED: 0}
@@ -2076,6 +2095,28 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
     else:
         exit_code = EXIT_NEEDS_ATTENTION
     last_ceiling = view.effective_ceiling
+    requested_model = view.config["identity"]["provider"]["model"]
+    saved_events = [a.resolution_event for a in attempts if a.outcome == "saved" and a.resolution_event]
+    returned_models: dict[str, int] = {}
+    for event in saved_events:
+        key = event.get("returned_model") or "(none)"
+        returned_models[key] = returned_models.get(key, 0) + 1
+    mismatches = sum(1 for event in saved_events if not returned_model_matches(requested_model, event.get("returned_model")))
+    bound_exceeded = sum(1 for event in saved_events if event.get("input_bound_exceeded"))
+    anomalies = list(ledger.anomalies)
+    blockers = []
+    if mode != MODE_LIVE:
+        blockers.append(f"the run is a {mode} run, not a live run")
+    if run_state != RUN_COMPLETE:
+        blockers.append(f"the run state is {run_state}, not complete")
+    if failed:
+        blockers.append(f"{failed} question(s) are execution_failed")
+    if mismatches:
+        blockers.append(f"{mismatches} response(s) came from a returned model that differs from the requested {requested_model}")
+    if bound_exceeded:
+        blockers.append(f"{bound_exceeded} response(s) reported more input tokens than the input bound")
+    if anomalies:
+        blockers.append(f"the safety ledger reports {len(anomalies)} anomaly(ies)")
     return {
         "schema_version": SCHEMA_VERSION,
         "run_id": view.config["run_id"],
@@ -2085,8 +2126,10 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         "label": view.config["label"],
         "identity_sha256": view.config["identity_sha256"],
         "run_state": run_state,
-        # Only a complete live run with no execution failure can be a baseline. The lead sets any failure-rate limit.
-        "valid_baseline": mode == MODE_LIVE and run_state == RUN_COMPLETE and failed == 0,
+        # True only when nothing blocks it. The lead sets any failure-rate limit and approves the prompt, model, retrieval and budget.
+        "valid_baseline": not blockers,
+        "valid_baseline_blockers": blockers,
+        "valid_baseline_means": VALID_BASELINE_MEANS,
         "exit_code": exit_code,
         "counts": {
             "questions": len(predictions),
@@ -2101,16 +2144,17 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         },
         "output_status": dict(sorted(output_status.items())),
         "attempts": {"total": len(attempts), **by_outcome},
-        "input_bound_exceeded": sum(
-            1 for a in attempts if a.outcome == "saved" and a.resolution_event and a.resolution_event.get("input_bound_exceeded")
-        ),
+        "input_bound_exceeded": bound_exceeded,
+        "requested_model": requested_model,
+        "returned_model_mismatch": mismatches,
+        "returned_models": dict(sorted(returned_models.items())),
         "cost": {
             "currency": prices.currency,
             "simulated": prices.simulated,
             "measured": ledger.measured,
             "reserved": ledger.reserved,
             "committed_upper": ledger.committed_upper,
-            "anomalies": list(ledger.anomalies),
+            "anomalies": anomalies,
         },
         "safety_ceiling": last_ceiling,
         "invocations": [
@@ -2488,43 +2532,73 @@ def _execute_locked(
     return LiveResult(summary["exit_code"], _run_message(summary, run_dir), summary)
 
 
+def read_lock_holder(run_dir: Path) -> str | None:
+    """Who wrote ``run.lock`` last, read without creating or locking it. ``None`` when there is no file."""
+    try:
+        fd = os.open(run_dir / LOCK_NAME, os.O_RDONLY)
+    except OSError:
+        return None
+    try:
+        return _read_lock_holder(fd)
+    finally:
+        os.close(fd)
+
+
 def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any]:
-    """Describe a run from its files. Changes nothing and takes no lock."""
+    """Describe a run from its files. Changes nothing and takes no lock.
+
+    While a live invocation holds the lock, an attempt that has ``dispatch_started`` and no result is
+    ``in_flight``: its own process is still waiting for the answer. It is not unknown, and the run is
+    ``active``. Without a lock holder the same attempt is unknown, because its process is gone.
+    """
     services = services or Services.default()
     run_dir = _absolute(run_dir)
     view = load_run(run_dir)
     _, summary = export_view(view, services)
+    lock_held = lock_is_held(run_dir)
+    active = lock_held is True
+    in_flight = [attempt.attempt_id for state in view.ordered_states if active and state.unresolved_unknown is None for attempt in state.orphans]
+    in_flight_questions = {s.question_id for s in view.ordered_states if active and s.unresolved_unknown is None and s.orphans}
     by_status = {status: len(view.by_status(status)) for status in (REQUEST_SKIP, REQUEST_ANSWERED, REQUEST_FAILED, REQUEST_UNKNOWN, REQUEST_PENDING)}
     unknown = [
-        (s.unresolved_unknown or s.orphans[0]).attempt_id for s in view.by_status(REQUEST_UNKNOWN)
+        (s.unresolved_unknown or s.orphans[0]).attempt_id for s in view.by_status(REQUEST_UNKNOWN) if s.question_id not in in_flight_questions
     ]
+    by_status[REQUEST_UNKNOWN] -= len(in_flight_questions)
+    by_status["in_flight"] = len(in_flight_questions)
+    counts = dict(summary["counts"])
+    counts["awaiting_reconciliation"] -= len(in_flight_questions)
+    counts["in_flight"] = len(in_flight_questions)
     actions: list[str] = []
+    if active:
+        actions.append("wait for the running invocation to finish, then check the status again")
     if unknown:
         actions.append("reconcile each attempt in awaiting_reconciliation after checking the provider's records")
-    if view.last_end_reason == END_CIRCUIT:
+    if view.last_end_reason == END_CIRCUIT and not active:
         actions.append(
             f"the circuit breaker stopped the last invocation after {CIRCUIT_BREAKER_THRESHOLD} consecutive failing attempts: "
             "find the shared cause in attempts.jsonl before running again"
         )
-    if by_status[REQUEST_PENDING]:
+    if by_status[REQUEST_PENDING] and not active:
         actions.append("run again to serve the pending questions")
-    if by_status[REQUEST_FAILED]:
+    if by_status[REQUEST_FAILED] and not active:
         actions.append("after fixing the cause, reopen an execution_failed question to give it further attempts")
     return {
         "run_id": view.config["run_id"],
         "mode": view.config["mode"],
         "kind": view.config["kind"],
-        "run_state": summary["run_state"],
-        "exit_code": summary["exit_code"],
+        "run_state": "active" if active else summary["run_state"],
+        "exit_code": None if active else summary["exit_code"],
         "requests": by_status,
         "awaiting_reconciliation": unknown,
-        "counts": summary["counts"],
+        "in_flight": in_flight,
+        "counts": counts,
         "cost": summary["cost"],
         "safety_ceiling": summary["safety_ceiling"],
         "attempts": summary["attempts"],
         "last_invocation_ended": view.last_end_reason,
         "uncommitted_tail_bytes": len(view.uncommitted_tail),
-        "lock_held": lock_is_held(run_dir),
+        "lock_held": lock_held,
+        "lock_holder": read_lock_holder(run_dir) if active else None,
         "scored": is_scored(run_dir),
         "predictions_current": _file_matches(run_dir / PREDICTIONS_NAME, summary["predictions_sha256"]),
         "next": actions,
@@ -2555,6 +2629,13 @@ def format_status(status: Mapping[str, Any]) -> str:
     ]
     if status["uncommitted_tail_bytes"]:
         lines.append(f"attempts.jsonl ends with {status['uncommitted_tail_bytes']} uncommitted bytes; the next run moves them aside")
+    if status["run_state"] == "active":
+        lines.insert(
+            1,
+            f"the run is active: an invocation holds the lock ({status['lock_holder']}). Counts below are a snapshot of its files.",
+        )
+    for attempt_id in status["in_flight"]:
+        lines.append(f"in flight: {attempt_id} (dispatched, no result yet; its process is still running)")
     for attempt_id in status["awaiting_reconciliation"]:
         lines.append(f"awaiting reconciliation: {attempt_id}")
     for step in status["next"]:
@@ -2825,6 +2906,8 @@ def score_run_live(
             "label": view.config["label"],
             "run_state": run_summary["run_state"],
             "valid_baseline": run_summary["valid_baseline"],
+            "valid_baseline_blockers": run_summary["valid_baseline_blockers"],
+            "valid_baseline_means": run_summary["valid_baseline_means"],
             "scorer": scoring.scorer_identity(),
             "scorer_environment": {**scoring.scorer_dependencies(), "unicodedata": unicodedata.unidata_version},
             "evaluation_manifest": {"path": _display_path(path, project_root), "sha256": sha256_bytes(evaluation_bytes)},

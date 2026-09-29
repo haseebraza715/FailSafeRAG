@@ -2715,3 +2715,171 @@ def test_status_says_what_to_do_after_the_breaker_tripped(project: Project) -> N
     status = lr.run_status(project.run_dir("run-a"))
     assert status["last_invocation_ended"] == "circuit_breaker"
     assert any("circuit breaker" in step for step in status["next"])
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: the validity flag (M6) and status while a run is active (L6)
+# ---------------------------------------------------------------------------
+
+
+def live_run(project: Project, rig: Rig, name: str = "live-a", *, services: lr.Services | None = None, monkeypatch: pytest.MonkeyPatch | None = None) -> lr.LiveResult:
+    """A live-mode run driven by a fake provider through the factory seam. No client is built and nothing is sent."""
+    if monkeypatch is not None:
+        for env_name in CLIENT_ENV_VARS:
+            monkeypatch.delenv(env_name, raising=False)
+    config = lr.parse_provider_config({**valid_live_config(), "model": "gpt-4o-2024-11-20"})
+    opts = lr.RunOptions(
+        project_root=project.root,
+        run_dir=project.root / "results" / "development" / name,
+        mode=lr.MODE_LIVE,
+        pilot_id=PILOT_ID,
+        safety_ceiling=100.0,
+        config=config,
+    )
+    factory = lambda ctx: lr.build_fake_provider(rig.steps, rig.default, config, ctx)  # noqa: E731
+    return lr.execute_run(
+        opts, services=services, provider_factory=factory, descriptor=rig.descriptor, sleep=lambda s: None,
+        environ={lr.LIVE_ENV_NAME: lr.LIVE_ENV_VALUE},
+    )
+
+
+def test_a_clean_live_run_is_a_valid_baseline_and_the_summary_says_what_that_means(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    result = live_run(project, Rig(), monkeypatch=monkeypatch)
+    summary = result.summary
+    assert summary["run_state"] == "complete" and summary["valid_baseline"] is True and summary["valid_baseline_blockers"] == []
+    assert summary["returned_model_mismatch"] == 0 and summary["input_bound_exceeded"] == 0 and summary["cost"]["anomalies"] == []
+    text = " ".join(summary["valid_baseline_means"].split())
+    assert "mechanical completeness" in text and "does not mean" in text
+    for word in ("prompt", "model", "retrieval", "budget"):
+        assert word in text
+
+
+def test_a_returned_model_that_differs_from_the_requested_model_blocks_the_flag(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    """M6: a silent alias move or a routed model is a different measurement. The match rule is exact equality."""
+    rig = Rig(steps={"q2": [FakeStep("answer", text="x", returned_model="gpt-4o-2025-01-01")]})
+    summary = live_run(project, rig, monkeypatch=monkeypatch).summary
+    assert summary["returned_model_mismatch"] == 1 and summary["valid_baseline"] is False
+    assert any("returned model" in blocker for blocker in summary["valid_baseline_blockers"])
+    assert summary["returned_models"] == {"gpt-4o-2024-11-20": 4, "gpt-4o-2025-01-01": 1}
+
+
+def test_a_missing_returned_model_counts_as_a_mismatch(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    import dataclasses
+
+    for name in CLIENT_ENV_VARS:
+        monkeypatch.delenv(name, raising=False)
+    config = lr.parse_provider_config(valid_live_config())
+
+    class NoModel:
+        def __init__(self, inner: Any) -> None:
+            self.inner = inner
+
+        def send(self, request: Any) -> Any:
+            return dataclasses.replace(self.inner.send(request), returned_model=None)
+
+    rig = Rig()
+    opts = lr.RunOptions(
+        project_root=project.root, run_dir=project.root / "results" / "development" / "live-a", mode=lr.MODE_LIVE,
+        pilot_id=PILOT_ID, safety_ceiling=100.0, config=config,
+    )
+    result = lr.execute_run(
+        opts, provider_factory=lambda ctx: NoModel(lr.build_fake_provider(rig.steps, rig.default, config, ctx)),
+        descriptor=rig.descriptor, sleep=lambda s: None, environ={lr.LIVE_ENV_NAME: lr.LIVE_ENV_VALUE},
+    )
+    assert result.summary["returned_model_mismatch"] == 5 and result.summary["valid_baseline"] is False
+    assert result.summary["returned_models"] == {"(none)": 5}
+    assert lr.returned_model_matches("gpt-4o-2024-11-20", "gpt-4o-2024-11-20") is True
+    assert lr.returned_model_matches("gpt-4o", "gpt-4o-2024-11-20") is False, "no alias mapping is defined"
+
+
+def test_an_input_bound_exceedance_blocks_the_flag(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    import dataclasses
+
+    services = dataclasses.replace(lr.Services.default(), input_token_upper_bound=lambda messages: 1)
+    summary = live_run(project, Rig(), services=services, monkeypatch=monkeypatch).summary
+    assert summary["input_bound_exceeded"] == 5 and summary["valid_baseline"] is False
+    assert any("input" in blocker for blocker in summary["valid_baseline_blockers"])
+
+
+def test_a_ledger_anomaly_blocks_the_flag(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    import dataclasses
+
+    real = lr.Services.default()
+
+    def anomalous(events: Any, prices: Any) -> Any:
+        return dataclasses.replace(real.ledger_from_events(events, prices), anomalies=("x-a1: measured cost exceeds its upper bound",))
+
+    summary = live_run(project, Rig(), services=dataclasses.replace(real, ledger_from_events=anomalous), monkeypatch=monkeypatch).summary
+    assert summary["valid_baseline"] is False and summary["cost"]["anomalies"]
+    assert any("anomal" in blocker for blocker in summary["valid_baseline_blockers"])
+
+
+def test_an_execution_failure_a_fake_run_and_an_incomplete_run_block_the_flag(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    failed = live_run(project, Rig(steps={"q1": [FakeStep("non_retryable_error")]}), "live-failed", monkeypatch=monkeypatch).summary
+    assert failed["valid_baseline"] is False and any("execution_failed" in b for b in failed["valid_baseline_blockers"])
+    fake = go(project, Rig()).summary
+    assert fake["valid_baseline"] is False and any("live" in b for b in fake["valid_baseline_blockers"])
+    stopped = live_run(project, Rig(steps={"q2": [FakeStep("auth_error")]}), "live-stopped", monkeypatch=monkeypatch).summary
+    assert stopped["valid_baseline"] is False and any("state" in b for b in stopped["valid_baseline_blockers"])
+
+
+def test_the_score_summary_carries_the_same_flag_and_explanation(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    live_run(project, Rig(), monkeypatch=monkeypatch)
+    run_dir = project.root / "results" / "development" / "live-a"
+    scored = lr.score_run_live(project_root=project.root, run_dir=run_dir).summary
+    assert scored["valid_baseline"] is True and "does not mean" in scored["valid_baseline_means"]
+
+
+def _hold_while_open(project: Project) -> tuple[Path, lr.RunLock]:
+    """A run with one open attempt (its process died after dispatch_started), and a live process holding the lock."""
+    with pytest.raises(SimulatedCrash):
+        go(project, Rig(), crash_hook=crash_at(lr.CRASH_AFTER_DISPATCH, "q3"))
+    run_dir = project.run_dir("run-a")
+    holder = lr.RunLock(run_dir, "the-live-invocation")
+    holder.acquire()
+    return run_dir, holder
+
+
+def test_status_calls_an_open_attempt_in_flight_while_a_live_process_holds_the_lock(project: Project) -> None:
+    """L6: an attempt with no result yet is not unknown while its own process is still running."""
+    run_dir, holder = _hold_while_open(project)
+    try:
+        status = lr.run_status(run_dir)
+        text = lr.format_status(status)
+    finally:
+        holder.release()
+    assert status["run_state"] == "active" and status["lock_held"] is True
+    assert status["requests"]["in_flight"] == 1 and status["requests"]["unknown"] == 0
+    assert status["awaiting_reconciliation"] == [] and status["in_flight"] == by_question_attempts(run_dir, "q3")
+    assert status["counts"]["awaiting_reconciliation"] == 0 and status["counts"]["in_flight"] == 1
+    assert "active" in text and "in flight" in text and "the-live-invocation" in text
+    assert "reconcile" not in text and "needs_reconciliation" not in text
+    assert all("reconcile" not in step for step in status["next"])
+
+
+def by_question_attempts(run_dir: Path, question_id: str) -> list[str]:
+    request_id = next(r["request_id"] for r in requests_of(run_dir) if r["question_id"] == question_id)
+    return [e["attempt_id"] for e in events_of(run_dir) if e["event"] == "dispatch_started" and e["request_id"] == request_id]
+
+
+def test_status_after_the_process_is_gone_reports_the_open_attempt_as_needing_reconciliation(project: Project) -> None:
+    run_dir, holder = _hold_while_open(project)
+    holder.release()
+    status = lr.run_status(run_dir)
+    assert status["run_state"] == "needs_reconciliation" and status["requests"]["unknown"] == 1
+    assert status["requests"]["in_flight"] == 0 and status["in_flight"] == []
+    assert status["awaiting_reconciliation"] == by_question_attempts(run_dir, "q3")
+
+
+def test_a_recorded_unknown_outcome_stays_unknown_while_the_lock_is_held(project: Project) -> None:
+    """L6: only attempts with no result are in flight. An outcome_unknown event is a result."""
+    go(project, Rig(steps={"q2": [FakeStep("timeout_unknown")]}))
+    run_dir = project.run_dir("run-a")
+    holder = lr.RunLock(run_dir, "someone")
+    holder.acquire()
+    try:
+        status = lr.run_status(run_dir)
+    finally:
+        holder.release()
+    assert status["requests"]["unknown"] == 1 and status["requests"]["in_flight"] == 0
+    assert status["awaiting_reconciliation"] == by_question_attempts(run_dir, "q2")
