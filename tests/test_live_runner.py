@@ -972,6 +972,21 @@ def test_an_abstention_an_empty_reply_a_cut_reply_and_a_refusal_are_answers(proj
 # ---------------------------------------------------------------------------
 
 
+def test_reconcile_moves_a_torn_final_line_aside_and_records_it(project: Project) -> None:
+    rig = Rig(steps={"q2": [FakeStep("timeout_unknown")]})
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    torn = b'{"event":"dispatch_star'
+    with (run_dir / "attempts.jsonl").open("ab") as handle:
+        handle.write(torn)
+    attempt_id = by_question(run_dir)["q2"]["attempt_ids"][0]
+    lr.reconcile_attempt(run_dir=run_dir, attempt_id=attempt_id, resolution="mark_failed", note="checked")
+    event = events_of(run_dir)[-1]
+    assert event["event"] == "reconciled" and event["recovered_uncommitted_tail"]["bytes"] == len(torn)
+    (side,) = run_dir.glob("attempts.uncommitted.*")
+    assert side.read_bytes() == torn and lr.run_status(run_dir)["uncommitted_tail_bytes"] == 0
+
+
 def test_reconcile_can_resolve_an_orphaned_dispatch_before_any_new_run(project: Project) -> None:
     """After a crash in window 2, reconcile itself records outcome_unknown and then the resolution."""
     rig = Rig()
@@ -1738,6 +1753,8 @@ def valid_live_config() -> dict[str, Any]:
         {"prices": {"currency": "USD", "input_per_million": float("nan"), "output_per_million": 10.0, "source": "s", "source_date": "d"}},
         {"prices": {"currency": "USD", "input_per_million": 0, "output_per_million": 10.0, "source": "s", "source_date": "d"}},
         {"token_limit_param": "max_output"},
+        {"params": {"temperature": 0, "max_tokens": 5}},
+        {"params": {"stream": True}},
     ],
 )
 def test_an_invalid_live_provider_config_refuses_with_all_requirements_present(project: Project, monkeypatch: pytest.MonkeyPatch, damage: dict[str, Any]) -> None:

@@ -322,6 +322,11 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
             raise RunnerRefusal(f"provider config: {key} must be a non-empty string")
     if not isinstance(payload["params"], dict):
         raise RunnerRefusal("provider config: params must be an object")
+    from .answer_providers import _MANAGED_PARAM_KEYS
+
+    managed = sorted(_MANAGED_PARAM_KEYS & set(payload["params"]))
+    if managed:
+        raise RunnerRefusal(f"provider config: params may not set keys the adapter manages: {managed}")
     _finite_positive(payload["max_output_tokens"], "max_output_tokens", integer=True)
     max_input = payload.get("max_input_tokens", 12_000)
     _finite_positive(max_input, "max_input_tokens", integer=True)
@@ -2280,7 +2285,6 @@ def reconcile_attempt(
     try:
         view = load_run(run_dir)
         tail = quarantine_uncommitted_tail(run_dir, view, invocation_id)
-        del tail  # kept on disk in attempts.uncommitted.*; the next run records it in invocation_started
         target = next((s for s in view.ordered_states if any(a.attempt_id == attempt_id for a in s.attempts)), None)
         _refuse(target is not None, f"no attempt {attempt_id!r} in {run_dir}")
         assert target is not None
@@ -2314,6 +2318,7 @@ def reconcile_attempt(
                 attempt_id=attempt_id,
                 resolution=resolution,
                 note=note.strip(),
+                recovered_uncommitted_tail=tail,
             )
         finally:
             log.close()
