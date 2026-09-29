@@ -88,6 +88,7 @@ from faar.live_contract import (
     EVENT_INVOCATION_ENDED,
     EVENT_INVOCATION_STARTED,
     EVENT_OUTCOME_UNKNOWN,
+    EVENT_QUESTION_REOPENED,
     EVENT_RECONCILED,
     EVENT_RESPONSE_SAVED,
     OUTCOME_NOT_SENT,
@@ -585,6 +586,10 @@ def _apply_event(state: dict[str, _Attempt], event: Mapping[str, Any], prices: P
         if resolution not in RECONCILE_RESOLUTIONS:
             raise LedgerError(f"event {position}: unknown reconcile resolution {resolution!r}")
         state[attempt_id].reconciled = resolution
+        return
+    if name == EVENT_QUESTION_REOPENED:
+        # Reopening a failed question changes no cost: earlier attempts keep their measured or
+        # reserved amounts, and later attempts are priced when they are dispatched.
         return
     raise LedgerError(f"event {position}: unknown event {name!r}")
 

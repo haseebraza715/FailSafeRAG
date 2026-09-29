@@ -483,11 +483,9 @@ class Services:
             raise RunnerRefusal(f"the answer-model modules are not available in this checkout: {exc}") from exc
 
         def ledger_from_events(events: Sequence[Mapping[str, Any]], prices: PriceTable) -> Any:
-            # A reopen has no cost of its own: the attempts it follows are already counted. The ledger
-            # module predates the event, so it is not shown to the ledger.
-            costed = [event for event in events if event.get("event") != EVENT_QUESTION_REOPENED]
+            # The ledger treats question_reopened as costless: the attempts it follows are already counted.
             try:
-                return request_budget.SafetyLedger.from_events(costed, prices)
+                return request_budget.SafetyLedger.from_events(events, prices)
             except request_budget.BudgetError as exc:
                 raise RunnerRefusal(f"the safety ledger refused the run's records: {exc}") from exc
 

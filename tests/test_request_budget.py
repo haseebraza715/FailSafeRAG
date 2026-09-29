@@ -647,3 +647,17 @@ def test_end_to_end_bound_covers_measured_cost():
     upper = request_cost_upper_bound(bound_in, 128, REAL)
     usage = ProviderUsage(input_tokens=bound_in, output_tokens=128, cached_input_tokens=0)
     assert measured_cost(usage, REAL) <= upper
+
+
+def test_a_reopened_question_keeps_its_earlier_reserved_cost() -> None:
+    """Reopening a failed question releases nothing; later attempts add their own bounds."""
+    events = [
+        dispatch(1, 0.5),
+        failed(1, "rejected"),
+        {"event": "question_reopened", "question_id": "q1", "request_id": "q1-r", "attempts_before": 1, "note": "fixed"},
+        dispatch(2, 0.5),
+        saved(2, 0.1),
+    ]
+    ledger = SafetyLedger.from_events(events, REAL)
+    assert ledger.reserved == 0.5
+    assert ledger.measured == 0.1
