@@ -1867,6 +1867,8 @@ class _Driver:
             decision=action,
             delay_seconds=decision.delay_seconds if action == DECISION_RETRY else None,
             attempts_exhausted=exhausted,
+            # The provider's request id and error body, for a later check of what the provider recorded.
+            provider_raw=_bounded_raw(error.raw),
         )
         attempt.outcome, attempt.resolution_event = "failed", event
         if action == DECISION_RETRY:

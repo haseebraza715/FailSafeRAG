@@ -431,3 +431,14 @@ def test_a_run_without_failures_reserves_nothing(project: Project) -> None:
     ledger = s.ledger()
     assert ledger.reserved == 0 and ledger.measured > 0
     assert ledger.measured < s.upper_bound()
+
+
+def test_a_rejected_attempt_keeps_the_provider_request_id_for_later_checks(project: Project) -> None:
+    """A rejected attempt may still need a check with the provider, so its request id and body are kept."""
+    body = {"error": {"message": "The model is overloaded", "type": "service_unavailable_error", "code": "server_is_overloaded"}}
+    s = session(project, {"q1": [status(503, body=body, headers={"x-request-id": "req_abc123"}), ok()]})
+    s.run()
+    (failed,) = s.events("attempt_failed")
+    assert failed["provider_raw"]["x_request_id"] == "req_abc123"
+    assert failed["provider_raw"]["error_code"] == "server_is_overloaded"
+    assert "authorization" not in json.dumps(failed).lower() and "test-not-a-key" not in json.dumps(failed)
