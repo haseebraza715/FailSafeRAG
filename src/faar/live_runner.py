@@ -78,6 +78,8 @@ from .live_contract import (
     MODE_FAKE,
     MODE_LIVE,
     MODES,
+    OUTCOME_NOT_SENT,
+    OUTCOME_REJECTED,
     OUTCOME_UNKNOWN,
     EvidenceBlock,
     PriceTable,
@@ -165,7 +167,20 @@ END_BUDGET = "budget_exhausted"
 END_STOP = "stop_run"
 END_RECONCILIATION = "needs_reconciliation"
 END_INTERRUPTED = "interrupted"
-END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTERRUPTED)
+END_CIRCUIT = "circuit_breaker"
+END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTERRUPTED, END_CIRCUIT)
+
+# Circuit breaker. An invocation stops after this many consecutive attempts that each ended with an unknown
+# outcome, a rejection that failed its question (decision fail_question), or an exception that is not a
+# ProviderError. A saved response, or a retryable failure that provably never left the process, resets the
+# count. Other outcomes leave it alone. The number is part of the run identity (the retry section).
+CIRCUIT_BREAKER_THRESHOLD = 3
+CIRCUIT_BREAKER_COUNTS = (
+    "outcome unknown",
+    "rejected with decision fail_question",
+    "exception that is not a ProviderError",
+)
+CIRCUIT_BREAKER_RESETS = ("saved response", "not_sent failure with decision retry")
 
 STATUS_ANSWERED = "answered"
 STATUS_NO_EVIDENCE = "no_evidence"
@@ -908,7 +923,14 @@ def build_identity(
         "prompt": {"template_id": services.template_id, "template_sha256": services.template_sha256},
         "provider": {**config.identity_block(), "adapter": dict(provider_descriptor)},
         "prices": config.prices.as_dict(),
-        "retry_policy": services.retry_parameters(),
+        "retry_policy": {
+            **services.retry_parameters(),
+            "circuit_breaker": {
+                "consecutive_failures": CIRCUIT_BREAKER_THRESHOLD,
+                "counts": list(CIRCUIT_BREAKER_COUNTS),
+                "resets": list(CIRCUIT_BREAKER_RESETS),
+            },
+        },
         "scientific_budget": scientific_budget,
         "code": {"measurement_code_digest": _measurement_code_digest(), "cli_script_sha256": cli_script_sha256},
     }
@@ -1196,7 +1218,7 @@ class RunView:
             reason = self.last_end_reason
             if reason == END_BUDGET:
                 return RUN_BUDGET_LIMITED
-            if reason == END_STOP:
+            if reason in (END_STOP, END_CIRCUIT):
                 return RUN_STOPPED
             return RUN_INCOMPLETE
         return RUN_COMPLETE
@@ -1625,6 +1647,10 @@ class _Driver:
         self.sleep = sleep
         self.crash_hook = crash_hook
         self.clock = clock
+        self.consecutive_failures = 0
+
+    def breaker_record(self) -> dict[str, int]:
+        return {"consecutive_failures": self.consecutive_failures, "threshold": CIRCUIT_BREAKER_THRESHOLD}
 
     def hook(self, point: str, **info: Any) -> None:
         if self.crash_hook is not None:
@@ -1649,7 +1675,7 @@ class _Driver:
             if state.status != REQUEST_PENDING:
                 continue
             outcome = self.process(state)
-            if outcome in (END_BUDGET, END_STOP):
+            if outcome in (END_BUDGET, END_STOP, END_CIRCUIT):
                 return outcome
         return END_RECONCILIATION if self.view.by_status(REQUEST_UNKNOWN) else END_COMPLETED
 
@@ -1698,19 +1724,31 @@ class _Driver:
             except ProviderError as error:
                 latency = int((self.clock() - started) * 1000)
                 step = self._record_error(state, attempt_state, error, latency)
-                if step == "retry":
+                counted = step == "unknown" or (error.outcome == OUTCOME_REJECTED and step == DECISION_FAIL)
+                if step == DECISION_RETRY and error.outcome == OUTCOME_NOT_SENT:
+                    self.consecutive_failures = 0
+                elif counted:
+                    self.consecutive_failures += 1
+                if step == DECISION_RETRY:
                     continue
-                return END_STOP if step == DECISION_STOP else None
+                if step == DECISION_STOP:
+                    return END_STOP
+                return self._breaker_tripped()
             except Exception as error:  # the provider broke its contract: the request may have been processed
                 latency = int((self.clock() - started) * 1000)
                 self._record_unknown(
                     state, attempt_state, kind="provider_exception", message=f"{type(error).__name__}: {error}", latency=latency
                 )
-                return None
+                self.consecutive_failures += 1
+                return self._breaker_tripped()
             latency = int((self.clock() - started) * 1000)
             self.hook(CRASH_AFTER_SEND, question_id=state.question_id, attempt=attempt)
             self._save_response(state, attempt_state, response, latency)
+            self.consecutive_failures = 0
             return None
+
+    def _breaker_tripped(self) -> str | None:
+        return END_CIRCUIT if self.consecutive_failures >= CIRCUIT_BREAKER_THRESHOLD else None
 
     def _record_unknown(
         self, state: RequestState, attempt: AttemptState, *, kind: str, message: str, latency: int | None, **extra: Any
@@ -2440,7 +2478,7 @@ def _execute_locked(
         except KeyboardInterrupt:
             _resume_after_interrupt(view, log, run_dir, invocation_id)
             reason = END_INTERRUPTED
-        log.append(EVENT_INVOCATION_ENDED, reason=reason, ledger=driver.ledger_totals())
+        log.append(EVENT_INVOCATION_ENDED, reason=reason, ledger=driver.ledger_totals(), circuit_breaker=driver.breaker_record())
     finally:
         log.close()
     if crash_hook is not None:
@@ -2463,6 +2501,11 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
     actions: list[str] = []
     if unknown:
         actions.append("reconcile each attempt in awaiting_reconciliation after checking the provider's records")
+    if view.last_end_reason == END_CIRCUIT:
+        actions.append(
+            f"the circuit breaker stopped the last invocation after {CIRCUIT_BREAKER_THRESHOLD} consecutive failing attempts: "
+            "find the shared cause in attempts.jsonl before running again"
+        )
     if by_status[REQUEST_PENDING]:
         actions.append("run again to serve the pending questions")
     if by_status[REQUEST_FAILED]:
