@@ -71,6 +71,7 @@ from .live_contract import (
     EVENT_INVOCATION_ENDED,
     EVENT_INVOCATION_STARTED,
     EVENT_OUTCOME_UNKNOWN,
+    EVENT_QUESTION_REOPENED,
     EVENT_RECONCILED,
     EVENT_RESPONSE_SAVED,
     EVENTS,
@@ -467,8 +468,11 @@ class Services:
             raise RunnerRefusal(f"the answer-model modules are not available in this checkout: {exc}") from exc
 
         def ledger_from_events(events: Sequence[Mapping[str, Any]], prices: PriceTable) -> Any:
+            # A reopen has no cost of its own: the attempts it follows are already counted. The ledger
+            # module predates the event, so it is not shown to the ledger.
+            costed = [event for event in events if event.get("event") != EVENT_QUESTION_REOPENED]
             try:
-                return request_budget.SafetyLedger.from_events(events, prices)
+                return request_budget.SafetyLedger.from_events(costed, prices)
             except request_budget.BudgetError as exc:
                 raise RunnerRefusal(f"the safety ledger refused the run's records: {exc}") from exc
 
@@ -772,6 +776,7 @@ _REQUIRED_EVENT_KEYS: dict[str, tuple[str, ...]] = {
     EVENT_OUTCOME_UNKNOWN: ("question_id", "request_id", "attempt", "attempt_id", "kind", "message"),
     EVENT_RECONCILED: ("question_id", "request_id", "attempt", "attempt_id", "resolution", "note"),
     EVENT_INVOCATION_ENDED: ("reason", "ledger"),
+    EVENT_QUESTION_REOPENED: ("question_id", "request_id", "attempts_before", "note"),
 }
 _BASE_EVENT_KEYS = ("event", "invocation_id", "seq", "at")
 
@@ -1071,8 +1076,16 @@ class AttemptState:
 
 @dataclass
 class RequestState:
+    """One question's attempts, folded from the events.
+
+    ``reopen_marks`` holds, for each ``question_reopened`` event, how many attempts existed before it. The
+    attempt limit and the failure test look only at the attempts after the latest mark (the window). Earlier
+    attempts stay in ``attempts``, and their costs stay in the ledger.
+    """
+
     request: dict[str, Any]
     attempts: list[AttemptState] = field(default_factory=list)
+    reopen_marks: list[int] = field(default_factory=list)
 
     @property
     def request_id(self) -> str:
@@ -1081,6 +1094,15 @@ class RequestState:
     @property
     def question_id(self) -> str:
         return self.request["question_id"]
+
+    @property
+    def window_attempts(self) -> list[AttemptState]:
+        return self.attempts[(self.reopen_marks[-1] if self.reopen_marks else 0) :]
+
+    @property
+    def attempts_in_window(self) -> int:
+        """Attempts since the latest reopen (all attempts when the question was never reopened)."""
+        return len(self.window_attempts)
 
     @property
     def saved(self) -> AttemptState | None:
@@ -1097,7 +1119,8 @@ class RequestState:
     @property
     def marked_failed(self) -> AttemptState | None:
         return next(
-            (a for a in self.attempts if a.reconciled is not None and a.reconciled["resolution"] == RESOLUTION_FAIL), None
+            (a for a in self.window_attempts if a.reconciled is not None and a.reconciled["resolution"] == RESOLUTION_FAIL),
+            None,
         )
 
     @property
@@ -1110,9 +1133,13 @@ class RequestState:
             return REQUEST_UNKNOWN
         if self.marked_failed is not None:
             return REQUEST_FAILED
-        last = self.attempts[-1] if self.attempts else None
-        if last is not None and last.outcome == "failed" and last.resolution_event["decision"] == DECISION_FAIL:
-            return REQUEST_FAILED
+        window = self.window_attempts
+        last = window[-1] if window else None
+        if last is not None and last.outcome == "failed":
+            event = last.resolution_event
+            # A stop_run error on the last allowed attempt also ends the question (it never gets another).
+            if event["decision"] == DECISION_FAIL or event.get("attempts_exhausted") is True:
+                return REQUEST_FAILED
         return REQUEST_PENDING
 
     @property
@@ -1249,6 +1276,17 @@ def reconstruct(requests: Sequence[dict[str, Any]], events: Sequence[dict[str, A
             _refuse(attempt.outcome == "unknown" and attempt.reconciled is None, f"event {event['seq']}: attempt {attempt.attempt_id} is not awaiting reconciliation")
             _refuse(event["resolution"] in RESOLUTIONS, f"event {event['seq']}: unknown resolution {event['resolution']!r}")
             attempt.reconciled = event
+        elif kind == EVENT_QUESTION_REOPENED:
+            state = state_for(event)
+            _refuse(
+                state.status == REQUEST_FAILED,
+                f"event {event['seq']}: question_reopened for question {event['question_id']} in state {state.status}, not {REQUEST_FAILED}",
+            )
+            _refuse(
+                event["attempts_before"] == len(state.attempts),
+                f"event {event['seq']}: question_reopened says {event['attempts_before']} earlier attempts, the question has {len(state.attempts)}",
+            )
+            state.reopen_marks.append(len(state.attempts))
     for state in states.values():
         _refuse(len([a for a in state.attempts if a.outcome == "saved"]) <= 1, f"question {state.question_id} has two saved responses")
     return states, invocations
@@ -1621,6 +1659,11 @@ class _Driver:
         while True:
             attempt = state.next_attempt
             attempt_id = f"{state.request_id}-a{attempt}"
+            limit = self.services.retry_parameters().get("max_attempts")
+            _refuse(
+                not isinstance(limit, int) or state.attempts_in_window < limit,
+                f"question {state.question_id} already has {state.attempts_in_window} attempts since its last reopen, the retry policy's limit",
+            )
             upper = request["cost_upper_bound"]
             if not self.ledger().can_reserve(
                 upper, self.ceiling, ceiling_simulated=self.config.prices.simulated, ceiling_currency=self.config.prices.currency
@@ -1690,12 +1733,16 @@ class _Driver:
         if error.outcome == OUTCOME_UNKNOWN:
             self._record_unknown(state, attempt, kind=error.kind, message=str(error), latency=latency)
             return "unknown"
-        decision = self.services.retry_policy.decide(error, len(state.attempts))
+        decision = self.services.retry_policy.decide(error, state.attempts_in_window)
         action = decision.action
         _refuse(
             action in (DECISION_RETRY, DECISION_FAIL, DECISION_STOP),
             f"the retry policy returned {action!r} for a {error.outcome} error; expected retry, fail_question or stop_run",
         )
+        limit = self.services.retry_parameters().get("max_attempts")
+        # A stop_run error ends the invocation, but the attempt still counts toward the limit. On the last
+        # allowed attempt the question ends too, so repeated stop_run errors cannot buy a fourth attempt.
+        exhausted = action == DECISION_STOP and isinstance(limit, int) and state.attempts_in_window >= limit
         event = self.log.append(
             EVENT_ATTEMPT_FAILED,
             question_id=state.question_id,
@@ -1710,6 +1757,7 @@ class _Driver:
             latency_ms=latency,
             decision=action,
             delay_seconds=decision.delay_seconds if action == DECISION_RETRY else None,
+            attempts_exhausted=exhausted,
         )
         attempt.outcome, attempt.resolution_event = "failed", event
         if action == DECISION_RETRY:
@@ -1892,6 +1940,7 @@ def build_prediction(state: RequestState, *, run_state: str, last_reason: str | 
         "unserved": False,
         "awaiting_reconciliation": False,
         "attempt_ids": [a.attempt_id for a in state.attempts],
+        "reopen_count": len(state.reopen_marks),
         "query_retrieval_tokens": request["query_retrieval_tokens"],
         "evidence": [{k: v for k, v in item.items() if k != "text"} for item in request["evidence"]],
         "ocr_condition": request["ocr_condition"],
@@ -1945,6 +1994,8 @@ def build_prediction(state: RequestState, *, run_state: str, last_reason: str | 
             record["failure"] = _failure(
                 last["kind"], last["message"], http_status=last.get("http_status"), attempts=len(state.attempts)
             )
+            if last.get("attempts_exhausted") is True:
+                record["failure"]["attempts_exhausted"] = True
     elif status == REQUEST_UNKNOWN:
         record["awaiting_reconciliation"] = True
         open_attempt = state.unresolved_unknown or state.orphans[0]
@@ -1956,7 +2007,10 @@ def build_prediction(state: RequestState, *, run_state: str, last_reason: str | 
     else:
         record["unserved"] = True
         kind = "budget_exhausted" if last_reason == END_BUDGET else "not_attempted"
-        record["failure"] = _failure(kind, "no request was sent for this question", attempts=len(state.attempts))
+        message = "no request was sent for this question"
+        if state.reopen_marks:
+            message = "a person reopened this question; no attempt has been made since"
+        record["failure"] = _failure(kind, message, attempts=len(state.attempts))
     return record
 
 
@@ -2411,6 +2465,8 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
         actions.append("reconcile each attempt in awaiting_reconciliation after checking the provider's records")
     if by_status[REQUEST_PENDING]:
         actions.append("run again to serve the pending questions")
+    if by_status[REQUEST_FAILED]:
+        actions.append("after fixing the cause, reopen an execution_failed question to give it further attempts")
     return {
         "run_id": view.config["run_id"],
         "mode": view.config["mode"],
@@ -2549,8 +2605,8 @@ def reconcile_attempt(
             if resolution == RESOLUTION_ALLOW:
                 limit = view.config["identity"]["retry_policy"].get("max_attempts")
                 _refuse(
-                    limit is None or len(target.attempts) < limit,
-                    f"question {target.question_id} already has {len(target.attempts)} attempts, the retry policy's limit. "
+                    limit is None or target.attempts_in_window < limit,
+                    f"question {target.question_id} already has {target.attempts_in_window} attempts since its last reopen, the retry policy's limit. "
                     f"Use {RESOLUTION_FAIL}.",
                 )
             if crash_hook is not None:
@@ -2576,6 +2632,87 @@ def reconcile_attempt(
         f"attempt {attempt_id} reconciled as {resolution}. " + _run_message(summary, run_dir),
         summary,
     )
+
+
+def reopen_question(
+    *,
+    run_dir: Path,
+    question_id: str,
+    note: str,
+    services: Services | None = None,
+    crash_hook: CrashHook | None = None,
+) -> LiveResult:
+    """Put an ``execution_failed`` question back in line for up to ``max_attempts`` further attempts.
+
+    Use it after fixing the cause of the failures (a network fault, a config error, a provider outage).
+    It appends ``question_reopened``, changes no earlier event, and never contacts the provider. The
+    earlier attempts and their costs stay in the records and in the ledger. The attempt limit counts from
+    the reopen event. A person decides this: the driver never reopens a question by itself.
+
+    Refused for a question that is answered, still pending (an unserved or budget-limited question simply
+    resumes with ``run``), awaiting reconciliation (use ``reconcile``) or never sent. Also refused without a
+    note, while another invocation holds the lock, and once the run is scored.
+    """
+    services = services or Services.default()
+    _refuse(bool(note and note.strip()), "--note TEXT is required: say what you fixed and why the question may be tried again")
+    run_dir = require_initialised_run(run_dir)
+    invocation_id = uuid.uuid4().hex
+    lock = RunLock(run_dir, invocation_id)
+    lock.acquire()
+    try:
+        refuse_if_scored(run_dir, "reopen")
+        view = load_run(run_dir)
+        target = next((s for s in view.ordered_states if s.question_id == question_id), None)
+        _refuse(target is not None, f"no question {question_id!r} in {run_dir}")
+        assert target is not None
+        tail = quarantine_uncommitted_tail(run_dir, view, invocation_id)
+
+        def track(event: dict[str, Any]) -> None:
+            view.events.append(event)
+
+        log = EventLog(run_dir / ATTEMPTS_NAME, invocation_id, len(view.events) + 1, track)
+        try:
+            recover_open_attempts(view, log, run_dir)
+            status = target.status
+            _refuse(
+                status == REQUEST_FAILED,
+                _reopen_refusal(target, status),
+            )
+            last = target.window_attempts[-1] if target.window_attempts else None
+            if crash_hook is not None:
+                crash_hook("before_reopened", {"question_id": question_id})
+            log.append(
+                EVENT_QUESTION_REOPENED,
+                question_id=target.question_id,
+                request_id=target.request_id,
+                attempts_before=len(target.attempts),
+                note=note.strip(),
+                previous_failure=None if last is None or last.resolution_event is None else last.resolution_event.get("kind"),
+                recovered_uncommitted_tail=tail,
+            )
+        finally:
+            log.close()
+        final = load_run(run_dir)
+        _, summary = write_export(final, services)
+    finally:
+        lock.release()
+    return LiveResult(
+        EXIT_OK,
+        f"question {question_id} reopened: up to {services.retry_parameters().get('max_attempts')} further attempts on the next run. "
+        + _run_message(summary, run_dir),
+        summary,
+    )
+
+
+def _reopen_refusal(state: RequestState, status: str) -> str:
+    who = f"question {state.question_id}"
+    if status == REQUEST_ANSWERED:
+        return f"{who} is answered. A saved response is never reopened."
+    if status == REQUEST_UNKNOWN:
+        return f"{who} has an attempt with an unknown outcome. Use reconcile, after checking the provider's records."
+    if status == REQUEST_PENDING:
+        return f"{who} is pending, not execution_failed. Run again to serve it (an unserved or budget-limited question resumes by itself)."
+    return f"{who} was never sent ({state.request['skip_reason']}). Its request cannot change in this run; a changed request needs a new run."
 
 
 def score_run_live(
