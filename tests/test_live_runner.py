@@ -3289,7 +3289,10 @@ def test_only_a_successor_run_with_corrected_configuration_can_go_on(project: Pr
 
 
 def test_a_crash_between_the_response_file_and_its_event_does_not_hide_the_violation(project: Project) -> None:
-    """S10: the response file is a durable record. A restart reads it and refuses before any provider exists."""
+    """S10: the response file is a durable record. A restart reads it and refuses before any provider exists.
+
+    The restart also appends the recovered response_saved event (M3), so the records name the answer.
+    """
     rig = Rig()
     with pytest.raises(SimulatedCrash):
         go(project, rig, services=bound_one_services(), crash_hook=crash_at(lr.CRASH_AFTER_RESPONSE_FILE, "q1"))
@@ -3302,7 +3305,10 @@ def test_a_crash_between_the_response_file_and_its_event_does_not_hide_the_viola
         sleep=lambda s: None, environ={},
     )
     assert result.exit_code == SAFETY_EXIT and restart.factory_calls == 0
-    assert (run_dir / "attempts.jsonl").read_bytes() == before
+    after = (run_dir / "attempts.jsonl").read_bytes()
+    assert after.startswith(before), "the restart only appends: the earlier lines stay byte-identical"
+    appended = [json.loads(line) for line in after[len(before) :].splitlines()]
+    assert [e["event"] for e in appended] == ["response_saved"] and appended[0]["recovered"] is True
     status = lr.run_status(run_dir, bound_one_services())
     assert status["run_state"] == SAFETY_STATE
 
@@ -3459,3 +3465,80 @@ def test_the_messages_and_help_state_the_exact_model_match_and_the_limit_of_the_
         assert phrase in help_text, phrase
     source = Path(lr.__file__).read_text(encoding="utf-8")
     assert "no hash chain" in source
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: a crash between the response file and its event, then a safety stop (M3)
+#
+# Ways the restart could fail, written before the fix.
+#   R1. The restart refuses on the response file but leaves the attempt open, so the durable records still
+#       show an attempt awaiting reconciliation and no answer.
+#   R2. The exports are missing or stale, so predictions.jsonl and run_summary.json do not name the stop.
+#   R3. status advises reconcile for an attempt whose response file is readable and holds the answer.
+#   R4. The recovery sends a request, builds a provider or reads the response file wrongly.
+# ---------------------------------------------------------------------------
+
+
+def _crashed_offending_run(project: Project) -> tuple[Path, Rig]:
+    rig = Rig({"q1": [FakeStep("answer", text="twelve months", returned_model="fake-answer-model-2")]})
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, crash_hook=crash_at(lr.CRASH_AFTER_RESPONSE_FILE, "q1"))
+    run_dir = project.run_dir("run-a")
+    assert not any(e["event"] == "response_saved" for e in events_of(run_dir))
+    assert not (run_dir / "predictions.jsonl").exists()
+    return run_dir, rig
+
+
+def test_status_and_export_before_a_restart_do_not_advise_reconcile_for_a_recoverable_response(project: Project) -> None:
+    """R3: the response file is readable, so the attempt is not awaiting reconciliation."""
+    run_dir, _ = _crashed_offending_run(project)
+    status = lr.run_status(run_dir)
+    assert status["awaiting_reconciliation"] == [] and status["counts"]["awaiting_reconciliation"] == 0
+    assert status["run_state"] == SAFETY_STATE
+    assert not any("reconcile each attempt" in step for step in status["next"])
+    assert "awaiting reconciliation" not in lr.format_status(status)
+    exported = lr.export_run(run_dir)
+    assert exported.exit_code == SAFETY_EXIT
+    record = by_question(run_dir)["q1"]
+    assert record["status"] == "answered" and record["awaiting_reconciliation"] is False
+    assert record["returned_model"] == "fake-answer-model-2" and record["answer"] == "twelve months"
+
+
+def test_a_restart_after_a_crash_before_the_event_records_the_response_and_exports_the_stop(project: Project) -> None:
+    """R1, R2, R4: the restart appends the recovered response_saved event, writes the exports and dispatches nothing."""
+    run_dir, rig = _crashed_offending_run(project)
+    restart = Rig(rig.steps)
+    result = go(project, restart)
+    assert result.exit_code == SAFETY_EXIT and restart.factory_calls == 0 and restart.providers == []
+    assert restart.sent(run_dir) == []
+    saved = [e for e in events_of(run_dir) if e["event"] == "response_saved"]
+    assert len(saved) == 1 and saved[0]["recovered"] is True and saved[0]["returned_model"] == "fake-answer-model-2"
+    assert [e for e in events_of(run_dir) if e["event"] == "outcome_unknown"] == []
+    assert (run_dir / "predictions.jsonl").exists() and (run_dir / "run_summary.json").exists()
+    summary = summary_of(run_dir)
+    assert summary["run_state"] == SAFETY_STATE and summary["exit_code"] == SAFETY_EXIT
+    assert (attempt_id_of(run_dir, "q1"), "returned_model_mismatch") in conditions(summary["safety_violations"])
+    record = by_question(run_dir)["q1"]
+    assert record["status"] == "answered" and record["answer"] == "twelve months" and record["returned_model"] == "fake-answer-model-2"
+    assert list(by_question(run_dir)) == QUESTIONS
+    assert by_question(run_dir)["q2"]["failure"]["type"] == UNSERVED_TYPE
+    status = lr.run_status(run_dir)
+    assert status["awaiting_reconciliation"] == [] and not any("reconcile each attempt" in step for step in status["next"])
+    assert status["predictions_current"] is True
+    # A second restart finds nothing open and changes nothing.
+    before = strip_lock(file_snapshot(run_dir))
+    again = Rig(rig.steps)
+    assert go(project, again).exit_code == SAFETY_EXIT and again.factory_calls == 0
+    assert strip_lock(file_snapshot(run_dir)) == before
+
+
+def test_a_restart_after_a_crash_before_the_event_moves_a_torn_tail_aside_and_keeps_the_stop(project: Project) -> None:
+    run_dir, rig = _crashed_offending_run(project)
+    with (run_dir / "attempts.jsonl").open("ab") as handle:
+        handle.write(b'{"event":"dispatch_started","seq":')
+    restart = Rig(rig.steps)
+    assert go(project, restart).exit_code == SAFETY_EXIT and restart.factory_calls == 0
+    assert list(run_dir.glob("attempts.uncommitted.*")), "the torn bytes are kept"
+    recovered = next(e for e in events_of(run_dir) if e["event"] == "response_saved")
+    assert recovered["recovered"] is True and recovered["recovered_uncommitted_tail"]["bytes"] > 0
+    assert by_question(run_dir)["q1"]["status"] == "answered"
