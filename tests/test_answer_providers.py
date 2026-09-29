@@ -1,7 +1,7 @@
 """Tests for faar.answer_providers.
 
 The failure list these tests cover is in the docstring of `faar/answer_providers.py`
-(items F1-F10 for the fake provider, O1-O12 for the OpenAI adapter). No test sends a
+(items F1-F10 for the fake provider, O1-O13 for the OpenAI adapter). No test sends a
 request: the OpenAI client gets an `httpx.MockTransport`, and the conftest blocks
 non-loopback sockets besides.
 """
