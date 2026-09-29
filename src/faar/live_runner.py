@@ -59,6 +59,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from .answer_providers import SimulatedCrash  # noqa: F401  (re-exported: crash hooks and the fake provider raise it)
 from .live_contract import (
     CONTRACT_VERSION,
     EVENT_ATTEMPT_FAILED,
@@ -141,6 +142,7 @@ KNOWN_RUN_FILES = frozenset(
 LIVE_ENV_NAME = "FAAR_ALLOW_LIVE_REQUESTS"
 LIVE_ENV_VALUE = "I_UNDERSTAND_THIS_SPENDS_MONEY"
 TOKENIZER_BOUND = "utf8-bytes"
+TOKEN_LIMIT_PARAMS = ("max_tokens", "max_completion_tokens")
 
 RUN_COMPLETE = "complete"
 RUN_BUDGET_LIMITED = "budget_limited"
@@ -169,6 +171,10 @@ REQUEST_PENDING = "pending"
 ACTION_SEND = "send"
 ACTION_SKIP = "skip"
 SKIP_PROMPT_OVER_LIMIT = "prompt_over_limit"
+# Extra skip reasons for a question whose preparation raised. Both export as execution_failed at stage "prepare".
+SKIP_RETRIEVAL_FAILED = "retrieval_failed"
+SKIP_PROMPT_BUILD_FAILED = "prompt_build_failed"
+PREPARE_FAILURE_SKIPS = (SKIP_RETRIEVAL_FAILED, SKIP_PROMPT_BUILD_FAILED)
 
 RESOLUTION_ALLOW = "allow_new_attempt"
 RESOLUTION_FAIL = "mark_failed"
@@ -194,15 +200,11 @@ CRASH_POINTS = (
     CRASH_BEFORE_EXPORT,
 )
 
+# SimulatedCrash (from faar.answer_providers) derives from BaseException, so no ``except Exception`` in the
+# driver swallows it. The driver writes nothing after it, as after a real crash. A crash hook raises it, and so
+# does the fake provider's crash_after_send step.
+
 EXPECTED_RESUME_NOTE = "The run directory is a record. Keep it and start a new run directory for changed settings."
-
-
-class SimulatedCrash(BaseException):
-    """Raised by a test crash hook to kill an invocation at a named point.
-
-    It derives from ``BaseException`` so that no ``except Exception`` in the
-    driver can swallow it. The driver writes nothing after it, as after a real crash.
-    """
 
 
 CrashHook = Callable[[str, Mapping[str, Any]], None]
@@ -226,6 +228,7 @@ class ProviderConfig:
     timeout_seconds: float
     tokenizer_bound: str
     prices: PriceTable
+    token_limit_param: str = "max_tokens"
 
     def identity_block(self) -> dict[str, Any]:
         return {
@@ -237,6 +240,7 @@ class ProviderConfig:
             "max_input_tokens": self.max_input_tokens,
             "timeout_seconds": self.timeout_seconds,
             "tokenizer_bound": self.tokenizer_bound,
+            "token_limit_param": self.token_limit_param,
         }
 
 
@@ -338,6 +342,9 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
     cached = prices.get("cached_input_per_million")
     if cached is not None:
         _finite_positive(cached, "prices.cached_input_per_million")
+    token_limit_param = payload.get("token_limit_param", "max_tokens")
+    if token_limit_param not in TOKEN_LIMIT_PARAMS:
+        raise RunnerRefusal(f"provider config: token_limit_param must be one of {TOKEN_LIMIT_PARAMS}, got {token_limit_param!r}")
     price_table = PriceTable(
         provider=payload["provider"],
         model=payload["model"],
@@ -359,6 +366,7 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
         timeout_seconds=float(payload["timeout_seconds"]),
         tokenizer_bound=payload["tokenizer_bound"],
         prices=price_table,
+        token_limit_param=token_limit_param,
     )
 
 
@@ -397,6 +405,8 @@ class Services:
 
     def retry_parameters(self) -> dict[str, Any]:
         policy = self.retry_policy
+        if hasattr(policy, "describe"):
+            return dict(policy.describe())
         if dataclasses.is_dataclass(policy) and not isinstance(policy, type):
             return dataclasses.asdict(policy)
         return dict(vars(policy))
@@ -405,15 +415,18 @@ class Services:
     def default(cls) -> Services:
         try:
             from . import answer_prompt, prompt_preview, request_budget, retry_policy
-        except ImportError as exc:  # pragma: no cover - exercised only before the modules are integrated
+        except ImportError as exc:  # pragma: no cover - the modules ship with this package
             raise RunnerRefusal(f"the answer-model modules are not available in this checkout: {exc}") from exc
-        template_sha = getattr(answer_prompt, "TEMPLATE_SHA256", None)
-        if template_sha is None:
-            probe = answer_prompt.build_prompt("probe", [EvidenceBlock(1, "probe-chunk", "probe-doc", 0, "probe text")])
-            template_sha = probe.template_sha256
+
+        def ledger_from_events(events: Sequence[Mapping[str, Any]], prices: PriceTable) -> Any:
+            try:
+                return request_budget.SafetyLedger.from_events(events, prices)
+            except request_budget.BudgetError as exc:
+                raise RunnerRefusal(f"the safety ledger refused the run's records: {exc}") from exc
+
         return cls(
             template_id=answer_prompt.TEMPLATE_ID,
-            template_sha256=template_sha,
+            template_sha256=answer_prompt.TEMPLATE_SHA256,
             build_prompt=answer_prompt.build_prompt,
             parse_reply=answer_prompt.parse_reply,
             estimate_tokens=answer_prompt.estimate_tokens,
@@ -421,7 +434,7 @@ class Services:
             input_token_upper_bound=request_budget.input_token_upper_bound,
             request_cost_upper_bound=request_budget.request_cost_upper_bound,
             measured_cost=request_budget.measured_cost,
-            ledger_from_events=request_budget.SafetyLedger.from_events,
+            ledger_from_events=ledger_from_events,
             retry_policy=retry_policy.RetryPolicy(),
         )
 
@@ -756,11 +769,6 @@ def prepare_requests(
     records: list[dict[str, Any]] = []
     for outcome in retrieval_run.questions:
         question = outcome.question
-        if outcome.failure is not None:
-            raise RunnerRefusal(
-                f"retrieval failed for question {question.question_id} at stage {outcome.failure['stage']}: "
-                f"{outcome.failure['type']}: {outcome.failure['message']}. Nothing was prepared."
-            )
         record: dict[str, Any] = {
             "question_id": question.question_id,
             "doc_id": question.doc_id,
@@ -783,7 +791,14 @@ def prepare_requests(
             "no_evidence_reason": outcome.no_evidence_reason,
             "query_retrieval_tokens": outcome.query_retrieval_tokens,
             "ocr_condition": dict(outcome.ocr_condition),
+            "prepare_failure": None,
         }
+        if outcome.failure is not None:
+            record["skip_reason"] = SKIP_RETRIEVAL_FAILED
+            record["prepare_failure"] = dict(outcome.failure)
+            record["request_id"] = _request_id(identity_hash, question.question_id, None)
+            records.append(record)
+            continue
         if not outcome.hits:
             record["skip_reason"] = outcome.no_evidence_reason
             record["request_id"] = _request_id(identity_hash, question.question_id, None)
@@ -815,8 +830,13 @@ def prepare_requests(
             )
         try:
             payload = services.build_prompt(question.question, blocks)
-        except Exception as exc:
-            raise RunnerRefusal(f"prompt building failed for question {question.question_id}: {type(exc).__name__}: {exc}") from exc
+        except ValueError as exc:
+            record["skip_reason"] = SKIP_PROMPT_BUILD_FAILED
+            record["evidence"] = evidence
+            record["prepare_failure"] = {"stage": "prompt", "type": type(exc).__name__, "message": str(exc)[:FAILURE_MESSAGE_LIMIT]}
+            record["request_id"] = _request_id(identity_hash, question.question_id, None)
+            records.append(record)
+            continue
         _refuse(
             payload.template_id == services.template_id and payload.template_sha256 == services.template_sha256,
             f"question {question.question_id}: the prompt names template {payload.template_id}/{payload.template_sha256}, "
@@ -1171,6 +1191,65 @@ def check_live_enablement(
         )
 
 
+@dataclass(frozen=True)
+class ProviderContext:
+    """What a provider factory may use: the prepared requests and how many attempts each already has.
+
+    A fresh invocation starts a fresh provider, so a scripted fake must skip the steps that earlier
+    attempts consumed. ``prior_attempts`` maps ``request_id`` to that count.
+    """
+
+    requests: Sequence[Mapping[str, Any]]
+    prior_attempts: Mapping[str, int]
+
+
+ProviderFactory = Callable[[ProviderContext], Any]
+
+
+def load_fake_script(script_path: Path) -> tuple[dict[str, list[Any]], Any, str]:
+    """Read a fake script. Returns steps by question_id, the default step and the file's sha256.
+
+    The file is a JSON object with ``script`` (question_id to a list of step objects) and an optional
+    ``default`` step (default: ``{"kind": "answer"}``). Step objects take the fields of ``FakeStep``.
+    """
+    from .answer_providers import FakeStep
+
+    try:
+        raw = script_path.read_bytes()
+        payload = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RunnerRefusal(f"cannot read the fake script {script_path}: {exc}") from exc
+    _refuse(isinstance(payload, dict), f"fake script {script_path} is not a JSON object")
+    unknown = sorted(set(payload) - {"default", "script"})
+    _refuse(not unknown, f"fake script {script_path} has unknown keys {unknown}; expected script and default")
+
+    def step(value: Any) -> Any:
+        _refuse(isinstance(value, dict) and "kind" in value, f"fake script step {value!r} needs a kind")
+        try:
+            return FakeStep(**value)
+        except (TypeError, ValueError) as exc:
+            raise RunnerRefusal(f"fake script step {value!r}: {exc}") from exc
+
+    scripted = payload.get("script", {})
+    _refuse(isinstance(scripted, dict), "fake script: script must map question ids to lists of steps")
+    steps = {qid: [step(item) for item in items] for qid, items in scripted.items()}
+    return steps, step(payload.get("default", {"kind": "answer"})), sha256_bytes(raw)
+
+
+def build_fake_provider(
+    steps_by_question: Mapping[str, Sequence[Any]], default: Any, config: ProviderConfig, context: ProviderContext
+) -> Any:
+    """A ``FakeProvider`` for this invocation, scripted by question and aligned with earlier attempts."""
+    from .answer_providers import FakeProvider, script_by_question
+
+    try:
+        keyed = script_by_question(context.requests, steps_by_question)
+    except ValueError as exc:
+        raise RunnerRefusal(f"fake script: {exc}") from exc
+    aligned = {rid: steps[context.prior_attempts.get(rid, 0) :] for rid, steps in keyed.items()}
+    return FakeProvider(aligned, default=default, model=config.model)
+
+
 def build_live_provider(config: ProviderConfig, environ: Mapping[str, str]) -> Any:  # pragma: no cover - never run in tests
     """Build the real provider. Reads ``OPENAI_API_KEY`` here and nowhere else."""
     import openai
@@ -1180,28 +1259,9 @@ def build_live_provider(config: ProviderConfig, environ: Mapping[str, str]) -> A
     key = environ.get("OPENAI_API_KEY")
     _refuse(bool(key), "OPENAI_API_KEY is not set")
     client = openai.OpenAI(api_key=key, max_retries=0, timeout=config.timeout_seconds)
-    return OpenAIChatProvider(config.model, dict(config.params), client=client)
-
-
-def build_fake_provider(script_path: Path, config: ProviderConfig) -> Any:
-    """Build a ``FakeProvider`` from a JSON script. See ``faar.answer_providers`` for the step kinds."""
-    from .answer_providers import FakeProvider, FakeStep
-
-    try:
-        payload = json.loads(script_path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise RunnerRefusal(f"cannot read the fake script {script_path}: {exc}") from exc
-    _refuse(isinstance(payload, dict), f"fake script {script_path} is not a JSON object")
-    unknown = sorted(set(payload) - {"default", "script"})
-    _refuse(not unknown, f"fake script {script_path} has unknown keys {unknown}; expected default and script")
-
-    def step(value: Any) -> Any:
-        _refuse(isinstance(value, dict) and "kind" in value, f"fake script step {value!r} needs a kind")
-        return FakeStep(**value)
-
-    default = step(payload.get("default", {"kind": "answer"}))
-    scripted = {key: [step(item) for item in steps] for key, steps in payload.get("script", {}).items()}
-    return FakeProvider(scripted, default=default, model=config.model)
+    return OpenAIChatProvider(
+        config.model, dict(config.params), client=client, token_limit_param=config.token_limit_param
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1335,9 +1395,9 @@ class _Driver:
     def ledger_totals(self) -> dict[str, float]:
         ledger = self.ledger()
         return {
-            "measured": ledger.measured_usd,
-            "reserved": ledger.reserved_usd,
-            "committed_upper": ledger.committed_upper_usd,
+            "measured": ledger.measured,
+            "reserved": ledger.reserved,
+            "committed_upper": ledger.committed_upper,
         }
 
     # -- steps ---------------------------------------------------------------
@@ -1359,7 +1419,9 @@ class _Driver:
             attempt = state.next_attempt
             attempt_id = f"{state.request_id}-a{attempt}"
             upper = request["cost_upper_bound"]
-            if not self.ledger().can_reserve(upper, self.ceiling):
+            if not self.ledger().can_reserve(
+                upper, self.ceiling, ceiling_simulated=self.config.prices.simulated, ceiling_currency=self.config.prices.currency
+            ):
                 return END_BUDGET
             self.hook(CRASH_BEFORE_DISPATCH, question_id=state.question_id, attempt=attempt)
             dispatch = self.log.append(
@@ -1639,7 +1701,10 @@ def build_prediction(state: RequestState, *, run_state: str, last_reason: str | 
     }
     status = state.status
     if status == REQUEST_SKIP:
-        if request["skip_reason"] == SKIP_PROMPT_OVER_LIMIT:
+        if request["skip_reason"] in PREPARE_FAILURE_SKIPS:
+            failure = request["prepare_failure"]
+            record["failure"] = {"stage": "prepare", "type": failure["type"], "message": failure["message"], "step": failure["stage"]}
+        elif request["skip_reason"] == SKIP_PROMPT_OVER_LIMIT:
             record["failure"] = {
                 "stage": "prepare",
                 "type": SKIP_PROMPT_OVER_LIMIT,
@@ -1747,9 +1812,10 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         "cost": {
             "currency": prices.currency,
             "simulated": prices.simulated,
-            "measured": ledger.measured_usd,
-            "reserved": ledger.reserved_usd,
-            "committed_upper": ledger.committed_upper_usd,
+            "measured": ledger.measured,
+            "reserved": ledger.reserved,
+            "committed_upper": ledger.committed_upper,
+            "anomalies": list(ledger.anomalies),
         },
         "safety_ceiling": last_ceiling,
         "invocations": [
@@ -1809,14 +1875,20 @@ def provider_descriptor(mode: str) -> dict[str, Any]:
 
 def wire_provider(
     options: RunOptions, *, fake_script: Path | None, environ: Mapping[str, str]
-) -> tuple[Callable[[], Any], dict[str, Any]]:
-    """Return a lazy provider factory and the adapter descriptor. Nothing is constructed here."""
+) -> tuple[ProviderFactory, dict[str, Any]]:
+    """Return a lazy provider factory and the adapter descriptor. No provider and no client is built here.
+
+    In fake mode the script file is read and validated now, so a bad script refuses before anything is
+    prepared, and its sha256 joins the run identity: a changed script is a different run.
+    """
     config = _resolve_config(options)
     if options.mode == MODE_FAKE:
         _refuse(fake_script is not None, "--fake-script PATH is required with --mode fake")
         assert fake_script is not None
-        return (lambda: build_fake_provider(fake_script, config)), provider_descriptor(MODE_FAKE)
-    return (lambda: build_live_provider(config, environ)), provider_descriptor(MODE_LIVE)
+        steps, default, script_sha = load_fake_script(fake_script)
+        descriptor = {**provider_descriptor(MODE_FAKE), "fake_script_sha256": script_sha}
+        return (lambda context: build_fake_provider(steps, default, config, context)), descriptor
+    return (lambda context: build_live_provider(config, environ)), provider_descriptor(MODE_LIVE)
 
 
 def _ceiling_record(amount: float, prices: PriceTable) -> dict[str, Any]:
@@ -1889,7 +1961,7 @@ def execute_run(
     options: RunOptions,
     *,
     services: Services | None = None,
-    provider_factory: Callable[[], Any] | None = None,
+    provider_factory: ProviderFactory | None = None,
     descriptor: Mapping[str, Any] | None = None,
     sleep: Callable[[float], None] = time.sleep,
     crash_hook: CrashHook | None = None,
@@ -1899,7 +1971,7 @@ def execute_run(
     """Start or resume a run: prepare, check identity, dispatch pending requests, export.
 
     Raises :class:`RunnerRefusal` before any dispatch when the run must not start or continue.
-    ``provider_factory`` is called only when at least one request is pending, after every check passed.
+    ``provider_factory`` receives a :class:`ProviderContext` and is called only when at least one request is pending, after every check passed.
     """
     environ = os.environ if environ is None else environ
     _refuse(options.mode in MODES, f"mode must be one of {MODES}, got {options.mode!r}")
@@ -1956,7 +2028,7 @@ def _execute_locked(
     run_id: str,
     config: ProviderConfig,
     services: Services | None,
-    provider_factory: Callable[[], Any] | None,
+    provider_factory: ProviderFactory | None,
     descriptor: Mapping[str, Any],
     sleep: Callable[[float], None],
     crash_hook: CrashHook | None,
@@ -2035,7 +2107,9 @@ def _execute_locked(
     if pending:
         _refuse(provider_factory is not None, "no provider is available and requests are pending")
         assert provider_factory is not None
-        provider = provider_factory()
+        provider = provider_factory(
+            ProviderContext(view.requests, {rid: len(state.attempts) for rid, state in view.states.items()})
+        )
 
     invocations: list[InvocationInfo] = view.invocations
 
@@ -2329,7 +2403,7 @@ def _estimate_total(records: Sequence[Mapping[str, Any]]) -> int | None:
     for record in records:
         estimate = record.get("token_estimate")
         if isinstance(estimate, Mapping):
-            for key in ("tokens", "estimated_tokens", "total"):
+            for key in ("estimate", "tokens"):
                 value = estimate.get(key)
                 if isinstance(value, int) and not isinstance(value, bool):
                     total += value
