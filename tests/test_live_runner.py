@@ -930,9 +930,9 @@ def test_a_provider_that_raises_something_other_than_provider_error_leaves_the_o
         options(project), provider_factory=lambda ctx: broken, descriptor={"adapter": "broken"}, sleep=lambda s: None, environ={}
     )
     run_dir = project.run_dir("run-a")
-    assert broken.calls == 5, "every question is tried once and none is retried"
+    assert broken.calls == 3, "each question is tried once, none is retried, and the circuit breaker stops after three"
     unknown = [e for e in events_of(run_dir) if e["event"] == "outcome_unknown"]
-    assert len(unknown) == 5 and unknown[0]["kind"] == "provider_exception" and "adapter bug" in unknown[0]["message"]
+    assert len(unknown) == 3 and unknown[0]["kind"] == "provider_exception" and "adapter bug" in unknown[0]["message"]
     assert result.exit_code == lr.EXIT_NEEDS_ATTENTION
 
 
@@ -2611,3 +2611,107 @@ def test_the_ledger_ignores_reopen_events(project: Project) -> None:
     lr.reopen_question(run_dir=run_dir, question_id="q1", note="n")
     go(project, rig)
     assert lr.run_status(run_dir)["cost"]["committed_upper"] > 0
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: the circuit breaker (M5)
+# ---------------------------------------------------------------------------
+
+
+def _ended(run_dir: Path) -> dict[str, Any]:
+    return [e for e in events_of(run_dir) if e["event"] == "invocation_ended"][-1]
+
+
+def test_three_consecutive_unknown_outcomes_stop_the_invocation(project: Project) -> None:
+    """M5: a systematic fault must not run through the whole pilot. Three unknown outcomes in a row stop the run."""
+    steps = {q: [FakeStep("timeout_unknown")] for q in ("q1", "q2", "q3")}
+    rig = Rig(steps)
+    result = go(project, rig)
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1", "q2", "q3"], "no fourth request"
+    ended = _ended(run_dir)
+    assert ended["reason"] == "circuit_breaker" and ended["circuit_breaker"] == {"consecutive_failures": 3, "threshold": 3}
+    assert result.summary["run_state"] == "needs_reconciliation" and result.exit_code == lr.EXIT_NEEDS_ATTENTION
+    assert by_question(run_dir)["q4"]["unserved"] is True and by_question(run_dir)["q6"]["unserved"] is True
+
+
+def test_three_consecutive_rejected_failures_stop_the_invocation_and_the_run_is_stopped(project: Project) -> None:
+    """M5: `rejected` with decision fail_question counts. Only pending questions remain, so the run state is `stopped`."""
+    steps = {q: [FakeStep("non_retryable_error")] for q in ("q1", "q2", "q3")}
+    rig = Rig(steps)
+    result = go(project, rig)
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1", "q2", "q3"]
+    assert _ended(run_dir)["reason"] == "circuit_breaker"
+    assert result.summary["run_state"] == "stopped" and result.exit_code == lr.EXIT_NEEDS_ATTENTION
+    assert [by_question(run_dir)[q]["status"] for q in ("q1", "q2", "q3")] == ["execution_failed"] * 3
+    resumed = go(project, rig)
+    assert rig.sent(run_dir) == ["q1", "q2", "q3", "q4", "q6"], "a new invocation starts its count at zero"
+    assert resumed.summary["run_state"] == "complete"
+
+
+def test_three_consecutive_exceptions_that_are_not_provider_errors_stop_the_invocation(project: Project) -> None:
+    class Broken:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def send(self, request: Any) -> Any:
+            self.calls += 1
+            raise RuntimeError("adapter bug")
+
+    broken = Broken()
+    result = lr.execute_run(options(project), provider_factory=lambda ctx: broken, descriptor={"adapter": "broken"}, sleep=lambda s: None, environ={})
+    run_dir = project.run_dir("run-a")
+    assert broken.calls == 3 and _ended(run_dir)["reason"] == "circuit_breaker"
+    assert result.exit_code == lr.EXIT_NEEDS_ATTENTION
+
+
+def test_a_successful_response_resets_the_count(project: Project) -> None:
+    steps = {"q1": [FakeStep("timeout_unknown")], "q2": [FakeStep("timeout_unknown")], "q4": [FakeStep("timeout_unknown")], "q6": [FakeStep("timeout_unknown")]}
+    rig = Rig(steps)
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == SENT and _ended(run_dir)["reason"] == "needs_reconciliation"
+    assert _ended(run_dir)["circuit_breaker"] == {"consecutive_failures": 2, "threshold": 3}
+
+
+def test_a_not_sent_retry_resets_the_count(project: Project) -> None:
+    """M5: connect errors are retryable and provably unsent, so they show the fault is not systematic at the provider."""
+    steps = {
+        "q1": [FakeStep("timeout_unknown")],
+        "q2": [FakeStep("timeout_unknown")],
+        "q3": [FakeStep("connect_error")] * 3,
+        "q4": [FakeStep("timeout_unknown")],
+        "q6": [FakeStep("timeout_unknown")],
+    }
+    rig = Rig(steps)
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1", "q2", "q3", "q3", "q3", "q4", "q6"]
+    assert _ended(run_dir)["reason"] == "needs_reconciliation"
+
+
+def test_the_threshold_is_part_of_the_run_identity(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    rig = Rig()
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    stored = json.loads((run_dir / "run_config.json").read_text())["identity"]["retry_policy"]
+    assert stored["circuit_breaker"]["consecutive_failures"] == 3 and stored["max_attempts"] == 3
+    monkeypatch.setattr(lr, "CIRCUIT_BREAKER_THRESHOLD", 2)
+    with pytest.raises(RunnerRefusal, match="circuit_breaker"):
+        go(project, Rig())
+
+
+def test_every_invocation_ended_records_the_counter_and_the_help_names_the_rule(project: Project, capsys: pytest.CaptureFixture[str]) -> None:
+    go(project, Rig())
+    assert _ended(project.run_dir("run-a"))["circuit_breaker"] == {"consecutive_failures": 0, "threshold": 3}
+    with pytest.raises(SystemExit):
+        cli.main(["run", "--help"])
+    assert "circuit_breaker" in " ".join(capsys.readouterr().out.split())
+
+
+def test_status_says_what_to_do_after_the_breaker_tripped(project: Project) -> None:
+    go(project, Rig({q: [FakeStep("non_retryable_error")] for q in ("q1", "q2", "q3")}))
+    status = lr.run_status(project.run_dir("run-a"))
+    assert status["last_invocation_ended"] == "circuit_breaker"
+    assert any("circuit breaker" in step for step in status["next"])

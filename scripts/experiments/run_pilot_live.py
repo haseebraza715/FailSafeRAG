@@ -58,7 +58,12 @@ exit codes:
      (a fake script's crash_after_send step kills the process with SIGKILL instead, like a real crash)
   {EXIT_BUDGET_LIMITED}  budget_limited: the safety ceiling stopped the run; unserved questions are execution_failed with unserved true
   {EXIT_NEEDS_ATTENTION}  needs_reconciliation, stopped or incomplete: an attempt has an unknown outcome, a provider error
-     stopped the run, or the invocation was interrupted; run status, then reconcile or run again
+     stopped the run, the circuit breaker tripped, or the invocation was interrupted; run status, then reconcile or run again
+
+circuit_breaker: an invocation stops (end reason circuit_breaker, run state stopped, exit {EXIT_NEEDS_ATTENTION}) after
+{live_runner.CIRCUIT_BREAKER_THRESHOLD} consecutive attempts that each ended with an unknown outcome, a rejection that failed its question, or an
+exception that is not a provider error. A saved response, or a retryable failure that never left the process,
+resets the count. The number is part of the run identity, and invocation_ended records the count and the number.
 
 run directories:
   fake mode   results/engineering/<run_id>/ inside the project, or any directory outside it
