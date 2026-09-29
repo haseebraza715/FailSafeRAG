@@ -38,6 +38,10 @@ written and fsynced first, so a restart can tell what happened:
    appends ``response_saved`` from that file and resends nothing.
 4. ``response_saved`` is on disk. ``export`` rebuilds the predictions from the records.
 
+Safety stop. A saved response that broke a safety assumption ends dispatch for good (see ``END_SAFETY_STOP``
+and :func:`find_safety_violations`). The check reads the records before every dispatch, and a restart repeats
+it before it builds a provider.
+
 There is no exactly-once claim. A crash between ``send`` returning and the next
 fsync can always lose a response.
 """
@@ -108,6 +112,9 @@ EXIT_EXECUTION_FAILED = 2
 EXIT_INTERNAL_ERROR = 3
 EXIT_BUDGET_LIMITED = 4
 EXIT_NEEDS_ATTENTION = 5
+# A safety or model assumption failed (see "Safety stop" below). Distinct from every code above: the run
+# cannot go on and no later command of the same run directory can lift the stop.
+EXIT_SAFETY_STOPPED = 6
 
 SCHEMA_VERSION = 1
 KIND_FAKE = "engineering_check"
@@ -158,7 +165,8 @@ RUN_BUDGET_LIMITED = "budget_limited"
 RUN_NEEDS_RECONCILIATION = "needs_reconciliation"
 RUN_INCOMPLETE = "incomplete"
 RUN_STOPPED = "stopped"
-RUN_STATES = (RUN_COMPLETE, RUN_BUDGET_LIMITED, RUN_NEEDS_RECONCILIATION, RUN_INCOMPLETE, RUN_STOPPED)
+RUN_SAFETY_STOPPED = "safety_stopped"
+RUN_STATES = (RUN_COMPLETE, RUN_BUDGET_LIMITED, RUN_NEEDS_RECONCILIATION, RUN_INCOMPLETE, RUN_STOPPED, RUN_SAFETY_STOPPED)
 
 END_COMPLETED = "completed"
 END_BUDGET = "budget_exhausted"
@@ -166,7 +174,34 @@ END_STOP = "stop_run"
 END_RECONCILIATION = "needs_reconciliation"
 END_INTERRUPTED = "interrupted"
 END_CIRCUIT = "circuit_breaker"
-END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTERRUPTED, END_CIRCUIT)
+END_SAFETY_STOP = "safety_stop"
+END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTERRUPTED, END_CIRCUIT, END_SAFETY_STOP)
+
+# Safety stop. A saved response can show that an assumption behind the cost bound or the measurement failed:
+# it reports more input tokens than the request's input upper bound, it comes from a model other than the
+# configured one, or the safety ledger reports an anomaly. The driver keeps that response and all its
+# evidence, then dispatches nothing more. The violation is a function of the durable records (events, plus a
+# response file whose event was lost), so every restart, status and export rebuilds it. Nothing in the same
+# run directory clears it: not a raised ceiling, not reconcile, not reopen. A successor run with corrected code
+# or configuration is the only way on, and the identity checks already demand a new run for that.
+# Stopping cannot undo a charge that was already incurred. The ceiling guarantee rests on provider-reported
+# usage and on valid bounds, and this check can only act on what the provider reports.
+VIOLATION_INPUT_BOUND = "input_bound_exceeded"
+VIOLATION_RETURNED_MODEL = "returned_model_mismatch"
+# Every anomaly kind that SafetyLedger reports is blocking today: a measured cost that differs from the cost
+# recomputed from its usage, a measured cost above its own upper bound, and a recorded cost whose usage cannot
+# reproduce it. A kind that request_budget adds later blocks too, on purpose. Relaxing that is a decision for
+# the lead, made here and tested.
+VIOLATION_LEDGER_ANOMALY = "ledger_anomaly"
+FAILURE_SAFETY_STOP = "safety_stop"
+SAFETY_LIMIT_NOTE = (
+    "Stopping cannot undo a charge already incurred. The ceiling guarantee depends on provider-reported usage "
+    "and on valid bounds."
+)
+SAFETY_NO_CLEAR_NOTE = (
+    "Resuming, raising the safety ceiling, reconcile and reopen do not clear the violation. "
+    "Start a successor run (a new run directory) with corrected code or configuration."
+)
 
 # Circuit breaker. An invocation stops after this many consecutive counted attempts: an unknown outcome, a
 # failure that ended its question (decision fail_question, whether rejected or never sent), or an exception that
@@ -1186,6 +1221,9 @@ class RunView:
     uncommitted_tail: bytes
     states: dict[str, RequestState]
     invocations: list[InvocationInfo]
+    # Filled by assess_safety(). None until then, so a caller that skips the assessment fails loudly
+    # instead of reporting a safety-stopped run as complete.
+    safety_violations: list[dict[str, Any]] | None = None
 
     @property
     def ordered_states(self) -> list[RequestState]:
@@ -1208,6 +1246,10 @@ class RunView:
 
     @property
     def run_state(self) -> str:
+        if self.safety_violations is None:
+            raise RuntimeError("assess_safety(view, services) must run before run_state is read")
+        if self.safety_violations:
+            return RUN_SAFETY_STOPPED
         pending = self.by_status(REQUEST_PENDING)
         if self.by_status(REQUEST_UNKNOWN):
             return RUN_NEEDS_RECONCILIATION
@@ -1665,6 +1707,12 @@ class _Driver:
         self.crash_hook = crash_hook
         self.clock = clock
         self.consecutive_failures = 0
+        self.violations: list[dict[str, Any]] = []
+
+    def safety_stopped(self) -> bool:
+        """True when the durable records hold a safety violation. Rebuilt from the events every time it is asked."""
+        self.violations = assess_safety(self.view, self.services)
+        return bool(self.violations)
 
     def breaker_record(self) -> dict[str, int]:
         return {"consecutive_failures": self.consecutive_failures, "threshold": CIRCUIT_BREAKER_THRESHOLD}
@@ -1692,14 +1740,20 @@ class _Driver:
             if state.status != REQUEST_PENDING:
                 continue
             outcome = self.process(state)
-            if outcome in (END_BUDGET, END_STOP, END_CIRCUIT):
+            if outcome in (END_BUDGET, END_STOP, END_CIRCUIT, END_SAFETY_STOP):
                 return outcome
+        # The last response may be the offending one. Nothing is left to dispatch, but the run still ends as a safety stop.
+        if self.safety_stopped():
+            return END_SAFETY_STOP
         return END_RECONCILIATION if self.view.by_status(REQUEST_UNKNOWN) else END_COMPLETED
 
     def process(self, state: RequestState) -> str | None:
         """Send one request until it resolves. Returns an end reason when the whole invocation must stop."""
         request = state.request
         while True:
+            # Before every dispatch, including a retry: a saved response that broke a safety assumption ends the invocation.
+            if self.safety_stopped():
+                return END_SAFETY_STOP
             attempt = state.next_attempt
             attempt_id = f"{state.request_id}-a{attempt}"
             limit = self.services.retry_parameters().get("max_attempts")
@@ -1916,6 +1970,27 @@ def quarantine_uncommitted_tail(run_dir: Path, view: RunView, invocation_id: str
     }
 
 
+def _read_recoverable_response(run_dir: Path, attempt: AttemptState) -> tuple[dict[str, Any], bytes] | None:
+    """The parsed response file of an attempt that has ``dispatch_started`` and no resolving event, or None.
+
+    None when the file is absent or is not valid JSON. Raises :class:`RunnerRefusal` for a file that parses
+    but names another attempt.
+    """
+    path = _response_path(run_dir, attempt.attempt_id)
+    if not path.exists():
+        return None
+    try:
+        raw = path.read_bytes()
+        payload = json.loads(raw.decode("utf-8"))
+        _refuse(
+            isinstance(payload, dict) and payload.get("attempt_id") == attempt.attempt_id,
+            f"{path} does not describe attempt {attempt.attempt_id}",
+        )
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return None
+    return payload, raw
+
+
 def recover_open_attempts(view: RunView, log: EventLog, run_dir: Path) -> list[str]:
     """Resolve every attempt that has ``dispatch_started`` and nothing after it.
 
@@ -1927,18 +2002,8 @@ def recover_open_attempts(view: RunView, log: EventLog, run_dir: Path) -> list[s
     handled: list[str] = []
     for state in view.ordered_states:
         for attempt in state.orphans:
-            path = _response_path(run_dir, attempt.attempt_id)
-            payload = None
-            if path.exists():
-                try:
-                    raw = path.read_bytes()
-                    payload = json.loads(raw.decode("utf-8"))
-                    _refuse(
-                        isinstance(payload, dict) and payload.get("attempt_id") == attempt.attempt_id,
-                        f"{path} does not describe attempt {attempt.attempt_id}",
-                    )
-                except (OSError, UnicodeDecodeError, json.JSONDecodeError):
-                    payload = None
+            found = _read_recoverable_response(run_dir, attempt)
+            payload, raw = found if found is not None else (None, b"")
             if payload is not None:
                 event = log.append(
                     EVENT_RESPONSE_SAVED,
@@ -1967,6 +2032,115 @@ def recover_open_attempts(view: RunView, log: EventLog, run_dir: Path) -> list[s
             attempt.resolution_event = event
             handled.append(attempt.attempt_id)
     return handled
+
+
+# ---------------------------------------------------------------------------
+# Safety stop
+# ---------------------------------------------------------------------------
+
+
+def _recoverable_saved_events(view: RunView) -> list[dict[str, Any]]:
+    """``response_saved`` events that recovery would append for response files whose event was lost.
+
+    A response file written before the crash is a durable record of what the provider returned. Reading it
+    here lets a restart, ``status`` and ``export`` see its violation before ``recover_open_attempts`` runs.
+    Nothing is written.
+    """
+    events: list[dict[str, Any]] = []
+    for state in view.ordered_states:
+        for attempt in state.orphans:
+            found = _read_recoverable_response(view.run_dir, attempt)
+            if found is None:
+                continue
+            payload, raw = found
+            try:
+                fields = saved_event_fields(payload, sha256_bytes(raw))
+            except KeyError:
+                continue
+            events.append({"event": EVENT_RESPONSE_SAVED, **fields, "recovered": True})
+    return events
+
+
+def _violation(condition: str, attempt_id: str | None, question_id: str | None, detail: str) -> dict[str, Any]:
+    return {"condition": condition, "attempt_id": attempt_id, "question_id": question_id, "detail": detail}
+
+
+def find_safety_violations(view: RunView, services: Services) -> list[dict[str, Any]]:
+    """Every safety violation in the durable records, in event order, then ledger anomalies.
+
+    Read only, and a function of the records alone: a restart, ``status`` and ``export`` get the same list
+    the running driver saw. Three conditions, each named in the result:
+
+    * ``input_bound_exceeded``: a ``response_saved`` event reports more input tokens than the request's
+      input upper bound. A response with no reported input tokens shows no exceedance. Its cost stays
+      reserved at the upper bound in the ledger, so the ceiling still holds.
+    * ``returned_model_mismatch``: the returned model fails :func:`returned_model_matches` against the
+      model in the run identity.
+    * ``ledger_anomaly``: ``SafetyLedger.anomalies`` is not empty. All anomaly kinds block.
+    """
+    requested = view.config["identity"]["provider"]["model"]
+    by_request = {request["request_id"]: request for request in view.requests}
+    events = list(view.events) + _recoverable_saved_events(view)
+    found: list[dict[str, Any]] = []
+    for event in events:
+        if event["event"] != EVENT_RESPONSE_SAVED:
+            continue
+        attempt_id, question_id = event["attempt_id"], event["question_id"]
+        bound = by_request.get(event["request_id"], {}).get("input_token_upper_bound")
+        reported = (event.get("usage") or {}).get("input_tokens")
+        counts = (int, float)
+        over = (
+            isinstance(reported, counts)
+            and not isinstance(reported, bool)
+            and isinstance(bound, counts)
+            and not isinstance(bound, bool)
+            and reported > bound
+        )
+        if over or event.get("input_bound_exceeded") is True:
+            found.append(
+                _violation(
+                    VIOLATION_INPUT_BOUND,
+                    attempt_id,
+                    question_id,
+                    f"the response reported {reported} input tokens, above the input upper bound {bound}",
+                )
+            )
+        if not returned_model_matches(requested, event.get("returned_model")):
+            found.append(
+                _violation(
+                    VIOLATION_RETURNED_MODEL,
+                    attempt_id,
+                    question_id,
+                    f"the response came from model {event.get('returned_model')!r}, the run requested {requested!r}",
+                )
+            )
+    prices = PriceTable(**view.config["identity"]["prices"])
+    question_of = {a.attempt_id: s.question_id for s in view.states.values() for a in s.attempts}
+    for text in services.ledger_from_events(events, prices).anomalies:
+        # SafetyLedger writes "<attempt_id>: <what is wrong>". An anomaly in another form has no attempt id.
+        head = str(text).split(": ", 1)[0]
+        attempt_id = head if head in question_of else None
+        found.append(_violation(VIOLATION_LEDGER_ANOMALY, attempt_id, question_of.get(head), str(text)))
+    return found
+
+
+def assess_safety(view: RunView, services: Services) -> list[dict[str, Any]]:
+    """Set ``view.safety_violations`` from the records and return it. Call it again after events are appended."""
+    view.safety_violations = find_safety_violations(view, services)
+    return view.safety_violations
+
+
+def describe_violations(violations: Sequence[Mapping[str, Any]]) -> str:
+    return "; ".join(
+        f"{v['condition']} at {v['attempt_id'] or 'no single attempt'}: {v['detail']}" for v in violations
+    )
+
+
+def safety_stop_message(run_dir: Path, violations: Sequence[Mapping[str, Any]]) -> str:
+    return (
+        f"run in {run_dir} is safety_stopped, so no request was sent. Violations: {describe_violations(violations)}. "
+        f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -2065,6 +2239,9 @@ def build_prediction(state: RequestState, *, run_state: str, last_reason: str | 
         message = "no request was sent for this question"
         if state.reopen_marks:
             message = "a person reopened this question; no attempt has been made since"
+        if run_state == RUN_SAFETY_STOPPED:
+            kind = FAILURE_SAFETY_STOP
+            message = "no request was sent for this question because the run stopped on a safety violation; see run_summary.json"
         record["failure"] = _failure(kind, message, attempts=len(state.attempts))
     return record
 
@@ -2105,7 +2282,9 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
     by_outcome = {"saved": 0, "failed": 0, "unknown": 0, "open": 0}
     for attempt in attempts:
         by_outcome[attempt.outcome or "open"] += 1
-    if run_state == RUN_COMPLETE:
+    if run_state == RUN_SAFETY_STOPPED:
+        exit_code = EXIT_SAFETY_STOPPED
+    elif run_state == RUN_COMPLETE:
         exit_code = EXIT_OK if failed == 0 else EXIT_EXECUTION_FAILED
     elif run_state == RUN_BUDGET_LIMITED:
         exit_code = EXIT_BUDGET_LIMITED
@@ -2121,7 +2300,10 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
     mismatches = sum(1 for event in saved_events if not returned_model_matches(requested_model, event.get("returned_model")))
     bound_exceeded = sum(1 for event in saved_events if event.get("input_bound_exceeded"))
     anomalies = list(ledger.anomalies)
+    violations = list(view.safety_violations or [])
     blockers = []
+    if violations:
+        blockers.append(f"the run stopped on {len(violations)} safety violation(s): {describe_violations(violations)}")
     if mode != MODE_LIVE:
         blockers.append(f"the run is a {mode} run, not a live run")
     if run_state != RUN_COMPLETE:
@@ -2162,6 +2344,7 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         "output_status": dict(sorted(output_status.items())),
         "attempts": {"total": len(attempts), **by_outcome},
         "input_bound_exceeded": bound_exceeded,
+        **({"safety_violations": violations} if violations else {}),  # absent for a clean run, so earlier exports stay byte-identical
         "requested_model": requested_model,
         "returned_model_mismatch": mismatches,
         "returned_models": dict(sorted(returned_models.items())),
@@ -2192,6 +2375,7 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
 
 def export_view(view: RunView, services: Services) -> tuple[str, dict[str, Any]]:
     """Rebuild ``predictions.jsonl`` text and the run summary from the records. No timestamp, so a repeat is byte-identical."""
+    assess_safety(view, services)
     run_state = view.run_state
     last_reason = view.last_end_reason
     predictions = [build_prediction(s, run_state=run_state, last_reason=last_reason) for s in view.ordered_states]
@@ -2311,12 +2495,18 @@ def _run_message(summary: Mapping[str, Any], run_dir: Path) -> str:
     counts = summary["counts"]
     cost = summary["cost"]
     tag = " (simulated)" if cost["simulated"] else ""
-    return (
+    message = (
         f"run {summary['run_id']} in {run_dir}: state {summary['run_state']}; {counts['questions']} questions: "
         f"{counts['answered']} answered, {counts['no_evidence']} no_evidence, {counts['execution_failed']} execution_failed "
         f"({counts['unserved']} unserved, {counts['awaiting_reconciliation']} awaiting reconciliation); "
         f"cost measured {cost['measured']:.6f}, committed upper {cost['committed_upper']:.6f} {cost['currency']}{tag}."
     )
+    if summary.get("safety_violations"):
+        message += (
+            f" Safety stop, no further request was sent: {describe_violations(summary['safety_violations'])}. "
+            f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE}"
+        )
+    return message
 
 
 def execute_run(
@@ -2461,6 +2651,12 @@ def _execute_locked(
             f"Nothing was dispatched. {EXPECTED_RESUME_NOTE}",
         )
         services.ledger_from_events(view.events, config.prices)  # a corrupt ledger refuses here, before any dispatch
+        # A stored safety violation ends the run before any provider exists and before the ceiling is decided,
+        # so a raised ceiling is neither recorded nor able to lift the stop. Nothing is written.
+        violations = assess_safety(view, services)
+        if violations:
+            _, stopped_summary = export_view(view, services)
+            return LiveResult(EXIT_SAFETY_STOPPED, safety_stop_message(run_dir, violations), stopped_summary)
         prior = view.effective_ceiling
         stored_requests: Sequence[Mapping[str, Any]] = view.requests
         pending_count = len(view.by_status(REQUEST_PENDING))
@@ -2539,7 +2735,10 @@ def _execute_locked(
         except KeyboardInterrupt:
             _resume_after_interrupt(view, log, run_dir, invocation_id)
             reason = END_INTERRUPTED
-        log.append(EVENT_INVOCATION_ENDED, reason=reason, ledger=driver.ledger_totals(), circuit_breaker=driver.breaker_record())
+        ended_extra = {"safety_violations": driver.violations} if reason == END_SAFETY_STOP else {}
+        log.append(
+            EVENT_INVOCATION_ENDED, reason=reason, ledger=driver.ledger_totals(), circuit_breaker=driver.breaker_record(), **ended_extra
+        )
     finally:
         log.close()
     if crash_hook is not None:
@@ -2590,14 +2789,20 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
         actions.append("wait for the running invocation to finish, then check the status again")
     if unknown:
         actions.append("reconcile each attempt in awaiting_reconciliation after checking the provider's records")
-    if view.last_end_reason == END_CIRCUIT and not active:
+    safety = summary.get("safety_violations", [])
+    if safety and not active:
+        actions.append(
+            f"safety stop: {describe_violations(safety)}. {SAFETY_NO_CLEAR_NOTE} Keep this directory as the record of what "
+            f"happened. {SAFETY_LIMIT_NOTE}"
+        )
+    if view.last_end_reason == END_CIRCUIT and not active and not safety:
         actions.append(
             f"the circuit breaker stopped the last invocation after {CIRCUIT_BREAKER_THRESHOLD} consecutive failing attempts: "
             "find the shared cause in attempts.jsonl before running again"
         )
-    if by_status[REQUEST_PENDING] and not active:
+    if by_status[REQUEST_PENDING] and not active and not safety:
         actions.append("run again to serve the pending questions")
-    if by_status[REQUEST_FAILED] and not active and not is_scored(run_dir):
+    if by_status[REQUEST_FAILED] and not active and not safety and not is_scored(run_dir):
         actions.append("after fixing the cause, reopen an execution_failed question to give it further attempts")
     return {
         "run_id": view.config["run_id"],
@@ -2611,6 +2816,7 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
         "counts": counts,
         "cost": summary["cost"],
         "safety_ceiling": summary["safety_ceiling"],
+        "safety_violations": safety,
         "attempts": summary["attempts"],
         "last_invocation_ended": view.last_end_reason,
         "uncommitted_tail_bytes": len(view.uncommitted_tail),
@@ -2650,6 +2856,12 @@ def format_status(status: Mapping[str, Any]) -> str:
         lines.insert(
             1,
             f"the run is active: an invocation holds the lock ({status['lock_holder']}). Counts below are a snapshot of its files.",
+        )
+    if status["safety_violations"]:
+        lines.insert(
+            1,
+            f"SAFETY STOP: {len(status['safety_violations'])} violation(s). No further request will be sent for this run. "
+            f"{SAFETY_LIMIT_NOTE}",
         )
     for attempt_id in status["in_flight"]:
         lines.append(f"in flight: {attempt_id} (dispatched, no result yet; its process is still running)")
@@ -2880,6 +3092,12 @@ def score_run_live(
     try:
         view = load_run(run_dir)
         scored = is_scored(run_dir)
+        assess_safety(view, services)
+        _refuse(
+            scored or view.run_state != RUN_SAFETY_STOPPED,
+            f"score needs a complete run, and this run is {RUN_SAFETY_STOPPED}: "
+            f"{describe_violations(view.safety_violations or [])}. {SAFETY_NO_CLEAR_NOTE} Nothing was written.",
+        )
         _refuse(
             scored or view.run_state == RUN_COMPLETE,
             f"score needs a complete run, and this run is {view.run_state}. Serve the pending questions, "
