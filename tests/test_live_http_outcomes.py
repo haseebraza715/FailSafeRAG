@@ -479,3 +479,68 @@ def test_a_redirect_is_not_followed_and_the_attempt_is_unknown(project: Project,
     assert s.ledger().reserved == pytest.approx(s.upper_bound())
     s.run(live_build=True)
     assert s.wire.count("q1") == 1, "a resume does not send it again"
+
+
+# ---------------------------------------------------------------------------
+# Bounded provider payloads (L4)
+#
+# Ways `_bounded_raw` could fail, written before the change.
+#   B1. A large malformed 200 loses `usage`, the billing evidence, because the payload was cut as one string
+#       and `usage` sorts last.
+#   B2. The bounded record still grows with the payload: many keys, long key names, a large list or string.
+#   B3. A payload that fits the bound changes shape.
+#   B4. A truncated value carries no marker, so a reader takes the prefix for the whole value.
+# ---------------------------------------------------------------------------
+
+USAGE = {"prompt_tokens": 40, "completion_tokens": 3, "total_tokens": 43}
+
+
+def test_a_large_malformed_200_keeps_its_usage_id_and_model_in_the_event(project: Project) -> None:
+    """B1: a 3 MB body with no choices is an unknown outcome, and the event still says what it cost."""
+    payload = {"id": "chatcmpl-big", "object": "chat.completion", "created": 1, "model": "gpt-4o-2024-11-20", "choices": [], "usage": USAGE, "junk": "A" * 3_000_000}
+    s = session(project, {"q1": [lambda request: httpx.Response(200, json=payload)]})
+    s.run()
+    (event,) = s.events("outcome_unknown")
+    raw = event["provider_raw"]
+    assert event["kind"] == "malformed_response"
+    counts = lambda usage: {k: usage[k] for k in USAGE}  # noqa: E731  the SDK adds its own empty detail fields
+    assert counts(raw["usage"]) == USAGE and raw["id"] == "chatcmpl-big" and raw["model"] == "gpt-4o-2024-11-20"
+    assert counts(raw["payload"]["usage"]) == USAGE and raw["payload"]["id"] == "chatcmpl-big"
+    assert raw["payload"]["junk"]["truncated"] is True and raw["payload"]["junk"]["chars"] > 3_000_000
+    assert len(lr._line(raw)) <= lr.PROVIDER_RAW_LIMIT
+    line = next(text for text in (s.run_dir / lr.ATTEMPTS_NAME).read_text(encoding="utf-8").splitlines() if '"chatcmpl-big"' in text)
+    assert len(line) < 3 * lr.PROVIDER_RAW_LIMIT
+
+
+def test_a_payload_within_the_bound_is_stored_unchanged() -> None:
+    """B3."""
+    payload = {"reason": "no choices", "usage": USAGE, "payload": {"id": "x", "choices": []}}
+    assert lr._bounded_raw(payload) == payload
+    assert lr._bounded_raw({}) is None and lr._bounded_raw(None) is None
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {f"key_{i}": "v" * 5_000 for i in range(200)},
+        {"k" * 5_000 + str(i): 1 for i in range(50)},
+        {"usage": USAGE, "payload": {f"k{i}": ["x" * 1_000] * 50 for i in range(60)}},
+        {"usage": USAGE, "payload": {"deep": {"deeper": {"deepest": "z" * 500_000}}}},
+        ["x" * 100_000] * 5,
+        "s" * 500_000,
+    ],
+    ids=["many_keys", "long_key_names", "wide_payload", "deep_payload", "list", "string"],
+)
+def test_a_bounded_payload_stays_within_the_bound_and_marks_what_it_cut(payload: Any) -> None:
+    """B2, B4."""
+    bounded = lr._bounded_raw(payload)
+    text = lr._line(bounded)
+    assert len(text) <= lr.PROVIDER_RAW_LIMIT
+    assert "truncated" in text or "omitted" in text
+    if isinstance(payload, dict) and "usage" in payload:
+        assert bounded["usage"] == USAGE, "the billing evidence survives"
+
+
+def test_an_unserialisable_payload_is_kept_as_bounded_text() -> None:
+    bounded = lr._bounded_raw({"x": object()})
+    assert bounded["unserialisable"] is True and len(bounded["text"]) <= lr.PROVIDER_RAW_LIMIT

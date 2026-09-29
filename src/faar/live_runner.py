@@ -1726,23 +1726,74 @@ def _initialise(
 
 
 PROVIDER_RAW_LIMIT = 20_000
+# Fields that say what a reply cost, which request it was, and why it failed. They come first when a mapping
+# has more keys than _RAW_MAX_KEYS, so a wide payload cannot push them out.
+_RAW_PRIORITY_KEYS = ("usage", "id", "model", "reason", "http_status", "x_request_id", "error_code", "error_type", "payload", "body")
+_RAW_MAX_KEYS = 16
+_RAW_MAX_DEPTH = 2
+_RAW_FIELD_LIMIT = 1_500
+_RAW_KEY_LIMIT = 100
+
+
+def _raw_key_rank(key: Any) -> tuple[int, int, str]:
+    name = str(key)
+    return (0, _RAW_PRIORITY_KEYS.index(name), name) if name in _RAW_PRIORITY_KEYS else (1, 0, name)
+
+
+def _shrink_raw(value: Any, field_limit: int, depth: int) -> Any:
+    """``value`` with every part longer than ``field_limit`` characters cut and marked.
+
+    A mapping is cut key by key, so its small fields stay structured JSON. Below ``depth`` levels, or for any
+    other type, a long part becomes ``{"truncated": true, "chars": N, "text": <prefix>}``. A mapping with more
+    than ``_RAW_MAX_KEYS`` keys keeps the priority keys and then the first keys in sorted order, and names how
+    many it left out under ``omitted_keys``.
+    """
+    if len(_line(value)) <= field_limit:
+        return value
+    if isinstance(value, dict) and depth > 0:
+        keys = sorted(value, key=_raw_key_rank)
+        shrunk = {str(k)[:_RAW_KEY_LIMIT]: _shrink_raw(value[k], field_limit, depth - 1) for k in keys[:_RAW_MAX_KEYS]}
+        if len(keys) > _RAW_MAX_KEYS:
+            shrunk["omitted_keys"] = {"count": len(keys) - _RAW_MAX_KEYS, "names": [str(k)[:60] for k in keys[_RAW_MAX_KEYS : _RAW_MAX_KEYS + 8]]}
+        return shrunk
+    text = _line(value)
+    return {"truncated": True, "chars": len(text), "text": text[:field_limit]}
 
 
 def _bounded_raw(raw: Any) -> Any:
     """The provider payload of an unknown outcome, kept as evidence for reconciliation and billing checks.
 
-    It is stored as JSON when it serialises and fits in ``PROVIDER_RAW_LIMIT`` characters; otherwise a
-    truncated text form is stored with a marker, so the event log line stays bounded.
+    A payload that serialises and fits in ``PROVIDER_RAW_LIMIT`` characters is stored as it is. A larger one
+    keeps its small top-level fields as structured JSON, and for a nested ``payload`` its small fields too, so
+    ``usage``, ``id`` and ``model`` survive next to a large body. Only the large values are cut, each marked
+    with ``truncated``, its original ``chars`` and a text prefix. If the result is still over the limit the
+    per-field limit is halved, and as a last resort the record holds a prefix of the whole text plus the
+    ``usage``, ``id`` and ``model`` it could find. The stored record never exceeds ``PROVIDER_RAW_LIMIT``.
     """
     if not raw:
         return None
     try:
-        text = json.dumps(raw, ensure_ascii=False, allow_nan=False, sort_keys=True)
+        text = _line(raw)
     except (TypeError, ValueError):
-        return {"unserialisable": True, "text": repr(raw)[:PROVIDER_RAW_LIMIT]}
+        return {"unserialisable": True, "text": repr(raw)[:PROVIDER_RAW_LIMIT - 100]}
     if len(text) <= PROVIDER_RAW_LIMIT:
         return json.loads(text)
-    return {"truncated": True, "text": text[:PROVIDER_RAW_LIMIT]}
+    limit = _RAW_FIELD_LIMIT
+    while limit >= 16:
+        shrunk = _shrink_raw(json.loads(text), limit, _RAW_MAX_DEPTH)
+        if isinstance(shrunk, dict) and len(_line(shrunk)) <= PROVIDER_RAW_LIMIT:
+            return shrunk
+        limit //= 2
+    parsed = json.loads(text)
+    nested = parsed.get("payload") if isinstance(parsed, dict) and isinstance(parsed.get("payload"), dict) else {}
+    kept: dict[str, Any] = {}
+    for key in ("usage", "id", "model"):
+        found = parsed.get(key) if isinstance(parsed, dict) else None
+        found = nested.get(key) if found is None else found
+        if found is not None and len(_line(found)) <= _RAW_FIELD_LIMIT:
+            kept[key] = found
+    return {"truncated": True, "chars": len(text), **kept, "text": text[: PROVIDER_RAW_LIMIT // 2]}
+
 
 class _Driver:
     """One invocation. Holds the run lock for its whole life."""
