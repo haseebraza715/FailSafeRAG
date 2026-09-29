@@ -44,9 +44,17 @@ OpenAI adapter
   O2. Absent `usage`, absent `prompt_tokens_details` and absent `completion_tokens_details` give None,
       not zero.
   O3. `finish_reason: length` and `message.refusal` reach the response unchanged.
-  O4. A 200 reply that is not a chat completion (HTML body, empty `choices`) is not silently treated
-      as an answer.
-  O5. 429 and 5xx are `rejected` and retryable. A quota 429 is not retryable.
+  O4. A 200 reply that is not a chat completion is not silently treated as an answer. An HTML
+      body, a JSON object without a non-empty `choices` list, a choice that is not an object and
+      a choice without a `message` object raise `ProviderError(kind="malformed_response",
+      outcome="unknown", retryable=False)` with the payload in `raw`. A message whose `content`
+      is null stays a response (a refusal string is the usual reason), and the reply parser
+      classifies it.
+  O5. 429 and 5xx are `rejected` and retryable, except 504. A quota 429 is not retryable. A 504
+      is `gateway_timeout`, outcome `unknown`, not retryable: a gateway can give up waiting after
+      the provider finished the request, so the attempt may have been billed. 500, 502 and 503
+      come from the provider or from a gateway that never forwarded the request, so they stay
+      `server_error`.
   O6. 400 is `rejected` and not retryable. 401 and 403 are kind `auth`. 404 model-not-found is
       kind `unknown_model`.
   O7. A connect failure is `not_sent` and retryable. A read timeout, a dropped connection and any
@@ -54,7 +62,10 @@ OpenAI adapter
   O8. The SDK's own retries never run: a client with `max_retries != 0` is refused, because a hidden
       retry would break attempt accounting.
   O9. The request carries the model, messages, `max_tokens` and per-request timeout, and nothing
-      else unless the caller configured it. Managed keys in `params` are refused.
+      else unless the caller configured it. `params` and `request.params` may hold only the keys
+      in `faar.live_contract.ALLOWED_OPENAI_PARAMS`. Any other key (`service_tier`, `tools`,
+      `modalities`, `reasoning_effort`, a key the adapter sets itself) is refused before dispatch,
+      because an unknown parameter can change billing outside the cost bound.
   O10. A test cannot reach the network: the mock handler must see the request, and the conftest
        blocks non-loopback sockets.
   O11. Importing the module builds no client and imports neither `openai` nor `httpx`.
@@ -71,6 +82,7 @@ from importlib import metadata as importlib_metadata
 from typing import Any, Protocol, runtime_checkable
 
 from faar.live_contract import (
+    ALLOWED_OPENAI_PARAMS,
     OUTCOME_NOT_SENT,
     OUTCOME_REJECTED,
     OUTCOME_UNKNOWN,
@@ -86,7 +98,8 @@ ABSTENTION_TEXT = "NO_ANSWER"
 # ProviderError.kind values. The retry policy branches on these.
 # stop_run kinds: auth, unknown_model, quota. Everything else follows retryable / outcome.
 KIND_RATE_LIMIT = "rate_limit"
-KIND_SERVER_ERROR = "server_error"
+KIND_SERVER_ERROR = "server_error"  # HTTP 500, 502, 503 and other 5xx except 504
+KIND_GATEWAY_TIMEOUT = "gateway_timeout"  # HTTP 504
 KIND_TRANSIENT_STATUS = "transient_status"  # HTTP 408 or 409
 KIND_QUOTA = "quota"
 KIND_BAD_REQUEST = "bad_request"
@@ -382,7 +395,8 @@ class FakeProvider:
 
 # --------------------------------------------------------------------------- OpenAI adapter
 
-# Keys the adapter sets itself or refuses. `params` may not carry them.
+# Not used by the adapter any more: it checks `ALLOWED_OPENAI_PARAMS`. `faar.live_runner.parse_provider_config`
+# still imports this name for its own check. Delete it once that check uses the allowlist too.
 _MANAGED_PARAM_KEYS = frozenset(
     {
         "model",
@@ -407,6 +421,14 @@ _MANAGED_PARAM_KEYS = frozenset(
 )
 _TOKEN_LIMIT_PARAMS = ("max_tokens", "max_completion_tokens")
 _MESSAGE_LIMIT = 1000
+
+
+def _check_allowed_params(params: Mapping[str, Any], where: str) -> None:
+    """Refuse any key outside ``ALLOWED_OPENAI_PARAMS``. The adapter sets model, messages, the token limit and
+    the timeout itself, so those keys are not allowed here either."""
+    extra = sorted(str(key) for key in params if key not in ALLOWED_OPENAI_PARAMS)
+    if extra:
+        raise ValueError(f"{where} keys not allowed: {extra}; allowed keys: {list(ALLOWED_OPENAI_PARAMS)}")
 
 
 def _int_or_none(value: Any) -> int | None:
@@ -454,9 +476,7 @@ class OpenAIChatProvider:
             raise ValueError("model must be a non-empty string")
         if token_limit_param not in _TOKEN_LIMIT_PARAMS:
             raise ValueError(f"token_limit_param must be one of {_TOKEN_LIMIT_PARAMS}")
-        clash = sorted(_MANAGED_PARAM_KEYS & set(params))
-        if clash:
-            raise ValueError(f"params may not set keys the adapter manages: {clash}")
+        _check_allowed_params(params, "params")
         retries = getattr(client, "max_retries", None)
         if retries != 0:
             raise ValueError(f"client must be built with max_retries=0, found {retries!r}")
@@ -482,6 +502,7 @@ class OpenAIChatProvider:
         }
 
     def send(self, request: ProviderRequest) -> ProviderResponse:
+        _check_allowed_params(request.params or {}, "request.params")
         if request.params and dict(request.params) != self._params:
             raise ValueError("request.params differ from the params this provider was built with")
         if not isinstance(request.max_output_tokens, int) or request.max_output_tokens <= 0:
@@ -521,7 +542,24 @@ class OpenAIChatProvider:
             )
         raw: dict[str, Any] = dump(mode="json")
         choices = raw.get("choices")
-        choice = _mapping(choices[0]) if isinstance(choices, list) and choices else {}
+        reason = None
+        if not isinstance(choices, list) or not choices:
+            reason = "choices is missing or empty"
+        elif not isinstance(choices[0], Mapping):
+            reason = "choices[0] is not an object"
+        elif not isinstance(choices[0].get("message"), Mapping):
+            reason = "choices[0] has no message object"
+        if reason is not None:
+            # A reply arrived, so the attempt may have been billed, but it holds no assistant message to
+            # record as an answer. The raw payload (with any usage) stays on the error for the operator.
+            raise ProviderError(
+                f"200 reply was not a usable chat completion: {reason}",
+                kind=KIND_MALFORMED_RESPONSE,
+                outcome=OUTCOME_UNKNOWN,
+                retryable=False,
+                raw={"reason": reason, "payload": raw},
+            )
+        choice = _mapping(choices[0])
         message = _mapping(choice.get("message"))
         usage = _mapping(raw.get("usage"))
         usage_out = ProviderUsage(
@@ -597,6 +635,11 @@ def _classify_status(exc: Any) -> ProviderError:
         return build(KIND_RATE_LIMIT, OUTCOME_REJECTED, True)
     if status in (408, 409):
         return build(KIND_TRANSIENT_STATUS, OUTCOME_REJECTED, True)
+    if status == 504:
+        # A gateway can time out after the provider finished the request, so the attempt may have been
+        # processed and billed. 500, 502 and 503 mean the provider failed or the request was not
+        # forwarded, so a retry is safe. A 504 is not, and the retry policy sends it to reconcile.
+        return build(KIND_GATEWAY_TIMEOUT, OUTCOME_UNKNOWN, False)
     if status >= 500:
         return build(KIND_SERVER_ERROR, OUTCOME_REJECTED, True)
     if status == 404:

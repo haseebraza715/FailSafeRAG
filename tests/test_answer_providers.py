@@ -29,7 +29,7 @@ from faar.answer_providers import (
     classify_openai_error,
     script_by_question,
 )
-from faar.live_contract import ProviderError, ProviderRequest, ProviderUsage
+from faar.live_contract import ALLOWED_OPENAI_PARAMS, ProviderError, ProviderRequest, ProviderUsage
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -354,11 +354,50 @@ def test_refusal_reaches_the_response() -> None:
     assert response.refusal == "I can't help with that."
 
 
-def test_empty_choices_returns_a_response_with_no_text() -> None:
-    provider, _ = adapter(lambda request: httpx.Response(200, json=completion_payload(choices=[])))
+def _choice_without_message() -> dict[str, Any]:
+    return {"index": 0, "finish_reason": "stop"}
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("empty choices", completion_payload(choices=[])),
+        ("no choices key", {"id": "chatcmpl-x", "object": "chat.completion", "model": "m"}),
+        ("json object that is not a completion", {"foo": 1}),
+        ("choices is a string", completion_payload(choices="x")),
+        ("choice is not an object", completion_payload(choices=[1])),
+        ("choice without message", completion_payload(choices=[_choice_without_message()])),
+        ("message is null", completion_payload(choices=[{**_choice_without_message(), "message": None}])),
+        ("message is a string", completion_payload(choices=[{**_choice_without_message(), "message": "hi"}])),
+    ],
+)
+@pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
+def test_200_reply_without_a_choice_message_is_a_malformed_response_not_an_answer(label: str, body: dict) -> None:
+    provider, seen = adapter(lambda request: httpx.Response(200, json=body))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    error = info.value
+    assert len(seen) == 1, label
+    assert (error.kind, error.outcome, error.retryable) == ("malformed_response", "unknown", False), label
+    assert error.raw["payload"] is not None and error.raw["reason"], label  # the reply is kept for the operator
+    if "usage" in body:
+        assert error.raw["payload"]["usage"]["prompt_tokens"] == 120  # the reply was billed; the raw keeps the usage
+
+
+def test_null_content_with_a_refusal_string_stays_a_response() -> None:
+    payload = completion_payload()
+    payload["choices"][0]["message"] = {"role": "assistant", "content": None, "refusal": "No."}
+    provider, _ = adapter(lambda request: httpx.Response(200, json=payload))
     response = provider.send(make_request())
-    assert response.text is None and response.finish_reason is None
-    assert response.usage.input_tokens == 120  # the reply was billed and is kept
+    assert (response.text, response.refusal) == (None, "No.")
+
+
+def test_message_with_null_content_and_no_refusal_stays_a_response() -> None:
+    payload = completion_payload()
+    payload["choices"][0]["message"] = {"role": "assistant", "content": None}
+    provider, _ = adapter(lambda request: httpx.Response(200, json=payload))
+    response = provider.send(make_request())
+    assert response.text is None and response.refusal is None  # the parser records this as an empty reply
 
 
 def test_non_json_200_body_is_a_malformed_response_not_an_answer() -> None:
@@ -376,7 +415,9 @@ def test_non_json_200_body_is_a_malformed_response_not_an_answer() -> None:
         (429, error_body("You exceeded your current quota", code="insufficient_quota", type_="insufficient_quota"), "quota", "rejected", False),
         (429, error_body("Project reached its enforced monthly spend limit"), "quota", "rejected", False),
         (500, error_body("The server had an error", type_="server_error"), "server_error", "rejected", True),
+        (502, error_body("Bad gateway", type_="server_error"), "server_error", "rejected", True),
         (503, error_body("Model overloaded", type_="server_error"), "server_error", "rejected", True),
+        (504, error_body("Gateway timeout", type_="server_error"), "gateway_timeout", "unknown", False),
         (408, error_body("Request timed out"), "transient_status", "rejected", True),
         (409, error_body("Conflict"), "transient_status", "rejected", True),
         (400, error_body("Unsupported parameter: 'max_tokens'", code="unsupported_parameter"), "bad_request", "rejected", False),
@@ -406,6 +447,15 @@ def test_x_should_retry_false_downgrades_a_retryable_status() -> None:
     with pytest.raises(ProviderError) as info:
         provider.send(make_request())
     assert info.value.retryable is False and info.value.outcome == "rejected"
+
+
+def test_504_with_a_non_json_body_is_still_a_gateway_timeout_with_unknown_outcome() -> None:
+    provider, seen = adapter(lambda request: httpx.Response(504, text="<html>gateway timeout</html>"))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert len(seen) == 1
+    error = info.value
+    assert (error.kind, error.outcome, error.retryable, error.http_status) == ("gateway_timeout", "unknown", False, 504)
 
 
 def test_connect_error_from_the_transport_is_not_sent_and_retryable() -> None:
@@ -489,11 +539,62 @@ def test_client_with_sdk_retries_is_refused() -> None:
         OpenAIChatProvider("gpt-test", {}, client=client)
 
 
-@pytest.mark.parametrize("key", ["model", "messages", "max_tokens", "timeout", "stream", "tools", "n", "store", "extra_headers"])
-def test_managed_params_are_refused(key: str) -> None:
-    client, _ = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
-    with pytest.raises(ValueError, match="manages"):
+UNALLOWED_PARAMS = [
+    "service_tier",
+    "reasoning_effort",
+    "modalities",
+    "logprobs",
+    "web_search_options",
+    "prediction",
+    # keys the adapter sets itself
+    "model",
+    "messages",
+    "max_tokens",
+    "max_completion_tokens",
+    "timeout",
+    "stream",
+    "tools",
+    "n",
+    "store",
+    "metadata",
+    "extra_headers",
+    "extra_body",
+    # anything else
+    "not_a_real_parameter",
+    "Temperature",
+]
+
+
+@pytest.mark.parametrize("key", UNALLOWED_PARAMS)
+def test_params_outside_the_allowlist_are_refused_before_any_dispatch(key: str) -> None:
+    client, seen = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
+    with pytest.raises(ValueError, match="not allowed"):
         OpenAIChatProvider("gpt-test", {key: 1}, client=client)
+    assert seen == []
+
+
+@pytest.mark.parametrize("key", ALLOWED_OPENAI_PARAMS)
+def test_every_allowed_param_is_accepted_and_sent(key: str) -> None:
+    value: Any = ["\n"] if key == "stop" else 0
+    provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()), {key: value})
+    provider.send(make_request(params={key: value}))
+    assert json.loads(seen[0].content)[key] == value
+
+
+def test_one_unallowed_key_among_allowed_ones_refuses_the_whole_set() -> None:
+    client, _ = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
+    with pytest.raises(ValueError, match="service_tier"):
+        OpenAIChatProvider("gpt-test", {"temperature": 0, "service_tier": "flex"}, client=client)
+
+
+@pytest.mark.parametrize("key", ["service_tier", "reasoning_effort", "modalities", "logprobs", "web_search_options", "prediction"])
+def test_request_params_outside_the_allowlist_are_refused_and_nothing_is_sent(key: str) -> None:
+    provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()), {"temperature": 0})
+    with pytest.raises(ValueError, match="not allowed"):
+        provider.send(make_request(params={"temperature": 0, key: "x"}))
+    with pytest.raises(ValueError, match="not allowed"):
+        provider.send(make_request(params={key: "x"}))
+    assert seen == []
 
 
 def test_request_params_must_match_the_configured_params_and_nothing_is_sent_otherwise() -> None:
