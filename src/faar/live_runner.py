@@ -51,6 +51,8 @@ import json
 import math
 import os
 import socket
+import sys
+import tempfile
 import time
 import uuid
 from collections.abc import Callable, Iterator, Mapping, Sequence
@@ -95,7 +97,7 @@ from .pilot_runner import (
     sha256_file,
     validate_run_id,
 )
-from .run_io import _fsync_dir, _measurement_code_digest, atomic_write_text, canonical_digest
+from .run_io import _measurement_code_digest, canonical_digest
 
 EXIT_OK = 0
 EXIT_REFUSED = 1
@@ -448,6 +450,61 @@ class Services:
 # Small helpers
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Durable writes
+# ---------------------------------------------------------------------------
+
+
+def sync_fd(fd: int) -> None:
+    """Flush a file descriptor to stable storage.
+
+    ``os.fsync`` is the portable call. On macOS it hands the data to the drive but does not ask the drive
+    to empty its own write cache, so a power cut can still lose it. ``fcntl.F_FULLFSYNC`` asks for that.
+    The second call is best effort: a filesystem that refuses it (some network shares) leaves the plain
+    ``os.fsync`` result, which is the strongest guarantee available there.
+    """
+    os.fsync(fd)
+    if sys.platform == "darwin":
+        command = getattr(fcntl, "F_FULLFSYNC", None)
+        if command is not None:
+            try:
+                fcntl.fcntl(fd, command)
+            except OSError:
+                pass
+
+
+def _fsync_dir(directory: Path) -> None:
+    """Sync a directory entry after a create, rename or truncate. Best effort: some filesystems refuse it."""
+    try:
+        fd = os.open(str(directory), os.O_RDONLY)
+    except OSError:
+        return
+    try:
+        sync_fd(fd)
+    except OSError:
+        pass
+    finally:
+        os.close(fd)
+
+
+def atomic_write_text(path: Path, text: str) -> None:
+    """Write ``text`` to a temporary file, sync it, rename it over ``path`` and sync the directory."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=str(path.parent))
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(text)
+            handle.flush()
+            sync_fd(handle.fileno())
+        os.replace(tmp, path)
+        _fsync_dir(path.parent)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
 
 def _now() -> str:
     return datetime.now(UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
@@ -687,9 +744,20 @@ def read_event_file(path: Path) -> EventFile:
 
 
 class EventLog:
-    """Appends events to ``attempts.jsonl``: one ``O_APPEND`` write per line, then ``fsync``.
+    """Appends events to ``attempts.jsonl``: one ``O_APPEND`` write per line, then a sync.
 
     Open it only while holding the run lock.
+
+    An interrupt can land at any point of :meth:`append`. The order is chosen so that no point leaves a
+    second line with the same ``seq``:
+
+    1. Write the whole line. If this raises (a signal, a full disk), cut the file back to its earlier
+       length, so the line was never part of the log.
+    2. Move ``_seq`` on and call ``on_append``. From here the line is part of the log, whatever happens next.
+    3. Sync in a ``finally``, so a failing callback does not skip it.
+
+    A ``KeyboardInterrupt`` can still arrive between the last byte and step 2. The run driver handles that by
+    reading the log back from the file (:func:`_resume_after_interrupt`) and calling :meth:`resume_at`.
     """
 
     def __init__(self, path: Path, invocation_id: str, next_seq: int, on_append: Callable[[dict[str, Any]], None]) -> None:
@@ -697,20 +765,37 @@ class EventLog:
         self.invocation_id = invocation_id
         self._seq = next_seq
         self._on_append = on_append
+        self._broken = False
         self._fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
         _fsync_dir(path.parent)
 
+    def resume_at(self, next_seq: int) -> None:
+        """Set the next ``seq`` after the driver re-read the file. Also clears a failed rollback."""
+        self._seq = next_seq
+        self._broken = False
+
     def append(self, event: str, **fields: Any) -> dict[str, Any]:
+        _refuse(not self._broken, f"{self.path} may end in a partial line after a failed write; no event was appended.")
         record: dict[str, Any] = {"event": event, "invocation_id": self.invocation_id, "seq": self._seq, "at": _now()}
         record.update(fields)
         data = (_line(record) + "\n").encode("utf-8")
-        view = memoryview(data)
-        while view:
-            written = os.write(self._fd, view)
-            view = view[written:]
-        os.fsync(self._fd)
+        size_before = os.fstat(self._fd).st_size
+        try:
+            view = memoryview(data)
+            while view:
+                written = os.write(self._fd, view)
+                view = view[written:]
+        except BaseException:
+            try:
+                os.ftruncate(self._fd, size_before)
+            except OSError:
+                self._broken = True
+            raise
         self._seq += 1
-        self._on_append(record)
+        try:
+            self._on_append(record)
+        finally:
+            sync_fd(self._fd)
         return record
 
     def close(self) -> None:
@@ -1604,13 +1689,13 @@ def quarantine_uncommitted_tail(run_dir: Path, view: RunView, invocation_id: str
     fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     try:
         os.write(fd, tail)
-        os.fsync(fd)
+        sync_fd(fd)
     finally:
         os.close(fd)
     log_fd = os.open(run_dir / ATTEMPTS_NAME, os.O_WRONLY)
     try:
         os.ftruncate(log_fd, view.committed_bytes)
-        os.fsync(log_fd)
+        sync_fd(log_fd)
     finally:
         os.close(log_fd)
     _fsync_dir(run_dir)
@@ -2032,6 +2117,26 @@ def execute_run(
         lock.release()
 
 
+def _resume_after_interrupt(view: RunView, log: EventLog, run_dir: Path, invocation_id: str) -> None:
+    """Rebuild the driver's picture of the run from the file, then resolve every open attempt.
+
+    A Ctrl-C can land after a line reached the file and before the driver noticed (in the sync, or between
+    the last byte and the bookkeeping). The file is the truth: read it back, move any partial final line
+    aside, continue the ``seq`` after the last committed line, and only then append ``outcome_unknown`` or
+    ``response_saved`` for what is still open. ``view`` is updated in place because the log's callback holds it.
+    """
+    fresh = load_run(run_dir, verify=False)
+    if fresh.uncommitted_tail:
+        quarantine_uncommitted_tail(run_dir, fresh, invocation_id)
+    view.events[:] = fresh.events
+    view.invocations[:] = fresh.invocations
+    view.states = fresh.states
+    view.committed_bytes = fresh.committed_bytes
+    view.uncommitted_tail = b""
+    log.resume_at(len(fresh.events) + 1)
+    recover_open_attempts(view, log, run_dir)
+
+
 def _execute_locked(
     *,
     options: RunOptions,
@@ -2166,7 +2271,7 @@ def _execute_locked(
         try:
             reason = driver.run_all()
         except KeyboardInterrupt:
-            recover_open_attempts(view, log, run_dir)
+            _resume_after_interrupt(view, log, run_dir, invocation_id)
             reason = END_INTERRUPTED
         log.append(EVENT_INVOCATION_ENDED, reason=reason, ledger=driver.ledger_totals())
     finally:

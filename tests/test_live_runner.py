@@ -1966,3 +1966,180 @@ def test_the_cli_refuses_a_run_dir_under_results_pilots(project: Project) -> Non
     assert cli.main(["dry-run", "--project-root", str(project.root), "--pilot-id", PILOT_ID, "--out",
                      str(project.root / "results" / "pilots" / "y")]) == 1
     assert not (project.pilot_dir / "x").exists() and not (project.root / "results" / "pilots" / "y").exists()
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: interrupts inside the event log (H1) and durability on macOS (L4)
+# ---------------------------------------------------------------------------
+
+
+def _interrupt_fsync_of(monkeypatch: pytest.MonkeyPatch, event_name: str) -> dict[str, int]:
+    """Raise KeyboardInterrupt from the fsync of the first append of ``event_name``, after its bytes are written."""
+    state = {"armed": 0, "fired": 0}
+    real_fsync = os.fsync
+    real_append = lr.EventLog.append
+
+    def append(self: Any, event: str, **fields: Any) -> Any:
+        if event == event_name and not state["fired"]:
+            state["armed"] = 1
+        return real_append(self, event, **fields)
+
+    def fsync(fd: int) -> None:
+        real_fsync(fd)
+        if state["armed"]:
+            state["armed"], state["fired"] = 0, 1
+            raise KeyboardInterrupt
+
+    monkeypatch.setattr(lr.EventLog, "append", append)
+    monkeypatch.setattr(os, "fsync", fsync)
+    return state
+
+
+def _assert_log_is_sound(run_dir: Path) -> None:
+    seqs = [json.loads(line)["seq"] for line in (run_dir / "attempts.jsonl").read_text().splitlines()]
+    assert seqs == list(range(1, len(seqs) + 1)), "seq numbers are unique and contiguous"
+
+
+def test_ctrl_c_in_the_fsync_of_dispatch_started_leaves_a_loadable_log_and_resends_nothing(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    """H1: the line is in the file when the interrupt lands. The in-memory sequence has moved on, the handler appends cleanly."""
+    state = _interrupt_fsync_of(monkeypatch, "dispatch_started")
+    rig = Rig()
+    result = go(project, rig)
+    monkeypatch.undo()
+    run_dir = project.run_dir("run-a")
+    assert state["fired"] == 1
+    _assert_log_is_sound(run_dir)
+    assert result.exit_code == lr.EXIT_NEEDS_ATTENTION and events_of(run_dir)[-1]["reason"] == "interrupted"
+    assert rig.sent(run_dir) == [], "the interrupt came before the send"
+    assert names(run_dir, "q1") == ["dispatch_started", "outcome_unknown"]
+    status = lr.run_status(run_dir)
+    assert status["requests"]["unknown"] == 1
+    assert lr.export_run(run_dir).exit_code == lr.EXIT_NEEDS_ATTENTION
+    resumed = Rig()
+    assert go(project, resumed).exit_code == lr.EXIT_NEEDS_ATTENTION
+    assert "q1" not in resumed.sent(run_dir), "the open attempt waits for reconcile and is never resent"
+    _assert_log_is_sound(run_dir)
+
+
+def test_ctrl_c_in_the_fsync_of_response_saved_keeps_the_paid_response(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
+    """H1: the response file and the response_saved line are on disk. The answer survives and nothing is resent."""
+    state = _interrupt_fsync_of(monkeypatch, "response_saved")
+    rig = Rig()
+    result = go(project, rig)
+    monkeypatch.undo()
+    run_dir = project.run_dir("run-a")
+    assert state["fired"] == 1 and rig.sent(run_dir) == ["q1"]
+    _assert_log_is_sound(run_dir)
+    assert result.exit_code == lr.EXIT_NEEDS_ATTENTION and events_of(run_dir)[-1]["reason"] == "interrupted"
+    assert by_question(run_dir)["q1"]["status"] == "answered", "the saved response is exported"
+    assert lr.run_status(run_dir)["requests"]["answered"] == 1
+    resumed = Rig()
+    assert go(project, resumed).exit_code == 0
+    assert "q1" not in resumed.sent(run_dir) and resumed.sent(run_dir) == ["q2", "q3", "q4", "q6"]
+    _assert_log_is_sound(run_dir)
+
+
+def test_an_exception_from_the_append_callback_does_not_skip_the_sync_or_repeat_a_seq(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """H1: on_append raising after the write still syncs the line, and the next append gets the next seq."""
+    seen: list[int] = []
+    synced: list[int] = []
+    real_fsync = os.fsync
+    monkeypatch.setattr(os, "fsync", lambda fd: (synced.append(fd), real_fsync(fd))[1])
+
+    def flaky(event: dict[str, Any]) -> None:
+        seen.append(event["seq"])
+        if event["seq"] == 1:
+            raise RuntimeError("callback bug")
+
+    log = lr.EventLog(tmp_path / "attempts.jsonl", "inv", 1, flaky)
+    synced.clear()
+    try:
+        with pytest.raises(RuntimeError, match="callback bug"):
+            log.append("invocation_ended", reason="completed", ledger={})
+        assert len(synced) == 1, "the failing callback did not skip the sync"
+        log.append("invocation_ended", reason="completed", ledger={})
+    finally:
+        log.close()
+    assert seen == [1, 2]
+    assert [json.loads(line)["seq"] for line in (tmp_path / "attempts.jsonl").read_text().splitlines()] == [1, 2]
+
+
+def test_a_write_cut_short_by_ctrl_c_leaves_no_torn_line(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """H1: half a line written and then an interrupt is rolled back, so the next append starts on a clean line."""
+    path = tmp_path / "attempts.jsonl"
+    log = lr.EventLog(path, "inv", 1, lambda event: None)
+    log.append("invocation_ended", reason="completed", ledger={})
+    real_write = os.write
+    calls = {"n": 0}
+
+    def short_write(fd: int, data: Any) -> int:
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return real_write(fd, bytes(data)[: len(data) // 2])
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(os, "write", short_write)
+    with pytest.raises(KeyboardInterrupt):
+        log.append("invocation_ended", reason="completed", ledger={})
+    monkeypatch.undo()
+    log.append("invocation_ended", reason="completed", ledger={})
+    log.close()
+    assert [json.loads(line)["seq"] for line in path.read_text().splitlines()] == [1, 2]
+    assert lr.read_event_file(path).uncommitted_tail == b""
+
+
+def test_a_full_fsync_is_requested_on_macos_after_fsync(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """L4: on darwin each append calls F_FULLFSYNC after os.fsync, and a filesystem that refuses it does not break the log."""
+    import fcntl
+
+    order: list[str] = []
+    real_fsync = os.fsync
+    monkeypatch.setattr(os, "fsync", lambda fd: (order.append("fsync"), real_fsync(fd))[1])
+    monkeypatch.setattr(sys, "platform", "darwin")
+    monkeypatch.setattr(fcntl, "F_FULLFSYNC", 51, raising=False)
+    refuse = {"on": False}
+
+    def fake_fcntl(fd: int, command: int, *args: Any) -> int:
+        assert command == 51
+        order.append("fullfsync")
+        if refuse["on"]:
+            raise OSError("not supported on this filesystem")
+        return 0
+
+    monkeypatch.setattr(fcntl, "fcntl", fake_fcntl)
+    log = lr.EventLog(tmp_path / "attempts.jsonl", "inv", 1, lambda event: None)
+    order.clear()
+    log.append("invocation_ended", reason="completed", ledger={})
+    assert order == ["fsync", "fullfsync"]
+    refuse["on"] = True
+    order.clear()
+    log.append("invocation_ended", reason="completed", ledger={})
+    log.close()
+    assert order == ["fsync", "fullfsync"], "the refused call falls back to the plain fsync that already ran"
+    assert len((tmp_path / "attempts.jsonl").read_text().splitlines()) == 2
+
+
+def test_no_full_sync_is_attempted_off_macos(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """L4: on other platforms only os.fsync runs."""
+    import fcntl
+
+    calls: list[int] = []
+    monkeypatch.setattr(sys, "platform", "linux")
+    monkeypatch.setattr(fcntl, "fcntl", lambda fd, command, *args: calls.append(command) or 0)
+    log = lr.EventLog(tmp_path / "attempts.jsonl", "inv", 1, lambda event: None)
+    log.append("invocation_ended", reason="completed", ledger={})
+    log.close()
+    assert calls == []
+
+
+def test_atomic_writes_use_the_same_full_sync(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """L4: the response, request and export files go through the sync helper that adds F_FULLFSYNC on macOS."""
+    import fcntl
+
+    calls: list[int] = []
+    monkeypatch.setattr(sys, "platform", "darwin")
+    monkeypatch.setattr(fcntl, "F_FULLFSYNC", 51, raising=False)
+    monkeypatch.setattr(fcntl, "fcntl", lambda fd, command, *args: calls.append(command) or 0)
+    lr.atomic_write_text(tmp_path / "out.json", "{}\n")
+    assert (tmp_path / "out.json").read_text() == "{}\n"
+    assert len(calls) >= 2, "the file and its directory are both fully synced"
