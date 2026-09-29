@@ -33,6 +33,7 @@ if str(SRC) not in sys.path:
 
 from faar import live_runner
 from faar.answer_providers import SimulatedCrash
+from faar.live_contract import ALLOWED_OPENAI_PARAMS
 from faar.live_runner import (
     EXIT_BUDGET_LIMITED,
     EXIT_EXECUTION_FAILED,
@@ -70,6 +71,12 @@ again, or raise it with --raise-safety-ceiling and --authorization-note.
 
 live mode needs all of: --mode live, --provider-config PATH, --safety-ceiling AMOUNT, and {LIVE_ENV_NAME}={LIVE_ENV_VALUE}
 in the environment. Credentials are read only after those checks pass. Nothing in the test suite runs live mode.
+
+live endpoint: the provider config's "endpoint" is the API base URL (for example https://api.openai.com/v1, not a
+request path). The client sends only there, and the run identity records the client's base_url. Live mode refuses to
+start while {", ".join(live_runner.REDIRECTING_ENV_NAMES)} is set, because those variables
+can send the key to another URL or bill another organization or project. "params" in the provider config may hold
+only: {", ".join(ALLOWED_OPENAI_PARAMS)}.
 """
 
 
