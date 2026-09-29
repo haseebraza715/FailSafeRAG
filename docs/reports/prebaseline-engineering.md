@@ -326,7 +326,7 @@ transport.
 
 ### Verification
 
-- **Tests.** The suite gave 2,038 passed and 2 skipped at `0e992c2`. The 2 skips are an optional tokenizer cross-check that needs local vocabulary files. Mutation checks by the workers are recorded in their notes.
+- **Tests.** In the lead's checkout the suite gave 2,038 passed and 2 skipped at `0e992c2`. The 2 skips are an optional tokenizer cross-check that needs local vocabulary files. A clean checkout also skips `tests/test_b0_one_doc_smoke.py:227`, which needs untracked smoke assets, so the reviewer saw 2,037 passed and 3 skipped. Mutation checks by the workers are recorded in their notes.
 - **Dry run.** The dry run on the frozen pilot covered 70 questions: 63 to send and 7 skipped (6 `no_text_chunks`, 1 `no_text_content`). The largest input bound was 8,237, below the 12,000 limit. The worst case over 3 attempts per request was $2.94 at option A's unapproved rates. The run made zero provider calls. The output is in `.local/work/prompt-preview/` in the lead's checkout, which is not committed and has no backup elsewhere.
 - **Registered run.** `2026-09-29-ohr-dev-v1-fake-provider-r1` ran at code `7250dad` in `results/engineering/2026-09-29-ohr-dev-v1-fake-provider-r1/`.
   - It completed with 63 answered, 7 no_evidence and 0 execution_failed, from 63 attempts, all measured.

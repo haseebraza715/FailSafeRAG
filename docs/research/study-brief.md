@@ -563,7 +563,7 @@ development sample and the claim scope follow after the baseline.
 | Prompt template, model identity, request settings, price table | Analysis flags: `evidence_source`, `question_scripts`, `multi_page_evidence`, `list_valued_evidence`, `evidence_page_ocr_status` |
 | | Inspection labels and `annotations.csv` |
 
-The backend receives `(question, hits)` and nothing else. It opens no file. The document name stays out of the prompt. Only the page number and chunk ID identify the evidence. Answer form, evidence type and script are evaluation fields, so the prompt cannot vary with them.
+The backend receives `(question, hits)` and nothing else. It opens no file. The document name stays out of the prompt. Only the page number and a document-free chunk label (the chunk ID without its `<doc_id>-` prefix, for example `p2-c2`) identify the evidence. Before 2026-09-29 (template `56afceb6...`) the header showed the full chunk ID, which contains the document name; the reviewer found this and the template was changed. Answer form, evidence type and script are evaluation fields, so the prompt cannot vary with them.
 
 ### 15.3 Within-document retrieval
 
@@ -583,7 +583,9 @@ The backend receives `(question, hits)` and nothing else. It opens no file. The 
 - `src/faar/answer_prompt.py` builds the draft prompt (`faar-answer-draft-v1`) and parses replies. `src/faar/answer_providers.py` holds the provider interface, a scripted `FakeProvider` and an `OpenAIChatProvider` adapter that is tested only against a mocked transport. `src/faar/request_budget.py` bounds and prices requests, and `src/faar/retry_policy.py` decides retries.
 - **Fake mode is the default.** It sends nothing, and its runs are `engineering_check`.
 - **Live mode needs all of the following:** `--mode live`, `--provider-config PATH` (provider, model, endpoint, parameters, output limit, timeout, dated price table and `tokenizer_bound: utf8-bytes`), `--safety-ceiling` and the environment variable `FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY`. Credentials are read only after every check passes. Live runs write to `results/development/<run_id>/` as `development_pilot`. No live run has been made.
-- Importing the modules, `--help`, `dry-run`, `status` and `export` build no provider client.
+- The live client is built with the configured `endpoint` as its base URL, and the run records the base URL the client reports. Live mode refuses to start when `OPENAI_BASE_URL`, `OPENAI_ORG_ID`, `OPENAI_PROJECT_ID` or `OPENAI_ORGANIZATION` is set, since the SDK would otherwise redirect requests. Proxy variables (`HTTPS_PROXY` and similar) are honoured by the HTTP library and are not checked. Request parameters must be in a fixed allowlist (`temperature`, `top_p`, `seed`, `stop`, `presence_penalty`, `frequency_penalty`).
+- Importing the modules, `--help`, `dry-run`, `status` and `export` build no provider client and make no outbound connection. A third-party import binds a loopback socket, which is not a connection.
+- **Freeze the code before the first paid request.** Code identity covers every `src/faar/*.py` file and the CLI script. Any later edit, even an unrelated one, makes a partly paid run refuse to resume, so it would need a new run.
 
 **Identity record.** `run_config.json` records the run identity, and a resume recomputes it and refuses any difference before dispatching. The identity covers:
 
@@ -652,7 +654,7 @@ Two things change these numbers. The Han-script text (21 of 63 questions had Han
 
 **Prompt structure (Lead decision on the exact text; the structure is a Proposed default).**
 
-- One system message holds the rules. One user message holds the question and the evidence as numbered blocks, each headed by its page number and chunk ID, in rank order. No gold field, document name or answer form appears.
+- One system message holds the rules. One user message holds the question and the evidence as numbered blocks, each headed by its page number and document-free chunk label, in rank order. No gold field, document name or answer form appears.
 - Rules: use only the evidence; reply with the shortest answer that a reader can check, copied from the evidence where possible; for a yes/no question reply `Yes` or `No`; for a list, give the items separated by commas; if the evidence does not contain the answer, reply with the abstention token `NO_ANSWER` and nothing else.
 - Language: copy the answer in the language and script of the evidence and never translate. This handles Chinese: the pilot has 22 Han-script questions but 15 Han-script references, so the question language does not predict the answer language.
 - Extraction: `answer` is the reply after removing surrounding whitespace and one leading `Answer:` label. The raw reply is stored unchanged. An exact reply of `NO_ANSWER` becomes `answer` = `""` with `abstained` = true and status `answered`, which the scorer reports under `abstained` and not under `no_evidence`. Any other text is the answer, even when it looks like a refusal.
@@ -667,13 +669,16 @@ Two things change these numbers. The Han-script text (21 of 63 questions had Han
 | Request timeout | 60 seconds (`FAAR_VLM_TIMEOUT_SECONDS` default) |
 | Attempts per question | 3, with a base backoff of 2 seconds that doubles, at most 60 seconds, plus deterministic jitter (`faar.retry_policy`) |
 | Retried | failures whose request provably never left the machine (connect errors, connect and pool timeouts), HTTP 408, 409, 429 (not quota) and 5xx |
-| Not retried | other 4xx errors; any failure whose outcome is unknown (read or write timeout, connection lost after sending, malformed reply), which waits for reconciliation instead |
+| Not retried | other 4xx errors; any failure whose outcome is unknown (read or write timeout, connection lost after sending, HTTP 504 from a gateway, a 200 reply without an answer message, an unparsable reply), which waits for reconciliation instead |
 
 **Outcomes.**
 
 - A prompt over the input limit is not truncated and not sent. It is recorded as `execution_failed` with reason `prompt_over_limit`.
 - A non-retryable error on a question is `execution_failed` with the error type. The first authentication, unknown-model or quota error stops the invocation (`stopped`), since every later request would fail too. Unsent questions stay pending, and a later `run` resumes them after the cause is fixed. A stopped run is incomplete and is not a baseline.
 - **Unknown outcome.** A request whose dispatch started but whose result is unknown is never sent again automatically. That covers a read timeout, a connection lost after sending, or a crash before the response was saved. OpenAI documents no idempotency key for Chat Completions, so the provider cannot deduplicate a resend. The question waits in `needs_reconciliation`, and the other questions continue. A person resolves it with `reconcile ATTEMPT_ID --resolution allow_new_attempt` or `mark_failed`, with a note. The unknown attempt's cost stays counted at its upper bound either way. The path gives safe local resume. It gives no exactly-once guarantee on the provider's side.
+- **Circuit breaker.** Three consecutive attempts with an unknown outcome, a non-retryable rejection or an unexpected exception stop the invocation (`circuit_breaker`, state `stopped`). This stops a systematic fault from spending the ceiling on reserved cost. The threshold is part of the run identity.
+- **Reopening a failed question.** After fixing the cause of an `execution_failed` question, `reopen --run-dir DIR QUESTION_ID --note TEXT` makes it pending again with up to `max_attempts` further attempts. Earlier attempts and their costs stay in the log. Answered, unserved and unknown-outcome questions cannot be reopened, since they resume, or need `reconcile`, instead.
+- **Scoring is final.** `score` runs only on a `complete` run. After scoring, `run`, `reopen` and `reconcile` refuse, and `export` only confirms identical files.
 - An empty reply, a reply cut by the output limit (`finish_reason` `length`) or a refusal is an answer, scored as returned, with `output_status` set to `empty`, `truncated` or `refusal`. It is not an API failure.
 - No question is dropped. Every question ends in `answered`, `no_evidence` or `execution_failed`. In end-to-end accuracy `execution_failed` counts as incorrect and its rate is reported (sections 7 and 8).
 - The maximum execution-failure rate for a valid baseline is a **Lead decision**. Suggestion: any `execution_failed` question is retried as a new attempt after its cause is fixed, and a run with more than 3 of 70 (about 4%) still failing is `failed`. Failures in the shared initial answers propagate to every later policy.
@@ -688,8 +693,9 @@ Two things change these numbers. The Han-script text (21 of 63 questions had Han
 1. Before each attempt the runner computes an upper bound for its cost. The input bound is the UTF-8 byte count of the messages plus a small overhead. That bounds any byte-level BPE tokenizer, and the provider config must declare `tokenizer_bound: utf8-bytes`. The bound prices every input token at the higher of the input and cached rates, and adds the full output limit at the output rate. The runner refuses to dispatch when a price, a limit or the bound is missing.
 2. The ledger adds measured cost to reserved cost. Measured cost uses usage the provider reported, priced with the recorded rates and their source date. Reserved cost counts each dispatched attempt without measured cost at its upper bound: unknown outcomes, rejected attempts and responses with missing usage. An attempt that provably never left the machine counts 0. No usage is invented for a failure, and no cache discount is assumed until cached tokens are reported. Amounts are kept in integer micro-units.
 3. An attempt is dispatched only if measured + reserved + its own bound stays within the ceiling. Otherwise the invocation sends nothing more and ends as `budget_limited`.
+3a. **Validity flag.** `run_summary.json` sets `valid_baseline` only for a complete live run with no `execution_failed` question, no returned-model mismatch (exact match with the requested model; name the dated snapshot), no input-bound exceedance and no ledger anomaly. It lists the blockers. It checks mechanical completeness and does not mean that the prompt, model, retrieval or budget are approved.
 4. **Budget exhaustion.** Completed answers are kept. Each unserved question is exported as `execution_failed` with `unserved: true` and `failure.type: budget_exhausted`. It is never an abstention, and the scorer counts it as 0. The run summary says `budget_limited` and `valid_baseline: false`.
-5. **Authorised continuation.** A later `run --raise-safety-ceiling AMOUNT --authorization-note TEXT` records the change (from, to, note) in its `invocation_started` event and resumes the same run. The earlier budget-limited invocations stay in the log. A raise without a note is refused.
+5. **Authorised continuation.** A later `run --raise-safety-ceiling AMOUNT --authorization-note TEXT` records the change (from, to, note) in its `invocation_started` event and resumes the same run. The earlier budget-limited invocations stay in the log. A raise without a note is refused. The note is free text that nothing verifies, so it records an approval and does not replace one.
 
 ### 15.8 Records needed for later fair cost comparison
 

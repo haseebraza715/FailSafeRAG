@@ -52,3 +52,4 @@ results/development/*/requests.jsonl
 results/engineering/*/run.lock
 results/development/*/run.lock
 results/engineering/*/attempts.uncommitted.*
+results/development/*/attempts.uncommitted.*
