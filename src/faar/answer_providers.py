@@ -99,7 +99,10 @@ ABSTENTION_TEXT = "NO_ANSWER"
 # stop_run kinds: auth, unknown_model, quota. Everything else follows retryable / outcome.
 KIND_RATE_LIMIT = "rate_limit"
 KIND_SERVER_ERROR = "server_error"  # HTTP 500, 502, 503 and other 5xx except 504
-KIND_GATEWAY_TIMEOUT = "gateway_timeout"  # HTTP 504
+KIND_GATEWAY_TIMEOUT = "gateway_timeout"  # HTTP 504, 522, 524
+# Gateway statuses that can follow a request the provider accepted: 504 (gateway timeout) and the
+# Cloudflare origin timeouts 522 and 524.
+_GATEWAY_TIMEOUT_STATUSES = (504, 522, 524)
 KIND_TRANSIENT_STATUS = "transient_status"  # HTTP 408 or 409
 KIND_QUOTA = "quota"
 KIND_BAD_REQUEST = "bad_request"
@@ -635,10 +638,10 @@ def _classify_status(exc: Any) -> ProviderError:
         return build(KIND_RATE_LIMIT, OUTCOME_REJECTED, True)
     if status in (408, 409):
         return build(KIND_TRANSIENT_STATUS, OUTCOME_REJECTED, True)
-    if status == 504:
+    if status in _GATEWAY_TIMEOUT_STATUSES:
         # A gateway can time out after the provider finished the request, so the attempt may have been
         # processed and billed. 500, 502 and 503 mean the provider failed or the request was not
-        # forwarded, so a retry is safe. A 504 is not, and the retry policy sends it to reconcile.
+        # forwarded, so a retry is safe. 504, 522 and 524 are not, and the retry policy sends them to reconcile.
         return build(KIND_GATEWAY_TIMEOUT, OUTCOME_UNKNOWN, False)
     if status >= 500:
         return build(KIND_SERVER_ERROR, OUTCOME_REJECTED, True)

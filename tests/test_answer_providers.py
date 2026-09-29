@@ -648,3 +648,14 @@ def test_importing_the_module_loads_no_sdk_and_builds_no_client() -> None:
 def test_module_source_never_reads_credentials() -> None:
     source = Path(ap.__file__).read_text(encoding="utf-8")
     assert "environ" not in source and "getenv" not in source and "OPENAI_API_KEY" not in source.split('"""', 2)[2]
+
+
+@pytest.mark.parametrize("status", [522, 524])
+def test_cloudflare_origin_timeouts_are_unknown_outcomes_like_504(status: int) -> None:
+    """A 522 or 524 comes from a gateway in front of the provider, which may have finished and billed the request."""
+    provider, seen = adapter(lambda request: httpx.Response(status, text="<html>origin timeout</html>"))
+    with pytest.raises(ProviderError) as caught:
+        provider.send(make_request())
+    error = caught.value
+    assert seen, "the mock transport saw the request"
+    assert (error.kind, error.outcome, error.retryable, error.http_status) == ("gateway_timeout", "unknown", False, status)
