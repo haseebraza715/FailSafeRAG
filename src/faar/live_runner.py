@@ -2054,15 +2054,20 @@ def _read_recoverable_response(run_dir: Path, state: RequestState, attempt: Atte
     return payload, raw
 
 
-def recover_open_attempts(view: RunView, log: EventLog, run_dir: Path) -> list[str]:
+def recover_open_attempts(
+    view: RunView, log: EventLog, run_dir: Path, *, tail: Mapping[str, Any] | None = None
+) -> list[str]:
     """Resolve every attempt that has ``dispatch_started`` and nothing after it.
 
     If its response file exists and parses, append ``response_saved`` from the file, so the
     answer is kept and nothing is resent (crash window 3, file written). Otherwise append
     ``outcome_unknown`` citing the invocation that dispatched it (windows 2 and 3, no file).
+    ``tail`` describes an uncommitted tail that the caller moved aside. It is recorded on the first event
+    appended, because a caller that writes no ``invocation_started`` has no other event to carry it.
     Returns the attempt ids handled.
     """
     handled: list[str] = []
+    carried: dict[str, Any] = {} if tail is None else {"recovered_uncommitted_tail": dict(tail)}
     for state in view.ordered_states:
         for attempt in state.orphans:
             found = _read_recoverable_response(run_dir, state, attempt)
@@ -2073,6 +2078,7 @@ def recover_open_attempts(view: RunView, log: EventLog, run_dir: Path) -> list[s
                     **saved_event_fields(payload, sha256_bytes(raw)),
                     recovered=True,
                     recovered_from_invocation_id=attempt.dispatch["invocation_id"],
+                    **carried,
                 )
                 attempt.outcome = "saved"
             else:
@@ -2090,8 +2096,10 @@ def recover_open_attempts(view: RunView, log: EventLog, run_dir: Path) -> list[s
                     latency_ms=None,
                     recovered=True,
                     recovered_from_invocation_id=attempt.dispatch["invocation_id"],
+                    **carried,
                 )
                 attempt.outcome = "unknown"
+            carried = {}
             attempt.resolution_event = event
             handled.append(attempt.attempt_id)
     return handled
@@ -2119,6 +2127,26 @@ def _recoverable_saved_events(view: RunView) -> list[dict[str, Any]]:
             fields = saved_event_fields(payload, sha256_bytes(raw))
             events.append({"event": EVENT_RESPONSE_SAVED, **fields, "recovered": True})
     return events
+
+
+def fold_recoverable_responses(view: RunView) -> RunView:
+    """A copy of ``view`` in which every attempt with a readable response file and no event counts as saved.
+
+    ``status`` and ``export`` read the run without writing to ``attempts.jsonl``. This gives them the state that
+    :func:`recover_open_attempts` would write, so a response the provider returned is reported as an answer and
+    not as an attempt awaiting reconciliation. The events are in memory only. Nothing is written.
+    """
+    recoverable = {event["attempt_id"]: event for event in _recoverable_saved_events(view)}
+    if not recoverable:
+        return view
+    states = {}
+    for request_id, state in view.states.items():
+        attempts = [
+            dataclasses.replace(a, outcome="saved", resolution_event=recoverable[a.attempt_id]) if a.attempt_id in recoverable else a
+            for a in state.attempts
+        ]
+        states[request_id] = dataclasses.replace(state, attempts=attempts)
+    return dataclasses.replace(view, events=[*view.events, *recoverable.values()], states=states)
 
 
 def _violation(condition: str, attempt_id: str | None, question_id: str | None, detail: str) -> dict[str, Any]:
@@ -2658,6 +2686,37 @@ def _resume_after_interrupt(view: RunView, log: EventLog, run_dir: Path, invocat
     recover_open_attempts(view, log, run_dir)
 
 
+def _record_stopped_restart(run_dir: Path, view: RunView, services: Services, invocation_id: str) -> dict[str, Any]:
+    """Make the durable records of a safety-stopped run complete, then return its summary. Sends nothing.
+
+    A crash between a response file and its ``response_saved`` event leaves an open attempt. Only the file
+    tells that the provider answered, so the append-only recovery runs here, under the lock the caller
+    holds, exactly as ``reconcile`` runs it. Then ``predictions.jsonl`` and ``run_summary.json`` are written
+    when they differ from what the records say, so the exports name the stop. A stopped run with nothing open
+    and current exports is not touched.
+    """
+    if any(state.orphans for state in view.ordered_states):
+        tail = quarantine_uncommitted_tail(run_dir, view, invocation_id)
+
+        def track(event: dict[str, Any]) -> None:
+            view.events.append(event)
+
+        log = EventLog(run_dir / ATTEMPTS_NAME, invocation_id, len(view.events) + 1, track)
+        try:
+            recover_open_attempts(view, log, run_dir, tail=tail)
+        finally:
+            log.close()
+        view = load_run(run_dir)
+        assess_safety(view, services)
+    text, summary = export_view(view, services)
+    summary_text = _dumps(summary) + "\n"
+    if _read_text_or_none(run_dir / PREDICTIONS_NAME) != text:
+        atomic_write_text(run_dir / PREDICTIONS_NAME, text)
+    if _read_text_or_none(run_dir / RUN_SUMMARY_NAME) != summary_text:
+        atomic_write_text(run_dir / RUN_SUMMARY_NAME, summary_text)
+    return summary
+
+
 def _execute_locked(
     *,
     options: RunOptions,
@@ -2720,7 +2779,7 @@ def _execute_locked(
         # so a raised ceiling is neither recorded nor able to lift the stop. Nothing is written.
         violations = assess_safety(view, services)
         if violations:
-            _, stopped_summary = export_view(view, services)
+            stopped_summary = _record_stopped_restart(run_dir, view, services, invocation_id)
             return LiveResult(EXIT_SAFETY_STOPPED, safety_stop_message(run_dir, violations), stopped_summary)
         prior = view.effective_ceiling
         stored_requests: Sequence[Mapping[str, Any]] = view.requests
@@ -2834,7 +2893,7 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
     """
     services = services or Services.default()
     run_dir = _absolute(run_dir)
-    view = load_run(run_dir)
+    view = fold_recoverable_responses(load_run(run_dir))
     _, summary = export_view(view, services)
     lock_held = lock_is_held(run_dir)
     active = lock_held is True
@@ -2948,7 +3007,7 @@ def export_run(run_dir: Path, services: Services | None = None) -> LiveResult:
     lock = RunLock(run_dir, uuid.uuid4().hex)
     lock.acquire()
     try:
-        view = load_run(run_dir)
+        view = fold_recoverable_responses(load_run(run_dir))
         if is_scored(run_dir):
             text, summary = export_view(view, services)
             summary_text = _dumps(summary) + "\n"
