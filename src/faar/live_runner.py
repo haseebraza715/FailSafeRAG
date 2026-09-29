@@ -60,9 +60,11 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 from .answer_providers import SimulatedCrash  # noqa: F401  (re-exported: crash hooks and the fake provider raise it)
 from .live_contract import (
+    ALLOWED_OPENAI_PARAMS,
     CONTRACT_VERSION,
     EVENT_ATTEMPT_FAILED,
     EVENT_DISPATCH_STARTED,
@@ -143,6 +145,10 @@ KNOWN_RUN_FILES = frozenset(
 
 LIVE_ENV_NAME = "FAAR_ALLOW_LIVE_REQUESTS"
 LIVE_ENV_VALUE = "I_UNDERSTAND_THIS_SPENDS_MONEY"
+# The OpenAI SDK (1.68) reads the first three when its client is built without them. A live run must not
+# inherit a redirected base URL or an organization or project it did not choose. The SDK does not read
+# OPENAI_ORGANIZATION, but other SDK versions and tools do, so it is refused as well.
+REDIRECTING_ENV_NAMES = ("OPENAI_BASE_URL", "OPENAI_ORG_ID", "OPENAI_PROJECT_ID", "OPENAI_ORGANIZATION")
 TOKENIZER_BOUND = "utf8-bytes"
 TOKEN_LIMIT_PARAMS = ("max_tokens", "max_completion_tokens")
 
@@ -219,7 +225,11 @@ CrashHook = Callable[[str, Mapping[str, Any]], None]
 
 @dataclass(frozen=True)
 class ProviderConfig:
-    """Everything about the answer model that is part of the run identity."""
+    """Everything about the answer model that is part of the run identity.
+
+    ``endpoint`` is the API base URL the client sends to, for example ``https://api.openai.com/v1``. It is
+    not a request path: the SDK adds ``/chat/completions``. The fake config uses ``fake://in-process``.
+    """
 
     provider: str
     model: str
@@ -273,7 +283,7 @@ FAKE_CONFIG = ProviderConfig(
 PROVISIONAL_DRY_RUN_CONFIG = ProviderConfig(
     provider="openai",
     model="gpt-4o-2024-11-20",
-    endpoint="https://api.openai.com/v1/chat/completions",
+    endpoint="https://api.openai.com/v1",
     params={"temperature": 0},
     max_output_tokens=128,
     max_input_tokens=12_000,
@@ -302,6 +312,35 @@ def _finite_positive(value: Any, what: str, *, integer: bool = False) -> None:
         raise RunnerRefusal(f"provider config: {what} must be finite and above zero, got {value!r}")
 
 
+_LOOPBACK_HOSTS = ("localhost", "127.0.0.1", "::1")
+FAKE_ENDPOINT_SCHEME = "fake"
+
+
+def _check_endpoint(endpoint: str, *, simulated: bool) -> None:
+    """The endpoint is an API base URL: https (http only on the loopback), a host, no credentials, query or fragment."""
+    try:
+        parts = urlsplit(endpoint)
+        host = parts.hostname
+        parts.port  # noqa: B018  (raises ValueError for a bad port)
+    except ValueError as exc:
+        raise RunnerRefusal(f"provider config: endpoint {endpoint!r} is not a valid URL ({exc})") from exc
+    if simulated and parts.scheme == FAKE_ENDPOINT_SCHEME:
+        return
+    problem = None
+    if parts.scheme not in ("https", "http") or not host:
+        problem = "it must be an https URL with a host"
+    elif parts.scheme == "http" and host not in _LOOPBACK_HOSTS:
+        problem = "plain http is allowed only for localhost, 127.0.0.1 and ::1"
+    elif parts.username is not None or parts.password is not None:
+        problem = "it must not hold credentials"
+    elif parts.query or parts.fragment:
+        problem = "it must not hold a query or a fragment"
+    elif parts.path.rstrip("/").endswith("/chat/completions"):
+        problem = "it is the API base URL such as https://api.openai.com/v1, not the chat completions path"
+    if problem:
+        raise RunnerRefusal(f"provider config: endpoint {endpoint!r} is refused: {problem}")
+
+
 def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderConfig:
     """Validate a provider config object. Raises :class:`RunnerRefusal` on any missing or odd field."""
     if not isinstance(payload, dict):
@@ -324,11 +363,13 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
             raise RunnerRefusal(f"provider config: {key} must be a non-empty string")
     if not isinstance(payload["params"], dict):
         raise RunnerRefusal("provider config: params must be an object")
-    from .answer_providers import _MANAGED_PARAM_KEYS
-
-    managed = sorted(_MANAGED_PARAM_KEYS & set(payload["params"]))
-    if managed:
-        raise RunnerRefusal(f"provider config: params may not set keys the adapter manages: {managed}")
+    unknown_params = sorted(set(payload["params"]) - set(ALLOWED_OPENAI_PARAMS))
+    if unknown_params:
+        raise RunnerRefusal(
+            f"provider config: params {unknown_params} are not allowed. An unknown request parameter can change "
+            f"billing outside the cost bound. Allowed: {list(ALLOWED_OPENAI_PARAMS)}"
+        )
+    _check_endpoint(payload["endpoint"], simulated=simulated)
     _finite_positive(payload["max_output_tokens"], "max_output_tokens", integer=True)
     max_input = payload.get("max_input_tokens", 12_000)
     _finite_positive(max_input, "max_input_tokens", integer=True)
@@ -1285,6 +1326,21 @@ def check_live_enablement(
         raise RunnerRefusal(
             "live mode needs all of: --mode live, " + ", ".join(problems) + ". Nothing was prepared and no client was built."
         )
+    refuse_redirecting_environment(environ)
+
+
+def refuse_redirecting_environment(environ: Mapping[str, str]) -> None:
+    """Refuse when the environment would change where the key is sent or as whom. Reads no credential.
+
+    The SDK reads ``os.environ``, not the mapping a caller passes, so both are checked.
+    """
+    present = sorted({name for source in (environ, os.environ) for name in REDIRECTING_ENV_NAMES if name in source})
+    if present:
+        raise RunnerRefusal(
+            f"live mode refuses to run with {', '.join(present)} set in the environment: they can send the key "
+            "to another URL or bill another organization or project. Unset them and set the base URL in the "
+            "provider config's endpoint. Nothing was prepared and no client was built."
+        )
 
 
 @dataclass(frozen=True)
@@ -1346,15 +1402,34 @@ def build_fake_provider(
     return FakeProvider(aligned, default=default, model=config.model)
 
 
-def build_live_provider(config: ProviderConfig, environ: Mapping[str, str]) -> Any:  # pragma: no cover - never run in tests
-    """Build the real provider. Reads ``OPENAI_API_KEY`` here and nowhere else."""
+def expected_base_url(endpoint: str) -> str:
+    """The client's ``base_url`` for a config endpoint: the SDK adds a trailing slash."""
+    return endpoint if endpoint.endswith("/") else endpoint + "/"
+
+
+def build_live_provider(
+    config: ProviderConfig, environ: Mapping[str, str], *, http_client: Any = None
+) -> Any:
+    """Build the real provider. Reads ``OPENAI_API_KEY`` here and nowhere else.
+
+    ``http_client`` is for tests, which pass an ``httpx.Client`` on a mock transport. The CLI never sets it.
+
+    The client sends to ``config.endpoint`` and to nothing else: the redirecting environment variables are
+    refused first, and the built client's ``base_url`` must equal the value recorded in the run identity.
+    """
+    refuse_redirecting_environment(environ)
     import openai
 
     from .answer_providers import OpenAIChatProvider
 
     key = environ.get("OPENAI_API_KEY")
     _refuse(bool(key), "OPENAI_API_KEY is not set")
-    client = openai.OpenAI(api_key=key, max_retries=0, timeout=config.timeout_seconds)
+    extra = {} if http_client is None else {"http_client": http_client}
+    client = openai.OpenAI(api_key=key, base_url=config.endpoint, max_retries=0, timeout=config.timeout_seconds, **extra)
+    _refuse(
+        str(client.base_url) == expected_base_url(config.endpoint),
+        f"the client base_url {str(client.base_url)!r} differs from the config endpoint {config.endpoint!r}; nothing was sent",
+    )
     return OpenAIChatProvider(
         config.model, dict(config.params), client=client, token_limit_param=config.token_limit_param
     )
@@ -1955,11 +2030,17 @@ def write_export(view: RunView, services: Services) -> tuple[str, dict[str, Any]
 # ---------------------------------------------------------------------------
 
 
-def provider_descriptor(mode: str) -> dict[str, Any]:
-    """Credential-free description of the adapter, part of the run identity."""
+def provider_descriptor(mode: str, config: ProviderConfig | None = None) -> dict[str, Any]:
+    """Credential-free description of the adapter, part of the run identity.
+
+    A live descriptor holds ``base_url``, the value the client's ``str(client.base_url)`` will have. The
+    driver checks that after it builds the client.
+    """
     if mode == MODE_FAKE:
         return {"adapter": "faar.answer_providers.FakeProvider"}
     descriptor: dict[str, Any] = {"adapter": "faar.answer_providers.OpenAIChatProvider"}
+    if config is not None:
+        descriptor["base_url"] = expected_base_url(config.endpoint)
     try:
         import importlib.metadata
 
@@ -1984,7 +2065,7 @@ def wire_provider(
         steps, default, script_sha = load_fake_script(fake_script)
         descriptor = {**provider_descriptor(MODE_FAKE), "fake_script_sha256": script_sha}
         return (lambda context: build_fake_provider(steps, default, config, context)), descriptor
-    return (lambda context: build_live_provider(config, environ)), provider_descriptor(MODE_LIVE)
+    return (lambda context: build_live_provider(config, environ)), provider_descriptor(MODE_LIVE, config)
 
 
 def _ceiling_record(amount: float, prices: PriceTable) -> dict[str, Any]:

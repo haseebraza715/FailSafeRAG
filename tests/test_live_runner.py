@@ -1731,7 +1731,7 @@ def valid_live_config() -> dict[str, Any]:
     return {
         "provider": "openai",
         "model": "gpt-4o-2024-11-20",
-        "endpoint": "https://api.openai.com/v1/chat/completions",
+        "endpoint": "https://api.openai.com/v1",
         "params": {"temperature": 0},
         "max_output_tokens": 128,
         "timeout_seconds": 60,
@@ -2143,3 +2143,161 @@ def test_atomic_writes_use_the_same_full_sync(tmp_path: Path, monkeypatch: pytes
     lr.atomic_write_text(tmp_path / "out.json", "{}\n")
     assert (tmp_path / "out.json").read_text() == "{}\n"
     assert len(calls) >= 2, "the file and its directory are both fully synced"
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: the endpoint (H3) and the parameter allowlist (L2)
+# ---------------------------------------------------------------------------
+
+LIVE_READY_ENV = {lr.LIVE_ENV_NAME: lr.LIVE_ENV_VALUE, "OPENAI_API_KEY": "test-not-a-key"}
+CLIENT_ENV_VARS = ("OPENAI_BASE_URL", "OPENAI_ORG_ID", "OPENAI_PROJECT_ID", "OPENAI_ORGANIZATION")
+
+
+def live_config(**changes: Any) -> lr.ProviderConfig:
+    return lr.parse_provider_config({**valid_live_config(), **changes})
+
+
+def _completion_json(model: str = "gpt-4o-2024-11-20") -> dict[str, Any]:
+    return {
+        "id": "chatcmpl-test",
+        "object": "chat.completion",
+        "created": 1,
+        "model": model,
+        "choices": [{"index": 0, "finish_reason": "stop", "message": {"role": "assistant", "content": "twelve months"}}],
+        "usage": {"prompt_tokens": 10, "completion_tokens": 3, "total_tokens": 13},
+    }
+
+
+def test_the_live_client_is_built_on_the_configured_base_url_with_no_network(monkeypatch: pytest.MonkeyPatch) -> None:
+    """H3: base_url comes from the config endpoint. A mock transport sees the request; no socket opens."""
+    import httpx
+
+    for name in CLIENT_ENV_VARS:
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr(socket, "getaddrinfo", lambda *a, **k: (_ for _ in ()).throw(OSError("no network in tests")))
+    seen: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(str(request.url))
+        return httpx.Response(200, json=_completion_json())
+
+    config = live_config(endpoint="https://gateway.example.test/v1")
+    provider = lr.build_live_provider(config, {"OPENAI_API_KEY": "test-not-a-key"}, http_client=httpx.Client(transport=httpx.MockTransport(handler)))
+    assert str(provider._client.base_url) == "https://gateway.example.test/v1/"
+    assert provider.identity()["endpoint"] == "https://gateway.example.test/v1/"
+    response = provider.send(
+        lr.ProviderRequest("r", "r-a1", ({"role": "user", "content": "hi"},), dict(config.params), 128, 60.0)
+    )
+    assert response.text == "twelve months" and seen == ["https://gateway.example.test/v1/chat/completions"]
+
+
+def test_the_live_provider_descriptor_records_the_base_url_and_the_endpoint_is_identity() -> None:
+    """H3: the run identity names the URL the client will use, so a different endpoint is a different run."""
+    a = lr.provider_descriptor(MODE_LIVE_VALUE, live_config())
+    b = lr.provider_descriptor(MODE_LIVE_VALUE, live_config(endpoint="https://gateway.example.test/v1/"))
+    assert a["base_url"] == "https://api.openai.com/v1/" and b["base_url"] == "https://gateway.example.test/v1/"
+    assert lr.provider_descriptor(MODE_FAKE) == {"adapter": "faar.answer_providers.FakeProvider"}
+    options_a = lr.RunOptions(project_root=Path("."), run_dir=Path("x"), mode=MODE_LIVE_VALUE, config=live_config(), safety_ceiling=1.0)
+    _, wired = lr.wire_provider(options_a, fake_script=None, environ={})
+    assert wired["base_url"] == "https://api.openai.com/v1/"
+
+
+MODE_LIVE_VALUE = "live"
+
+
+@pytest.mark.parametrize("name", CLIENT_ENV_VARS)
+def test_live_mode_refuses_when_the_environment_can_redirect_the_client(project: Project, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], name: str) -> None:
+    """H3: OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID and OPENAI_ORGANIZATION change where or as whom the key is used."""
+    config = project.root / "provider.json"
+    config.write_text(json.dumps(valid_live_config()))
+    built = tripwire_clients(monkeypatch)
+    monkeypatch.setattr(os, "environ", RecordingEnv({**LIVE_READY_ENV, name: "https://elsewhere.example.test/v1"}))
+    run_dir = project.root / "results" / "development" / "live-a"
+    argv = [*LIVE_ARGS, "--project-root", str(project.root), "--run-dir", str(run_dir), "--provider-config", str(config), "--safety-ceiling", "1"]
+    assert cli.main(argv) == lr.EXIT_REFUSED
+    assert name in capsys.readouterr().err
+    assert built == [] and not run_dir.exists()
+    assert "OPENAI_API_KEY" not in os.environ.reads
+
+
+@pytest.mark.parametrize("name", CLIENT_ENV_VARS)
+def test_build_live_provider_refuses_them_too_without_building_a_client(monkeypatch: pytest.MonkeyPatch, name: str) -> None:
+    """H3: the builder repeats the check on the mapping it was given and on the real environment the SDK reads."""
+    built = tripwire_clients_except_builder(monkeypatch)
+    with pytest.raises(RunnerRefusal, match=name):
+        lr.build_live_provider(live_config(), {"OPENAI_API_KEY": "test-not-a-key", name: "x"})
+    monkeypatch.setenv(name, "x")
+    with pytest.raises(RunnerRefusal, match=name):
+        lr.build_live_provider(live_config(), {"OPENAI_API_KEY": "test-not-a-key"})
+    assert built == []
+
+
+def tripwire_clients_except_builder(monkeypatch: pytest.MonkeyPatch) -> list[str]:
+    built: list[str] = []
+    import openai
+
+    from faar import answer_providers
+
+    def boom(*args: Any, **kwargs: Any) -> Any:
+        built.append("client")
+        raise AssertionError("no client may be built")
+
+    monkeypatch.setattr(openai, "OpenAI", boom)
+    monkeypatch.setattr(answer_providers, "OpenAIChatProvider", boom)
+    for name in CLIENT_ENV_VARS:
+        monkeypatch.delenv(name, raising=False)
+    return built
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [
+        "https://api.openai.com/v1/chat/completions",
+        "api.openai.com/v1",
+        "ftp://api.openai.com/v1",
+        "http://api.openai.com/v1",
+        "https://user:pass@api.openai.com/v1",
+        "https://api.openai.com/v1?x=1",
+        "https://",
+        "",
+    ],
+)
+def test_the_endpoint_must_be_an_https_api_base_url(endpoint: str) -> None:
+    """H3: the config field is the API base URL, not the request path. Plain http is refused off the loopback."""
+    with pytest.raises(RunnerRefusal, match="endpoint"):
+        live_config(endpoint=endpoint)
+
+
+def test_a_loopback_http_base_url_and_a_trailing_slash_are_accepted() -> None:
+    assert live_config(endpoint="http://127.0.0.1:8080/v1").endpoint == "http://127.0.0.1:8080/v1"
+    assert lr.provider_descriptor(MODE_LIVE_VALUE, live_config(endpoint="https://api.openai.com/v1/"))["base_url"] == "https://api.openai.com/v1/"
+
+
+def test_the_provisional_dry_run_endpoint_is_a_base_url() -> None:
+    assert lr.PROVISIONAL_DRY_RUN_CONFIG.endpoint == "https://api.openai.com/v1"
+
+
+@pytest.mark.parametrize(
+    "params",
+    [{"service_tier": "flex"}, {"tools": []}, {"logprobs": True}, {"response_format": {"type": "json_object"}}, {"reasoning_effort": "high"}, {"n": 2}, {"user": "x"}, {"temperature": 0, "stream": True}],
+)
+def test_the_provider_config_refuses_request_parameters_outside_the_allowlist(params: dict[str, Any]) -> None:
+    """L2: an unknown parameter can change billing outside the cost bound, so only the shared allowlist passes."""
+    with pytest.raises(RunnerRefusal, match="params"):
+        live_config(params=params)
+
+
+def test_every_allowlisted_parameter_is_accepted() -> None:
+    from faar.live_contract import ALLOWED_OPENAI_PARAMS
+
+    values = {"temperature": 0, "top_p": 1, "seed": 7, "stop": ["END"], "presence_penalty": 0, "frequency_penalty": 0}
+    assert set(values) == set(ALLOWED_OPENAI_PARAMS)
+    assert dict(live_config(params=values).params) == values
+
+
+def test_the_help_states_the_endpoint_rule_the_refused_variables_and_the_allowed_parameters(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit):
+        cli.main(["run", "--help"])
+    text = " ".join(capsys.readouterr().out.split())
+    for word in (*CLIENT_ENV_VARS, "API base URL", "temperature", "frequency_penalty"):
+        assert word in text
