@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-29-ohr-dev-v1-fake-provider-r3",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "fake",
+  "kind": "engineering_check",
+  "label": "Engineering check with a fake answer provider. No request leaves the process and nothing here measures a model.",
+  "identity_sha256": "ce5b45764cd42b35969d4db6a2842806fe5c2a18cbdf7722c1fb1dcc94e23edc",
+  "run_state": "complete",
+  "valid_baseline": false,
+  "valid_baseline_blockers": [
+    "the run is a fake run, not a live run"
+  ],
+  "valid_baseline_means": "valid_baseline checks mechanical completeness only. It is true when the run is live, its state is complete, no question is execution_failed, every returned model equals the requested model, no response reported more input tokens than the input bound and the safety ledger reports no anomaly. It does not mean the prompt, the model, the retrieval settings or the budget are approved.",
+  "exit_code": 0,
+  "counts": {
+    "questions": 70,
+    "answered": 63,
+    "no_evidence": 7,
+    "execution_failed": 0,
+    "abstained": 7,
+    "model_abstained": 0,
+    "unserved": 0,
+    "awaiting_reconciliation": 0,
+    "prompt_over_limit": 0
+  },
+  "output_status": {
+    "ok": 63
+  },
+  "attempts": {
+    "total": 63,
+    "saved": 63,
+    "failed": 0,
+    "unknown": 0,
+    "open": 0
+  },
+  "input_bound_exceeded": 0,
+  "requested_model": "fake-answer-model-1",
+  "returned_model_mismatch": 0,
+  "returned_models": {
+    "fake-answer-model-1": 63
+  },
+  "cost": {
+    "currency": "USD",
+    "simulated": true,
+    "measured": 0.22148,
+    "reserved": 0.0,
+    "committed_upper": 0.22148,
+    "anomalies": []
+  },
+  "safety_ceiling": {
+    "amount": 5.0,
+    "currency": "USD",
+    "simulated": true
+  },
+  "invocations": [
+    {
+      "invocation_id": "63ccd4bfa29c44978a36f16a519816ae",
+      "started_at": "2026-09-29T17:54:00.696Z",
+      "safety_ceiling": {
+        "amount": 5.0,
+        "currency": "USD",
+        "simulated": true
+      },
+      "ceiling_change": null,
+      "ended_reason": "completed"
+    },
+    {
+      "invocation_id": "c8bdf7e25e0e4a9dbd810b50918c31d5",
+      "started_at": "2026-09-29T17:54:06.382Z",
+      "safety_ceiling": {
+        "amount": 5.0,
+        "currency": "USD",
+        "simulated": true
+      },
+      "ceiling_change": null,
+      "ended_reason": "completed"
+    }
+  ],
+  "uncommitted_tail_bytes": 0,
+  "predictions_sha256": "5a7d5c3b7ef4efc98fbf5bb80b7c23c7f43315ffcb311c73d921bf802a065326",
+  "requests_sha256": "d1bd3a9f2d0202708723636ed7aebca3de5dc8abca1f47beee46e432a9a03edb"
+}

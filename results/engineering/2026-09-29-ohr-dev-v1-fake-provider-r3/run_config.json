@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-29-ohr-dev-v1-fake-provider-r3",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "fake",
+  "kind": "engineering_check",
+  "label": "Engineering check with a fake answer provider. No request leaves the process and nothing here measures a model.",
+  "contract_version": "1",
+  "created_at": "2026-09-29T17:54:00.669Z",
+  "identity": {
+    "contract_version": "1",
+    "mode": "fake",
+    "pilot_id": "ohr_dev_v1",
+    "runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+    "document_noisy_text_sha256": {
+      "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6": "407e83d4ed5fc2bcd9b8121e58cdf0a3f8ebba88940a52bc3d4870ae544da934",
+      "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77": "c586aa6ee639a464dd76fca1582b3deb5cbb84f296e952f8321594ee280c4e86",
+      "administration/DUDE_aae11c0a8c4869c113687f3413f47300": "1f25ec8f4d438889736a1b09f64f3cc4d30a9bb374431c6135ad6dcfdedf28b1",
+      "finance/DUDE_9b7a779d9329077be8a5346b722d6b34": "2d3e24011e972d0603b782e3d173e2c188b3db353e76e8af1a7d8dba2b589a8b",
+      "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT": "73366749bcafeefa1dad508290a425293fee4f0349ca581e6ed4cb22ea8f0ab3",
+      "manual/DUDE_7c58b2a77575a7897197445460fc0285": "25a2c3ccec42764d9795464c22773304b7ef6fe60451748046c4ece8154acc06",
+      "news/07_07": "b4ff8c371239e95502ff37ccf0cea8578151f9456a003c210d94c683b901cf49",
+      "news/07_10": "fd49cce4fc9325531763f322d287fee56da138c63d663364bce2d1e5416026b0",
+      "news/08_02": "e44aa591e6c234601c2ed870be438c2c61ed6145dfc18b193095c14b6d6db693",
+      "news/08_29": "21ea45ee7d8b066a90ec45a831c13b28c871f0eb68ad87a8ff71fa33203004e5",
+      "news/DUDE_4e51a6e4193828e37bfe5655919acbc8": "8d542cfe515ade9ef2fbbe79466bac6d28716eb06f275b811e6c3450cd5a7299",
+      "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12": "e4bf8cbf61eec0e7fab7bc6bbebd97124e07668b8b76467718a225cdb8d77672",
+      "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1": "1d3a7d3c83e31962c320781680ccd48d56d43b7b78787e81f10e76ade30c5839",
+      "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1": "48070b0d5be0f4a98aa49aca1a531c823a8eda5172a7f7adfd65365d001e99eb",
+      "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5": "efc0e62eb778a425d202745298c154832c4f2cdf57c4195a107583193644b2dc",
+      "textbook/GNHK_eng_AF_046": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/GNHK_eng_AS_022": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/GNHK_eng_EU_099": "8e764f5dd87a7fde32b801b5dede70b351232dc319c0b96495f92490eed3623c",
+      "textbook/GNHK_eng_EU_137": "5e20593f5303d4ca00ddaac877a2eae5f4d6824629e62456ae260cd2d285f5f2",
+      "textbook/GNHK_eng_EU_298": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/GNHK_eng_EU_310": "50f86828bf0f3118162da4a4e287196a3fe1622b0a9a718b74a81784a9d4f389",
+      "textbook/GNHK_eng_NA_023": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174": "52a35fb261da558f6bafaaa91d31f17ab0e144692eb960688a9eaf78ac9e14b7",
+      "textbook/chem-323236.pdf_183": "1b67f538be60d27c11c4742fd0cfc1eb1a5f6d330ac6718d0596bb857a80a9f1",
+      "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161": "f38d374932f0a718c0053b07e022b5fc00cc185668d2632c10c4ced69bbb3b7f",
+      "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124": "56f8f08a6467706f8b21fde9b7782ad93d5dfbe2a3ed9d98f7416ab6de4cfee0",
+      "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74": "06044e749c1bc841c7f195141f01c9a7092fe4ec8eaf8c8674fca683288a7ca3",
+      "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/socialsci-177546.pdf_157": "1b5c8a0de1401d46b6d051154baa3387a53e49fab97ced3ca5b077c579124db9"
+    },
+    "retrieval": {
+      "label": "Engineering settings for an offline pipeline check. They are not the approved scientific protocol.",
+      "scope": "one index per document, built from every declared page; a question searches only its own document",
+      "embedding_backend": "local-hash-v1",
+      "embedding_dimensions": 256,
+      "embedding": "signed feature hashing of blake2b token digests, L2-normalised, no model download",
+      "reranker": null,
+      "chunking": {
+        "function": "faar.chunking.build_page_chunks",
+        "policy": "cjk-weighted-words-v1",
+        "chunk_size_words": 180,
+        "chunk_overlap_words": 40,
+        "chunk_id": "<doc_id>-p<page_idx>-c<chunk_index>",
+        "pages_without_text": "empty or missing OCR gives no chunk and is counted in ocr_condition",
+        "units": "a CJK character (Han, Hiragana, Katakana) is one unit of weight 1; any other run of non-space characters is one unit of weight 2",
+        "cjk_chars_per_word": 2,
+        "window": "chunk_size_words * 2 weight, so a chunk holds at most 360 CJK characters or 180 other words; the window advances by (chunk_size_words - chunk_overlap_words) words on the same scale",
+        "chunk_text": "the page text of the span, each run of whitespace replaced by one space",
+        "without_cjk": "text with no CJK character gets the boundaries and the chunk text of whitespace-words-v1"
+      },
+      "tokenisation": {
+        "tokenizer": "multilingual-v1",
+        "definition": "NFKC, casefold, delete whitespace between CJK characters, then runs of Unicode letters or digits plus % and $ as word tokens and overlapping character bigrams for each CJK run",
+        "applied_to": "chunk text and query text alike, for BM25 and for the hashing embedder",
+        "retrieval_tokeniser": "multilingual-v1",
+        "normalisation": "Unicode NFKC, then casefold (the Unicode data version is in environment.unicodedata)",
+        "word_tokens": "runs of Unicode letters or digits plus % and $, so 12% and $5 stay whole; _ and other symbols separate tokens",
+        "han_script": "a run of Han, Hiragana or Katakana characters becomes overlapping character bigrams (one character gives itself); whitespace between two such characters is deleted first; no dictionary and no model",
+        "ascii_text": "pure ASCII text gets the same tokens as ascii-alnum-v1",
+        "limits": "a token count above zero says the question can be indexed, not that retrieval finds its evidence; bigrams of common Chinese function words count as tokens; Hangul is not segmented within a space-delimited word and Thai, Lao and Khmer are not segmented"
+      },
+      "ranking": {
+        "lexical": "BM25Okapi from rank_bm25, default parameters",
+        "fusion": "0.45 * min-max dense + 0.35 * min-max bm25 + 0.20 * reciprocal-rank component (k=60)",
+        "dense_note": "faiss returns the dense scores of the top_k chunks only; other chunks enter the fusion with a dense score of 0",
+        "order": "descending fused score",
+        "tie_breaking": "numpy stable argsort: equal scores keep chunk order (page_idx ascending, then chunk_index)"
+      },
+      "no_evidence_reasons": {
+        "no_text_chunks": "every declared page has empty or missing OCR, so the document has zero chunks (an OCR condition)",
+        "no_text_content": "the noisy text is non-empty but no chunk holds a letter or digit in any script (Unicode categories L and N), for example only Markdown heading markers. The input holds no usable evidence text. This is not missing OCR: the manifest records the page as ok because its text is non-empty",
+        "no_retrieval_tokens": "chunks hold letters or digits but the multilingual-v1 tokeniser yields no token for any of them, so BM25 cannot index the document (rank_bm25 divides by zero). This is a limitation of the engineering tokeniser, not an OCR condition. Only stand-alone Arabic diacritic letters (U+FC5E to U+FC63 and U+FE70 to U+FE7E) reach it, because NFKC turns each into a space and a combining mark. The document is listed in generation_summary.json",
+        "no_hits": "the retriever returned zero hits"
+      },
+      "top_k": 5,
+      "max_chunks": 10000,
+      "evidence_limit": "at most top_k hits per question, all saved in predictions.jsonl with their scores"
+    },
+    "prompt": {
+      "template_id": "faar-answer-draft-v1",
+      "template_sha256": "52044de279b32482e1b8b7f75f0b3455f5cb8e44e9178f8cec09c1615a89914d"
+    },
+    "provider": {
+      "provider": "fake",
+      "model": "fake-answer-model-1",
+      "endpoint": "fake://in-process",
+      "params": {
+        "temperature": 0
+      },
+      "max_output_tokens": 128,
+      "max_input_tokens": 12000,
+      "timeout_seconds": 60.0,
+      "tokenizer_bound": "utf8-bytes",
+      "token_limit_param": "max_tokens",
+      "adapter": {
+        "adapter": "faar.answer_providers.FakeProvider",
+        "fake_script_sha256": "eb7a2806a5801f658b87104f921ca8d33495f4c19a76faf6877283752ec5645d"
+      }
+    },
+    "prices": {
+      "provider": "fake",
+      "model": "fake-answer-model-1",
+      "currency": "USD",
+      "input_per_million": 2.5,
+      "cached_input_per_million": 1.25,
+      "output_per_million": 10.0,
+      "source": "simulated: fictional rates for engineering checks",
+      "source_date": "2026-09-29",
+      "simulated": true
+    },
+    "retry_policy": {
+      "policy": "exponential-backoff-seeded-jitter-v1",
+      "max_attempts": 3,
+      "base_delay_seconds": 2.0,
+      "factor": 2.0,
+      "jitter_fraction": 0.25,
+      "seed": 0,
+      "max_delay_seconds": 60.0,
+      "stop_run_kinds": [
+        "auth",
+        "unknown_model",
+        "quota"
+      ],
+      "retryable_outcomes": [
+        "not_sent",
+        "rejected"
+      ],
+      "circuit_breaker": {
+        "consecutive_failures": 3,
+        "counts": [
+          "outcome unknown",
+          "any failure with decision fail_question, rejected or not_sent",
+          "exception that is not a ProviderError"
+        ],
+        "resets": [
+          "saved response"
+        ]
+      }
+    },
+    "scientific_budget": null,
+    "code": {
+      "measurement_code_digest": "a0dc7d8f2c32e6d37e6a6a2f664a2556be9d5ff639670994e181cb008cc0f163",
+      "cli_script_sha256": "9d3f697d579b241b06724679dccac916d8d279b6eaad840dff2e626502392093"
+    }
+  },
+  "identity_sha256": "ce5b45764cd42b35969d4db6a2842806fe5c2a18cbdf7722c1fb1dcc94e23edc",
+  "requests_sha256": "d1bd3a9f2d0202708723636ed7aebca3de5dc8abca1f47beee46e432a9a03edb",
+  "provenance": {
+    "commit": "578a613387e654ea6836b34562133e91fb714880",
+    "dirty": true,
+    "dirty_paths": [
+      "experiments/registry.jsonl"
+    ],
+    "code_root": ".",
+    "environment": {
+      "python": "3.12.13",
+      "unicodedata": "15.0.0",
+      "numpy": "1.26.4",
+      "faiss-cpu": "1.9.0.post1",
+      "rank-bm25": "0.2.2"
+    },
+    "command": [
+      "scripts/experiments/run_pilot_live.py",
+      "run",
+      "--run-dir",
+      "results/engineering/2026-09-29-ohr-dev-v1-fake-provider-r3",
+      "--mode",
+      "fake",
+      "--fake-script",
+      "scripts/experiments/fake_scripts/answer_every_question.json",
+      "--safety-ceiling",
+      "5"
+    ]
+  },
+  "runtime_manifest": {
+    "path": "results/pilots/ohr_dev_v1/runtime_manifest.json",
+    "sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1"
+  },
+  "inputs_read": [
+    "runtime manifest",
+    "MinerU JSON file of each declared document"
+  ],
+  "inputs_never_read": [
+    "evaluation_manifest.json (only the score subcommand opens it)",
+    "selection_record.json",
+    "inspection/",
+    "OHR-Bench/data/qas*.json",
+    "gt text",
+    "annotations"
+  ],
+  "safety_ceiling_note": "The safety ceiling is an operating limit and is not part of the identity. Each invocation_started records it."
+}

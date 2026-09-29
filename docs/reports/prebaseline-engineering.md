@@ -384,3 +384,29 @@ a failing test first, except where the table says otherwise.
 - The new local preview is `.local/work/prompt-preview-v2/`. Its largest input bound is 7,920, and its worst case is $2.85 at option A's unapproved rates.
 - The lead reran the demonstrations on the fixed code: an unknown outcome was not resent, reconcile and reopen each gave exactly one further attempt, the incompatible change, the budget raise without a note, the second process and live mode without enablement were all refused, and the budget stop was recorded. Reopening an answered question was refused.
 - The suite at `a86f27e`, in the lead's checkout, gave 2,177 passed and 2 skipped.
+
+### Fix verification of 2026-09-29
+
+A second reviewer (`faar-worker`), who wrote none of the code, reran the first
+reviewer's reproductions against `11ce1a4`. All thirteen accepted findings
+were confirmed fixed, L4 on a best-effort basis. Its own dry run and fake run
+matched the lead's files byte for byte. It found nothing above Low.
+
+| Finding | Disposition |
+| --- | --- |
+| N1: help and brief gave the circuit breaker's state as `stopped` only | Fixed. The state is `needs_reconciliation` when a counted attempt had an unknown outcome, and `stopped` otherwise. |
+| N2: the brief's retry row still said "5xx" after 504 became unknown | Fixed. |
+| N3: `status` advised `reopen` on a scored run | Fixed. |
+| N4: Cloudflare origin timeouts 522 and 524 were retried | Fixed. They are unknown outcomes, like 504. HTTP 499 was already a non-retryable rejection. |
+| N5: a network outage failed every question without tripping the breaker | Fixed. Any failure that ends a question counts, and only a saved response resets the count. |
+| N6: the payload of a malformed 200 reply was dropped | Fixed. It is kept, bounded to 20,000 characters, in the `outcome_unknown` event. |
+| N7: a crash between the two score-file writes leaves a half-scored run | Not fixed. The window is two consecutive atomic writes, and recovery means removing one file by hand. |
+| N8: a refused `reopen` or `reconcile` can still append recovery events for other questions | Kept. It is the same honest bookkeeping as in `reconcile`. |
+| N9: some endpoint spellings pass the parser and fail only at client build | Kept. It fails closed before any request. |
+
+**The successor run is `2026-09-29-ohr-dev-v1-fake-provider-r3`** (code `578a613`), and it supersedes r2.
+
+- It completed with 63 answered, 7 no_evidence and 0 execution_failed, at 0.221480 simulated USD, with 0 reserved.
+- It differs from r2 only in request, attempt and response IDs, which derive from the identity hash.
+- The suite at `578a613`, in the lead's checkout, gave 2,182 passed and 2 skipped.
+
