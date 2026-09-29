@@ -1573,18 +1573,17 @@ def test_status_describes_a_run_and_changes_nothing(project: Project) -> None:
     assert file_snapshot(run_dir) == before
 
 
-def test_score_joins_predictions_and_counts_unserved_as_failures_not_abstentions(project: Project) -> None:
-    """B3: a budget-limited run scores; unserved questions are execution_failed with score 0 and no abstention."""
-    costs = bounds(project)
-    go(project, Rig(), safety_ceiling=costs["q1"] + 0.000001)
+def test_score_joins_predictions_and_counts_a_failed_question_as_zero_not_an_abstention(project: Project) -> None:
+    """B3: a complete run with one execution_failed question scores; the failure is a zero and never an abstention."""
+    go(project, Rig(steps={"q2": [FakeStep("non_retryable_error")]}))
     run_dir = project.run_dir("run-a")
     result = lr.score_run_live(project_root=project.root, run_dir=run_dir)
     counts = result.summary["counts"]
-    assert counts["questions"] == 6 and counts["execution_failed"] == 4 and counts["answered"] == 1 and counts["no_evidence"] == 1
-    assert counts["abstained"] == 1, "only the no_evidence question abstains; the four unserved ones do not"
+    assert counts["questions"] == 6 and counts["execution_failed"] == 1 and counts["answered"] == 4 and counts["no_evidence"] == 1
+    assert counts["abstained"] == 1, "only the no_evidence question abstains; the failed one does not"
     rows = {r["question_id"]: r for r in map(json.loads, (run_dir / "scores.jsonl").read_text().splitlines())}
-    assert rows["q1"]["em"] == 1 and all(rows[q]["scored_by"] == "failure_as_zero" for q in ("q2", "q3", "q4", "q6"))
-    assert result.summary["run_state"] == "budget_limited" and result.summary["valid_baseline"] is False
+    assert rows["q1"]["em"] == 1 and rows["q2"]["scored_by"] == "failure_as_zero"
+    assert result.summary["run_state"] == "complete" and result.summary["valid_baseline"] is False
     assert result.exit_code == lr.EXIT_EXECUTION_FAILED
     again = lr.score_run_live(project_root=project.root, run_dir=run_dir)
     assert "verified identical" in again.message
@@ -1592,12 +1591,11 @@ def test_score_joins_predictions_and_counts_unserved_as_failures_not_abstentions
 
 def test_a_scored_run_cannot_take_more_dispatches(project: Project) -> None:
     """Scoring is final: a later run in the same directory is refused, so scores never describe a moving target."""
-    costs = bounds(project)
     rig = Rig()
-    go(project, rig, safety_ceiling=costs["q1"] + 0.000001)
+    go(project, rig)
     lr.score_run_live(project_root=project.root, run_dir=project.run_dir("run-a"))
     with pytest.raises(RunnerRefusal, match="has been scored"):
-        go(project, Rig(), safety_ceiling=costs["q1"] + 0.000001, raise_safety_ceiling=90.0, authorization_note="n")
+        go(project, Rig())
 
 
 def test_only_score_opens_the_evaluation_manifest(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -2301,3 +2299,143 @@ def test_the_help_states_the_endpoint_rule_the_refused_variables_and_the_allowed
     text = " ".join(capsys.readouterr().out.split())
     for word in (*CLIENT_ENV_VARS, "API base URL", "temperature", "frequency_penalty"):
         assert word in text
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: scoring is final (M1) and a mistyped path is left alone (M2)
+# ---------------------------------------------------------------------------
+
+
+def scored_run(project: Project, name: str = "run-a", steps: dict[str, list[FakeStep]] | None = None) -> Path:
+    go(project, Rig(steps=steps or {}), name)
+    run_dir = project.run_dir(name)
+    lr.score_run_live(project_root=project.root, run_dir=run_dir)
+    return run_dir
+
+
+def test_score_refuses_a_run_that_is_not_complete_and_writes_nothing(project: Project) -> None:
+    """M1: budget_limited, needs_reconciliation, stopped and incomplete runs cannot be scored."""
+    costs = bounds(project)
+    cases = {
+        "s-budget": dict(safety_ceiling=costs["q1"] + 0.000001),
+        "s-unknown": dict(rig=Rig(steps={"q2": [FakeStep("timeout_unknown")]})),
+        "s-stopped": dict(rig=Rig(steps={"q2": [FakeStep("auth_error")]})),
+        "s-incomplete": dict(crash_hook=crash_at(lr.CRASH_BEFORE_DISPATCH, "q3")),
+    }
+    for name, kwargs in cases.items():
+        rig = kwargs.pop("rig", None) or Rig()
+        try:
+            go(project, rig, name, **kwargs)
+        except SimulatedCrash:
+            pass
+        run_dir = project.run_dir(name)
+        before = file_snapshot(run_dir)
+        with pytest.raises(RunnerRefusal, match="complete"):
+            lr.score_run_live(project_root=project.root, run_dir=run_dir)
+        assert strip_lock(file_snapshot(run_dir)) == strip_lock(before), name
+        assert not (run_dir / "scores.jsonl").exists() and not (run_dir / "score_summary.json").exists()
+
+
+def test_reconcile_and_export_refuse_after_scoring_and_change_nothing(project: Project) -> None:
+    """M1: scores describe one set of predictions, so no writer may change the records after `score`."""
+    rig = Rig(steps={"q1": [FakeStep("timeout_unknown")]})
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    attempt_id = by_question(run_dir)["q1"]["attempt_ids"][0]
+    lr.reconcile_attempt(run_dir=run_dir, attempt_id=attempt_id, resolution=lr.RESOLUTION_FAIL, note="checked, not billed")
+    lr.score_run_live(project_root=project.root, run_dir=run_dir)
+    before = file_snapshot(run_dir)
+    with pytest.raises(RunnerRefusal, match="scored"):
+        lr.reconcile_attempt(run_dir=run_dir, attempt_id=attempt_id, resolution=lr.RESOLUTION_ALLOW, note="changed my mind")
+    assert strip_lock(file_snapshot(run_dir)) == strip_lock(before)
+
+
+def test_export_after_scoring_is_a_no_op_when_it_would_write_identical_files_and_refuses_otherwise(project: Project) -> None:
+    run_dir = scored_run(project)
+    before = file_snapshot(run_dir)
+    result = lr.export_run(run_dir)
+    assert "unchanged" in result.message and strip_lock(file_snapshot(run_dir)) == strip_lock(before)
+    predictions = run_dir / "predictions.jsonl"
+    predictions.write_text(predictions.read_text() + "\n")
+    tampered = file_snapshot(run_dir)
+    with pytest.raises(RunnerRefusal, match="scored"):
+        lr.export_run(run_dir)
+    assert strip_lock(file_snapshot(run_dir)) == strip_lock(tampered)
+
+
+def test_score_after_scoring_rewrites_no_export_file(project: Project) -> None:
+    run_dir = scored_run(project)
+    (run_dir / "predictions.jsonl").unlink()
+    with pytest.raises(RunnerRefusal, match="scored"):
+        lr.score_run_live(project_root=project.root, run_dir=run_dir)
+    assert not (run_dir / "predictions.jsonl").exists(), "score did not rebuild a deleted export"
+
+
+def test_status_reports_a_scored_run_as_final(project: Project) -> None:
+    run_dir = scored_run(project)
+    status = lr.run_status(run_dir)
+    assert status["scored"] is True and "scored" in lr.format_status(status)
+
+
+def test_the_score_help_states_the_complete_run_rule(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit):
+        cli.main(["score", "--help"])
+    text = " ".join(capsys.readouterr().out.split())
+    assert "complete" in text and "final" in text
+
+
+def _frozen_like(project: Project, sub: str, *, with_config: bool) -> Path:
+    directory = project.root.joinpath(*sub.split("/"))
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / "keep.txt").write_text("frozen")
+    if with_config:
+        (directory / "run_config.json").write_text("{}")
+    return directory
+
+
+@pytest.mark.parametrize("sub", ["results/pilots/x", "results/Pilots/x", "results/PILOTS/x/y"])
+@pytest.mark.parametrize("with_config", [False, True])
+def test_export_reconcile_and_score_leave_a_frozen_like_directory_untouched(project: Project, sub: str, with_config: bool) -> None:
+    """M2: the directory rules and run_config.json are checked before run.lock is created or opened."""
+    directory = _frozen_like(project, sub, with_config=with_config)
+    before = file_snapshot(directory)
+    entries = sorted(p.name for p in directory.iterdir())
+    for action in (
+        lambda: lr.export_run(directory),
+        lambda: lr.reconcile_attempt(run_dir=directory, attempt_id="a", resolution=lr.RESOLUTION_FAIL, note="n"),
+        lambda: lr.score_run_live(project_root=project.root, run_dir=directory),
+    ):
+        with pytest.raises(RunnerRefusal):
+            action()
+    assert file_snapshot(directory) == before and sorted(p.name for p in directory.iterdir()) == entries
+    assert not (directory / "run.lock").exists()
+
+
+def test_a_mistyped_directory_without_run_config_gets_no_lock_file(project: Project, tmp_path: Path) -> None:
+    """M2: an existing directory that is not a run, and a path that does not exist, are left as they are."""
+    typo = project.root / "results" / "engineering" / "run-typo"
+    typo.mkdir(parents=True)
+    (typo / "notes.txt").write_text("mine")
+    missing = project.root / "results" / "engineering" / "not-there"
+    for target in (typo, missing, project.root):
+        before = file_snapshot(target) if target.exists() else None
+        for action in (
+            lambda: lr.export_run(target),
+            lambda: lr.reconcile_attempt(run_dir=target, attempt_id="a", resolution=lr.RESOLUTION_FAIL, note="n"),
+            lambda: lr.score_run_live(project_root=project.root, run_dir=target),
+            lambda: lr.run_status(target),
+        ):
+            with pytest.raises(RunnerRefusal):
+                action()
+        assert not (target / "run.lock").exists()
+        assert (file_snapshot(target) if target.exists() else None) == before
+    assert not missing.exists()
+
+
+def test_the_cli_leaves_a_mistyped_path_untouched(project: Project) -> None:
+    typo = project.root / "results" / "engineering" / "run-typo"
+    typo.mkdir(parents=True)
+    for argv in (["export", "--run-dir", str(typo)], ["score", "--project-root", str(project.root), "--run-dir", str(typo)],
+                 ["reconcile", "--run-dir", str(typo), "a", "--resolution", "mark_failed", "--note", "n"]):
+        assert cli.main(argv) == lr.EXIT_REFUSED
+    assert list(typo.iterdir()) == []
