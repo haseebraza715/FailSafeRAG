@@ -124,7 +124,7 @@ def test_fake_missing_usage_is_none_not_zero() -> None:
 @pytest.mark.parametrize(
     ("step", "kind", "outcome", "retryable", "status"),
     [
-        (FakeStep("retryable_error"), "rate_limit", "rejected", True, 429),
+        (FakeStep("retryable_error"), "transient_status", "rejected", True, 408),
         (FakeStep("retryable_error", http_status=503), "server_error", "rejected", True, 503),
         (FakeStep("non_retryable_error"), "bad_request", "rejected", False, 400),
         (FakeStep("auth_error"), "auth", "rejected", False, 401),

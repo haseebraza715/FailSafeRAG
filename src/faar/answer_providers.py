@@ -109,7 +109,9 @@ KIND_GATEWAY_TIMEOUT = "gateway_timeout"  # HTTP 504, 522, 524
 # Gateway statuses that can follow a request the provider accepted: 504 (gateway timeout) and the
 # Cloudflare origin timeouts 522 and 524.
 _GATEWAY_TIMEOUT_STATUSES = (504, 522, 524)
-KIND_TRANSIENT_STATUS = "transient_status"  # HTTP 408 or 409
+# HTTP 408 (`rejected`, retryable) and HTTP 409 (`unknown`, not retryable). The name is older than the 409
+# decision and is kept: tests/test_retry_policy.py and the fake's 408 step use the string "transient_status".
+KIND_TRANSIENT_STATUS = "transient_status"
 KIND_QUOTA = "quota"
 KIND_BAD_REQUEST = "bad_request"
 KIND_CLIENT_ERROR = "client_error"  # other 4xx
@@ -174,13 +176,13 @@ class FakeStep:
     """One scripted outcome for one attempt.
 
     `text` overrides the reply text of answer-like kinds. `returned_model` overrides the model
-    the fake reports back. `http_status` overrides the status of `retryable_error` (default 429)
+    the fake reports back. `http_status` overrides the status of `retryable_error` (default 408)
     and `non_retryable_error` (default 400). `message` overrides the refusal text or error message.
 
     `retryable_error` exercises the driver's retry path. It is a `rejected`, retryable failure whatever
     status it carries. The real adapter yields that only for HTTP 408 and for 503 with code
-    `server_is_overloaded`. It reports a real 429 or 502 as `unknown`. Use `timeout_unknown` or
-    `ambiguous` to script those.
+    `server_is_overloaded`, so the fake matches the real adapter only for those two. A real 429 or 502 is
+    `unknown` and not retryable. Use `timeout_unknown` or `ambiguous` to script an unknown outcome.
     """
 
     kind: str
@@ -286,10 +288,10 @@ class FakeProvider:
         if kind == "crash_after_send":
             raise SimulatedCrash(f"simulated crash after send of {request.attempt_id}")
         if kind == "retryable_error":
-            status = step.http_status or 429
+            status = step.http_status or 408
             raise _fake_error(
                 step,
-                kind=KIND_RATE_LIMIT if status == 429 else KIND_SERVER_ERROR,
+                kind=KIND_TRANSIENT_STATUS if status == 408 else KIND_RATE_LIMIT if status == 429 else KIND_SERVER_ERROR,
                 outcome=OUTCOME_REJECTED,
                 retryable=True,
                 status=status,
