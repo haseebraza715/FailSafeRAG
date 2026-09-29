@@ -67,6 +67,11 @@ OpenAI adapter
       error we cannot place are `unknown` and not retryable.
   O8. The SDK's own retries never run: a client with `max_retries != 0` is refused, because a hidden
       retry would break attempt accounting.
+  O8b. Redirects are never followed. A client whose httpx client follows redirects, or whose setting cannot
+      be read, is refused at construction (the SDK's default client follows them). A 3xx reply that
+      reaches the adapter is `unknown` and not retryable, kind `redirect`, with the `location` header
+      (clipped) and the request id in `raw`. The request reached a server, and nothing shows it was not
+      processed, so a resend or a follow could bill twice and could send the prompt to another host.
   O9. The request carries the model, messages, `max_tokens` and per-request timeout, and nothing
       else unless the caller configured it. `params` and `request.params` may hold only the keys
       in `faar.live_contract.ALLOWED_OPENAI_PARAMS`. Any other key (`service_tier`, `tools`,
@@ -112,6 +117,7 @@ _GATEWAY_TIMEOUT_STATUSES = (504, 522, 524)
 # HTTP 408 (`rejected`, retryable) and HTTP 409 (`unknown`, not retryable). The name is older than the 409
 # decision and is kept: tests/test_retry_policy.py and the fake's 408 step use the string "transient_status".
 KIND_TRANSIENT_STATUS = "transient_status"
+KIND_REDIRECT = "redirect"  # HTTP 3xx: the request reached a server, which sent us elsewhere
 KIND_QUOTA = "quota"
 KIND_BAD_REQUEST = "bad_request"
 KIND_CLIENT_ERROR = "client_error"  # other 4xx
@@ -467,7 +473,9 @@ class OpenAIChatProvider:
 
     `client` is an already-built `openai.OpenAI` (the caller decides where credentials and the
     transport come from). It must have `max_retries=0`: the SDK's hidden retries would send extra
-    requests that the run driver could neither count nor bound.
+    requests that the run driver could neither count nor bound. Its httpx client must not follow
+    redirects: a followed redirect is a second request, possibly to another host, that the driver
+    could neither count nor bound. The constructor refuses a client that does.
 
     `token_limit_param` names the request field that carries `max_output_tokens`. The default,
     `max_tokens`, is deprecated by OpenAI and rejected by o-series models, which need
@@ -496,6 +504,16 @@ class OpenAIChatProvider:
         retries = getattr(client, "max_retries", None)
         if retries != 0:
             raise ValueError(f"client must be built with max_retries=0, found {retries!r}")
+        # openai-python 1.68.2 keeps the httpx client in `client._client` (_base_client.py:825) and
+        # httpx keeps the setting in `follow_redirects` (httpx/_client.py:213). The SDK's own default client
+        # sets it to True (_base_client.py:754), so the caller must pass `http_client`. Anything but an
+        # explicit False, including a client we cannot inspect, is refused.
+        follows = getattr(getattr(client, "_client", None), "follow_redirects", None)
+        if follows is not False:
+            raise ValueError(
+                "client must not follow redirects: pass http_client=httpx.Client(follow_redirects=False), "
+                f"found follow_redirects={follows!r}"
+            )
         self._model = model
         self._params = dict(params)
         self._client = client
@@ -696,6 +714,10 @@ def _header(headers: Any, name: str) -> str | None:
 #       the server "was unable to process the contained instructions". 15.5.5 (404) and the rest of 15.5
 #       are client errors. A non-retryable `rejected` never causes a resend, so a wrong `rejected` here
 #       adds no second charge. The reservation is kept for every `rejected` attempt anyway.
+#   E7  RFC 9110 15.4 (3xx): "further action needs to be taken by the user agent in order to fulfill the
+#       request". 15.4.4 (303): the redirect target gives "an indirect response to the original request",
+#       and it is "primarily used" to send the output of a POST action elsewhere, so the POST was
+#       processed. No 3xx definition says the request was not applied.
 #
 #   status                                      outcome   retry  basis
 #   408                                         rejected  yes    E4 15.5.9
@@ -705,6 +727,7 @@ def _header(headers: Any, name: str) -> str | None:
 #   429 rate limit                              unknown   no     E1 and E3 recommend waiting, none says "not processed"
 #   429 quota, billing, spend, usage limit      rejected  no     E1, stops the run
 #   409                                         unknown   no     E4 15.5.10: a person resolves a conflict
+#   3xx (redirects are never followed)          unknown   no     E7, E4 9.2.2: the request reached a server
 #   400, 401, 403, 404, 422, other 4xx          rejected  no     E6
 #
 # 429 is the one row that could go the other way. If OpenAI states that a rate-limited request is never
@@ -738,6 +761,12 @@ def _classify_status(exc: Any) -> ProviderError:
     is_missing_model = code == "model_not_found" or (status == 404 and code is None and "model" in lowered)
     if is_missing_model and status in (400, 403, 404):
         return build(KIND_UNKNOWN_MODEL, OUTCOME_REJECTED, False)
+    if 300 <= status < 400:
+        # The request reached a server. With redirects switched off (the constructor checks) the reply
+        # arrives here. Nothing shows the request was not processed, and a resend would go to the same
+        # address. The `location` header stays for the operator, clipped.
+        raw["location"] = _header(headers, "location")
+        return build(KIND_REDIRECT, OUTCOME_UNKNOWN, False)
     if status in (401, 403):
         return build(KIND_AUTH, OUTCOME_REJECTED, False)
     if status == 429:

@@ -247,7 +247,9 @@ def completion_payload(**overrides: Any) -> dict[str, Any]:
     return payload
 
 
-def mock_client(handler: Callable[[httpx.Request], httpx.Response]) -> tuple[openai.OpenAI, list[httpx.Request]]:
+def mock_client(
+    handler: Callable[[httpx.Request], httpx.Response], *, api_key: str = "test-not-a-key", follow_redirects: bool = False
+) -> tuple[openai.OpenAI, list[httpx.Request]]:
     seen: list[httpx.Request] = []
 
     def recording(request: httpx.Request) -> httpx.Response:
@@ -255,15 +257,21 @@ def mock_client(handler: Callable[[httpx.Request], httpx.Response]) -> tuple[ope
         return handler(request)
 
     client = openai.OpenAI(
-        api_key="test-not-a-key",
-        http_client=httpx.Client(transport=httpx.MockTransport(recording)),
+        api_key=api_key,
+        http_client=httpx.Client(transport=httpx.MockTransport(recording), follow_redirects=follow_redirects),
         max_retries=0,
     )
     return client, seen
 
 
-def adapter(handler: Callable[[httpx.Request], httpx.Response], params: dict | None = None, **kwargs: Any) -> tuple[OpenAIChatProvider, list[httpx.Request]]:
-    client, seen = mock_client(handler)
+def adapter(
+    handler: Callable[[httpx.Request], httpx.Response],
+    params: dict | None = None,
+    *,
+    api_key: str = "test-not-a-key",
+    **kwargs: Any,
+) -> tuple[OpenAIChatProvider, list[httpx.Request]]:
+    client, seen = mock_client(handler, api_key=api_key)
     return OpenAIChatProvider("gpt-test", params or {}, client=client, **kwargs), seen
 
 
@@ -468,6 +476,78 @@ def test_status_errors_are_classified(status: int, body: dict, kind: str, outcom
     assert error.raw["x_request_id"] == "req_9"
     assert error.raw["retry_after"] == "3"
     assert "test-not-a-key" not in json.dumps(error.raw) + str(error)
+
+# --------------------------------------------------------------------------- redirects (M2)
+
+
+@pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+def test_a_redirect_reply_is_one_unknown_attempt_and_is_not_followed(status: int) -> None:
+    """The request reached a server. Nothing shows it was not processed, so no resend and no follow."""
+    target = "http://127.0.0.1:9/elsewhere"
+    provider, seen = adapter(lambda request: httpx.Response(status, headers={"location": target, "x-request-id": "req_3xx"}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert len(seen) == 1, "a redirect must be neither followed nor retried"
+    error = info.value
+    assert (error.kind, error.outcome, error.retryable, error.http_status) == ("redirect", "unknown", False, status)
+    assert error.raw["location"] == target
+    assert error.raw["x_request_id"] == "req_3xx"
+    assert error.raw["http_status"] == status
+
+
+def test_a_redirect_location_is_clipped_and_a_redirect_without_location_is_still_unknown() -> None:
+    provider, seen = adapter(lambda request: httpx.Response(302, headers={"location": "http://127.0.0.1:9/" + "a" * 5000}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert len(info.value.raw["location"]) <= 200
+    provider, seen = adapter(lambda request: httpx.Response(300))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert (info.value.outcome, info.value.retryable, info.value.raw["location"]) == ("unknown", False, None)
+
+
+def test_a_redirect_goes_to_reconcile_not_to_a_retry() -> None:
+    from faar.retry_policy import RetryPolicy
+
+    provider, seen = adapter(lambda request: httpx.Response(307, headers={"location": "http://127.0.0.1:9/x"}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert RetryPolicy().decide(info.value, 1).action == "reconcile"
+    assert len(seen) == 1
+
+
+def test_a_client_that_follows_redirects_is_refused_at_construction() -> None:
+    client, seen = mock_client(lambda request: httpx.Response(302, headers={"location": "http://127.0.0.1:9/x"}), follow_redirects=True)
+    with pytest.raises(ValueError, match="follow redirects"):
+        OpenAIChatProvider("gpt-test", {}, client=client)
+    assert seen == []
+
+
+def test_the_sdk_default_http_client_follows_redirects_and_is_refused() -> None:
+    client = openai.OpenAI(api_key="test-not-a-key", max_retries=0)
+    with pytest.raises(ValueError, match="follow redirects"):
+        OpenAIChatProvider("gpt-test", {}, client=client)
+
+
+def test_a_client_whose_redirect_setting_cannot_be_read_is_refused() -> None:
+    class Opaque:
+        max_retries = 0
+        api_key = "test-not-a-key"
+
+    with pytest.raises(ValueError, match="follow redirects"):
+        OpenAIChatProvider("gpt-test", {}, client=Opaque())
+
+
+def test_a_following_client_would_have_sent_a_second_request() -> None:
+    """Why the refusal exists: with follow_redirects=True the same reply costs two requests."""
+    client, seen = mock_client(
+        lambda request: httpx.Response(200, json=completion_payload())
+        if request.url.path.endswith("/elsewhere")
+        else httpx.Response(307, headers={"location": "http://127.0.0.1:9/elsewhere"}),
+        follow_redirects=True,
+    )
+    client.chat.completions.create(model="m", messages=[{"role": "user", "content": "q"}])
+    assert len(seen) == 2
 
 
 def test_only_documented_not_processed_statuses_are_retryable() -> None:
