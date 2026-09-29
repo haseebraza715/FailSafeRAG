@@ -408,28 +408,56 @@ def test_non_json_200_body_is_a_malformed_response_not_an_answer() -> None:
     assert (info.value.kind, info.value.outcome, info.value.retryable) == ("malformed_response", "unknown", False)
 
 
-@pytest.mark.parametrize(
-    ("status", "body", "kind", "outcome", "retryable"),
-    [
-        (429, error_body("Rate limit reached for requests", code="rate_limit_exceeded", type_="requests"), "rate_limit", "rejected", True),
-        (429, error_body("You exceeded your current quota", code="insufficient_quota", type_="insufficient_quota"), "quota", "rejected", False),
-        (429, error_body("Project reached its enforced monthly spend limit"), "quota", "rejected", False),
-        (500, error_body("The server had an error", type_="server_error"), "server_error", "rejected", True),
-        (502, error_body("Bad gateway", type_="server_error"), "server_error", "rejected", True),
-        (503, error_body("Model overloaded", type_="server_error"), "server_error", "rejected", True),
-        (504, error_body("Gateway timeout", type_="server_error"), "gateway_timeout", "unknown", False),
-        (408, error_body("Request timed out"), "transient_status", "rejected", True),
-        (409, error_body("Conflict"), "transient_status", "rejected", True),
-        (400, error_body("Unsupported parameter: 'max_tokens'", code="unsupported_parameter"), "bad_request", "rejected", False),
-        (422, error_body("Unprocessable"), "bad_request", "rejected", False),
-        (401, error_body("Incorrect API key provided", code="invalid_api_key"), "auth", "rejected", False),
-        (403, error_body("Country, region, or territory not supported"), "auth", "rejected", False),
-        (404, error_body("The model `gpt-nope` does not exist", code="model_not_found"), "unknown_model", "rejected", False),
-        (404, error_body("The model `gpt-nope` does not exist or you do not have access to it."), "unknown_model", "rejected", False),
-        (404, error_body("Unknown URL"), "not_found", "rejected", False),
-        (418, error_body("teapot"), "client_error", "rejected", False),
-    ],
-)
+# Classification of HTTP statuses. `rejected` means the provider or a documented rule shows the request was
+# not processed. `unknown` means it may have been processed and billed, so it is never resent automatically.
+# A retry recommendation (OpenAI's error-codes page, the SDK's default retry set, `Retry-After`) is not
+# proof that the request was not processed. The evidence for each row is in the comment above
+# `_classify_status` in faar/answer_providers.py.
+STATUS_CASES = [
+    # 429: no OpenAI statement says a rate-limited request was not processed or billed.
+    (429, error_body("Rate limit reached for requests", code="rate_limit_exceeded", type_="requests"), "rate_limit", "unknown", False),
+    (429, error_body("Slow down", code="slow_down", type_="rate_limit_error"), "rate_limit", "unknown", False),
+    # Billing, spend and quota errors: documented as errors that retrying cannot fix. They stop the run.
+    # The documented codes must match even when the message text differs.
+    (429, error_body("You exceeded your current quota", code="insufficient_quota", type_="insufficient_quota"), "quota", "rejected", False),
+    (429, error_body("Project reached its enforced monthly spend limit"), "quota", "rejected", False),
+    (429, error_body("Request refused.", code="credit_balance_exhausted"), "quota", "rejected", False),
+    (429, error_body("Request refused.", code="organization_spend_limit_exceeded"), "quota", "rejected", False),
+    (429, error_body("Request refused.", code="project_spend_limit_exceeded"), "quota", "rejected", False),
+    (429, error_body("Request refused.", code="organization_usage_limit_exceeded"), "quota", "rejected", False),
+    # 5xx: an upstream failure does not show that the request was not processed.
+    (500, error_body("The server had an error while processing your request", type_="server_error"), "server_error", "unknown", False),
+    (502, error_body("Bad gateway", type_="server_error"), "server_error", "unknown", False),
+    (501, error_body("Not implemented"), "server_error", "unknown", False),
+    (599, error_body("Odd gateway status"), "server_error", "unknown", False),
+    (503, error_body("Service unavailable", type_="server_error"), "server_error", "unknown", False),
+    (504, error_body("Gateway timeout", type_="server_error"), "gateway_timeout", "unknown", False),
+    (522, error_body("Origin connection timed out"), "gateway_timeout", "unknown", False),
+    (524, error_body("Origin took too long"), "gateway_timeout", "unknown", False),
+    # 503 with the documented overload code: "does not have enough capacity to process your request".
+    (
+        503,
+        error_body("The model is overloaded", code="server_is_overloaded", type_="service_unavailable_error"),
+        "server_error",
+        "rejected",
+        True,
+    ),
+    # 408: RFC 9110 section 15.5.9 says the server did not receive a complete request.
+    (408, error_body("Request timed out"), "transient_status", "rejected", True),
+    # 409: RFC 9110 section 15.5.10 lets the user resolve a conflict and resubmit. It is not a blind retry.
+    (409, error_body("Conflict"), "transient_status", "unknown", False),
+    (400, error_body("Unsupported parameter: 'max_tokens'", code="unsupported_parameter"), "bad_request", "rejected", False),
+    (422, error_body("Unprocessable"), "bad_request", "rejected", False),
+    (401, error_body("Incorrect API key provided", code="invalid_api_key"), "auth", "rejected", False),
+    (403, error_body("Country, region, or territory not supported"), "auth", "rejected", False),
+    (404, error_body("The model `gpt-nope` does not exist", code="model_not_found"), "unknown_model", "rejected", False),
+    (404, error_body("The model `gpt-nope` does not exist or you do not have access to it."), "unknown_model", "rejected", False),
+    (404, error_body("Unknown URL"), "not_found", "rejected", False),
+    (418, error_body("teapot"), "client_error", "rejected", False),
+]
+
+
+@pytest.mark.parametrize(("status", "body", "kind", "outcome", "retryable"), STATUS_CASES)
 def test_status_errors_are_classified(status: int, body: dict, kind: str, outcome: str, retryable: bool) -> None:
     provider, seen = adapter(lambda request: httpx.Response(status, json=body, headers={"x-request-id": "req_9", "retry-after": "3"}))
     with pytest.raises(ProviderError) as info:
@@ -442,8 +470,73 @@ def test_status_errors_are_classified(status: int, body: dict, kind: str, outcom
     assert "test-not-a-key" not in json.dumps(error.raw) + str(error)
 
 
+def test_only_documented_not_processed_statuses_are_retryable() -> None:
+    """Every status that the retry policy would resend by itself is listed here on purpose."""
+    retryable = sorted({(status, body["error"]["code"]) for status, body, _, _, can_retry in STATUS_CASES if can_retry})
+    assert retryable == [(408, None), (503, "server_is_overloaded")]
+
+
+def test_a_502_is_one_unknown_attempt_and_the_retry_policy_reconciles_it() -> None:
+    from faar.retry_policy import RetryPolicy
+
+    provider, seen = adapter(lambda request: httpx.Response(502, text="<html>Bad gateway</html>", headers={"x-request-id": "req_502"}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert len(seen) == 1
+    decision = RetryPolicy().decide(info.value, 1)
+    assert decision.action == "reconcile" and decision.delay_seconds == 0.0
+
+
+@pytest.mark.parametrize("status", [500, 502, 503, 409, 429])
+def test_x_should_retry_true_does_not_make_an_unknown_outcome_retryable(status: int) -> None:
+    """The SDK resends on `x-should-retry: true`. A header is a recommendation, not proof that nothing was processed."""
+    provider, _ = adapter(lambda request: httpx.Response(status, json=error_body("later"), headers={"x-should-retry": "true"}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert (info.value.outcome, info.value.retryable) == ("unknown", False)
+    assert info.value.raw["x_should_retry"] == "true"
+
+
+def test_an_unknown_status_outcome_keeps_the_diagnostics_and_no_secret() -> None:
+    body = error_body("upstream said no", code="upstream_error", type_="server_error")
+    headers = {"x-request-id": "req_diag", "retry-after": "7", "x-should-retry": "true", "openai-organization": "org-x"}
+    provider, _ = adapter(lambda request: httpx.Response(502, json=body, headers=headers))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    raw = info.value.raw
+    assert raw["http_status"] == 502
+    assert raw["x_request_id"] == "req_diag"
+    assert raw["retry_after"] == "7"
+    assert raw["x_should_retry"] == "true"
+    assert raw["error_code"] == "upstream_error"
+    assert raw["error_type"] == "server_error"
+    assert raw["body"] == body
+    text = json.dumps(raw).lower()
+    assert "test-not-a-key" not in text and "authorization" not in text and "bearer" not in text
+
+
+def test_a_huge_error_body_is_bounded_and_keeps_the_ids() -> None:
+    huge = {"error": {"message": "x" * 200_000, "type": "server_error", "code": None}}
+    provider, _ = adapter(lambda request: httpx.Response(502, json=huge, headers={"x-request-id": "req_big"}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    raw = info.value.raw
+    assert raw["x_request_id"] == "req_big" and raw["http_status"] == 502
+    assert len(json.dumps(raw)) < 12_000
+    assert raw["body"]["truncated"] is True
+
+
+def test_a_huge_non_json_error_body_is_bounded() -> None:
+    provider, _ = adapter(lambda request: httpx.Response(502, text="<html>" + "y" * 200_000 + "</html>"))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert len(json.dumps(info.value.raw)) < 12_000
+    assert info.value.raw["http_status"] == 502
+
+
 def test_x_should_retry_false_downgrades_a_retryable_status() -> None:
-    provider, _ = adapter(lambda request: httpx.Response(500, json=error_body("boom"), headers={"x-should-retry": "false"}))
+    body = error_body("overloaded", code="server_is_overloaded", type_="service_unavailable_error")
+    provider, _ = adapter(lambda request: httpx.Response(503, json=body, headers={"x-should-retry": "false"}))
     with pytest.raises(ProviderError) as info:
         provider.send(make_request())
     assert info.value.retryable is False and info.value.outcome == "rejected"
