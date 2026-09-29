@@ -1594,6 +1594,11 @@ def build_live_provider(
     """Build the real provider. Reads ``OPENAI_API_KEY`` here and nowhere else.
 
     ``http_client`` is for tests, which pass an ``httpx.Client`` on a mock transport. The CLI never sets it.
+    The client must not follow redirects. The SDK's own default client does (openai-python 1.68.2,
+    ``_base_client.py:754``), and a 307 or 308 makes it post the prompt again to the ``Location`` URL, outside
+    the driver's accounting. So the builder passes ``openai.DefaultHttpxClient(follow_redirects=False)``, which
+    keeps the SDK's other defaults, and refuses an injected client that follows redirects or whose setting
+    cannot be read.
 
     The client sends to ``config.endpoint`` and to nothing else: the redirecting environment variables are
     refused first, and the built client's ``base_url`` must equal the value recorded in the run identity.
@@ -1605,8 +1610,16 @@ def build_live_provider(
 
     key = environ.get("OPENAI_API_KEY")
     _refuse(bool(key), "OPENAI_API_KEY is not set")
-    extra = {} if http_client is None else {"http_client": http_client}
-    client = openai.OpenAI(api_key=key, base_url=config.endpoint, max_retries=0, timeout=config.timeout_seconds, **extra)
+    if http_client is None:
+        http_client = openai.DefaultHttpxClient(follow_redirects=False)
+    _refuse(
+        getattr(http_client, "follow_redirects", None) is False,
+        "the HTTP client follows redirects, or its follow_redirects setting cannot be read; a redirect would send the "
+        "prompt to another URL outside the driver's accounting. Nothing was sent.",
+    )
+    client = openai.OpenAI(
+        api_key=key, base_url=config.endpoint, max_retries=0, timeout=config.timeout_seconds, http_client=http_client
+    )
     _refuse(
         str(client.base_url) == expected_base_url(config.endpoint),
         f"the client base_url {str(client.base_url)!r} differs from the config endpoint {config.endpoint!r}; nothing was sent",

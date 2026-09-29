@@ -2189,6 +2189,30 @@ def test_the_live_client_is_built_on_the_configured_base_url_with_no_network(mon
     assert response.text == "twelve months" and seen == ["https://gateway.example.test/v1/chat/completions"]
 
 
+def test_the_live_client_built_for_the_cli_does_not_follow_redirects_and_keeps_the_timeout(monkeypatch: pytest.MonkeyPatch) -> None:
+    """M2: the SDK's own client follows redirects, so build_live_provider passes its own. No request is sent."""
+    for name in CLIENT_ENV_VARS:
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr(socket, "getaddrinfo", lambda *a, **k: (_ for _ in ()).throw(OSError("no network in tests")))
+    config = live_config(timeout_seconds=42)
+    provider = lr.build_live_provider(config, {"OPENAI_API_KEY": "test-not-a-key"})
+    assert provider._client._client.follow_redirects is False
+    assert provider._client.timeout == 42 and provider._client.max_retries == 0
+    assert str(provider._client.base_url) == "https://api.openai.com/v1/"
+
+
+@pytest.mark.parametrize("injected", ["follows", "unknown"])
+def test_an_injected_http_client_that_follows_redirects_is_refused(monkeypatch: pytest.MonkeyPatch, injected: str) -> None:
+    """M2: a test seam must not reopen the redirect hole. A client whose setting cannot be read is refused too."""
+    import httpx
+
+    built = tripwire_clients_except_builder(monkeypatch)
+    client: Any = httpx.Client(follow_redirects=True) if injected == "follows" else object()
+    with pytest.raises(RunnerRefusal, match="redirect"):
+        lr.build_live_provider(live_config(), {"OPENAI_API_KEY": "test-not-a-key"}, http_client=client)
+    assert built == []
+
+
 def test_the_live_provider_descriptor_records_the_base_url_and_the_endpoint_is_identity() -> None:
     """H3: the run identity names the URL the client will use, so a different endpoint is a different run."""
     a = lr.provider_descriptor(MODE_LIVE_VALUE, live_config())

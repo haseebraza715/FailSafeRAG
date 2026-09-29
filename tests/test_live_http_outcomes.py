@@ -19,6 +19,9 @@ Ways the pair could fail, written before the tests:
   H8. A documented refusal to process (503 `server_is_overloaded`) stops being retried, or an
       undocumented one (429, 500, 409) starts being retried.
   H9. A gateway outage of many 502 replies sends more requests than the circuit breaker allows.
+  H10. The client that `build_live_provider` builds follows a 307 or 308 reply and posts the prompt to the
+      Location URL, outside the driver's accounting. Each such reply must reach the transport once, and the
+      attempt must be recorded as unknown.
 
 The status table and its sources are in the comment above `_classify_status` in
 `faar/answer_providers.py`.
@@ -26,6 +29,7 @@ The status table and its sources are in the comment above `_classify_status` in
 
 from __future__ import annotations
 
+import dataclasses
 import json
 from collections.abc import Callable
 from pathlib import Path
@@ -100,6 +104,7 @@ class Wire:
     def __init__(self, script: dict[str, list[Step]] | None = None) -> None:
         self.script = {key: list(steps) for key, steps in (script or {}).items()}
         self.seen: list[str] = []
+        self.urls: list[str] = []
         self.authorization: list[str | None] = []
         self.providers = 0
 
@@ -121,6 +126,7 @@ class Wire:
         question_id = self.question_of(request)
         index = self.seen.count(question_id)
         self.seen.append(question_id)
+        self.urls.append(str(request.url))
         self.authorization.append(request.headers.get("authorization"))
         steps = self.script.get(question_id, [])
         step = steps[index] if index < len(steps) else ok()
@@ -139,6 +145,13 @@ class Wire:
         )
         return OpenAIChatProvider(lr.FAKE_CONFIG.model, dict(lr.FAKE_CONFIG.params), client=client)
 
+    def live_factory(self, context: lr.ProviderContext) -> OpenAIChatProvider:
+        """The provider the live CLI builds, on this mock transport. Only the transport is a test seam."""
+        self.providers += 1
+        config = dataclasses.replace(lr.FAKE_CONFIG, endpoint="http://127.0.0.1:9/v1")
+        client = httpx.Client(transport=httpx.MockTransport(self.handler), follow_redirects=False)
+        return lr.build_live_provider(config, {"OPENAI_API_KEY": API_KEY}, http_client=client)
+
 
 class Session:
     """One run directory driven over a shared `Wire`, with the delays the driver asked to sleep."""
@@ -151,10 +164,10 @@ class Session:
     def run_dir(self) -> Path:
         return self.project.run_dir(self.name)
 
-    def run(self) -> lr.LiveResult:
+    def run(self, *, live_build: bool = False) -> lr.LiveResult:
         return lr.execute_run(
             options(self.project, self.name),
-            provider_factory=self.wire.factory,
+            provider_factory=self.wire.live_factory if live_build else self.wire.factory,
             descriptor=DESCRIPTOR,
             sleep=self.sleeps.append,
             environ={},
@@ -442,3 +455,27 @@ def test_a_rejected_attempt_keeps_the_provider_request_id_for_later_checks(proje
     assert failed["provider_raw"]["x_request_id"] == "req_abc123"
     assert failed["provider_raw"]["error_code"] == "server_is_overloaded"
     assert "authorization" not in json.dumps(failed).lower() and "test-not-a-key" not in json.dumps(failed)
+
+
+# ---------------------------------------------------------------------------
+# Redirects (H10)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("code", [307, 308])
+def test_a_redirect_is_not_followed_and_the_attempt_is_unknown(project: Project, code: int) -> None:
+    """H10: a 307 or 308 makes an SDK client that follows redirects post the prompt again, to the Location URL."""
+    elsewhere = "http://other.invalid/v1/elsewhere"
+    redirect: Step = lambda request: httpx.Response(code, headers={"location": elsewhere})  # noqa: E731
+    s = session(project, {"q1": [redirect, ok()]})
+    result = s.run(live_build=True)
+    assert s.wire.count("q1") == 1, "the redirect target was not requested"
+    assert not any("other.invalid" in url for url in s.wire.urls)
+    assert len(s.events("dispatch_started")) == 1
+    assert s.events("attempt_failed") == []
+    (event,) = s.events("outcome_unknown")
+    assert event["kind"] == "redirect" and event["provider_raw"]["http_status"] == code
+    assert result.summary["run_state"] == "needs_reconciliation"
+    assert s.ledger().reserved == pytest.approx(s.upper_bound())
+    s.run(live_build=True)
+    assert s.wire.count("q1") == 1, "a resume does not send it again"
