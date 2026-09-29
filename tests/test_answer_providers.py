@@ -510,7 +510,7 @@ def test_an_unknown_status_outcome_keeps_the_diagnostics_and_no_secret() -> None
     assert raw["x_should_retry"] == "true"
     assert raw["error_code"] == "upstream_error"
     assert raw["error_type"] == "server_error"
-    assert raw["body"] == body
+    assert raw["body"] == body["error"]  # the SDK unwraps the "error" object
     text = json.dumps(raw).lower()
     assert "test-not-a-key" not in text and "authorization" not in text and "bearer" not in text
 

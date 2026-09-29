@@ -50,11 +50,17 @@ OpenAI adapter
       outcome="unknown", retryable=False)` with the payload in `raw`. A message whose `content`
       is null stays a response (a refusal string is the usual reason), and the reply parser
       classifies it.
-  O5. 429 and 5xx are `rejected` and retryable, except 504. A quota 429 is not retryable. A 504
-      is `gateway_timeout`, outcome `unknown`, not retryable: a gateway can give up waiting after
-      the provider finished the request, so the attempt may have been billed. 500, 502 and 503
-      come from the provider or from a gateway that never forwarded the request, so they stay
-      `server_error`.
+  O5. A status counts as `rejected` only when a source shows the provider did not process the request.
+      A retry recommendation does not show that. OpenAI's error-codes page, `Retry-After` and the
+      SDK's default retry set (408, 409, 429, 5xx, and `x-should-retry: true`) say when a retry is
+      worth trying. They do not say the first request was not processed or billed. Every other
+      retry candidate is `unknown` and not retryable, so the run driver never resends it and the
+      question waits for `reconcile`. The rows and their sources are in the comment above
+      `_classify_status`. Summary: 408 and 503 with code `server_is_overloaded` are `rejected` and
+      retryable. 429 (rate limit), 409, 500, 502, 503 with any other body, other 5xx and the
+      gateway timeouts 504, 522 and 524 are `unknown`. A quota or billing 429 is `rejected` and
+      stops the run. An unknown status outcome keeps status, ids, headers and a bounded body in
+      `ProviderError.raw`.
   O6. 400 is `rejected` and not retryable. 401 and 403 are kind `auth`. 404 model-not-found is
       kind `unknown_model`.
   O7. A connect failure is `not_sent` and retryable. A read timeout, a dropped connection and any
@@ -96,9 +102,9 @@ from faar.live_contract import (
 ABSTENTION_TEXT = "NO_ANSWER"
 
 # ProviderError.kind values. The retry policy branches on these.
-# stop_run kinds: auth, unknown_model, quota. Everything else follows retryable / outcome.
+# stop_run kinds: auth, unknown_model, quota. An unknown outcome goes to reconcile. Other errors follow retryable.
 KIND_RATE_LIMIT = "rate_limit"
-KIND_SERVER_ERROR = "server_error"  # HTTP 500, 502, 503 and other 5xx except 504
+KIND_SERVER_ERROR = "server_error"  # HTTP 5xx except 504, 522 and 524
 KIND_GATEWAY_TIMEOUT = "gateway_timeout"  # HTTP 504, 522, 524
 # Gateway statuses that can follow a request the provider accepted: 504 (gateway timeout) and the
 # Cloudflare origin timeouts 522 and 524.
@@ -170,6 +176,11 @@ class FakeStep:
     `text` overrides the reply text of answer-like kinds. `returned_model` overrides the model
     the fake reports back. `http_status` overrides the status of `retryable_error` (default 429)
     and `non_retryable_error` (default 400). `message` overrides the refusal text or error message.
+
+    `retryable_error` exercises the driver's retry path. It is a `rejected`, retryable failure whatever
+    status it carries. The real adapter yields that only for HTTP 408 and for 503 with code
+    `server_is_overloaded`. It reports a real 429 or 502 as `unknown`. Use `timeout_unknown` or
+    `ambiguous` to script those.
     """
 
     kind: str
@@ -590,6 +601,19 @@ class OpenAIChatProvider:
 # --------------------------------------------------------------------------- error classification
 
 _QUOTA_MARKERS = ("insufficient_quota", "quota", "spend limit", "credit balance", "usage limit")
+# 429 error codes on the error-codes page for billing, spend and usage limits. The page says retrying
+# them does not restore access, so they stop the run. The message text is not documented, so match the code.
+_QUOTA_CODES = (
+    "credit_balance_exhausted",
+    "organization_spend_limit_exceeded",
+    "project_spend_limit_exceeded",
+    "organization_usage_limit_exceeded",
+    "insufficient_quota",
+)
+# The only error code of a 503 that OpenAI documents as a refusal to process the request.
+_OVERLOAD_CODE = "server_is_overloaded"
+_BODY_LIMIT = 4000
+_HEADER_LIMIT = 200
 
 
 def _clip(text: str) -> str:
@@ -603,6 +627,84 @@ def _json_safe(value: Any) -> Any:
         return str(value)
 
 
+def _bounded_body(body: Any) -> Any:
+    """The response body for `ProviderError.raw`, cut to `_BODY_LIMIT` characters.
+
+    A parsed JSON body stays a JSON value while it fits. A longer one, and any non-JSON text, is
+    stored as text with a `truncated` marker, so the event log line stays small and keeps the ids.
+    """
+    if body is None:
+        return None
+    if isinstance(body, (dict, list)):
+        try:
+            text = json.dumps(body, default=str, ensure_ascii=False)
+        except (TypeError, ValueError):
+            text = str(body)
+        if len(text) <= _BODY_LIMIT:
+            return _json_safe(body)
+    else:
+        text = str(body)
+        if len(text) <= _BODY_LIMIT:
+            return text
+    return {"truncated": True, "length": len(text), "text": text[:_BODY_LIMIT]}
+
+
+def _header(headers: Any, name: str) -> str | None:
+    value = headers.get(name)
+    return None if value is None else str(value)[:_HEADER_LIMIT]
+
+
+# Which HTTP statuses count as `rejected` (the request was not processed) and which as `unknown`.
+#
+# The test is proof that the request was not processed, not a recommendation to try again. A resend is
+# safe only after proof, because OpenAI documents no idempotency key for Chat Completions. Without proof
+# the outcome is `unknown`: the run driver never resends the request, keeps its reservation and waits for
+# `reconcile`. Retrieved 2026-09-29.
+#
+#   E1  OpenAI, Error codes. https://developers.openai.com/api/docs/guides/error-codes
+#       The page lists 400 (service_tier), 401, 403, 429 (credit_balance_exhausted, rate limit, slow_down,
+#       spend and usage limits), 500 and 503 (server_is_overloaded). It has no 502, 504, 408 or 409 entry
+#       and no statement on billing of failed requests. For 500 it says "Retry your request after a brief
+#       wait", which is a retry recommendation. For 429 it says to follow `Retry-After`, also a
+#       recommendation. For billing, spend and quota errors it says "Retrying billing, spend, or quota
+#       errors won't restore API access".
+#   E2  OpenAI, Error codes, section "503 - Model temporarily overloaded". "The requested model does not
+#       have enough capacity to process your request at the moment." This is the only OpenAI text that
+#       says a failed request was not processed, and only for type `service_unavailable_error` with code
+#       `server_is_overloaded`.
+#   E3  OpenAI, Rate limits, section "How do I retry?" (https://developers.openai.com/api/docs/guides/rate-limits).
+#       "unsuccessful requests contribute to your per-minute limit". The guide also says the limit uses
+#       max_tokens plus an estimate from the character count, which suggests a check before generation. It
+#       never says a 429 request was not processed or not billed.
+#   E4  RFC 9110 (https://www.rfc-editor.org/rfc/rfc9110.html), retrieved as text. 15.5.9 (408): the server
+#       "did not receive a complete request message", and the client MAY repeat it. 15.5.10 (409): the
+#       user "might be able to resolve the conflict and resubmit". 15.6.1 (500): an "unexpected condition
+#       that prevented it from fulfilling the request". 15.6.3 (502): a gateway "received an invalid
+#       response from an inbound server". 15.6.4 (503): "unable to handle the request due to a temporary
+#       overload or scheduled maintenance". 15.6.5 (504): no "timely response from an upstream server".
+#       9.2.2: a client "SHOULD NOT automatically retry a request with a non-idempotent method unless it
+#       has some means to know that ... the original request was never applied" and "some means to detect
+#       that the original request was never applied". No 5xx definition says the request was not applied.
+#   E5  openai-python 1.68.2, `_base_client.py` `_should_retry`: it resends on x-should-retry "true", on
+#       408, 409, 429 and any status of 500 or more. It is a client default for retrying, and this adapter
+#       turns it off (`max_retries=0`). It is not documentation that those requests were not processed.
+#   E6  RFC 9110 15.5.1, 15.5.2, 15.5.4, 15.5.5 and 15.5.21: a 400 or 422 server "cannot or will not
+#       process" the request, and 401, 403 and 404 refuse it for credentials, permission or target. Other
+#       4xx codes are client errors (15.5). No resend follows from these, so a wrong `rejected` here costs
+#       no second charge. The reservation is kept for every `rejected` attempt.
+#
+#   status               outcome   retry  source
+#   408                  rejected  yes    E4 15.5.9, the server never got a complete request
+#   503 server_is_overloaded rejected yes E2
+#   503 other, 500, 502, other 5xx    unknown no  E1, E4, E5 (recommendation only)
+#   504, 522, 524        unknown   no     a gateway can give up after the provider finished
+#   429 rate limit       unknown   no     E1 and E3 recommend waiting, none says "not processed"
+#   429 quota or billing rejected  no     E1, stops the run
+#   409                  unknown   no     E4 15.5.10, a conflict is resolved by the user, not resent blindly
+#   400, 422, 401, 403, 404, other 4xx  rejected no  E6
+#
+# 429 is the one row that could reasonably go the other way. If OpenAI states that a rate-limited request is
+# never processed, change the rate-limit branch below and `STATUS_CASES` in tests/test_answer_providers.py.
 def _classify_status(exc: Any) -> ProviderError:
     status = int(exc.status_code)
     code = exc.code if isinstance(exc.code, str) else None
@@ -610,21 +712,24 @@ def _classify_status(exc: Any) -> ProviderError:
     message = _clip(str(exc.message))
     headers = exc.response.headers
     lowered = message.lower()
+    # Diagnostics for reconciliation. The headers are the provider's response headers, never the request's,
+    # so the Authorization header and the key are not in here.
     raw = {
         "error_class": type(exc).__name__,
-        "x_request_id": headers.get("x-request-id"),
-        "retry_after": headers.get("retry-after"),
-        "x_should_retry": headers.get("x-should-retry"),
+        "http_status": status,
+        "x_request_id": _header(headers, "x-request-id"),
+        "retry_after": _header(headers, "retry-after"),
+        "x_should_retry": _header(headers, "x-should-retry"),
         "error_code": code,
         "error_type": error_type,
-        "body": _json_safe(exc.body) if isinstance(exc.body, (dict, list)) else _clip(str(exc.body)),
+        "body": _bounded_body(exc.body),
     }
     server_forbids_retry = headers.get("x-should-retry") == "false"
 
     def build(kind: str, outcome: str, retryable: bool) -> ProviderError:
-        return ProviderError(
-            message, kind=kind, outcome=outcome, retryable=retryable and not server_forbids_retry, http_status=status, raw=raw
-        )
+        # Only a `rejected` outcome can be retryable. `x-should-retry: true` never changes an outcome.
+        allowed = retryable and outcome == OUTCOME_REJECTED and not server_forbids_retry
+        return ProviderError(message, kind=kind, outcome=outcome, retryable=allowed, http_status=status, raw=raw)
 
     is_missing_model = code == "model_not_found" or (status == 404 and code is None and "model" in lowered)
     if is_missing_model and status in (400, 403, 404):
@@ -633,18 +738,24 @@ def _classify_status(exc: Any) -> ProviderError:
         return build(KIND_AUTH, OUTCOME_REJECTED, False)
     if status == 429:
         marked = " ".join(filter(None, (code, error_type, lowered)))
-        if any(marker in marked for marker in _QUOTA_MARKERS):
+        if code in _QUOTA_CODES or any(marker in marked for marker in _QUOTA_MARKERS):
             return build(KIND_QUOTA, OUTCOME_REJECTED, False)
-        return build(KIND_RATE_LIMIT, OUTCOME_REJECTED, True)
-    if status in (408, 409):
+        return build(KIND_RATE_LIMIT, OUTCOME_UNKNOWN, False)
+    if status == 408:
         return build(KIND_TRANSIENT_STATUS, OUTCOME_REJECTED, True)
+    if status == 409:
+        return build(KIND_TRANSIENT_STATUS, OUTCOME_UNKNOWN, False)
     if status in _GATEWAY_TIMEOUT_STATUSES:
         # A gateway can time out after the provider finished the request, so the attempt may have been
-        # processed and billed. 500, 502 and 503 mean the provider failed or the request was not
-        # forwarded, so a retry is safe. 504, 522 and 524 are not, and the retry policy sends them to reconcile.
+        # processed and billed.
         return build(KIND_GATEWAY_TIMEOUT, OUTCOME_UNKNOWN, False)
-    if status >= 500:
+    if status == 503 and code == _OVERLOAD_CODE:
         return build(KIND_SERVER_ERROR, OUTCOME_REJECTED, True)
+    if status >= 500:
+        # 500, 502 and other 5xx say the provider or a gateway failed. They do not say the request was
+        # not processed, so nothing is resent. `x-should-retry: true` and OpenAI's "retry after a brief
+        # wait" are recommendations to try again, not proof.
+        return build(KIND_SERVER_ERROR, OUTCOME_UNKNOWN, False)
     if status == 404:
         return build(KIND_NOT_FOUND, OUTCOME_REJECTED, False)
     if status in (400, 422):
