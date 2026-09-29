@@ -566,6 +566,86 @@ def test_a_following_client_would_have_sent_a_second_request() -> None:
     client.chat.completions.create(model="m", messages=[{"role": "user", "content": "q"}])
     assert len(seen) == 2
 
+# --------------------------------------------------------------------------- API key scrub (L4)
+
+ECHOED_KEY = "sk-test-echoed-0123456789"
+
+
+def test_an_api_key_echoed_by_a_proxy_is_replaced_in_the_message_and_the_raw() -> None:
+    header_echo = {"x-request-id": "req_echo", "x-debug": f"Bearer {ECHOED_KEY}", "location": f"http://127.0.0.1:9/?key={ECHOED_KEY}"}
+    cases = [
+        (401, {"json": error_body(f"Incorrect API key provided: {ECHOED_KEY}.", code="invalid_api_key")}),
+        (502, {"json": {"error": {"message": "bad", "type": "server_error", "code": None, "detail": {"echo": [f"Authorization: Bearer {ECHOED_KEY}"]}}}}),
+        (502, {"text": f"<html>upstream saw {ECHOED_KEY}</html>"}),
+        (500, {"json": error_body("ok", code=f"code-{ECHOED_KEY}", type_=f"type-{ECHOED_KEY}")}),
+        (302, {"headers": header_echo}),
+    ]
+    for status, kwargs in cases:
+        provider, seen = adapter(lambda request, s=status, k=kwargs: httpx.Response(s, **k), api_key=ECHOED_KEY)
+        with pytest.raises(ProviderError) as info:
+            provider.send(make_request())
+        error = info.value
+        assert len(seen) == 1
+        assert ECHOED_KEY not in str(error), (status, kwargs)
+        assert ECHOED_KEY not in json.dumps(error.raw), (status, kwargs)
+        assert "[redacted-api-key]" in str(error) + json.dumps(error.raw), (status, kwargs)
+        assert error.outcome in ("rejected", "unknown") and error.http_status == status
+
+
+def test_a_key_that_straddles_a_size_limit_is_still_removed() -> None:
+    """The scrub runs before the message and body are cut to their limits, so no fragment of the key survives a cut.
+
+    Each case first runs with a different client key, to show that the cut really lands inside the echoed key.
+    """
+    message_prefix = "Error code: 401 - {'error': {'message': '"  # how the SDK renders the message
+    message = "x" * (995 - len(message_prefix)) + ECHOED_KEY
+    body = {"error": {"message": "y" * (3995 - len('{"message": "')) + ECHOED_KEY, "type": "server_error", "code": None}}
+    cases = [
+        (401, error_body(message), lambda error: str(error)),
+        (502, body, lambda error: json.dumps(error.raw)),
+    ]
+    for status, payload, stored in cases:
+        control, _ = adapter(lambda request, s=status, p=payload: httpx.Response(s, json=p), api_key="a-different-key-1234")
+        with pytest.raises(ProviderError) as info:
+            control.send(make_request())
+        assert ECHOED_KEY[:4] in stored(info.value), "the cut must land inside the key for this test to mean anything"
+        provider, _ = adapter(lambda request, s=status, p=payload: httpx.Response(s, json=p), api_key=ECHOED_KEY)
+        with pytest.raises(ProviderError) as info:
+            provider.send(make_request())
+        assert ECHOED_KEY[:4] not in stored(info.value).replace("[redacted-api-key]", ""), status
+
+
+def test_an_api_key_in_a_transport_error_or_a_malformed_reply_is_replaced() -> None:
+    def refuse(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError(f"proxy rejected {ECHOED_KEY}", request=request)
+
+    provider, _ = adapter(refuse, api_key=ECHOED_KEY)
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert ECHOED_KEY not in str(info.value) + json.dumps(info.value.raw)
+    provider, _ = adapter(lambda request: httpx.Response(200, text=f"<html>{ECHOED_KEY}</html>", headers={"content-type": "text/html"}), api_key=ECHOED_KEY)
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert ECHOED_KEY not in str(info.value) + json.dumps(info.value.raw)
+    body = completion_payload(choices=[], id=f"id-{ECHOED_KEY}")
+    provider, _ = adapter(lambda request: httpx.Response(200, json=body), api_key=ECHOED_KEY)
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert ECHOED_KEY not in str(info.value) + json.dumps(info.value.raw)
+
+
+def test_a_key_shorter_than_eight_characters_is_not_scrubbed() -> None:
+    """A short value would also match ordinary text, so the scrub leaves it alone."""
+    provider, _ = adapter(lambda request: httpx.Response(401, json=error_body("bad key abc1234")), api_key="abc1234")
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert "abc1234" in str(info.value) and "[redacted-api-key]" not in str(info.value)
+
+
+def test_the_provider_never_exposes_the_key() -> None:
+    provider, _ = adapter(lambda request: httpx.Response(200, json=completion_payload()), api_key=ECHOED_KEY)
+    assert ECHOED_KEY not in json.dumps(provider.identity()) and ECHOED_KEY not in repr(provider)
+
 
 def test_only_documented_not_processed_statuses_are_retryable() -> None:
     """Every status that the retry policy would resend by itself is listed here on purpose."""
