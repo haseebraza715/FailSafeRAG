@@ -2765,7 +2765,9 @@ def test_a_returned_model_that_differs_from_the_requested_model_blocks_the_flag(
     summary = live_run(project, rig, monkeypatch=monkeypatch).summary
     assert summary["returned_model_mismatch"] == 1 and summary["valid_baseline"] is False
     assert any("returned model" in blocker for blocker in summary["valid_baseline_blockers"])
-    assert summary["returned_models"] == {"gpt-4o-2024-11-20": 4, "gpt-4o-2025-01-01": 1}
+    # The driver stops after the mismatch (safety stop): q1 and q2 are saved, the rest are unserved.
+    assert summary["returned_models"] == {"gpt-4o-2024-11-20": 1, "gpt-4o-2025-01-01": 1}
+    assert summary["run_state"] == "safety_stopped"
 
 
 def test_a_missing_returned_model_counts_as_a_mismatch(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -2791,8 +2793,9 @@ def test_a_missing_returned_model_counts_as_a_mismatch(project: Project, monkeyp
         opts, provider_factory=lambda ctx: NoModel(lr.build_fake_provider(rig.steps, rig.default, config, ctx)),
         descriptor=rig.descriptor, sleep=lambda s: None, environ={lr.LIVE_ENV_NAME: lr.LIVE_ENV_VALUE},
     )
-    assert result.summary["returned_model_mismatch"] == 5 and result.summary["valid_baseline"] is False
-    assert result.summary["returned_models"] == {"(none)": 5}
+    # The first response has no returned model, so the driver stops (safety stop) and sends nothing more.
+    assert result.summary["returned_model_mismatch"] == 1 and result.summary["valid_baseline"] is False
+    assert result.summary["returned_models"] == {"(none)": 1} and result.summary["run_state"] == "safety_stopped"
     assert lr.returned_model_matches("gpt-4o-2024-11-20", "gpt-4o-2024-11-20") is True
     assert lr.returned_model_matches("gpt-4o", "gpt-4o-2024-11-20") is False, "no alias mapping is defined"
 
@@ -2802,8 +2805,10 @@ def test_an_input_bound_exceedance_blocks_the_flag(project: Project, monkeypatch
 
     services = dataclasses.replace(lr.Services.default(), input_token_upper_bound=lambda messages: 1)
     summary = live_run(project, Rig(), services=services, monkeypatch=monkeypatch).summary
-    assert summary["input_bound_exceeded"] == 5 and summary["valid_baseline"] is False
+    # The first response exceeds the bound, so the driver stops (safety stop) and the other four are never sent.
+    assert summary["input_bound_exceeded"] == 1 and summary["valid_baseline"] is False
     assert any("input" in blocker for blocker in summary["valid_baseline_blockers"])
+    assert summary["run_state"] == "safety_stopped" and summary["attempts"]["total"] == 1
 
 
 def test_a_ledger_anomaly_blocks_the_flag(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -2817,6 +2822,8 @@ def test_a_ledger_anomaly_blocks_the_flag(project: Project, monkeypatch: pytest.
     summary = live_run(project, Rig(), services=dataclasses.replace(real, ledger_from_events=anomalous), monkeypatch=monkeypatch).summary
     assert summary["valid_baseline"] is False and summary["cost"]["anomalies"]
     assert any("anomal" in blocker for blocker in summary["valid_baseline_blockers"])
+    # This ledger reports an anomaly from the start, so the driver dispatches nothing (safety stop).
+    assert summary["run_state"] == "safety_stopped" and summary["attempts"]["total"] == 0
 
 
 def test_an_execution_failure_a_fake_run_and_an_incomplete_run_block_the_flag(project: Project, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -2929,3 +2936,393 @@ def test_status_on_a_scored_run_does_not_advise_reopen(project: Project) -> None
     status = lr.run_status(run_dir)
     assert status["scored"] is True
     assert not any("reopen" in step for step in status["next"])
+
+
+# ---------------------------------------------------------------------------
+# Safety stop: dispatch ends when a safety or model assumption fails
+#
+# Ways the driver could fail here, written before the fix.
+#   S1. A response above its input bound is saved and the next request is still sent.
+#   S2. A returned model that differs from the configured one is saved and the next request is still sent.
+#   S3. A ledger anomaly (measured cost off its usage, above its bound, or without usable usage) does not stop dispatch.
+#   S4. The offending response, its usage, cost and model are dropped or rewritten when the run stops.
+#   S5. A restart builds a provider or sends a request while the violation stands.
+#   S6. A raised ceiling, reconcile or reopen clears the violation.
+#   S7. A question that the stop left unserved is missing from the export, or exported as an abstention.
+#   S8. A safety-stopped run is scored, or exits with a code that other outcomes use.
+#   S9. The violation shows only when the last response is the offending one, or only in the final summary.
+#   S10. A response whose response file exists but whose event was lost hides the violation from a restart.
+# ---------------------------------------------------------------------------
+
+SAFETY_EXIT = 6
+SAFETY_STATE = "safety_stopped"
+OTHER_EXIT_CODES = (0, 1, 2, 3, 4, 5)
+UNSERVED_TYPE = "safety_stop"
+
+
+def bound_one_services() -> lr.Services:
+    """The reviewer's injection: every request claims an input upper bound of 1 token."""
+    import dataclasses
+
+    return dataclasses.replace(lr.Services.default(), input_token_upper_bound=lambda messages: 1)
+
+
+def attempt_id_of(run_dir: Path, question_id: str, attempt: int = 1) -> str:
+    request_id = next(r["request_id"] for r in requests_of(run_dir) if r["question_id"] == question_id)
+    return f"{request_id}-a{attempt}"
+
+
+def stop_violations(run_dir: Path) -> list[dict[str, Any]]:
+    return _ended(run_dir)["safety_violations"]
+
+
+def conditions(violations: list[dict[str, Any]]) -> set[tuple[str | None, str]]:
+    return {(v["attempt_id"], v["condition"]) for v in violations}
+
+
+def bound_one_run(project: Project, name: str = "run-a") -> tuple[Rig, lr.LiveResult, Path]:
+    rig = Rig()
+    result = go(project, rig, name, services=bound_one_services())
+    return rig, result, project.run_dir(name)
+
+
+def no_provider_factory(context: lr.ProviderContext) -> Any:
+    raise AssertionError("the provider factory must not be called while a safety violation stands")
+
+
+def go_without_provider(project: Project, name: str = "run-a", *, services: lr.Services | None = None, **kwargs: Any) -> lr.LiveResult:
+    return lr.execute_run(
+        options(project, name, **kwargs),
+        services=services,
+        provider_factory=no_provider_factory,
+        descriptor=Rig().descriptor,
+        sleep=lambda seconds: None,
+        environ={},
+    )
+
+
+def test_the_safety_stop_has_its_own_exit_code_state_and_end_reason() -> None:
+    assert lr.EXIT_SAFETY_STOPPED == SAFETY_EXIT and SAFETY_EXIT not in OTHER_EXIT_CODES
+    assert lr.RUN_SAFETY_STOPPED == SAFETY_STATE and SAFETY_STATE in lr.RUN_STATES
+    assert lr.END_SAFETY_STOP == "safety_stop" and lr.END_SAFETY_STOP in lr.END_REASONS
+
+
+def test_an_input_bound_exceedance_stops_dispatch_after_the_first_offending_response(project: Project) -> None:
+    """S1, S4, S7, S9: one request goes out, its response is kept in full, the rest are exported as unserved safety stops."""
+    rig, result, run_dir = bound_one_run(project)
+    assert rig.sent(run_dir) == ["q1"], "no request is dispatched after the violation"
+    assert result.exit_code == SAFETY_EXIT
+    ended = _ended(run_dir)
+    assert ended["reason"] == "safety_stop"
+    q1_attempt = attempt_id_of(run_dir, "q1")
+    assert (q1_attempt, "input_bound_exceeded") in conditions(stop_violations(run_dir))
+    assert not any(e["event"] == "dispatch_started" and e["question_id"] != "q1" for e in events_of(run_dir))
+    saved = next(e for e in events_of(run_dir) if e["event"] == "response_saved")
+    assert saved["input_bound_exceeded"] is True and saved["usage"]["input_tokens"] > 1
+    response = json.loads((run_dir / saved["response_file"]).read_text())
+    assert response["returned_model"] == lr.FAKE_CONFIG.model and response["usage"] == saved["usage"]
+    assert response["measured_cost"] == saved["measured_cost"] and response["provider_response"]["text"] == "twelve months"
+    summary = summary_of(run_dir)
+    assert summary["run_state"] == SAFETY_STATE and summary["exit_code"] == SAFETY_EXIT
+    assert summary["valid_baseline"] is False and any("safety" in b for b in summary["valid_baseline_blockers"])
+    assert (q1_attempt, "input_bound_exceeded") in conditions(summary["safety_violations"])
+    predictions = by_question(run_dir)
+    assert list(predictions) == QUESTIONS, "every pilot question stays in the export"
+    assert predictions["q1"]["status"] == "answered" and predictions["q1"]["usage"] == saved["usage"]
+    assert predictions["q5"]["status"] == "no_evidence"
+    for qid in ("q2", "q3", "q4", "q6"):
+        record = predictions[qid]
+        assert record["status"] == "execution_failed" and record["unserved"] is True and record["abstained"] is False
+        assert record["answer"] is None and record["failure"]["type"] == UNSERVED_TYPE
+    assert summary["counts"]["unserved"] == 4 and summary["counts"]["execution_failed"] == 4
+
+
+def test_a_restart_after_the_stop_builds_no_provider_and_makes_no_call(project: Project) -> None:
+    """S5: the violation is rebuilt from the durable records before any provider exists. Nothing is written."""
+    _, _, run_dir = bound_one_run(project)
+    before = file_snapshot(run_dir)
+    fresh = Rig()
+    result = lr.execute_run(
+        options(project),
+        services=bound_one_services(),
+        provider_factory=fresh.factory,
+        descriptor=fresh.descriptor,
+        sleep=lambda seconds: None,
+        environ={},
+    )
+    assert result.exit_code == SAFETY_EXIT and "safety" in result.message
+    assert fresh.factory_calls == 0 and fresh.providers == []
+    assert result.summary["run_state"] == SAFETY_STATE
+    assert {k: v for k, v in file_snapshot(run_dir).items() if k != "run.lock"} == {k: v for k, v in before.items() if k != "run.lock"}
+
+
+def test_a_restart_refuses_even_when_no_provider_factory_is_offered(project: Project) -> None:
+    _, _, run_dir = bound_one_run(project)
+    result = go_without_provider(project, services=bound_one_services())
+    assert result.exit_code == SAFETY_EXIT and "safety" in result.message
+
+
+def test_status_and_export_rebuild_the_violation_from_the_records(project: Project) -> None:
+    _, _, run_dir = bound_one_run(project)
+    (run_dir / "run_summary.json").unlink()
+    (run_dir / "predictions.jsonl").unlink()
+    status = lr.run_status(run_dir, bound_one_services())
+    assert status["run_state"] == SAFETY_STATE and status["exit_code"] == SAFETY_EXIT
+    assert (attempt_id_of(run_dir, "q1"), "input_bound_exceeded") in conditions(status["safety_violations"])
+    text = " ".join(lr.format_status(status).split())
+    assert "safety" in text and "successor run" in text
+    assert "cannot undo a charge" in text and "provider-reported usage" in text and "valid bounds" in text
+    assert not any("run again" in step for step in status["next"]), "run again would only be refused"
+    exported = lr.export_run(run_dir, bound_one_services())
+    assert exported.exit_code == SAFETY_EXIT and exported.summary["run_state"] == SAFETY_STATE
+    assert list(by_question(run_dir)) == QUESTIONS
+
+
+def test_a_safety_stopped_run_is_not_scored_but_still_exports_every_question(project: Project) -> None:
+    """S8: score needs a complete run, and a safety-stopped run is not one."""
+    _, _, run_dir = bound_one_run(project)
+    with pytest.raises(RunnerRefusal, match="safety"):
+        lr.score_run_live(project_root=project.root, run_dir=run_dir, services=bound_one_services())
+    assert not (run_dir / "scores.jsonl").exists() and not (run_dir / "score_summary.json").exists()
+    assert len(predictions_of(run_dir)) == len(QUESTIONS)
+
+
+def test_a_returned_model_mismatch_stops_dispatch(project: Project) -> None:
+    """S2: q2 comes back from another model; q3, q4 and q6 are never sent."""
+    rig = Rig(steps={"q2": [FakeStep("answer", text="x", returned_model="fake-answer-model-2")]})
+    result = go(project, rig)
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1", "q2"]
+    assert result.exit_code == SAFETY_EXIT and _ended(run_dir)["reason"] == "safety_stop"
+    assert conditions(stop_violations(run_dir)) == {(attempt_id_of(run_dir, "q2"), "returned_model_mismatch")}
+    predictions = by_question(run_dir)
+    assert predictions["q2"]["status"] == "answered" and predictions["q2"]["returned_model"] == "fake-answer-model-2"
+    assert [predictions[q]["failure"]["type"] for q in ("q3", "q4", "q6")] == [UNSERVED_TYPE] * 3
+    assert summary_of(run_dir)["run_state"] == SAFETY_STATE and summary_of(run_dir)["valid_baseline"] is False
+    restart = Rig(steps={"q2": [FakeStep("answer", text="x", returned_model="fake-answer-model-2")]})
+    assert go(project, restart).exit_code == SAFETY_EXIT
+    assert restart.factory_calls == 0
+
+
+def test_a_response_without_a_returned_model_stops_dispatch(project: Project) -> None:
+    import dataclasses
+
+    class NoModel:
+        def __init__(self, inner: Any) -> None:
+            self.inner = inner
+            self.calls = 0
+
+        def send(self, request: Any) -> Any:
+            self.calls += 1
+            return dataclasses.replace(self.inner.send(request), returned_model=None)
+
+    rig = Rig()
+    wrapped: list[NoModel] = []
+
+    def factory(context: lr.ProviderContext) -> NoModel:
+        wrapped.append(NoModel(lr.build_fake_provider(rig.steps, rig.default, lr.FAKE_CONFIG, context)))
+        return wrapped[-1]
+
+    result = lr.execute_run(options(project), provider_factory=factory, descriptor=rig.descriptor, sleep=lambda s: None, environ={})
+    run_dir = project.run_dir("run-a")
+    assert wrapped[0].calls == 1 and result.exit_code == SAFETY_EXIT
+    assert conditions(stop_violations(run_dir)) == {(attempt_id_of(run_dir, "q1"), "returned_model_mismatch")}
+
+
+def _ledger_case_scaled(real: lr.Services) -> lr.Services:
+    import dataclasses
+
+    def half(usage: Any, prices: Any) -> Any:
+        cost = real.measured_cost(usage, prices)
+        return None if cost is None else cost / 2
+
+    return dataclasses.replace(real, measured_cost=half)
+
+
+def _ledger_case_above_bound(real: lr.Services) -> lr.Services:
+    import dataclasses
+
+    return dataclasses.replace(real, measured_cost=lambda usage, prices: 999.0)
+
+
+def test_a_measured_cost_that_differs_from_its_usage_stops_dispatch(project: Project) -> None:
+    rig = Rig()
+    result = go(project, rig, services=_ledger_case_scaled(lr.Services.default()))
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1"] and result.exit_code == SAFETY_EXIT
+    assert (attempt_id_of(run_dir, "q1"), "ledger_anomaly") in conditions(stop_violations(run_dir))
+    assert any("differs" in v["detail"] for v in stop_violations(run_dir))
+
+
+def test_a_measured_cost_above_its_own_upper_bound_stops_dispatch(project: Project) -> None:
+    rig = Rig()
+    result = go(project, rig, services=_ledger_case_above_bound(lr.Services.default()))
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1"] and result.exit_code == SAFETY_EXIT
+    assert (attempt_id_of(run_dir, "q1"), "ledger_anomaly") in conditions(stop_violations(run_dir))
+    assert any("upper bound" in v["detail"] for v in stop_violations(run_dir))
+
+
+def test_a_recorded_cost_without_reproducible_usage_stops_dispatch(project: Project) -> None:
+    import dataclasses
+
+    from faar.live_contract import ProviderUsage
+
+    class Stripped:
+        def __init__(self, inner: Any) -> None:
+            self.inner = inner
+            self.calls = 0
+
+        def send(self, request: Any) -> Any:
+            self.calls += 1
+            return dataclasses.replace(self.inner.send(request), usage=ProviderUsage())
+
+    rig = Rig()
+    made: list[Stripped] = []
+
+    def factory(context: lr.ProviderContext) -> Stripped:
+        made.append(Stripped(lr.build_fake_provider(rig.steps, rig.default, lr.FAKE_CONFIG, context)))
+        return made[-1]
+
+    services = dataclasses.replace(lr.Services.default(), measured_cost=lambda usage, prices: 0.001)
+    result = lr.execute_run(options(project), services=services, provider_factory=factory, descriptor=rig.descriptor, sleep=lambda s: None, environ={})
+    run_dir = project.run_dir("run-a")
+    assert made[0].calls == 1 and result.exit_code == SAFETY_EXIT
+    assert any("cannot reproduce" in v["detail"] for v in stop_violations(run_dir))
+
+
+def test_any_ledger_anomaly_blocks_even_a_kind_the_ledger_does_not_know_today(project: Project) -> None:
+    """Every anomaly the ledger reports is blocking. This one appears only after the first response is saved."""
+    import dataclasses
+
+    real = lr.Services.default()
+
+    def later_anomaly(events: Any, prices: Any) -> Any:
+        ledger = real.ledger_from_events(events, prices)
+        if any(e["event"] == "response_saved" for e in events):
+            return dataclasses.replace(ledger, anomalies=("not-an-attempt: a kind added later",))
+        return ledger
+
+    rig = Rig()
+    result = go(project, rig, services=dataclasses.replace(real, ledger_from_events=later_anomaly))
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1"] and result.exit_code == SAFETY_EXIT
+    assert conditions(stop_violations(run_dir)) == {(None, "ledger_anomaly")}
+    assert "a kind added later" in stop_violations(run_dir)[0]["detail"]
+
+
+def test_a_violation_on_the_last_dispatch_still_ends_the_run_as_a_safety_stop(project: Project) -> None:
+    """S9: nothing is left to dispatch, but the records still hold a violation, so the state and exit code say so."""
+    rig = Rig(steps={"q6": [FakeStep("answer", text="x", returned_model="fake-answer-model-2")]})
+    result = go(project, rig)
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == SENT
+    assert result.exit_code == SAFETY_EXIT and _ended(run_dir)["reason"] == "safety_stop"
+    summary = summary_of(run_dir)
+    assert summary["run_state"] == SAFETY_STATE and summary["valid_baseline"] is False
+    assert summary["counts"]["unserved"] == 0 and by_question(run_dir)["q6"]["status"] == "answered"
+
+
+def test_ordinary_valid_responses_still_complete_normally(project: Project) -> None:
+    rig = Rig()
+    result = go(project, rig)
+    run_dir = project.run_dir("run-a")
+    assert result.exit_code == 0 and rig.sent(run_dir) == SENT
+    assert _ended(run_dir)["reason"] == "completed" and "safety_violations" not in _ended(run_dir)
+    summary = summary_of(run_dir)
+    assert summary["run_state"] == "complete" and "safety_violations" not in summary, "a clean run's summary is unchanged"
+    assert lr.score_run_live(project_root=project.root, run_dir=run_dir).exit_code == 0
+
+
+def test_a_response_without_usage_is_not_a_violation_because_its_cost_stays_reserved(project: Project) -> None:
+    """Missing usage cannot show an exceedance. The ledger keeps the attempt at its upper bound, so the ceiling holds."""
+    rig = Rig(steps={"q1": [FakeStep("missing_usage")]})
+    result = go(project, rig)
+    assert result.exit_code != SAFETY_EXIT and rig.sent(project.run_dir("run-a")) == SENT
+
+
+def test_raising_the_ceiling_reconcile_and_reopen_do_not_clear_the_violation(project: Project) -> None:
+    """S6: q1 fails, q2 is unknown, q3 returns a different model. Nothing later can lift the stop."""
+    steps = {
+        "q1": [FakeStep("non_retryable_error")],
+        "q2": [FakeStep("timeout_unknown")],
+        "q3": [FakeStep("answer", text="x", returned_model="fake-answer-model-2")],
+    }
+    rig = Rig(steps)
+    assert go(project, rig).exit_code == SAFETY_EXIT
+    run_dir = project.run_dir("run-a")
+    assert rig.sent(run_dir) == ["q1", "q2", "q3"]
+    q3_violation = (attempt_id_of(run_dir, "q3"), "returned_model_mismatch")
+    assert q3_violation in conditions(stop_violations(run_dir))
+    log_before = (run_dir / "attempts.jsonl").read_bytes()
+
+    later = Rig(steps)
+    raised = go(project, later, safety_ceiling=100.0, raise_safety_ceiling=500.0, authorization_note="Lead approved a higher ceiling")
+    assert raised.exit_code == SAFETY_EXIT and later.factory_calls == 0
+    assert (run_dir / "attempts.jsonl").read_bytes() == log_before, "a refused raise records nothing"
+    assert summary_of(run_dir)["safety_ceiling"]["amount"] == 100.0
+
+    reconciled = lr.reconcile_attempt(
+        run_dir=run_dir, attempt_id=attempt_id_of(run_dir, "q2"), resolution="mark_failed", note="the provider shows no request"
+    )
+    assert reconciled.summary["run_state"] == SAFETY_STATE
+    reopened = lr.reopen_question(run_dir=run_dir, question_id="q1", note="fixed the request")
+    assert reopened.summary["run_state"] == SAFETY_STATE
+    assert q3_violation in conditions(reopened.summary["safety_violations"])
+
+    again = Rig(steps)
+    assert go(project, again).exit_code == SAFETY_EXIT
+    assert again.factory_calls == 0 and again.providers == []
+    assert lr.export_run(run_dir).exit_code == SAFETY_EXIT
+    assert lr.run_status(run_dir)["run_state"] == SAFETY_STATE
+
+
+def test_only_a_successor_run_with_corrected_configuration_can_go_on(project: Project) -> None:
+    """The identity check stays: the same directory with corrected code is refused, and a new directory works."""
+    _, _, run_dir = bound_one_run(project)
+    with pytest.raises(RunnerRefusal, match="regenerate differently|different identity"):
+        go(project, Rig())
+    successor_rig = Rig()
+    successor = go(project, successor_rig, "run-b")
+    assert successor.exit_code == 0 and successor.summary["run_state"] == "complete"
+    assert summary_of(run_dir)["run_state"] == SAFETY_STATE, "the stopped run stays a record"
+
+
+def test_a_crash_between_the_response_file_and_its_event_does_not_hide_the_violation(project: Project) -> None:
+    """S10: the response file is a durable record. A restart reads it and refuses before any provider exists."""
+    rig = Rig()
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, services=bound_one_services(), crash_hook=crash_at(lr.CRASH_AFTER_RESPONSE_FILE, "q1"))
+    run_dir = project.run_dir("run-a")
+    assert not any(e["event"] == "response_saved" for e in events_of(run_dir)) and (run_dir / "responses").is_dir()
+    before = (run_dir / "attempts.jsonl").read_bytes()
+    restart = Rig()
+    result = lr.execute_run(
+        options(project), services=bound_one_services(), provider_factory=restart.factory, descriptor=restart.descriptor,
+        sleep=lambda s: None, environ={},
+    )
+    assert result.exit_code == SAFETY_EXIT and restart.factory_calls == 0
+    assert (run_dir / "attempts.jsonl").read_bytes() == before
+    status = lr.run_status(run_dir, bound_one_services())
+    assert status["run_state"] == SAFETY_STATE
+
+
+def test_the_cli_exits_with_the_safety_code_and_the_help_documents_it(
+    project: Project, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    from faar import request_budget
+
+    monkeypatch.setattr(request_budget, "input_token_upper_bound", lambda messages: 1)
+    fake = write_fake_script(project)
+    assert cli_run(project, "cli-safety", fake) == SAFETY_EXIT
+    capsys.readouterr()
+    assert cli_run(project, "cli-safety", fake) == SAFETY_EXIT, "a restart is refused with the same code"
+    assert "safety" in capsys.readouterr().out
+    assert cli.main(["status", "--run-dir", str(project.run_dir("cli-safety"))]) == 0
+    assert "safety_stopped" in capsys.readouterr().out
+    with pytest.raises(SystemExit):
+        cli.main(["run", "--help"])
+    text = " ".join(capsys.readouterr().out.split())
+    assert f"{SAFETY_EXIT} safety_stopped" in text
+    for phrase in ("safety_stop", "successor run", "do not clear the violation", "cannot undo a charge", "provider-reported usage"):
+        assert phrase in text

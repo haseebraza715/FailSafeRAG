@@ -42,6 +42,7 @@ from faar.live_runner import (
     EXIT_NEEDS_ATTENTION,
     EXIT_OK,
     EXIT_REFUSED,
+    EXIT_SAFETY_STOPPED,
     LIVE_ENV_NAME,
     LIVE_ENV_VALUE,
     RESOLUTIONS,
@@ -59,6 +60,21 @@ exit codes:
   {EXIT_BUDGET_LIMITED}  budget_limited: the safety ceiling stopped the run; unserved questions are execution_failed with unserved true
   {EXIT_NEEDS_ATTENTION}  needs_reconciliation, stopped or incomplete: an attempt has an unknown outcome, a provider error
      stopped the run, the circuit breaker tripped, or the invocation was interrupted; run status, then reconcile or run again
+  {EXIT_SAFETY_STOPPED}  safety_stopped: a saved response broke a safety or model assumption; no request was sent after it, and
+     a restart of the same run directory sends none either (see safety_stop below)
+
+safety_stop: before every dispatch the driver reads the run's records. It stops when a saved response reported more input
+tokens than the request's input bound (input_bound_exceeded), came from a model that is not the configured one
+(returned_model_mismatch), or when the safety ledger reports any anomaly (ledger_anomaly: a measured cost that differs from its
+usage, is above its own upper bound, or has no usable usage). The invocation ends with reason safety_stop, exit {EXIT_SAFETY_STOPPED}, and
+invocation_ended lists the violations by attempt id and condition. The response that broke the rule stays in
+responses/ with its usage, cost, model and provider payload. The run state is safety_stopped and valid_baseline is false.
+Every question stays in predictions.jsonl; the ones not served are execution_failed with unserved true and failure type
+safety_stop, never abstentions. Every later run, status and export rebuilds the violation from the records. run then
+builds no provider, sends nothing and exits {EXIT_SAFETY_STOPPED}. Resuming, --raise-safety-ceiling with a note, reconcile and reopen
+do not clear the violation, and score refuses the run. The only way on is a successor run in a new run directory with
+corrected code or configuration; the identity checks below stay in force. Stopping cannot undo a charge already
+incurred, and the ceiling guarantee depends on provider-reported usage and on valid bounds.
 
 circuit_breaker: an invocation stops (end reason circuit_breaker, exit {EXIT_NEEDS_ATTENTION}) after
 {live_runner.CIRCUIT_BREAKER_THRESHOLD} consecutive counted attempts: an unknown outcome, a failure that ended its question (rejected or
@@ -75,7 +91,7 @@ run directories:
 resume: run the same command again. A question that has a saved response is never sent again. The run
 identity (pilot, inputs, retrieval, prompt template, model settings, prices, retry parameters, code) must match
 exactly, or the run is refused before any dispatch. The safety ceiling is not identity: pass the current ceiling
-again, or raise it with --raise-safety-ceiling and --authorization-note.
+again, or raise it with --raise-safety-ceiling and --authorization-note. A safety_stopped run does not resume.
 
 live mode needs all of: --mode live, --provider-config PATH, --safety-ceiling AMOUNT, and {LIVE_ENV_NAME}={LIVE_ENV_VALUE}
 in the environment. Credentials are read only after those checks pass. Nothing in the test suite runs live mode.
