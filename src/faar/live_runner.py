@@ -2078,8 +2078,34 @@ def _execute_locked(
             f"{run_dir} holds prepared requests that regenerate differently (prompt or evidence changed). "
             f"Nothing was dispatched. {EXPECTED_RESUME_NOTE}",
         )
+        services.ledger_from_events(view.events, config.prices)  # a corrupt ledger refuses here, before any dispatch
+        prior = view.effective_ceiling
+        stored_requests: Sequence[Mapping[str, Any]] = view.requests
+        pending_count = len(view.by_status(REQUEST_PENDING))
+        prior_attempts = {rid: len(state.attempts) for rid, state in view.states.items()}
     else:
-        _refuse(raised is None, "--raise-safety-ceiling needs an earlier invocation; this run has none")
+        prior = None
+        stored_requests = json.loads("[" + ",".join(requests_text.splitlines()) + "]")
+        pending_count = sum(1 for r in stored_requests if r["action"] == ACTION_SEND)
+        prior_attempts = {}
+
+    effective, change = decide_ceiling(
+        prior=prior,
+        requested=ceiling_requested,
+        raised=raised,
+        note=options.authorization_note,
+        prices=config.prices,
+    )
+
+    # Every check that can refuse has run except those inside the provider factory, which builds nothing
+    # until now. In live mode the factory reads the credential here, and only here.
+    provider = None
+    if pending_count:
+        _refuse(provider_factory is not None, "no provider is available and requests are pending")
+        assert provider_factory is not None
+        provider = provider_factory(ProviderContext(stored_requests, prior_attempts))
+
+    if directory != "run":
         _initialise(
             run_dir,
             options=options,
@@ -2092,24 +2118,8 @@ def _execute_locked(
         )
         view = load_run(run_dir)
 
-    effective, change = decide_ceiling(
-        prior=view.effective_ceiling,
-        requested=ceiling_requested,
-        raised=raised,
-        note=options.authorization_note,
-        prices=config.prices,
-    )
-
-    # Everything that can refuse has now run. From here on, events are appended.
+    # From here on, events are appended.
     tail = quarantine_uncommitted_tail(run_dir, view, invocation_id)
-    pending = view.by_status(REQUEST_PENDING)
-    provider = None
-    if pending:
-        _refuse(provider_factory is not None, "no provider is available and requests are pending")
-        assert provider_factory is not None
-        provider = provider_factory(
-            ProviderContext(view.requests, {rid: len(state.attempts) for rid, state in view.states.items()})
-        )
 
     invocations: list[InvocationInfo] = view.invocations
 
