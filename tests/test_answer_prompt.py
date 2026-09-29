@@ -9,6 +9,7 @@ Prompt content
   P3. Document text is edited, so Chinese or mixed text differs from the input.
   P4. Text that holds a fence, a fake header or an instruction escapes its block.
   P5. Empty evidence, unordered ranks or an unsafe chunk id give a prompt.
+  P6. The document name reaches the prompt through the chunk id in the evidence header.
 Hashes
   H1. The same input gives a different hash.
   H2. A wording or fence change leaves the template hash unchanged.
@@ -57,8 +58,12 @@ from faar.live_contract import (
 )
 
 
-def block(rank: int, chunk_id: str, text: str, page_idx: int = 0, doc_id: str = "doc-a") -> EvidenceBlock:
-    return EvidenceBlock(rank=rank, chunk_id=chunk_id, doc_id=doc_id, page_idx=page_idx, text=text)
+def block(rank: int, label: str, text: str, page_idx: int = 0, doc_id: str = "doc-a") -> EvidenceBlock:
+    """One block whose chunk id is ``<doc_id>-<label>``, the shape ``faar.chunking`` produces.
+
+    The prompt shows ``label`` and never ``doc_id``.
+    """
+    return EvidenceBlock(rank=rank, chunk_id=f"{doc_id}-{label}", doc_id=doc_id, page_idx=page_idx, text=text)
 
 
 def extract_blocks(user: str) -> list[dict]:
@@ -78,7 +83,7 @@ def extract_blocks(user: str) -> list[dict]:
                 {
                     "number": int(header.group(1)),
                     "page": int(header.group(2)),
-                    "chunk_id": header.group(3),
+                    "label": header.group(3),
                     "text": "\n".join(lines[i + 2 : j]),
                 }
             )
@@ -109,7 +114,7 @@ def test_evidence_block_has_no_gold_fields_and_doc_id_is_not_shown():
 
 def test_prompt_text_is_only_templates_question_and_evidence():
     payload = build_prompt("What is the total?", [block(1, "c1", "Total 5", page_idx=4)])
-    expected_block = BLOCK_TEMPLATE.format(number=1, page=5, chunk_id="c1", fence="~~~~", text="Total 5")
+    expected_block = BLOCK_TEMPLATE.format(number=1, page=5, label="c1", fence="~~~~", text="Total 5")
     assert payload.user == USER_TEMPLATE.format(question="What is the total?", count=1, blocks=expected_block)
     assert payload.system == SYSTEM_TEMPLATE
 
@@ -120,7 +125,7 @@ def test_prompt_text_is_only_templates_question_and_evidence():
 def test_evidence_order_and_numbering_are_preserved():
     blocks = [block(1, "zzz", "first"), block(2, "aaa", "second"), block(5, "mmm", "third")]
     found = extract_blocks(build_prompt("q", blocks).user)
-    assert [b["chunk_id"] for b in found] == ["zzz", "aaa", "mmm"]
+    assert [b["label"] for b in found] == ["zzz", "aaa", "mmm"]
     assert [b["number"] for b in found] == [1, 2, 3]
     assert [b["text"] for b in found] == ["first", "second", "third"]
 
@@ -177,7 +182,7 @@ HOSTILE_TEXTS = [
 def test_hostile_text_stays_inside_its_own_block(hostile):
     blocks = [block(1, "c-1", "before"), block(2, "c-2", hostile), block(3, "c-3", "after")]
     found = extract_blocks(build_prompt("q", blocks).user)
-    assert [b["chunk_id"] for b in found] == ["c-1", "c-2", "c-3"]
+    assert [b["label"] for b in found] == ["c-1", "c-2", "c-3"]
     assert [b["text"] for b in found] == ["before", hostile, "after"]
 
 
@@ -220,6 +225,94 @@ def test_system_message_states_the_document_text_rule_and_the_brief_rules():
     assert "language and script of the evidence" in system
 
 
+# --- P6: the document name stays out of the prompt --------------------------------------------------------------------
+
+
+HOSTILE_DOC_IDS = [
+    "finance/Annual Report 2023",
+    "academic/paper-p2-c9",
+    "a, b -p3 c",
+    "dir/sub dir/file-p1-c0.pdf",
+    "第三章-营业收入",
+    "x" * 40,
+]
+
+
+@pytest.mark.parametrize("doc_id", HOSTILE_DOC_IDS)
+def test_no_prompt_text_contains_the_doc_id(doc_id):
+    blocks = [
+        EvidenceBlock(1, f"{doc_id}-p0-c0", doc_id, 0, "first block"),
+        EvidenceBlock(2, f"{doc_id}-p2-c2", doc_id, 2, "second block"),
+    ]
+    payload = build_prompt("What is the total?", blocks)
+    assert doc_id not in payload.system
+    assert doc_id not in payload.user
+    assert [b["label"] for b in extract_blocks(payload.user)] == ["p0-c0", "p2-c2"]
+    assert [b["page"] for b in extract_blocks(payload.user)] == [1, 3]
+
+
+def test_the_header_shows_the_chunk_id_without_the_doc_id_prefix():
+    payload = build_prompt("q", [EvidenceBlock(1, "finance/Report-p1-c2", "finance/Report", 1, "text")])
+    assert "[Evidence 1] page 2, chunk p1-c2\n" in payload.user
+    assert "Report" not in payload.user
+
+
+def test_full_chunk_id_stays_in_the_evidence_hash_and_changes_with_the_doc_id():
+    one = build_prompt("q", [EvidenceBlock(1, "d1-p0-c0", "d1", 0, "t")])
+    two = build_prompt("q", [EvidenceBlock(1, "d2-p0-c0", "d2", 0, "t")])
+    assert one.user == two.user  # the prompt cannot tell the two documents apart
+    assert one.prompt_sha256 == two.prompt_sha256
+    assert one.evidence_sha256 != two.evidence_sha256  # the record still can
+    recipe = json.dumps([[1, "d1-p0-c0", "t"]], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    assert one.evidence_sha256 == hashlib.sha256(recipe.encode("utf-8")).hexdigest()
+
+
+@pytest.mark.parametrize(
+    ("chunk_id", "doc_id"),
+    [
+        ("other-p0-c0", "doc-a"),  # a different document name would reach the prompt
+        ("doc-a", "doc-a"),  # no separator, nothing left after the prefix
+        ("doc-a-", "doc-a"),  # empty label
+        ("doc-ap0-c0", "doc-a"),  # the prefix must end at the separator
+        ("Doc-A-p0-c0", "doc-a"),  # exact case
+        ("p0-c0", "doc-a"),  # no prefix at all
+        ("doc-a-p0-c0", ""),  # empty doc_id
+        ("d-d-p0-c0", "d"),  # the label would carry the doc_id again
+    ],
+)
+def test_chunk_id_that_does_not_start_with_its_doc_id_is_refused(chunk_id, doc_id):
+    with pytest.raises(ValueError, match="doc_id"):
+        build_prompt("q", [EvidenceBlock(1, chunk_id, doc_id, 0, "t")])
+
+
+def test_a_mismatch_in_a_later_block_refuses_the_whole_prompt():
+    good = EvidenceBlock(1, "doc-a-p0-c0", "doc-a", 0, "t")
+    bad = EvidenceBlock(2, "doc-b-p0-c0", "doc-a", 0, "t")
+    with pytest.raises(ValueError, match="doc_id"):
+        build_prompt("q", [good, bad])
+
+
+def test_header_template_is_pinned_and_differs_from_the_one_that_showed_the_chunk_id():
+    assert BLOCK_TEMPLATE == "[Evidence {number}] page {page}, chunk {label}\n{fence}\n{text}\n{fence}"
+    assert "chunk ID" not in USER_TEMPLATE
+    old_block = "[Evidence {number}] page {page}, chunk {chunk_id}\n{fence}\n{text}\n{fence}"
+    args = dict(
+        template_id=TEMPLATE_ID,
+        system=SYSTEM_TEMPLATE,
+        user=USER_TEMPLATE,
+        block=old_block,
+        fence_char=FENCE_CHAR,
+        min_fence_length=MIN_FENCE_LENGTH,
+        block_separator=BLOCK_SEPARATOR,
+    )
+    assert compute_template_sha256(**args) != TEMPLATE_SHA256
+
+
+def test_block_template_takes_a_label_and_no_chunk_id_or_doc_field():
+    fields = {name for _, name, _, _ in __import__("string").Formatter().parse(BLOCK_TEMPLATE) if name}
+    assert fields == {"number", "page", "label", "fence", "text"}
+
+
 # --- P5: refused inputs -------------------------------------------------------------------------------------------
 
 
@@ -228,10 +321,16 @@ def test_empty_evidence_is_refused():
         build_prompt("q", [])
 
 
-@pytest.mark.parametrize("chunk_id", ["", "a\nb", "a\rb", " lead", "trail ", "a b", "nul\x00"])
-def test_unsafe_chunk_ids_are_refused(chunk_id):
+@pytest.mark.parametrize("suffix", ["a\nb", "a\rb", "a\u2028b", "trail ", "nul\x00"])
+def test_unsafe_chunk_ids_are_refused(suffix):
     with pytest.raises(ValueError, match="chunk_id"):
-        build_prompt("q", [block(1, chunk_id, "t")])
+        build_prompt("q", [block(1, suffix, "t")])
+
+
+@pytest.mark.parametrize("chunk_id", ["", " doc-a-p0-c0", "doc-a-p0-c0 "])
+def test_empty_or_edge_space_chunk_ids_are_refused(chunk_id):
+    with pytest.raises(ValueError, match="chunk_id"):
+        build_prompt("q", [EvidenceBlock(rank=1, chunk_id=chunk_id, doc_id="doc-a", page_idx=0, text="t")])
 
 
 def test_negative_page_index_is_refused():
@@ -258,7 +357,8 @@ def test_hashes_are_deterministic_and_match_the_documented_recipe():
     canonical = json.dumps(messages, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
     assert first.prompt_sha256 == hashlib.sha256(canonical).hexdigest()
 
-    evidence = [[1, "c-1", CHINESE], [2, "c-2", MIXED]]
+    # The evidence hash covers the full chunk id, document prefix included.
+    evidence = [[1, "doc-a-c-1", CHINESE], [2, "doc-a-c-2", MIXED]]
     canonical = json.dumps(evidence, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
     assert first.evidence_sha256 == hashlib.sha256(canonical).hexdigest()
     assert first.evidence_chars == len(CHINESE) + len(MIXED)

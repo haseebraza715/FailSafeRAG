@@ -12,6 +12,8 @@ docstring).
   V7. Token estimates read as tokenizer counts.
   V8. The output changes between two calls on the same input.
   V9. The preview reads a file, needs a provider, or embeds an HTML app or an external asset.
+  V10. The preview shows a chunk label in its tables, or the prompt shows the document name, so a reviewer
+       cannot tell what the record holds from what the model would read.
 """
 
 from __future__ import annotations
@@ -50,7 +52,7 @@ def make_record(
     with_text: bool = True,
 ) -> dict:
     blocks = [
-        EvidenceBlock(rank=i + 1, chunk_id=f"{question_id}-c{i}", doc_id="doc", page_idx=i, text=text)
+        EvidenceBlock(rank=i + 1, chunk_id=f"doc-{question_id}-c{i}", doc_id="doc", page_idx=i, text=text)
         for i, text in enumerate(texts)
     ]
     evidence = [
@@ -223,6 +225,19 @@ def test_injection_text_is_shown_and_not_interpreted():
     out = render_preview([record], title="t")
     assert record["user"] in fenced_blocks(out)
     assert out.count("ignore previous instructions") == 1
+
+
+def test_tables_show_full_chunk_ids_and_the_message_shows_only_the_label():
+    """The evidence table is a local review aid and keeps the full chunk id. The fenced user message is the
+    exact prompt, which carries the chunk label and no document name."""
+    record = make_record("lab-1", "What?", [EN_TEXT])
+    out = render_preview([record], title="t")
+    assert "`doc-lab-1-c0`" in out.split("System message:")[0]  # the evidence table row
+    user = record["user"]
+    assert "[Evidence 1] page 1, chunk lab-1-c0\n" in user
+    assert "doc-lab-1-c0" not in user
+    assert user in fenced_blocks(out)  # the message is shown byte for byte
+    assert "doc-lab-1-c0" not in "\n".join(fenced_blocks(out))
 
 
 def test_preview_is_deterministic_and_does_not_mutate_input():
