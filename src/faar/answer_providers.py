@@ -764,6 +764,17 @@ def _header(headers: Any, name: str, secret: str | None = None) -> str | None:
 #   3xx (redirects are never followed)          unknown   no     E7, E4 9.2.2: the request reached a server
 #   400, 401, 403, 404, 422, other 4xx          rejected  no     E6
 #
+# Residual risk. HTTP 408 and HTTP 503 with code `server_is_overloaded` are the only statuses the run driver
+# retries, and each carries a small chance of a second charge:
+#   * 408. RFC 9110 15.5.9 describes a server that "did not receive a complete request message". The RFC does
+#     not say which server. An intermediary in front of the provider can also send 408, and the provider may
+#     have received and processed the request by then.
+#   * 503 `server_is_overloaded`. The OpenAI page (E2) says the model "does not have enough capacity to
+#     process your request". It says nothing about billing, and it does not promise that the request never
+#     started.
+# The evidence makes both cases unlikely to have been processed. It does not make them impossible.
+# `RetryPolicy.max_attempts` limits how many times one question can pay that risk.
+#
 # 429 is the one row that could go the other way. If OpenAI states that a rate-limited request is never
 # processed, change the rate-limit branch below and `STATUS_CASES` in tests/test_answer_providers.py.
 def _classify_status(exc: Any, secret: str | None = None) -> ProviderError:
