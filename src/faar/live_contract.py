@@ -27,6 +27,9 @@ EVENT_ATTEMPT_FAILED = "attempt_failed"
 EVENT_OUTCOME_UNKNOWN = "outcome_unknown"
 EVENT_RECONCILED = "reconciled"
 EVENT_INVOCATION_ENDED = "invocation_ended"
+# A person reopens an execution_failed question after fixing its cause. The question
+# gets up to max_attempts further attempts; earlier attempts and their costs stay.
+EVENT_QUESTION_REOPENED = "question_reopened"
 EVENTS = (
     EVENT_INVOCATION_STARTED,
     EVENT_DISPATCH_STARTED,
@@ -35,7 +38,13 @@ EVENTS = (
     EVENT_OUTCOME_UNKNOWN,
     EVENT_RECONCILED,
     EVENT_INVOCATION_ENDED,
+    EVENT_QUESTION_REOPENED,
 )
+
+# Request parameters a provider config may set. Everything else is refused, because an
+# unknown parameter can change billing (service tiers, tools, extra modalities) outside
+# the cost bound.
+ALLOWED_OPENAI_PARAMS = ("temperature", "top_p", "seed", "stop", "presence_penalty", "frequency_penalty")
 
 # How a provider error was resolved, from the provider's side.
 # not_sent: the request provably never left the process (for example a DNS or connect failure).
