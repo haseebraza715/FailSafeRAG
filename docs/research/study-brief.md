@@ -577,15 +577,25 @@ The backend receives `(question, hits)` and nothing else. It opens no file. The 
 
 ### 15.4 Answer-model interface
 
-**Proposed default.** The real model plugs into the existing `AnswerBackend` protocol (the `AnswerBackend` class in `src/faar/pilot_runner.py`): `identity()` and `answer(question, hits)` returning `{"answer", "answer_mode"}`. Three code changes are needed first, and this brief makes none of them.
+**Implemented for offline verification (2026-09-29); nothing here is approved for a live run.** The answer-model path is separate from the offline engineering runner, whose engineering-only restriction is unchanged.
 
-1. `generate_run` refuses any backend that does not declare `engineering_only: true` (the `engineering_only` check in `generate_run`), and `RUN_KIND` is fixed at `engineering_check` (module constant in `pilot_runner.py`). A real backend needs an explicit kind (`development_pilot`) and a way to declare `model_calls: true`.
-2. The runner's overwrite policy regenerates a run in memory and compares bytes. A live API call does not reproduce byte for byte. A resumed or repeated run must replay the saved response records and never call the model again for a question that has a terminal record.
-3. `answer()` returns only the answer and its mode. Token counts, latency and retries need a side record (section 15.8), and `predictions.jsonl` needs the request IDs that point to it.
+- `src/faar/live_runner.py` with `scripts/experiments/run_pilot_live.py` drives the run. Its subcommands are `dry-run`, `run`, `status`, `reconcile`, `export` and `score`.
+- `src/faar/answer_prompt.py` builds the draft prompt (`faar-answer-draft-v1`) and parses replies. `src/faar/answer_providers.py` holds the provider interface, a scripted `FakeProvider` and an `OpenAIChatProvider` adapter that is tested only against a mocked transport. `src/faar/request_budget.py` bounds and prices requests, and `src/faar/retry_policy.py` decides retries.
+- **Fake mode is the default.** It sends nothing, and its runs are `engineering_check`.
+- **Live mode needs all of the following:** `--mode live`, `--provider-config PATH` (provider, model, endpoint, parameters, output limit, timeout, dated price table and `tokenizer_bound: utf8-bytes`), `--safety-ceiling` and the environment variable `FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY`. Credentials are read only after every check passes. Live runs write to `results/development/<run_id>/` as `development_pilot`. No live run has been made.
+- Importing the modules, `--help`, `dry-run`, `status` and `export` build no provider client.
 
-**Identity record.** Provider, model ID as a dated snapshot, endpoint (Chat Completions or Responses), SDK version, prompt-template ID and its SHA-256, and every request parameter. The run fingerprint includes all of them.
+**Identity record.** `run_config.json` records the run identity, and a resume recomputes it and refuses any difference before dispatching. The identity covers:
 
-**Determinism settings.** For `gpt-4o-2024-11-20`: `temperature` 0, `top_p` left at the default, `seed` fixed, one request per attempt, no streaming. The API documents `seed` as best effort and marks it deprecated, and it marks `system_fingerprint` deprecated as well. Determinism is therefore recorded, not assumed. The run stores every raw response and the returned `system_fingerprint` when present. A probe of 10 questions sent 3 times each measures how often the answer text differs. Report that rate with the baseline. Some models cannot take these settings (section 15.5, option table).
+- the runtime manifest and noisy-text hashes, and the retrieval description;
+- the prompt-template ID and SHA-256;
+- provider, requested model, endpoint, parameters, output and input limits, timeout, and `token_limit_param`;
+- the price table and the retry parameters;
+- the scientific budget (null for this baseline), code identity and contract version.
+
+The safety ceiling is not identity. The requested and the returned model are recorded separately for every response.
+
+**Reproducibility.** A seed or `temperature` 0 does not make a model reproducible, and several current models accept neither. The run keeps every raw response and never regenerates a saved answer. Reproducibility therefore rests on the saved responses and the recorded method identity. The proposed repeat probe (10 questions sent 3 times each) still measures how often answers differ.
 
 ### 15.5 Answer-model options
 
@@ -625,7 +635,7 @@ For one run over `N` questions:
 | Assumption | Value | Basis |
 | --- | --- | --- |
 | `N_model` | 70 | Overstates: r3 sent 63 questions to the answer step |
-| Evidence tokens | about 1,700 mean, 7,500 largest | Measured on 2026-09-29 as characters in the 5 retrieved chunks per question with the r3 chunker and retriever (mean 3,961 characters, maximum 8,545). With the r4 multilingual policy the figures are mean 3,190 and maximum 6,252, so the estimate below errs high, converted at 4 characters per token for non-Han text and 1 token per Han character. The conversion is a rough assumption |
+| Evidence tokens | about 1,700 mean, 7,500 largest | Measured on 2026-09-29 as characters in the 5 retrieved chunks per question with the r3 chunker and retriever (mean 3,961 characters, maximum 8,545), converted at 4 characters per token for non-Han text and 1 token per Han character. The conversion is a rough assumption. With the r4 multilingual policy the figures are mean 3,190 and maximum 6,252, so the estimate below errs high |
 | Instructions and question | 300 tokens | Assumed prompt length |
 | `T_in`, `T_in,max` | 2,000 and 7,800 | Sum of the two rows above, rounded |
 | `T_out`, `M_out` | 20 and 128 | Reference answers have a median of 2 words (non-Han), 13 of 55 have 8 or more |
@@ -636,7 +646,7 @@ For one run over `N` questions:
 - Ceiling: 70 × 3 × (7,800 × 2.50 + 128 × 10) / 1,000,000 = 210 × 0.02078 = about $4.36.
 - The same inputs at option C's rates give about $0.02 expected. At option B's rates they give about $0.32 before thinking tokens. Thinking tokens bill as output, so B's cost grows with the effort setting.
 
-Two things change these numbers. The Han-script text (21 of 63 questions had Han in the retrieved text) may cost more than one token per character, and the r4 retrieval change shortened the evidence (see the evidence-token row). Recompute with a dry run before any spending: build every prompt offline, count tokens with the provider's tokenizer, and print `expected` and `ceiling`. The dry run needs no key and no network.
+Two things change these numbers. The Han-script text (21 of 63 questions had Han in the retrieved text) may cost more than one token per character, and the r4 retrieval change shortened the evidence (see the evidence-token row). Recompute with a dry run before any spending (section 15.15). The implemented dry run reports a conservative upper bound, not an estimate: on 2026-09-29 the largest prompt bound was 8,237 tokens and the worst case over 63 requests and 3 attempts each was $2.94 at option A's rates. A provider-tokenizer count, which is closer to the real cost, needs that tokenizer offline and is not implemented.
 
 ### 15.7 Prompt, answer format and failure handling
 
@@ -653,40 +663,50 @@ Two things change these numbers. The Han-script text (21 of 63 questions had Han
 | Setting | Value |
 | --- | --- |
 | Output limit | 128 tokens for option A. A reasoning model needs a larger limit because thinking tokens count |
-| Input limit | 12,000 tokens per request, counted locally before sending |
+| Input limit | 12,000, compared with the conservative UTF-8 byte bound of the prompt (rule below), not with a tokenizer count. Han-heavy prompts reach the limit at about a third of their real token count. The largest pilot bound is 8,237, so no prompt is skipped. Whether to keep this rule is a **Lead decision** |
 | Request timeout | 60 seconds (`FAAR_VLM_TIMEOUT_SECONDS` default) |
-| Attempts per question | 3, with a base backoff of 2 seconds that doubles, plus jitter (`recovery.py`) |
-| Retried | timeouts, connection errors, HTTP 429 and 5xx |
-| Not retried | other 4xx errors, including authentication, unknown model and content-policy rejections |
+| Attempts per question | 3, with a base backoff of 2 seconds that doubles, at most 60 seconds, plus deterministic jitter (`faar.retry_policy`) |
+| Retried | failures whose request provably never left the machine (connect errors, connect and pool timeouts), HTTP 408, 409, 429 (not quota) and 5xx |
+| Not retried | other 4xx errors; any failure whose outcome is unknown (read or write timeout, connection lost after sending, malformed reply), which waits for reconciliation instead |
 
 **Outcomes.**
 
 - A prompt over the input limit is not truncated and not sent. It is recorded as `execution_failed` with reason `prompt_over_limit`.
-- A non-retryable error on a question is `execution_failed` with the error type. Three consecutive authentication or unknown-model errors stop the run as `interrupted`, since every later request would fail. The unsent questions get no record from that attempt. The interrupted run is incomplete and is not a baseline. Resume it as a new attempt (`experiments/README.md`) after the cause is fixed.
+- A non-retryable error on a question is `execution_failed` with the error type. The first authentication, unknown-model or quota error stops the invocation (`stopped`), since every later request would fail too. Unsent questions stay pending, and a later `run` resumes them after the cause is fixed. A stopped run is incomplete and is not a baseline.
+- **Unknown outcome.** A request whose dispatch started but whose result is unknown is never sent again automatically. That covers a read timeout, a connection lost after sending, or a crash before the response was saved. OpenAI documents no idempotency key for Chat Completions, so the provider cannot deduplicate a resend. The question waits in `needs_reconciliation`, and the other questions continue. A person resolves it with `reconcile ATTEMPT_ID --resolution allow_new_attempt` or `mark_failed`, with a note. The unknown attempt's cost stays counted at its upper bound either way. The path gives safe local resume. It gives no exactly-once guarantee on the provider's side.
 - An empty reply, a reply cut by the output limit (`finish_reason` `length`) or a refusal is an answer, scored as returned, with `output_status` set to `empty`, `truncated` or `refusal`. It is not an API failure.
 - No question is dropped. Every question ends in `answered`, `no_evidence` or `execution_failed`. In end-to-end accuracy `execution_failed` counts as incorrect and its rate is reported (sections 7 and 8).
 - The maximum execution-failure rate for a valid baseline is a **Lead decision**. Suggestion: any `execution_failed` question is retried as a new attempt after its cause is fixed, and a run with more than 3 of 70 (about 4%) still failing is `failed`. Failures in the shared initial answers propagate to every later policy.
 
-**Hard spending cap and what happens when it is reached.** The cap value is a **Lead decision**. Suggested first value: $2.00 for the main run, about five times the expected cost and below the $4.36 ceiling. This reuses "When a budget runs out" in section 5.
+**Two kinds of budget.** They are kept apart.
 
-1. Before each request the runner adds the largest possible cost of that request (counted input tokens times `r_in`, plus the output limit times `r_out`) to the spend so far. If the sum exceeds the cap, it sends nothing and stops sending.
-2. Each unserved question gets a terminal record with reason `budget_exhausted`, in manifest order. There is no earlier answer to keep, so the question has no answer. It counts as incorrect in the all-question view, and the run is reported as budget-limited with the counts of served and unserved questions. It is not a valid baseline.
-3. The lead may raise the cap and resume as a new attempt of the same run. The cap is an operating limit, so it stays out of the run identity and is recorded per attempt.
-4. The cap counts every attempt, including failed and retried ones, at the recorded rates.
+- **Safety ceiling.** It is an operating limit that protects against runaway spending. It is not part of the method, so it stays out of the run identity. Each invocation records it in `attempts.jsonl` (`invocation_started.safety_ceiling`). The value is a **Lead decision**, and a suggested first value is $2.00 for the main run. This task authorises no monetary value.
+- **Scientific budget.** It is a policy budget that the method uses, for example the visual-request cap in section 5 or a per-question repair budget. It belongs to the method configuration and the run identity, and changing it makes a new run. The no-recovery baseline has none (`scientific_budget: null`).
+
+**Safety accounting (implemented).**
+
+1. Before each attempt the runner computes an upper bound for its cost. The input bound is the UTF-8 byte count of the messages plus a small overhead. That bounds any byte-level BPE tokenizer, and the provider config must declare `tokenizer_bound: utf8-bytes`. The bound prices every input token at the higher of the input and cached rates, and adds the full output limit at the output rate. The runner refuses to dispatch when a price, a limit or the bound is missing.
+2. The ledger adds measured cost to reserved cost. Measured cost uses usage the provider reported, priced with the recorded rates and their source date. Reserved cost counts each dispatched attempt without measured cost at its upper bound: unknown outcomes, rejected attempts and responses with missing usage. An attempt that provably never left the machine counts 0. No usage is invented for a failure, and no cache discount is assumed until cached tokens are reported. Amounts are kept in integer micro-units.
+3. An attempt is dispatched only if measured + reserved + its own bound stays within the ceiling. Otherwise the invocation sends nothing more and ends as `budget_limited`.
+4. **Budget exhaustion.** Completed answers are kept. Each unserved question is exported as `execution_failed` with `unserved: true` and `failure.type: budget_exhausted`. It is never an abstention, and the scorer counts it as 0. The run summary says `budget_limited` and `valid_baseline: false`.
+5. **Authorised continuation.** A later `run --raise-safety-ceiling AMOUNT --authorization-note TEXT` records the change (from, to, note) in its `invocation_started` event and resumes the same run. The earlier budget-limited invocations stay in the log. A raise without a note is refused.
 
 ### 15.8 Records needed for later fair cost comparison
 
-**Proposed default.** Visual-request counts do not match total cost (section 5). The run writes `model_requests.jsonl` beside `predictions.jsonl`, with one line per attempt:
+**Implemented (2026-09-29) for fake-provider runs.** Visual-request counts do not match total cost (section 5). A run directory holds these files:
 
-- `question_id`, `attempt`, `request_hash`, prompt-template ID and SHA-256, the full prompt, and the parameters sent;
-- model requested and model returned, response ID, `system_fingerprint`, `finish_reason`;
-- start and end times in UTC and latency in milliseconds;
-- outcome (`ok`, error class, HTTP status), and whether the attempt was a retry;
-- `input_tokens`, `cached_input_tokens`, `output_tokens` and `reasoning_tokens` as the API reports them, `image_count` (0 in the baseline) and `image_detail`;
-- the rates used, with source URL and date, and the dollars computed from them;
-- the raw reply text.
+| File | Content |
+| --- | --- |
+| `run_config.json` | Identity and its SHA-256, the hash of `requests.jsonl`, provenance (commit, dirty paths, package versions, command), mode and kind. Written once |
+| `requests.jsonl` | One prepared record per question in manifest order: send or skip and why, evidence chunk IDs, pages and hashes, prompt and evidence SHA-256, exact messages, input bound, output limit, cost bound and `request_id`. It holds the full prompts, so it stays local (git-ignored) and is regenerated byte for byte |
+| `attempts.jsonl` | Append-only events (`invocation_started`, `dispatch_started`, `response_saved`, `attempt_failed`, `outcome_unknown`, `reconciled`, `invocation_ended`). Each line is fsynced before the next step. A dispatch is logged before it is sent |
+| `responses/<attempt_id>.json` | The raw provider payload and the parsed answer, abstention flag, output status, usage as reported (missing fields stay null), measured cost, returned model, response ID, finish reason and latency. Written atomically before its event |
+| `predictions.jsonl`, `run_summary.json` | Rebuilt from the files above. One record per question with its attempt IDs. The summary has counts, run state and the ledger (measured, reserved, committed upper bound; currency and a `simulated` flag) |
+| `scores.jsonl`, `score_summary.json` | The unchanged official scorer. A scored run refuses further `run` |
 
-`predictions.jsonl` lists the attempt IDs of each question. Per question and per policy, report requests, retries, tokens, images, dollars and latency. Retrieval and index-build time are one-time and local, so they are reported separately. A later policy adds its own attempts to the shared initial cost. Report the total and the incremental cost, and compare policies on totals. Claim matched total cost only under the conditions in section 5.
+A lock (`run.lock`, an exclusive kernel lock held for the process lifetime) stops a second invocation from dispatching the same run.
+
+Per question and per policy, report requests, retries, tokens, dollars and latency. Retrieval time and index-build time are one-time local costs, so they are reported separately. A later policy adds its own attempts to the shared initial cost. Report both the total and the incremental cost, and compare policies on totals. Claim matched total cost only under the conditions in section 5.
 
 ### 15.9 The later comparison: simple repair and diagnosis-selected repair
 
@@ -741,6 +761,9 @@ It cannot show:
 8. Decide whether to create the versioned annotation form in section 15.14 with an `evidence_impact` column.
 9. Say whether GPU calibration stays on hold. It is not needed for this baseline.
 10. Say whether to define the longer-document development sample now or after the baseline.
+11. Approve or change the draft prompt `faar-answer-draft-v1` after reading the local preview (section 15.15). The draft adds two lines beyond section 15.7: "Reply with the answer only. Do not explain." and a closing reminder. It also treats a `content_filter` finish without a refusal message as ordinary text.
+12. Keep or replace the input-limit rule (12,000 against the byte bound).
+13. Decide whether `tag_attempts` (`store=true` plus metadata at OpenAI, which allows looking up a lost response) may be switched on. It stores prompts and replies with the provider, so it is a data-handling choice. It is off by default.
 
 ### 15.14 Human inspection: what you check and label
 
@@ -766,3 +789,15 @@ It cannot show:
 Also note wherever 150 DPI is too coarse to read the page (`pilot_readiness.md`). The eventual diagnosis study needs at least two independent labellers (section 10). One person's labels here are development inspection only. Do not fill any field from a model's suggestion.
 
 **Proposed versioned form (not created).** Section 10 step 3 stores evidence impact in free text. A new file `annotations_v2.csv` in a new directory (for example `results/pilots/ohr_dev_v1_inspection_v2/`, with its own version record) could add one case-level row per case with `evidence_impact` (survives, damaged, lost, uncertain), `evidence_impact_note`, `annotator` and `blind_to_reference` (yes or no), and keep the page-level defect rows as they are. The frozen `annotations.csv` and its schema stay unchanged. Creating the file is a **Lead decision**.
+
+### 15.15 Dry-run inspection before any spending
+
+**Procedure (implemented; the run itself is not approved).**
+
+1. Run `python scripts/experiments/run_pilot_live.py dry-run --out .local/work/prompt-preview`. It reads only the runtime manifest and the MinerU text, calls no provider, needs no credential, and writes `prepared_requests.jsonl`, `prompt_preview.md` and `dry_run_summary.json`. Keep the output local. It holds full document text.
+2. Open `prompt_preview.md`. It has a summary table, an index of English, Chinese, mixed-language, skipped and longest-evidence questions, and one section per question. Each section gives the question, the evidence chunk IDs and pages, the exact system and user messages, the evidence size, a heuristic token estimate (labelled as such), the input and cost bounds, and the prompt and evidence hashes.
+3. Check that no gold answer, reference text or label appears. Check that the evidence belongs to the named document and that instructions inside the evidence are fenced as document text.
+4. On 2026-09-29 the dry run gave 70 questions: 63 to send and 7 skipped (6 `no_text_chunks`, 1 `no_text_content`). Without a provider config it uses option A's unapproved values, and `dry_run_summary.json` says so.
+
+**Limits that still apply.** Query tokens do not show that the evidence is relevant. 23 of 30 pilot documents are single pages. The macOS OpenMP limitation is documented, not fixed. The scorer's redistribution question is open. The human inspection of section 15.14 has not been done.
+
