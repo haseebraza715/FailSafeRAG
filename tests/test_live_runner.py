@@ -2395,7 +2395,7 @@ def _frozen_like(project: Project, sub: str, *, with_config: bool) -> Path:
 
 @pytest.mark.parametrize("sub", ["results/pilots/x", "results/Pilots/x", "results/PILOTS/x/y"])
 @pytest.mark.parametrize("with_config", [False, True])
-def test_export_reconcile_and_score_leave_a_frozen_like_directory_untouched(project: Project, sub: str, with_config: bool) -> None:
+def test_export_reconcile_score_and_reopen_leave_a_frozen_like_directory_untouched(project: Project, sub: str, with_config: bool) -> None:
     """M2: the directory rules and run_config.json are checked before run.lock is created or opened."""
     directory = _frozen_like(project, sub, with_config=with_config)
     before = file_snapshot(directory)
@@ -2404,6 +2404,7 @@ def test_export_reconcile_and_score_leave_a_frozen_like_directory_untouched(proj
         lambda: lr.export_run(directory),
         lambda: lr.reconcile_attempt(run_dir=directory, attempt_id="a", resolution=lr.RESOLUTION_FAIL, note="n"),
         lambda: lr.score_run_live(project_root=project.root, run_dir=directory),
+        lambda: lr.reopen_question(run_dir=directory, question_id="q1", note="n"),
     ):
         with pytest.raises(RunnerRefusal):
             action()
@@ -2423,6 +2424,7 @@ def test_a_mistyped_directory_without_run_config_gets_no_lock_file(project: Proj
             lambda: lr.export_run(target),
             lambda: lr.reconcile_attempt(run_dir=target, attempt_id="a", resolution=lr.RESOLUTION_FAIL, note="n"),
             lambda: lr.score_run_live(project_root=project.root, run_dir=target),
+            lambda: lr.reopen_question(run_dir=target, question_id="q1", note="n"),
             lambda: lr.run_status(target),
         ):
             with pytest.raises(RunnerRefusal):
@@ -2436,6 +2438,176 @@ def test_the_cli_leaves_a_mistyped_path_untouched(project: Project) -> None:
     typo = project.root / "results" / "engineering" / "run-typo"
     typo.mkdir(parents=True)
     for argv in (["export", "--run-dir", str(typo)], ["score", "--project-root", str(project.root), "--run-dir", str(typo)],
-                 ["reconcile", "--run-dir", str(typo), "a", "--resolution", "mark_failed", "--note", "n"]):
+                 ["reconcile", "--run-dir", str(typo), "a", "--resolution", "mark_failed", "--note", "n"],
+                 ["reopen", "--run-dir", str(typo), "q1", "--note", "n"]):
         assert cli.main(argv) == lr.EXIT_REFUSED
     assert list(typo.iterdir()) == []
+
+
+# ---------------------------------------------------------------------------
+# Review fixes: the attempt limit across invocations (L3) and reopening a failed question (M4)
+# ---------------------------------------------------------------------------
+
+
+def test_repeated_stop_run_errors_exhaust_the_attempt_limit_and_fail_the_question(project: Project) -> None:
+    """L3: three invocations that each end in an auth error use up q1's three attempts. A fourth invocation must not try q1 again."""
+    steps = {"q1": [FakeStep("auth_error")] * 3 + [FakeStep("answer", text="fourth attempt")]}
+    run_dir = project.run_dir("run-stop")
+    rigs = []
+    for expected_attempts in (1, 2, 3):
+        rigs.append(Rig(steps))
+        result = go(project, rigs[-1], "run-stop")
+        assert result.summary["run_state"] == "stopped"
+        assert len(by_question(run_dir)["q1"]["attempt_ids"]) == expected_attempts
+    record = by_question(run_dir)["q1"]
+    assert record["status"] == "execution_failed" and record["failure"]["type"] == "auth" and record["unserved"] is False
+    assert record["failure"]["attempts_exhausted"] is True
+    last_failed = [e for e in events_of(run_dir) if e["event"] == "attempt_failed"][-1]
+    assert last_failed["decision"] == "stop_run" and last_failed["attempts_exhausted"] is True
+    fourth = Rig(steps)
+    result = go(project, fourth, "run-stop")
+    assert "q1" not in fourth.sent(run_dir), "q1 gets no fourth attempt"
+    assert len(by_question(run_dir)["q1"]["attempt_ids"]) == 3 and by_question(run_dir)["q1"]["status"] == "execution_failed"
+    assert result.summary["run_state"] == "complete" and result.exit_code == lr.EXIT_EXECUTION_FAILED
+    assert [q for q, p in by_question(run_dir).items() if p["status"] == "answered"] == ["q2", "q3", "q4", "q6"]
+
+
+SIX_FAILURES_THEN_AN_ANSWER = {"q1": [FakeStep("connect_error")] * 6 + [FakeStep("answer", text="twelve months")]}
+
+
+def _fail_q1(project: Project, kind: str = "connect_error", count: int = 3, name: str = "run-a") -> tuple[Rig, Path]:
+    rig = Rig(steps={"q1": [FakeStep(kind)] * count})
+    go(project, rig, name)
+    return rig, project.run_dir(name)
+
+
+def test_a_question_failed_after_three_connect_errors_is_reopened_and_answered_on_the_next_run(project: Project) -> None:
+    rig, run_dir = _fail_q1(project)
+    assert by_question(run_dir)["q1"]["status"] == "execution_failed" and len(by_question(run_dir)["q1"]["attempt_ids"]) == 3
+    result = lr.reopen_question(run_dir=run_dir, question_id="q1", note="network fixed; checked with curl")
+    assert result.exit_code == lr.EXIT_OK and result.summary["run_state"] == "incomplete"
+    reopened = [e for e in events_of(run_dir) if e["event"] == "question_reopened"]
+    assert len(reopened) == 1 and reopened[0]["question_id"] == "q1" and reopened[0]["note"].startswith("network fixed")
+    assert reopened[0]["attempts_before"] == 3
+    assert by_question(run_dir)["q1"]["status"] == "execution_failed" and by_question(run_dir)["q1"]["unserved"] is True
+    resumed = go(project, rig)
+    assert resumed.exit_code == 0 and rig.sent(run_dir).count("q1") == 4
+    record = by_question(run_dir)["q1"]
+    assert record["status"] == "answered" and len(record["attempt_ids"]) == 4 and record["reopen_count"] == 1
+
+
+def test_a_reopened_question_keeps_its_earlier_attempts_and_their_costs(project: Project) -> None:
+    rig, run_dir = _fail_q1(project, "retryable_error")
+    before = summary_of(run_dir)["cost"]
+    assert before["reserved"] > 0
+    lr.reopen_question(run_dir=run_dir, question_id="q1", note="rate limit window passed")
+    go(project, rig)
+    after = summary_of(run_dir)["cost"]
+    assert after["reserved"] == pytest.approx(before["reserved"]), "the three rejected attempts stay reserved"
+    assert after["measured"] > before["measured"]
+    assert summary_of(run_dir)["attempts"]["failed"] == 3 and summary_of(run_dir)["attempts"]["saved"] == 5
+
+
+def test_the_attempt_count_resets_only_after_a_reopen(project: Project) -> None:
+    """L3 and M4: without a reopen a failed question gets nothing. After one it gets max_attempts more, counted from the event."""
+    rig = Rig(steps=SIX_FAILURES_THEN_AN_ANSWER)
+    run_dir = project.run_dir("run-a")
+    go(project, rig)
+    assert rig.sent(run_dir).count("q1") == 3 and by_question(run_dir)["q1"]["status"] == "execution_failed"
+    go(project, rig)
+    assert rig.sent(run_dir).count("q1") == 3, "a failed question is not retried on resume"
+    lr.reopen_question(run_dir=run_dir, question_id="q1", note="first reopen")
+    result = go(project, rig)
+    assert rig.sent(run_dir).count("q1") == 6, "exactly max_attempts further attempts, not 2 and not 4"
+    assert len(by_question(run_dir)["q1"]["attempt_ids"]) == 6 and result.exit_code == lr.EXIT_EXECUTION_FAILED
+    go(project, rig)
+    assert rig.sent(run_dir).count("q1") == 6
+    lr.reopen_question(run_dir=run_dir, question_id="q1", note="second reopen")
+    assert go(project, rig).exit_code == 0
+    record = by_question(run_dir)["q1"]
+    assert rig.sent(run_dir).count("q1") == 7 and len(record["attempt_ids"]) == 7
+    assert record["status"] == "answered" and record["reopen_count"] == 2
+    reopened = [e for e in events_of(run_dir) if e["event"] == "question_reopened"]
+    assert [e["attempts_before"] for e in reopened] == [3, 6]
+
+
+def test_a_question_marked_failed_by_reconcile_can_be_reopened(project: Project) -> None:
+    rig = Rig(steps={"q2": [FakeStep("timeout_unknown")]})
+    go(project, rig)
+    run_dir = project.run_dir("run-a")
+    lr.reconcile_attempt(run_dir=run_dir, attempt_id=by_question(run_dir)["q2"]["attempt_ids"][0], resolution="mark_failed", note="checked")
+    lr.reopen_question(run_dir=run_dir, question_id="q2", note="provider confirmed nothing was billed")
+    assert go(project, rig).exit_code == 0
+    assert by_question(run_dir)["q2"]["status"] == "answered" and len(by_question(run_dir)["q2"]["attempt_ids"]) == 2
+
+
+def test_reopen_refuses_every_question_that_is_not_execution_failed(project: Project) -> None:
+    """M4: answered, unserved (budget), unknown, never-sent and unknown ids are all refused, with the right next step."""
+    costs = bounds(project)
+    go(project, Rig(steps={"q2": [FakeStep("timeout_unknown")]}), "unknown-run")
+    unknown_dir = project.run_dir("unknown-run")
+    go(project, Rig(), "budget-run", safety_ceiling=costs["q1"] + 0.000001)
+    budget_dir = project.run_dir("budget-run")
+    cases = [
+        (unknown_dir, "q1", "answered"),
+        (unknown_dir, "q2", "reconcile"),
+        (unknown_dir, "q5", "never sent"),
+        (unknown_dir, "no-such-question", "no question"),
+        (budget_dir, "q2", "Run again"),
+    ]
+    for run_dir, question_id, pattern in cases:
+        before = strip_lock(file_snapshot(run_dir))
+        with pytest.raises(RunnerRefusal, match=pattern):
+            lr.reopen_question(run_dir=run_dir, question_id=question_id, note="please")
+        assert strip_lock(file_snapshot(run_dir)) == before, (question_id, pattern)
+        assert not [e for e in events_of(run_dir) if e["event"] == "question_reopened"]
+
+
+def test_reopen_needs_a_note_and_an_unheld_lock_and_an_unscored_run(project: Project) -> None:
+    rig, run_dir = _fail_q1(project)
+    before = strip_lock(file_snapshot(run_dir))
+    for note in ("", "   "):
+        with pytest.raises(RunnerRefusal, match="note"):
+            lr.reopen_question(run_dir=run_dir, question_id="q1", note=note)
+    holder = lr.RunLock(run_dir, "holder")
+    holder.acquire()
+    try:
+        with pytest.raises(RunnerRefusal, match="another invocation holds"):
+            lr.reopen_question(run_dir=run_dir, question_id="q1", note="n")
+    finally:
+        holder.release()
+    assert strip_lock(file_snapshot(run_dir)) == before
+    lr.score_run_live(project_root=project.root, run_dir=run_dir)
+    with pytest.raises(RunnerRefusal, match="scored"):
+        lr.reopen_question(run_dir=run_dir, question_id="q1", note="too late")
+    assert not [e for e in events_of(run_dir) if e["event"] == "question_reopened"]
+
+
+def test_reopen_resolves_an_orphaned_dispatch_before_it_looks_at_the_question(project: Project) -> None:
+    """A dead invocation left q3 open. Reopening another question first records q3 as unknown, as reconcile does."""
+    rig = Rig(steps={"q1": [FakeStep("connect_error")] * 3})
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, crash_hook=crash_at(lr.CRASH_AFTER_DISPATCH, "q3"))
+    run_dir = project.run_dir("run-a")
+    lr.reopen_question(run_dir=run_dir, question_id="q1", note="n")
+    assert names(run_dir, "q3")[-1] == "outcome_unknown"
+
+
+def test_the_cli_reopen_command(project: Project, capsys: pytest.CaptureFixture[str]) -> None:
+    fake = write_fake_script(project, {"q1": [{"kind": "connect_error"}] * 3})
+    assert cli_run(project, "cli-reopen", fake) == 2
+    run_dir = project.run_dir("cli-reopen")
+    assert cli.main(["reopen", "--run-dir", str(run_dir), "q1", "--note", "network fixed"]) == 0
+    assert "reopened" in capsys.readouterr().out
+    assert cli.main(["reopen", "--run-dir", str(run_dir), "q1", "--note", "again"]) == 1, "now pending, not failed"
+    assert cli_run(project, "cli-reopen", fake) == 0
+    with pytest.raises(SystemExit):
+        cli.main(["reopen", "--run-dir", str(run_dir), "q1"])
+    assert by_question(run_dir)["q1"]["status"] == "answered"
+
+
+def test_the_ledger_ignores_reopen_events(project: Project) -> None:
+    rig, run_dir = _fail_q1(project)
+    lr.reopen_question(run_dir=run_dir, question_id="q1", note="n")
+    go(project, rig)
+    assert lr.run_status(run_dir)["cost"]["committed_upper"] > 0

@@ -5,6 +5,7 @@
     status     describe a run from its files
     export     rebuild predictions.jsonl and run_summary.json from the records
     reconcile  record how an attempt with an unknown outcome was resolved
+    reopen     give an execution_failed question further attempts, after you fixed the cause
     score      join the exported predictions to the evaluation manifest
 
 Fake mode (the default) uses a scripted in-process provider. It sends nothing and
@@ -178,6 +179,19 @@ def build_parser() -> argparse.ArgumentParser:
     reconcile.add_argument("--resolution", choices=RESOLUTIONS, required=True)
     reconcile.add_argument("--note", required=True, help="what you checked and what you found")
 
+    reopen = command(
+        "reopen",
+        "give an execution_failed question further attempts",
+        "Append a question_reopened event for a question whose status is execution_failed. The question gets up to "
+        "max_attempts further attempts on the next run, counted from the event. Earlier attempts and their costs stay. "
+        "Use it after fixing the cause. A pending question (unserved or budget-limited) needs no reopen: run again. "
+        "A question with an unknown outcome needs reconcile. An answered question is never reopened. Refused without "
+        "--note, while another invocation holds the lock, and on a scored run. This never contacts the provider.",
+    )
+    reopen.add_argument("--run-dir", type=Path, required=True)
+    reopen.add_argument("question_id", metavar="QUESTION_ID")
+    reopen.add_argument("--note", required=True, help="what you fixed and why the question may be tried again")
+
     score = command(
         "score",
         "score the exported predictions",
@@ -261,6 +275,8 @@ def main(argv: list[str] | None = None) -> int:
             result = live_runner.reconcile_attempt(
                 run_dir=args.run_dir, attempt_id=args.attempt_id, resolution=args.resolution, note=args.note
             )
+        elif args.command == "reopen":
+            result = live_runner.reopen_question(run_dir=args.run_dir, question_id=args.question_id, note=args.note)
         else:
             result = live_runner.score_run_live(
                 project_root=args.project_root, run_dir=args.run_dir, evaluation_manifest_path=args.evaluation_manifest
