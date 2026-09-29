@@ -410,3 +410,100 @@ matched the lead's files byte for byte. It found nothing above Low.
 - It differs from r2 only in request, attempt and response IDs, which derive from the identity hash.
 - The suite at `578a613`, in the lead's checkout, gave 2,182 passed and 2 skipped.
 
+
+## Extension of 2026-09-29 (evening): safety stop and uncertain HTTP outcomes
+
+No live research-model request, connectivity probe or credential load took
+place. Every check used the fake provider or `httpx.MockTransport`.
+
+### Finding 1: dispatch continued after a safety assumption failed
+
+**The fault.** The driver saved a response and kept dispatching when the
+reported input tokens exceeded the request's upper bound. With an injected
+bound of 1, all five eligible requests went out and the run ended `complete`
+with exit 0. A returned-model mismatch and ledger anomalies also only
+invalidated the final summary.
+
+**The fix** (`bd1e269`, with follow-ups `2a87da3`, `5da12a5` and `8549286`).
+Before every dispatch, the driver rebuilds violations from the saved records:
+
+- input tokens above the bound;
+- a returned model that is not an exact match;
+- any ledger anomaly.
+
+On a violation it keeps the response, sends nothing more, and ends with
+`safety_stop` and exit 6. The run state becomes `safety_stopped`. Unserved
+questions are exported as `execution_failed` with `unserved: true`.
+
+A restart rebuilds the stop and exits 6 before building a provider. A ceiling
+raise, `reconcile` and `reopen` do not clear it, and `score` refuses the run.
+
+The commands also refuse a run whose identity block no longer matches its hash,
+or whose events disagree with the hash-pinned response files. The log has no
+hash chain, so edits that keep every cross-check consistent are out of scope.
+
+**Evidence.** The tests were written first and failed on the old code (18 of
+19).
+
+| Case | Old | New |
+| --- | --- | --- |
+| Bound of 1, dispatches | 5 | 1 |
+| Restart, provider calls | 6 (it resumed) | 0, and the provider factory was not called |
+| Model mismatch on q2, dispatches | 5 | 2 |
+
+### Finding 2: HTTP 502 was treated as proof of rejection
+
+**The fault.** A 502 is a gateway reporting an invalid upstream reply (RFC 9110
+section 15.6.3). It does not show that the request went unprocessed, but the
+adapter retried it automatically.
+
+**The fix** (`4a2ee5b` to `90495e1`, `f45a04b` to `02084b0`). The following are
+now unknown outcomes that wait for reconciliation:
+
+- HTTP 502, 500, other 503, other 5xx, 429 (rate limit) and 409;
+- every 3xx reply, because redirects are no longer followed.
+
+Only two statuses stay retried:
+
+- HTTP 408 (RFC 9110 section 15.5.9);
+- HTTP 503 with code `server_is_overloaded`. OpenAI's error-codes page says the model "does not have enough capacity to process your request" (read 2026-09-29).
+
+Both accept a small residual risk of a second charge. A provider's advice to
+retry is not treated as proof.
+
+The ledger keeps every uncertain attempt's reservation, before and after
+reconciliation, as it did before. Error records keep the request ID and a
+bounded body. API keys that a proxy echoes back are replaced with
+`[redacted-api-key]`.
+
+**Evidence.** The tests were written first and failed (18 adapter tests and
+14 driver tests on the old code). All counts are requests the mock transport
+saw.
+
+| Case | Old | New |
+| --- | --- | --- |
+| A 502 then a 200 for q1 | 2 | 1 |
+| Resume after the 502 | not applicable | 0 |
+| `reconcile ... allow_new_attempt` | not applicable | exactly 1 more |
+| `mark_failed` | not applicable | 0 more |
+| A connect error, retried | 3 (not-sent failures reserve 0) | 3 (not-sent failures reserve 0) |
+| A 307 or 308 | followed, 2 | 1, not followed |
+
+**Decision for the lead.** Treating 429 as unknown means every rate limit
+stops for reconciliation, and three in a row trip the circuit breaker. Making
+429 retryable is a one-line change that accepts a possible second charge.
+
+### Review
+
+- **First review, of `52e7f96`.** An independent reviewer (`faar-worker`) found 0 critical and 1 high: edited records cleared the stop. It also found medium issues (redirects re-sent the prompt; a crash between a response file and its event gave the wrong advice) and low issues (an echoed key; a lost usage record in large payloads; stale comments; the fake default).
+- **Verification, of `46ba5ef`.** A second reviewer confirmed that every item was fixed and found two low ones: the advice from `score` after that crash, and stale wording. They are fixed in `8549286` and `884e388`.
+
+### Successor run and checks
+
+- **Successor run.** `2026-09-29-ohr-dev-v1-fake-provider-r4` (code `884e388`) supersedes r3.
+  - It completed with 63 answered, 7 no_evidence and 0 execution_failed, at 0.221480 simulated USD, with 0 reserved.
+  - It differs from r3 only in request, attempt and response IDs.
+  - A rerun before scoring added only invocation events, and `run` after scoring was refused.
+- **Earlier runs.** r1, r2 and r3 are unchanged. r2 and r3 still pass `status` and `export`. r1 predates later export fields, so `export` refuses to rewrite its scored files, which is the documented rule.
+- **Preview.** `.local/work/prompt-preview-final/` was regenerated. It differs from the previous preview only in request IDs.
+- **Local suite.** At `884e388` the suite gave 2,294 passed and 2 skipped.
