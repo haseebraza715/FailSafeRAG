@@ -775,6 +775,95 @@ def generate_records(
     return records
 
 
+@dataclass(frozen=True)
+class QuestionRetrieval:
+    """The retrieval outcome for one runtime question, with the text of every hit.
+
+    ``hits`` is empty when the question has no evidence. ``no_evidence_reason`` then
+    names why, as in ``predictions.jsonl``. ``failure`` is set when retrieval raised
+    for this question (stage, exception type, message) and ``hits`` is then empty.
+    """
+
+    question: RuntimeQuestion
+    hits: tuple[RetrievalHit, ...]
+    no_evidence_reason: str | None
+    query_retrieval_tokens: int
+    ocr_condition: Mapping[str, int]
+    failure: Mapping[str, str] | None = None
+
+
+@dataclass(frozen=True)
+class RetrievalRun:
+    """Everything a caller needs to build prompts: outcomes in manifest order, and the inputs' identity."""
+
+    pilot_id: str
+    runtime_manifest_path: Path
+    runtime_manifest_sha256: str
+    document_noisy_text_sha256: Mapping[str, str | None]
+    retrieval: Mapping[str, Any]
+    questions: tuple[QuestionRetrieval, ...]
+    loaded_documents: Mapping[str, LoadedDocument]
+    manifest: RuntimeManifest
+
+
+def _retrieve_question(question: RuntimeQuestion, loaded: LoadedDocument, index: _DocumentIndex) -> QuestionRetrieval:
+    query_tokens = index.query_token_count(question.question)
+    stage = "retrieve"
+    hits: list[RetrievalHit] = []
+    try:
+        retriever = index.retriever()
+        if retriever is not None:
+            hits = list(retriever.retrieve(question.question))
+        for hit in hits:
+            if hit.chunk.doc_name != question.doc_id:
+                raise RetrievalScopeError(
+                    f"hit {hit.chunk.chunk_id!r} belongs to {hit.chunk.doc_name!r}, not to {question.doc_id!r}"
+                )
+            if not all(_finite(v) for v in (hit.fused_score, hit.bm25_score, hit.dense_score)):
+                raise ValueError(f"hit {hit.chunk.chunk_id!r} has a non-finite score")
+    except Exception as exc:
+        failure = {"stage": stage, "type": type(exc).__name__, "message": str(exc)[:FAILURE_MESSAGE_LIMIT]}
+        return QuestionRetrieval(question, (), None, query_tokens, loaded.ocr_condition, failure)
+    reason = None if hits else (index.empty_reason or NO_HITS)
+    return QuestionRetrieval(question, tuple(hits), reason, query_tokens, loaded.ocr_condition, None)
+
+
+def retrieve_runtime_questions(
+    *,
+    project_root: Path,
+    pilot_id: str = "ohr_dev_v1",
+    runtime_manifest_path: Path | None = None,
+    settings: RetrievalSettings | None = None,
+    text_policy: TextPolicy = DEFAULT_TEXT_POLICY,
+) -> RetrievalRun:
+    """Retrieve evidence for every runtime question and return the outcomes in manifest order.
+
+    This is the public entry for code that builds prompts from retrieval, such as
+    the answer-model run driver. It reads the runtime manifest and the MinerU
+    file of each declared document, and nothing else. It uses the engineering
+    retrieval settings unless ``settings`` is given, and the default text policy.
+    Hash checks and scope checks are the same as in :func:`generate_run`. Raises
+    :class:`RunnerRefusal` when an input fails a check.
+    """
+    project_root = project_root.resolve()
+    manifest_path = runtime_manifest_path or project_root / "results" / "pilots" / pilot_id / "runtime_manifest.json"
+    manifest, manifest_sha = load_runtime_manifest(manifest_path, expected_pilot_id=pilot_id)
+    loaded_documents = {doc.doc_id: load_document(project_root, manifest.noisy_root, doc) for doc in manifest.documents}
+    settings = settings or engineering_retrieval_settings()
+    indexes = {doc_id: _DocumentIndex(loaded, settings, text_policy) for doc_id, loaded in loaded_documents.items()}
+    outcomes = tuple(_retrieve_question(q, loaded_documents[q.doc_id], indexes[q.doc_id]) for q in manifest.questions)
+    return RetrievalRun(
+        pilot_id=manifest.pilot_id,
+        runtime_manifest_path=manifest_path,
+        runtime_manifest_sha256=manifest_sha,
+        document_noisy_text_sha256={doc.doc_id: doc.noisy_sha256 for doc in manifest.documents},
+        retrieval=describe_retrieval(settings, text_policy),
+        questions=outcomes,
+        loaded_documents=loaded_documents,
+        manifest=manifest,
+    )
+
+
 def _dumps(payload: Any, *, indent: int | None = 2) -> str:
     return json.dumps(payload, indent=indent, ensure_ascii=False, allow_nan=False)
 
