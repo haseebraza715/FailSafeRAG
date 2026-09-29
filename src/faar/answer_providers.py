@@ -49,7 +49,8 @@ OpenAI adapter
       a choice without a `message` object raise `ProviderError(kind="malformed_response",
       outcome="unknown", retryable=False)` with the payload in `raw`. A message whose `content`
       is null stays a response (a refusal string is the usual reason), and the reply parser
-      classifies it.
+      classifies it. The error's `raw` holds `reason`, `payload`, and the payload's `usage`, `id` and
+      `model` as top-level fields (None when absent).
   O5. A status counts as `rejected` only when a source shows the provider did not process the request.
       A retry recommendation does not show that. OpenAI's error-codes page, `Retry-After` and the
       SDK's default retry set (408, 409, 429, 5xx, and `x-should-retry: true`) say when a retry is
@@ -591,7 +592,15 @@ class OpenAIChatProvider:
                 kind=KIND_MALFORMED_RESPONSE,
                 outcome=OUTCOME_UNKNOWN,
                 retryable=False,
-                raw={"reason": reason, "payload": raw},
+                # `usage`, `id` and `model` sit beside the payload so that a later bound on the payload's
+                # size cannot drop what the reply cost and which request it was.
+                raw={
+                    "reason": reason,
+                    "usage": raw.get("usage"),
+                    "id": raw.get("id"),
+                    "model": raw.get("model"),
+                    "payload": raw,
+                },
             )
         choice = _mapping(choices[0])
         message = _mapping(choice.get("message"))

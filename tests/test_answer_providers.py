@@ -392,6 +392,23 @@ def test_200_reply_without_a_choice_message_is_a_malformed_response_not_an_answe
         assert error.raw["payload"]["usage"]["prompt_tokens"] == 120  # the reply was billed; the raw keeps the usage
 
 
+@pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
+def test_a_malformed_200_puts_usage_id_and_model_at_the_top_of_raw() -> None:
+    """A later bound on the payload's size must not drop the evidence of what the reply cost."""
+    body = completion_payload(choices=[])
+    provider, _ = adapter(lambda request: httpx.Response(200, json=body))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    raw = info.value.raw
+    assert raw["usage"] == raw["payload"]["usage"]  # the SDK's dump adds None-valued detail fields
+    assert (raw["usage"]["prompt_tokens"], raw["usage"]["completion_tokens"], raw["usage"]["total_tokens"]) == (120, 9, 129)
+    assert (raw["id"], raw["model"]) == ("chatcmpl-test-1", "gpt-test-2026-01-01")
+    provider, _ = adapter(lambda request: httpx.Response(200, json={"foo": 1}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert (info.value.raw["usage"], info.value.raw["id"], info.value.raw["model"]) == (None, None, None)
+
+
 def test_null_content_with_a_refusal_string_stays_a_response() -> None:
     payload = completion_payload()
     payload["choices"][0]["message"] = {"role": "assistant", "content": None, "refusal": "No."}
