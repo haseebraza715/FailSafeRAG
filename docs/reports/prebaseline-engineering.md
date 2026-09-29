@@ -350,3 +350,37 @@ transport.
 - Provider-side exactly-once delivery is not available. The path guarantees safe local resume only.
 - Query tokens do not show that the evidence is relevant, and the pilot is mostly single-page.
 - The macOS OpenMP limitation, the open scorer licence question and the unfinished human inspection still stand.
+
+### Independent review of the answer-model path (2026-09-29)
+
+A reviewer with the `faar-worker` definition, who wrote none of this code,
+reviewed `b87a48e`. It found no critical defect, and no path to a double spend,
+a gold-data leak or a ceiling breach under the stated assumptions. Two fix
+workers (`faar-worker`) and the lead fixed the accepted findings. Every fix had
+a failing test first, except where the table says otherwise.
+
+| Finding | Disposition |
+| --- | --- |
+| H1: an interrupt during an event append duplicated a sequence number, and the log became unloadable with a paid response unreachable | Fixed. The in-memory state advances as soon as the bytes are written. A cut-short write is truncated, and the interrupt handler re-reads the log before it recovers open attempts. |
+| H2: every prompt contained the document name, because chunk IDs carry it | Fixed. The header shows a document-free label such as `p2-c2`, and the new template SHA-256 is `52044de2...`. On the frozen pilot, 0 of 63 prompts now contain a `doc_id`. |
+| H3: the configured endpoint was ignored, and `OPENAI_BASE_URL` could redirect live requests with the key | Fixed. The client uses the configured base URL. Live mode refuses the SDK's redirecting environment variables, and the run records the client's base URL. Proxy variables remain unchecked (study brief 15.4). |
+| M1: `reconcile` and `export` changed scored runs, and `score` ran on unfinished runs | Fixed. `score` needs a `complete` run. After scoring, writers refuse, and `export` only confirms identical files. |
+| M2: `export`, `reconcile` and `score` created `run.lock` in any directory | Fixed. The run-directory rules and `run_config.json` are checked first. |
+| M3: a 200 reply without an answer message was saved as a final empty answer | Fixed. It is an unknown outcome (`malformed_response`). |
+| M4: a failed question could not be retried | Fixed with `reopen`, which gives up to 3 further attempts and keeps the earlier ones. |
+| M5: a systematic fault could turn every question into an unknown outcome | Fixed with a circuit breaker after 3 consecutive such attempts. Releasing reserved cost on reconciliation was rejected, because a free-text note cannot prove that nothing was billed. |
+| M6: `valid_baseline` ignored a returned-model mismatch and anomalies | Fixed. The summary lists blockers and says that the flag checks mechanical completeness only. |
+| L1: a gateway 504 was retried | Fixed. It is now an unknown outcome. |
+| L2: request parameters were checked against a denylist | Fixed. They are checked against an allowlist of six keys. |
+| L3: the attempt cap was not enforced across stopped invocations | Fixed. |
+| L4: `fsync` on macOS does not flush the drive cache | Fixed. The runner also calls `F_FULLFSYNC`, best effort. This was not tested on real hardware. |
+| L5 to L11: ignore rule, status wording, test counts, code freeze, the note as a speed bump, socket wording, registry placeholder | Fixed in the files and documents. The registry placeholder stays corrected by an appended line, since the registry is append-only. |
+
+**The successor run is `2026-09-29-ohr-dev-v1-fake-provider-r2`** (code `a6935aa`), and it supersedes r1.
+
+- It completed with 63 answered, 7 no_evidence and 0 execution_failed, from 63 attempts, all measured, with 0 reserved.
+- Its cost was 0.221480 simulated USD.
+- A rerun before scoring added only invocation events. After scoring, `run` was refused and `export` was a verified no-op.
+- The new local preview is `.local/work/prompt-preview-v2/`. Its largest input bound is 7,920, and its worst case is $2.85 at option A's unapproved rates.
+- The lead reran the demonstrations on the fixed code: an unknown outcome was not resent, reconcile and reopen each gave exactly one further attempt, the incompatible change, the budget raise without a note, the second process and live mode without enablement were all refused, and the budget stop was recorded. Reopening an answered question was refused.
+- The suite at `a86f27e`, in the lead's checkout, gave 2,177 passed and 2 skipped.
