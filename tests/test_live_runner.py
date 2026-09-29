@@ -1099,7 +1099,7 @@ def test_a_step_index_survives_a_fresh_invocation(project: Project) -> None:
 
 
 def test_a_retryable_error_is_retried_with_policy_delays_and_every_attempt_is_kept(project: Project) -> None:
-    """R1: two 429 answers, then success. Three attempts, the injected sleep gets the policy delays."""
+    """R1: two 408 answers, then success. Three attempts, the injected sleep gets the policy delays."""
     rig = Rig(steps={"q1": [FakeStep("retryable_error"), FakeStep("retryable_error"), FakeStep("answer", text="third time")]})
     sleeps: list[float] = []
     result = go(project, rig, sleep=sleeps.append)
@@ -1110,8 +1110,8 @@ def test_a_retryable_error_is_retried_with_policy_delays_and_every_attempt_is_ke
     ]
     failed = [e for e in events_of(run_dir) if e["event"] == "attempt_failed"]
     assert [(e["attempt"], e["decision"], e["outcome"], e["http_status"], e["retryable"]) for e in failed] == [
-        (1, "retry", "rejected", 429, True),
-        (2, "retry", "rejected", 429, True),
+        (1, "retry", "rejected", 408, True),
+        (2, "retry", "rejected", 408, True),
     ]
     real = lr.Services.default().retry_policy
     assert sleeps == [real.delay_for(1), real.delay_for(2)] and [e["delay_seconds"] for e in failed] == sleeps
@@ -1130,7 +1130,7 @@ def test_retries_stop_at_the_attempt_limit_and_the_question_fails(project: Proje
     decisions = [e["decision"] for e in events_of(run_dir) if e["event"] == "attempt_failed"]
     assert decisions == ["retry", "retry", "fail_question"]
     record = by_question(run_dir)["q1"]
-    assert record["status"] == "execution_failed" and record["failure"]["type"] == "rate_limit" and record["failure"]["attempts"] == 3
+    assert record["status"] == "execution_failed" and record["failure"]["type"] == "transient_status" and record["failure"]["attempts"] == 3
     assert result.exit_code == lr.EXIT_EXECUTION_FAILED
     assert by_question(run_dir)["q2"]["status"] == "answered", "other questions are unaffected"
 
