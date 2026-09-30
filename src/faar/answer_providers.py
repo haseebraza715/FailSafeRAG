@@ -103,6 +103,7 @@ from faar.live_contract import (
     OUTCOME_NOT_SENT,
     OUTCOME_REJECTED,
     OUTCOME_UNKNOWN,
+    SERVICE_TIER_STANDARD,
     ProviderError,
     ProviderRequest,
     ProviderResponse,
@@ -188,7 +189,7 @@ class FakeStep:
     """One scripted outcome for one attempt.
 
     `text` overrides the reply text of answer-like kinds. `returned_model` overrides the model
-    the fake reports back. `http_status` overrides the status of `retryable_error` (default 408)
+    the fake reports back. `service_tier` sets the tier it reports (None: no tier). `http_status` overrides the status of `retryable_error` (default 408)
     and `non_retryable_error` (default 400). `message` overrides the refusal text or error message.
 
     `retryable_error` exercises the driver's retry path. It is a `rejected`, retryable failure whatever
@@ -202,6 +203,8 @@ class FakeStep:
     returned_model: str | None = None
     http_status: int | None = None
     message: str | None = None
+    # The service tier the fake reports for answer-like kinds. None scripts a response with no tier.
+    service_tier: str | None = SERVICE_TIER_STANDARD
 
     def __post_init__(self) -> None:
         if self.kind not in FAKE_STEP_KINDS:
@@ -410,6 +413,8 @@ class FakeProvider:
             ],
             "usage": raw_usage,
         }
+        if step.service_tier is not None:
+            raw["service_tier"] = step.service_tier
         return ProviderResponse(
             text=text,
             finish_reason=finish_reason,
@@ -418,6 +423,7 @@ class FakeProvider:
             response_id=response_id,
             usage=usage,
             raw=raw,
+            returned_service_tier=step.service_tier,
         )
 
 

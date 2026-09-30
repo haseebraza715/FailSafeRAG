@@ -46,6 +46,32 @@ EVENTS = (
 # the cost bound.
 ALLOWED_OPENAI_PARAMS = ("temperature", "top_p", "seed", "stop", "presence_penalty", "frequency_penalty")
 
+# Provider-side storage policy. The ordinary live baseline sends `store=false` on every request and does not
+# rely on the account default (OpenAI documents Chat Completions as stored by default for new accounts).
+# `store=false` does not mean zero retention: OpenAI keeps abuse-monitoring logs for up to 30 days unless the
+# organization has an approved Zero Data Retention or Modified Abuse Monitoring control. Nor does it settle
+# whether the dataset terms allow sending the documents at all.
+STORAGE_DISABLED = "disabled"  # sends store=false
+STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP = "enabled_for_attempt_lookup"  # sends store=true plus metadata; needs explicit authorization
+STORAGE_POLICIES = (STORAGE_DISABLED, STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP)
+
+# Service tier. The baseline requests the Standard tier explicitly, so a project-level setting (for example
+# Fast mode) cannot change the price. The Chat Completions reference (read 2026-09-30) documents the request
+# value "default" as "standard pricing and performance for the selected model", and says the response echoes
+# the tier actually used when the request sets one. openai-python 1.68.2 types the request field as
+# Literal["auto", "default"].
+SERVICE_TIER_STANDARD = "default"
+# A saved response whose service_tier is anything but SERVICE_TIER_STANDARD is a safety violation, including
+# a missing or unrecognised value: the price table's rates apply only to the Standard tier, so its usage
+# cannot be priced as verified cost.
+RETURNED_SERVICE_TIERS_ACCEPTED = (SERVICE_TIER_STANDARD,)
+
+# What a run is for. It is fixed at initialisation and recorded in the identity, the run config, the summary,
+# the score summary and the registry. An engineering_check is never eligible as a baseline, whatever it calls.
+RUN_KIND_ENGINEERING = "engineering_check"
+RUN_KIND_DEVELOPMENT = "development_pilot"
+RUN_KINDS = (RUN_KIND_ENGINEERING, RUN_KIND_DEVELOPMENT)
+
 # How a provider error was resolved, from the provider's side.
 # not_sent: the request provably never left the process (for example a DNS or connect failure).
 # rejected: the provider answered with an error status; no answer was produced.
@@ -127,6 +153,8 @@ class ProviderResponse:
     response_id: str | None
     usage: ProviderUsage
     raw: dict[str, Any] = field(default_factory=dict)
+    # The service tier the provider reports it used, exactly as returned. None means the response had none.
+    returned_service_tier: str | None = None
 
 
 class ProviderError(Exception):
@@ -165,6 +193,11 @@ class PriceTable:
     source: str
     source_date: str
     simulated: bool
+    # The service tier these rates apply to. None only in records written before the tier was recorded.
+    service_tier: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        data = asdict(self)
+        if data["service_tier"] is None:
+            del data["service_tier"]  # records written before the field existed keep their exact form
+        return data
