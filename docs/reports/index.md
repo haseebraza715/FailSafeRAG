@@ -12,6 +12,7 @@ proposed, in [study brief section 15](../research/study-brief.md#15-first-real-b
 - [Pre-baseline engineering: scoring, offline runner and CI (2026-09-28)](prebaseline-engineering.md)
 - [OHR-Bench scorer provenance and code terms (2026-09-29)](ohr-scorer-provenance.md)
 - [Live-baseline readiness review (2026-09-30)](live-baseline-readiness-2026-09-30.md), with its case-level [agent review of the 20 inspection cases](ohr-dev-v1-agent-review-2026-09-30.md). The agent review is not human annotation.
+- [Approval packet: small live check and full development pilot (2026-09-30)](live-check-approval-packet-2026-09-30.md). The two decisions the lead is asked for, with the exact configuration, costs and commands. Nothing in it is approved.
 
 Prototype phase reports and the earlier supervisor progress report, including
 the 40-example mock numbers, are in [../history/reports/](../history/reports/).
