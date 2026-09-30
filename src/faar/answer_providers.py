@@ -460,30 +460,6 @@ class FakeProvider:
 
 # --------------------------------------------------------------------------- OpenAI adapter
 
-# Not used by the adapter any more: it checks `ALLOWED_OPENAI_PARAMS`. `faar.live_runner.parse_provider_config`
-# still imports this name for its own check. Delete it once that check uses the allowlist too.
-_MANAGED_PARAM_KEYS = frozenset(
-    {
-        "model",
-        "messages",
-        "max_tokens",
-        "max_completion_tokens",
-        "timeout",
-        "n",
-        "stream",
-        "stream_options",
-        "tools",
-        "tool_choice",
-        "functions",
-        "function_call",
-        "parallel_tool_calls",
-        "extra_headers",
-        "extra_query",
-        "extra_body",
-        "store",
-        "metadata",
-    }
-)
 _TOKEN_LIMIT_PARAMS = ("max_tokens", "max_completion_tokens")
 _MESSAGE_LIMIT = 1000
 
@@ -709,8 +685,8 @@ class OpenAIChatProvider:
                     "payload": raw,
                 },
             )
-        choice = _mapping(choices[0])
-        message = _mapping(choice.get("message"))
+        choice = choices[0]
+        message = choice["message"]
         usage = _mapping(raw.get("usage"))
         usage_out = ProviderUsage(
             input_tokens=_int_or_none(usage.get("prompt_tokens")),

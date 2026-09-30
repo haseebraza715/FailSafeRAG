@@ -203,7 +203,7 @@ def _estimate(record: Mapping[str, Any]) -> str:
 
 
 def _sha_prefix(value: Any) -> str:
-    return str(value)[:SHA_PREFIX_LENGTH] if value else MISSING
+    return str(value)[:SHA_PREFIX_LENGTH]
 
 
 def _summary_table(prepared: Sequence[Mapping[str, Any]]) -> list[str]:

@@ -639,8 +639,7 @@ def _recomputed(event: Mapping[str, Any], prices: PriceTable) -> int | None:
     usage = event.get("usage")
     if not isinstance(usage, Mapping):
         return None
-    keys = ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_tokens")
-    return measured_cost_micro(ProviderUsage(**{key: usage.get(key) for key in keys}), prices)
+    return measured_cost_micro(ProviderUsage(**{key: usage.get(key) for key in USAGE_KEYS}), prices)
 
 
 def _build(state: Mapping[str, _Attempt], prices: PriceTable) -> SafetyLedger:
