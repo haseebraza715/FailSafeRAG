@@ -31,7 +31,7 @@ def test_provider_and_retry_policy_agree_on_run_stopping_kinds() -> None:
 def test_unknown_outcome_kinds_from_the_adapter_go_to_reconcile_not_retry(status: int, kind: str) -> None:
     client = openai.OpenAI(
         api_key="test-not-a-key",
-        http_client=httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(status, text="gateway"))),
+        http_client=httpx.Client(trust_env=False, transport=httpx.MockTransport(lambda request: httpx.Response(status, text="gateway"))),
         max_retries=0,
     )
     provider = answer_providers.OpenAIChatProvider("gpt-test", {}, client=client)
@@ -46,7 +46,7 @@ def test_unknown_outcome_kinds_from_the_adapter_go_to_reconcile_not_retry(status
 def test_adapter_accepts_exactly_the_contract_parameter_allowlist() -> None:
     client = openai.OpenAI(
         api_key="test-not-a-key",
-        http_client=httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json={}))),
+        http_client=httpx.Client(trust_env=False, transport=httpx.MockTransport(lambda request: httpx.Response(200, json={}))),
         max_retries=0,
     )
     for key in live_contract.ALLOWED_OPENAI_PARAMS:
