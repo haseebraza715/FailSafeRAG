@@ -8,19 +8,19 @@ Two approvals are asked for, in order. Approval A covers the small live check al
 
 | Item | Value |
 | --- | --- |
-| Branch and commit | `research/prebaseline-engineering` at `aaf9a4a`. CI run 36731761957 passed. PR #2 is a draft |
-| Code identity | `git diff --stat ca26e31 aaf9a4a -- src scripts tests config pyproject.toml` is empty. The code is that of `ca26e31`, which the readiness review describes |
-| Full suite at `aaf9a4a` | 2494 passed, 2 skipped, exit code 0, full output in `.local/work/suite-full-aaf9a4a-r7.log`. One earlier full run on 2026-09-30 reported 1 failed and 2493 passed, but its command piped pytest through `tail -1`, so the failing test's name was lost. Three later runs and this one pass. That failure is recorded as unresolved, not fixed |
+| Branch and commit | `research/prebaseline-engineering`. The code is that of `b7241a0` (four deslop refactor commits on 2026-09-30 that removed dead constants, redundant guards and duplicate helpers; behavior unchanged). Records and documents land in later commits. PR #2 is a draft |
+| Code identity | Every `src/faar/*.py` file changed in the deslop refactor, so the run identity differs from `ca26e31`. The prepared requests are identical to the `ca26e31` dry run apart from `request_id` (checked field by field on all 70 records). Every committed audit output reproduces byte for byte on the new code; see `results/audits/2026-09-30-readiness/reproduction-b7241a0.json` |
+| Full suite | At `aaf9a4a`: 2494 passed, 2 skipped, exit 0 (`.local/work/suite-full-aaf9a4a-r7.log`). At `b7241a0`: 2494 passed, 2 skipped, exit 0 (`.local/work/suite-full-b7241a0.log`). One earlier full run on 2026-09-30 reported 1 failed and 2493 passed, but its command piped pytest through `tail -1`, so the failing test's name was lost. Three later runs and this one pass. That failure is recorded as unresolved, not fixed |
 | Provider config | `.local/work/provider-config.UNAPPROVED.gpt-4o-2024-11-20.json`, sha256 `a1dd872833d63918233a0b3f286cca2e51fa291666bc34da93888a987b754d75`. Its content is in section 2. On approval, the lead copies it to a name without `UNAPPROVED` and the run records the new path. The bytes must stay the same, or the digests below change |
 | Prompt template | `faar-answer-draft-v1`, sha256 `52044de279b32482e1b8b7f75f0b3455f5cb8e44e9178f8cec09c1615a89914d` |
 | Frozen runtime manifest (70 questions) | `results/pilots/ohr_dev_v1/runtime_manifest.json`, sha256 `08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1` |
 | Live-check manifest (8 questions) | `results/audits/2026-09-30-readiness/live-check-selection/runtime_manifest.livecheck-v1.json`, sha256 `a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3`, an exact subset of the frozen manifest |
-| Full-pilot dry-run identity | `dry_run_identity_sha256` `6a0075d5359dc4209409358cb272d442b7b61085e0759ae4af1a133be7fd9267` (63 sent, 7 skipped, largest bound 7,920, one-attempt bound $0.949909) |
-| Live-check dry-run identity | `dry_run_identity_sha256` `e8beee912bd144ab670dc43d1b1edb3bde710ccf0ada64e7fd61945e178980ba` (6 sent, 2 skipped, largest bound 7,920, one-attempt bound $0.087581, question-id digest `75ed63bf...`) |
+| Full-pilot dry-run identity | `dry_run_identity_sha256` `8eeff3f95f497e62919badddd95ee453c21000e85177ea280a7a2b0e5d53f74e` at `b7241a0` (63 sent, 7 skipped, largest bound 7,920, one-attempt bound $0.949909). It was `6a0075d5...` at `ca26e31` |
+| Live-check dry-run identity | `dry_run_identity_sha256` `d784d95c9bd4fd101a2ba59c3b64d6a0f5f08ecab23d5e2df499eb71fb3d2be6` at `b7241a0` (6 sent, 2 skipped, largest bound 7,920, one-attempt bound $0.087581, question-id digest `75ed63bf...`). It was `e8beee91...` at `ca26e31` |
 | Reproduction at `aaf9a4a` | Both dry runs and all seven audit scripts were re-run on 2026-09-30. Every figure above and every compact output in `results/audits/2026-09-30-readiness/` reproduced byte for byte, except the `prompts/audit_prompts.json` trace, which differs only in output paths and in a `.env` entry that a credential-free shim removed |
-| Retrieval | The settings recorded in `run_config.json` of `2026-09-30-ohr-dev-v1-fake-provider-r5` (`multilingual-v1` tokeniser, `cjk-weighted-words-v1` chunking, five hits per question). They are engineering settings. The readiness review notes one known retrieval miss (case 20) |
+| Retrieval | The settings recorded in `run_config.json` of `2026-09-30-ohr-dev-v1-fake-provider-r6` (`multilingual-v1` tokeniser, `cjk-weighted-words-v1` chunking, five hits per question). They are engineering settings. The readiness review notes one known retrieval miss (case 20) |
 
-The run identity covers every `src/faar/*.py` file and the CLI script. An edit to any of them after the first paid request makes a partly paid run refuse to resume. Approval A therefore freezes the code at `aaf9a4a` for both runs. If a change is needed between the two runs, the full pilot runs on the changed code as a new run, and this packet is reissued.
+The run identity covers every `src/faar/*.py` file and the CLI script. An edit to any of them after the first paid request makes a partly paid run refuse to resume. Approval A therefore freezes the code at `b7241a0` for both runs. If a change is needed between the two runs, the full pilot runs on the changed code as a new run, and this packet is reissued.
 
 ## 2. Model and parameters
 
@@ -142,7 +142,7 @@ If the run ends `needs_reconciliation`, `stopped`, `budget_limited` or `safety_s
 
 ## 9. Commands (NOT EXECUTED)
 
-Run from the repository root at `aaf9a4a` with a clean working tree. The API key comes from the existing mechanism: the live CLI imports `faar.pilot_runner`, which imports `faar.settings`, which calls `load_dotenv(override=False)` and finds the repository-root `.env` from any working directory. That file is git-ignored, already present, and holds `OPENAI_API_KEY`. `build_live_provider` reads the variable only after every offline check has passed, and the test suite asserts that no earlier step reads it. No command prints the key. `OPENAI_MODEL` in `.env` is loaded into the process but the live path takes the model from the config only. `.env` holds no `FAAR_ALLOW_LIVE_REQUESTS` line and none of the four refused `OPENAI_*` names, checked by name on 2026-09-30, so the spending gate is still the explicit variable on the command line.
+Run from the repository root on the branch head, whose code is that of `b7241a0`, with a clean working tree. The API key comes from the existing mechanism: the live CLI imports `faar.pilot_runner`, which imports `faar.settings`, which calls `load_dotenv(override=False)` and finds the repository-root `.env` from any working directory. That file is git-ignored, already present, and holds `OPENAI_API_KEY`. `build_live_provider` reads the variable only after every offline check has passed, and the test suite asserts that no earlier step reads it. No command prints the key. `OPENAI_MODEL` in `.env` is loaded into the process but the live path takes the model from the config only. `.env` holds no `FAAR_ALLOW_LIVE_REQUESTS` line and none of the four refused `OPENAI_*` names, checked by name on 2026-09-30, so the spending gate is still the explicit variable on the command line.
 
 The safeguards were verified on 2026-09-30 by running the nine live-path test files (1,050 tests, every file exit 0) and reading the code they exercise. The evidence table is in `.local/work/live-baseline-preparation.md`, round 7. Two coverage gaps were found and judged low risk, and no test was added: the tier-stop variant of the "reconcile and reopen do not clear the stop" test does not call `reconcile`, and the `allow_new_attempt` resolution after a safety stop has no direct test. The stop check runs before the provider is built on every `run`, whatever the violation, so both paths share the tested code.
 
@@ -169,7 +169,7 @@ It must report 8 questions, 6 to send and a one-attempt bound of 0.087581.
 Approval A, spends money:
 
 ```bash
-RUN=2026-10-01-ohr-dev-v1-live-check-r1
+RUN=2026-09-30-ohr-dev-v1-live-check-r2
 FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY .local/venv-prebaseline/bin/python scripts/experiments/run_pilot_live.py run --mode live --run-kind engineering_check --runtime-manifest "$MAN" --provider-config "$CFG" --run-dir "results/development/$RUN" --run-id "$RUN" --safety-ceiling 0.15
 ```
 
@@ -198,9 +198,13 @@ FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY .local/venv-prebaseline/
 
 Then `status`, `score --run-dir "results/development/$RUN"` (the frozen evaluation manifest is the default), and a `development_pilot` registry record. The dates in the run ids are placeholders for the day the run happens.
 
+## 9a. Record of the first invocation
+
+Approval A was given on 2026-09-30. The first invocation, run `2026-09-30-ohr-dev-v1-live-check-r1` at code `48bb18d` (identity of `ca26e31`), was rejected on its first request with HTTP 401 `invalid_api_key`, because the key in the repository-root `.env` is not accepted by OpenAI. The runner stopped as designed. Nothing was processed or billed, and the records are committed and registered. A deslop refactor of the code followed, so that directory cannot resume, and the check continues as `2026-09-30-ohr-dev-v1-live-check-r2` with the same config digest, manifest and ceiling once a valid key is in place.
+
 ## 10. What each approval covers
 
-**Approval A, the small live check.** Six paid requests to `gpt-4o-2024-11-20` with the config in section 2, on the 8-question manifest in section 6, at a $0.15 ceiling, registered as `engineering_check`, with the transmission and retention in sections 3 and 4 accepted for those six documents. It freezes the code at `aaf9a4a`. It does not approve the full pilot, the prompt as the final baseline prompt, the retrieval settings as approved settings, or any repair experiment.
+**Approval A, the small live check.** Six paid requests to `gpt-4o-2024-11-20` with the config in section 2, on the 8-question manifest in section 6, at a $0.15 ceiling, registered as `engineering_check`, with the transmission and retention in sections 3 and 4 accepted for those six documents. It freezes the code at `b7241a0`. It does not approve the full pilot, the prompt as the final baseline prompt, the retrieval settings as approved settings, or any repair experiment.
 
 **Approval B, the full development pilot.** 63 paid requests with the same code and config on the frozen 70-question manifest at a $2.00 ceiling, registered as `development_pilot`, with the transmission accepted for all 23 documents. It is asked for separately, after the small check's records have been reviewed against section 8. It does not make the result a scientific evaluation, and it does not approve the study brief's open lead decisions beyond items 1, 2, 3, 4, 5, 11 and 13 of section 15.13 for this development run.
 

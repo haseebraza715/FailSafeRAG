@@ -38,8 +38,11 @@ it measures the execution path and not answer quality.
 | `2026-09-29-ohr-dev-v1-fake-provider-r2` | engineering_check | completed; superseded by fake-provider-r3 after the fix-verification findings |
 | `2026-09-29-ohr-dev-v1-fake-provider-r3` | engineering_check | completed; superseded by fake-provider-r4 after the safety-stop and HTTP-outcome fixes |
 | `2026-09-29-ohr-dev-v1-fake-provider-r4` | engineering_check | completed; superseded by fake-provider-r5 after the storage, service-tier, transport and run-kind safeguards |
-| `2026-09-30-ohr-dev-v1-fake-provider-r5` | engineering_check | completed (answer-model path with the fake provider; answers and costs simulated; not a baseline) |
-| `2026-09-30-ohr-dev-v1-live-check-subset-fake-r1` | engineering_check | completed (fake rehearsal of the 8-question live check; not canonical, never a baseline) |
+| `2026-09-30-ohr-dev-v1-fake-provider-r5` | engineering_check | completed; superseded by fake-provider-r6 after the deslop refactor |
+| `2026-09-30-ohr-dev-v1-live-check-subset-fake-r1` | engineering_check | completed; superseded by live-check-subset-fake-r2 after the deslop refactor |
+| `2026-09-30-ohr-dev-v1-fake-provider-r6` | engineering_check | completed (answer-model path with the fake provider; answers and costs simulated; not a baseline) |
+| `2026-09-30-ohr-dev-v1-live-check-subset-fake-r2` | engineering_check | completed (fake rehearsal of the 8-question live check; not canonical, never a baseline) |
+| `2026-09-30-ohr-dev-v1-live-check-r1` | engineering_check | abandoned (first live invocation under Approval A; HTTP 401 `invalid_api_key` on the first request, nothing processed or billed; the code changed afterwards, so it cannot resume and a successor run takes its place) |
 
 No scientific evaluation has run. This table is a convenience; the registry is
 authoritative.
