@@ -22,6 +22,10 @@ Ways the pair could fail, written before the tests:
   H10. The client that `build_live_provider` builds follows a 307 or 308 reply and posts the prompt to the
       Location URL, outside the driver's accounting. Each such reply must reach the transport once, and the
       attempt must be recorded as unknown.
+  H11. A request leaves without `store: false` or without `service_tier: default`, on the first attempt or on a
+      retried one, so the provider stores the prompt or bills another tier.
+  H12. The client that `build_live_provider` builds reads HTTPS_PROXY, HTTP_PROXY, ALL_PROXY, SSL_CERT_FILE or the
+      operating system's proxy settings, so the prompt and the key travel through a proxy the run never recorded.
 
 The status table and its sources are in the comment above `_classify_status` in
 `faar/answer_providers.py`.
@@ -106,6 +110,7 @@ class Wire:
         self.seen: list[str] = []
         self.urls: list[str] = []
         self.authorization: list[str | None] = []
+        self.bodies: list[dict[str, Any]] = []
         self.providers = 0
 
     @staticmethod
@@ -128,6 +133,7 @@ class Wire:
         self.seen.append(question_id)
         self.urls.append(str(request.url))
         self.authorization.append(request.headers.get("authorization"))
+        self.bodies.append(json.loads(request.content))
         steps = self.script.get(question_id, [])
         step = steps[index] if index < len(steps) else ok()
         return step(request)
@@ -140,7 +146,7 @@ class Wire:
         client = openai.OpenAI(
             api_key=API_KEY,
             base_url="http://127.0.0.1:9/v1",
-            http_client=httpx.Client(transport=httpx.MockTransport(self.handler)),
+            http_client=httpx.Client(transport=httpx.MockTransport(self.handler), follow_redirects=False, trust_env=False),
             max_retries=0,
         )
         return OpenAIChatProvider(lr.FAKE_CONFIG.model, dict(lr.FAKE_CONFIG.params), client=client)
@@ -149,7 +155,7 @@ class Wire:
         """The provider the live CLI builds, on this mock transport. Only the transport is a test seam."""
         self.providers += 1
         config = dataclasses.replace(lr.FAKE_CONFIG, endpoint="http://127.0.0.1:9/v1")
-        client = httpx.Client(transport=httpx.MockTransport(self.handler), follow_redirects=False)
+        client = httpx.Client(transport=httpx.MockTransport(self.handler), follow_redirects=False, trust_env=False)
         return lr.build_live_provider(config, {"OPENAI_API_KEY": API_KEY}, http_client=client)
 
 
@@ -544,3 +550,170 @@ def test_a_bounded_payload_stays_within_the_bound_and_marks_what_it_cut(payload:
 def test_an_unserialisable_payload_is_kept_as_bounded_text() -> None:
     bounded = lr._bounded_raw({"x": object()})
     assert bounded["unserialisable"] is True and len(bounded["text"]) <= lr.PROVIDER_RAW_LIMIT
+
+
+# ---------------------------------------------------------------------------
+# Storage and service tier on every request (H11)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("live_build", [False, True])
+def test_every_request_of_a_retried_question_carries_store_false_and_the_standard_tier(project: Project, live_build: bool) -> None:
+    """H11: the 408 attempt and the retry that follows it are two requests, and both carry the same policy."""
+    s = session(project, {"q1": [status(408, headers={"x-request-id": "req_408"}), ok()]})
+    result = s.run(live_build=live_build)
+    assert s.wire.count("q1") == 2 and result.summary is not None
+    assert len(s.wire.bodies) >= 2
+    for body in s.wire.bodies:
+        assert body["store"] is False, body.keys()
+        assert body["service_tier"] == "default"
+        assert "metadata" not in body
+    (failed,) = s.events("attempt_failed")
+    assert failed["provider_raw"]["x_request_id"] == "req_408"  # the local diagnostic exists with storage off
+    attempts = [e["attempt_id"] for e in s.events("dispatch_started")]
+    assert len(attempts) == 2 and len(set(attempts)) == 2
+
+
+def test_the_request_body_keys_are_exactly_the_documented_ones(project: Project) -> None:
+    s = session(project)
+    s.run(live_build=True)
+    keys = {frozenset(body) for body in s.wire.bodies}
+    expected = {"model", "messages", lr.FAKE_CONFIG.token_limit_param, "store", "service_tier", *lr.FAKE_CONFIG.params}
+    assert keys == {frozenset(expected)}, sorted(set().union(*keys))
+
+
+# ---------------------------------------------------------------------------
+# Direct transport (H12)
+#
+# `build_live_provider` builds `openai.DefaultHttpxClient(follow_redirects=False, trust_env=False)`. The tests
+# read where httpx would route https://api.openai.com from the built client. They send nothing.
+# ---------------------------------------------------------------------------
+
+API_URL = httpx.URL("https://api.openai.com/v1/chat/completions")
+PROXY_ENV_NAMES = ("HTTPS_PROXY", "HTTP_PROXY", "ALL_PROXY", "https_proxy", "http_proxy", "all_proxy")
+PROXY_ADDRESS = "http://127.0.0.1:9"
+
+
+def live_settings() -> lr.ProviderConfig:
+    return dataclasses.replace(lr.FAKE_CONFIG, endpoint="https://api.openai.com/v1")
+
+
+def clean_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    """No redirecting OpenAI variables, no proxy variables and no CA variables, before a test sets its own."""
+    for name in (*lr.REDIRECTING_ENV_NAMES, *PROXY_ENV_NAMES, "NO_PROXY", "no_proxy", "SSL_CERT_FILE", "SSL_CERT_DIR"):
+        monkeypatch.delenv(name, raising=False)
+
+
+def set_proxy_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    for name in PROXY_ENV_NAMES:
+        monkeypatch.setenv(name, PROXY_ADDRESS)
+
+
+def route(client: httpx.Client, url: httpx.URL = API_URL) -> Any:
+    """The transport httpx picks for ``url``. It is the client's own direct transport unless a proxy is mounted."""
+    return client._transport_for_url(url)
+
+
+def goes_through_a_proxy(client: httpx.Client, url: httpx.URL = API_URL) -> bool:
+    transport = route(client, url)
+    return transport is not client._transport and type(getattr(transport, "_pool", None)).__name__ in {"HTTPProxy", "SOCKSProxy"}
+
+
+def test_the_built_client_has_the_documented_settings(monkeypatch: pytest.MonkeyPatch) -> None:
+    clean_environment(monkeypatch)
+    provider = lr.build_live_provider(live_settings(), {"OPENAI_API_KEY": API_KEY})
+    inner = provider._client._client
+    assert inner.follow_redirects is False and inner.trust_env is False
+    assert provider._client.max_retries == 0 and str(provider._client.base_url) == "https://api.openai.com/v1/"
+    assert provider._client.timeout == lr.FAKE_CONFIG.timeout_seconds
+    assert inner._mounts == {}
+
+
+def test_proxy_environment_variables_do_not_route_the_built_client(monkeypatch: pytest.MonkeyPatch) -> None:
+    clean_environment(monkeypatch)
+    set_proxy_environment(monkeypatch)
+    provider = lr.build_live_provider(live_settings(), {"OPENAI_API_KEY": API_KEY})
+    inner = provider._client._client
+    assert not goes_through_a_proxy(inner)
+    assert route(inner) is inner._transport
+    assert inner._mounts == {}
+
+
+def test_the_same_environment_would_have_proxied_a_client_that_trusts_it(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The control. Without it the test above could pass because nothing ever reads the environment."""
+    clean_environment(monkeypatch)
+    set_proxy_environment(monkeypatch)
+    assert goes_through_a_proxy(openai.DefaultHttpxClient(follow_redirects=False))
+    assert goes_through_a_proxy(openai.OpenAI(api_key=API_KEY)._client)  # the SDK's own default client
+    assert not goes_through_a_proxy(openai.DefaultHttpxClient(follow_redirects=False, trust_env=False))
+
+
+def test_operating_system_proxy_settings_do_not_route_the_built_client(monkeypatch: pytest.MonkeyPatch) -> None:
+    """On macOS httpx asks urllib for the system proxy when trust_env is on (`urllib.request.getproxies`).
+
+    The test replaces that call, as httpx imported it, with a result the system could return, so it changes no
+    setting on this machine."""
+    clean_environment(monkeypatch)
+    system = {"http": PROXY_ADDRESS, "https": PROXY_ADDRESS}
+    monkeypatch.setattr("httpx._utils.getproxies", lambda: dict(system))
+    assert goes_through_a_proxy(openai.DefaultHttpxClient(follow_redirects=False))  # control
+    provider = lr.build_live_provider(live_settings(), {"OPENAI_API_KEY": API_KEY})
+    assert not goes_through_a_proxy(provider._client._client)
+
+
+def test_a_missing_ca_bundle_variable_is_ignored_by_the_built_client(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    """SSL_CERT_FILE and SSL_CERT_DIR are read only when trust_env is on. The baseline client uses httpx's bundled
+    certificates, so a custom CA bundle or a TLS-intercepting proxy is not supported."""
+    clean_environment(monkeypatch)
+    missing = str(tmp_path / "no-such-bundle.pem")
+    monkeypatch.setenv("SSL_CERT_FILE", missing)
+    monkeypatch.setenv("SSL_CERT_DIR", str(tmp_path / "no-such-dir"))
+    with pytest.raises(OSError):  # control: a client that trusts the environment cannot even be built
+        openai.DefaultHttpxClient(follow_redirects=False)
+    provider = lr.build_live_provider(live_settings(), {"OPENAI_API_KEY": API_KEY})
+    assert provider._client._client.trust_env is False
+
+
+def refusing_builder(monkeypatch: pytest.MonkeyPatch) -> list[str]:
+    """Fail the test if an ``openai.OpenAI`` is built: a refused HTTP client must stop the builder before that."""
+    built: list[str] = []
+
+    def boom(*args: Any, **kwargs: Any) -> Any:
+        built.append("openai.OpenAI")
+        raise AssertionError("the SDK client was built")
+
+    monkeypatch.setattr(openai, "OpenAI", boom)
+    return built
+
+
+class _Opaque:
+    """An object standing in for an HTTP client whose settings cannot be read."""
+
+
+@pytest.mark.parametrize(
+    ("label", "make", "pattern"),
+    [
+        ("trust_env", lambda: httpx.Client(follow_redirects=False, trust_env=True), "trust_env"),
+        ("redirects", lambda: httpx.Client(follow_redirects=True, trust_env=False), "redirect"),
+        ("sdk default", lambda: openai.DefaultHttpxClient(), "redirect"),
+        ("proxy mount", lambda: httpx.Client(follow_redirects=False, trust_env=False, proxy=PROXY_ADDRESS), "proxy"),
+        ("opaque", lambda: _Opaque(), "redirect"),
+        ("truthy trust_env", lambda: type("C", (), {"follow_redirects": False, "trust_env": 0, "_mounts": {}})(), "trust_env"),
+        ("unreadable trust_env", lambda: type("C", (), {"follow_redirects": False, "_mounts": {}})(), "trust_env"),
+    ],
+)
+def test_the_builder_refuses_an_injected_client_that_could_leave_the_direct_route(
+    monkeypatch: pytest.MonkeyPatch, label: str, make: Callable[[], Any], pattern: str
+) -> None:
+    clean_environment(monkeypatch)
+    built = refusing_builder(monkeypatch)
+    with pytest.raises(lr.RunnerRefusal, match=pattern):
+        lr.build_live_provider(live_settings(), {"OPENAI_API_KEY": API_KEY}, http_client=make())
+    assert built == [], label
+
+
+def test_the_builder_accepts_a_direct_injected_client(monkeypatch: pytest.MonkeyPatch) -> None:
+    clean_environment(monkeypatch)
+    client = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200)), follow_redirects=False, trust_env=False)
+    provider = lr.build_live_provider(live_settings(), {"OPENAI_API_KEY": API_KEY}, http_client=client)
+    assert provider._client._client is client
