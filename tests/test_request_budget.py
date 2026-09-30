@@ -661,3 +661,68 @@ def test_a_reopened_question_keeps_its_earlier_reserved_cost() -> None:
     ledger = SafetyLedger.from_events(events, REAL)
     assert ledger.reserved == 0.5
     assert ledger.measured == 0.1
+
+
+# ---------------------------------------------------------------------------
+# Service tier: a response whose tier is not verified is not counted as measured cost
+# ---------------------------------------------------------------------------
+
+TIERED = replace(REAL, service_tier="default")
+USAGE = {"input_tokens": 1000, "output_tokens": 100, "cached_input_tokens": None, "reasoning_tokens": None}
+
+
+def saved_in_tier(attempt: int, tier: object, question: str = "q1", cost: float | None = 0.0035) -> dict:
+    event = saved(attempt, cost, question=question, usage=USAGE)
+    event["returned_service_tier"] = tier
+    return event
+
+
+def test_a_standard_tier_response_counts_as_measured_cost():
+    led = ledger([dispatch(1, 0.01), saved_in_tier(1, "default")], TIERED)
+    assert (led.measured, led.reserved) == (0.0035, 0.0)
+    assert led.unverified_tier == {}
+
+
+@pytest.mark.parametrize("tier", ["priority", "flex", "scale", "auto", "fast", "", None])
+def test_a_response_from_another_tier_is_kept_out_of_measured_and_stays_reserved_at_the_standard_bound(tier):
+    led = ledger([dispatch(1, 0.01), saved_in_tier(1, tier)], TIERED)
+    assert led.measured == 0.0
+    assert led.reserved == 0.01 and led.committed_upper == 0.01
+    assert led.attempts[0].state == "unverified_service_tier"
+    block = led.unverified_tier
+    assert block["attempts"] == 1 and block["attempt_ids"] == ["q1-r-a1"]
+    assert block["usage"] == {"input_tokens": 1000, "cached_input_tokens": 0, "output_tokens": 100, "reasoning_tokens": 0}
+    assert block["standard_rate_cost"] == 0.0035
+    assert led.anomalies == ()
+
+
+def test_a_response_with_no_tier_key_in_a_tier_aware_run_is_unverified():
+    event = saved(1, 0.0035, usage=USAGE)
+    led = ledger([dispatch(1, 0.01), event], TIERED)
+    assert led.measured == 0.0 and led.unverified_tier["attempts"] == 1
+
+
+def test_unverified_costs_sum_and_measured_keeps_only_verified_attempts():
+    events = [
+        dispatch(1, 0.01, "q1"),
+        saved_in_tier(1, "default", "q1"),
+        dispatch(1, 0.01, "q2"),
+        saved_in_tier(1, "priority", "q2"),
+        dispatch(1, 0.01, "q3"),
+        saved_in_tier(1, "flex", "q3"),
+    ]
+    led = ledger(events, TIERED)
+    assert led.measured == 0.0035 and led.reserved == 0.02 and led.committed_upper == 0.0235
+    assert led.unverified_tier["attempts"] == 2 and led.unverified_tier["standard_rate_cost"] == 0.007
+    assert led.unverified_tier["usage"]["input_tokens"] == 2000
+
+
+def test_a_legacy_price_table_without_a_tier_is_not_checked():
+    led = ledger([dispatch(1, 0.01), saved_in_tier(1, "priority")], REAL)
+    assert led.measured == 0.0035 and led.unverified_tier == {}
+    assert "unverified_tier" not in led.as_dict()
+
+
+def test_the_ledger_dict_names_the_unverified_block_only_when_there_is_one():
+    led = ledger([dispatch(1, 0.01), saved_in_tier(1, "priority")], TIERED)
+    assert led.as_dict()["unverified_tier"]["attempts"] == 1
