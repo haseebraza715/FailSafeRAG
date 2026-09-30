@@ -1514,6 +1514,11 @@ def refuse_redirecting_environment(environ: Mapping[str, str]) -> None:
     """Refuse when the environment would change where the key is sent or as whom. Reads no credential.
 
     The SDK reads ``os.environ``, not the mapping a caller passes, so both are checked.
+
+    Proxy and CA variables (``HTTPS_PROXY``, ``HTTP_PROXY``, ``ALL_PROXY``, ``NO_PROXY``, ``SSL_CERT_FILE``,
+    ``SSL_CERT_DIR``) are not refused, because the live client never reads them: ``build_live_provider`` builds it
+    with ``trust_env=False``, which also ignores the operating system's proxy settings. A run behind a proxy
+    therefore fails to connect, as a connect error that sent nothing, and does not send through the proxy.
     """
     present = sorted({name for source in (environ, os.environ) for name in REDIRECTING_ENV_NAMES if name in source})
     if present:
@@ -1594,28 +1599,41 @@ def build_live_provider(
     """Build the real provider. Reads ``OPENAI_API_KEY`` here and nowhere else.
 
     ``http_client`` is for tests, which pass an ``httpx.Client`` on a mock transport. The CLI never sets it.
-    The client must not follow redirects. The SDK's own default client does (openai-python 1.68.2,
-    ``_base_client.py:754``), and a 307 or 308 makes it post the prompt again to the ``Location`` URL, outside
-    the driver's accounting. So the builder passes ``openai.DefaultHttpxClient(follow_redirects=False)``, which
-    keeps the SDK's other defaults, and refuses an injected client that follows redirects or whose setting
-    cannot be read.
+    The HTTP client must be direct, and the builder refuses one that is not (``http_client_problems``):
+
+    * It must not follow redirects. The SDK's own default client does (openai-python 1.68.2,
+      ``_base_client.py:754``), and a 307 or 308 makes it post the prompt again to the ``Location`` URL, outside
+      the driver's accounting.
+    * It must not trust the environment. With ``trust_env=True`` (the httpx default) httpx sends requests through
+      ``HTTPS_PROXY``, ``HTTP_PROXY`` or ``ALL_PROXY``, through the operating system's proxy settings
+      (``urllib.request.getproxies`` reads them on macOS), and takes its CA bundle from ``SSL_CERT_FILE`` or
+      ``SSL_CERT_DIR``. Any of these would carry the prompt and the key through a route the run does not record.
+    * It must have no proxy of its own.
+
+    So the builder passes ``openai.DefaultHttpxClient(follow_redirects=False, trust_env=False)``, which keeps the
+    SDK's other defaults. Consequences: proxy variables are ignored, so a machine that can reach OpenAI only
+    through a proxy gets connect errors, and a custom CA bundle or a TLS-intercepting proxy is not supported.
 
     The client sends to ``config.endpoint`` and to nothing else: the redirecting environment variables are
     refused first, and the built client's ``base_url`` must equal the value recorded in the run identity.
+    The provider keeps the default storage policy (``store=false``) and the Standard service tier on every
+    request. ``store=false`` is not zero retention, and it does not settle the dataset's licensing.
     """
     refuse_redirecting_environment(environ)
     import openai
 
-    from .answer_providers import OpenAIChatProvider
+    from .answer_providers import OpenAIChatProvider, http_client_problems
 
     key = environ.get("OPENAI_API_KEY")
     _refuse(bool(key), "OPENAI_API_KEY is not set")
     if http_client is None:
-        http_client = openai.DefaultHttpxClient(follow_redirects=False)
+        http_client = openai.DefaultHttpxClient(follow_redirects=False, trust_env=False)
+    problems = http_client_problems(http_client)
     _refuse(
-        getattr(http_client, "follow_redirects", None) is False,
-        "the HTTP client follows redirects, or its follow_redirects setting cannot be read; a redirect would send the "
-        "prompt to another URL outside the driver's accounting. Nothing was sent.",
+        not problems,
+        "the HTTP client is not direct: " + "; ".join(problems) + ". A redirect would send the prompt to another URL, and "
+        "a proxy or CA setting from the environment would route the prompt and the key outside the run's records. "
+        "Nothing was sent.",
     )
     client = openai.OpenAI(
         api_key=key, base_url=config.endpoint, max_retries=0, timeout=config.timeout_seconds, http_client=http_client

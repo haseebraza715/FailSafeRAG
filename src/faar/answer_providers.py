@@ -73,9 +73,15 @@ OpenAI adapter
       reaches the adapter is `unknown` and not retryable, kind `redirect`, with the `location` header
       (clipped) and the request id in `raw`. The request reached a server, and nothing shows it was not
       processed, so a resend or a follow could bill twice and could send the prompt to another host.
+  O8c. The client reads no proxy, CA or other setting from shell variables or the operating system. A client whose httpx client has
+      `trust_env` other than exactly `False`, whose setting cannot be read, or that mounts a proxy transport
+      of its own is refused at construction (the SDK's default client has `trust_env=True`, so
+      HTTPS_PROXY, HTTP_PROXY, ALL_PROXY, SSL_CERT_FILE, SSL_CERT_DIR and the operating system's proxy settings
+      would apply). `http_client_problems` is the one check, shared with `faar.live_runner.build_live_provider`.
   O9. The request carries the model, messages, `max_tokens` and per-request timeout, and nothing
-      else unless the caller configured it. `params` and `request.params` may hold only the keys
-      in `faar.live_contract.ALLOWED_OPENAI_PARAMS`. Any other key (`service_tier`, `tools`,
+      else unless the caller configured it, apart from the two fields the adapter fixes itself: `store` (the
+      storage policy, O14) and `service_tier` (O15). `params` and `request.params` may hold only the keys
+      in `faar.live_contract.ALLOWED_OPENAI_PARAMS`. Any other key (`service_tier`, `store`, `tools`,
       `modalities`, `reasoning_effort`, a key the adapter sets itself) is refused before dispatch,
       because an unknown parameter can change billing outside the cost bound.
   O10. A test cannot reach the network: the mock handler must see the request, and the conftest
@@ -87,6 +93,28 @@ OpenAI adapter
        replaces every occurrence with `[redacted-api-key]` in the `ProviderError` message and in `raw`,
        nested strings and dict keys included. The replacement runs before a text is cut to its size limit,
        so a key that straddles the cut leaves no fragment. The key itself is never stored, logged or returned.
+  O14. Storage is an explicit policy, never the account default. Under `STORAGE_DISABLED` (the default) every
+       request body has `"store": false`, on a first attempt and on a retry alike. Under
+       `STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP` it has `"store": true`, `metadata` with the attempt and request ids and
+       an `X-Client-Request-Id` header. An unknown policy raises `ValueError`. The old `tag_attempts` flag is
+       gone, so two settings cannot disagree. `store` stays outside `ALLOWED_OPENAI_PARAMS`. `identity()` reports
+       `storage` and the `store` value sent. The response id, the `x-request-id` header and the driver's attempt ids
+       are kept locally under both policies. `store=false` is not zero retention: OpenAI keeps abuse-monitoring
+       logs for up to 30 days unless the organization has an approved Zero Data Retention or Modified Abuse
+       Monitoring control. It also does not settle whether the dataset's terms allow sending the documents.
+  O15. Every request sets `"service_tier": "default"` (`SERVICE_TIER_STANDARD`), so a project-level setting cannot
+       move the price. The Chat Completions reference (read 2026-09-30) documents `default` as standard pricing
+       and says the response carries the tier actually used; openai-python 1.68.2 types the request field as
+       `Literal["auto", "default"]`. `service_tier` stays outside `ALLOWED_OPENAI_PARAMS`. The response's tier
+       goes to `ProviderResponse.returned_service_tier` exactly as returned when it is a string, and to `None`
+       when it is missing, null or not a string. The SDK types its response field as `Literal["scale", "default"]`
+       but does not validate it, so `priority`, `flex` and unknown values survive; `raw` is unchanged. A malformed
+       200 keeps `service_tier` in `ProviderError.raw` beside `usage`, `id` and `model`. What to do with a tier
+       other than `default` is the run driver's decision, not the adapter's.
+  O16. The refusal in O8c covers every construction path: the SDK's default client, an `http_client` passed to
+       `openai.OpenAI` and a client passed to this constructor. `faar.live_runner.build_live_provider` builds
+       `openai.DefaultHttpxClient(follow_redirects=False, trust_env=False)` and applies the same check to an
+       injected client before the SDK sees it.
 """
 
 from __future__ import annotations
@@ -104,6 +132,9 @@ from faar.live_contract import (
     OUTCOME_REJECTED,
     OUTCOME_UNKNOWN,
     SERVICE_TIER_STANDARD,
+    STORAGE_DISABLED,
+    STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP,
+    STORAGE_POLICIES,
     ProviderError,
     ProviderRequest,
     ProviderResponse,
@@ -480,23 +511,63 @@ def _sdk_version() -> str | None:
         return None
 
 
+def http_client_problems(http_client: Any) -> list[str]:
+    """Why ``http_client`` (an ``httpx.Client``) is not a direct, redirect-free client. An empty list means it is.
+
+    Every setting must be exactly what is needed, and an unreadable one counts as wrong:
+
+    * ``follow_redirects is False``: a followed redirect is a second request the driver cannot count.
+    * ``trust_env is False``: with ``True``, httpx reads HTTPS_PROXY, HTTP_PROXY, ALL_PROXY and NO_PROXY, the
+      operating system's proxy settings (``urllib.request.getproxies``, which reads the macOS system
+      configuration) and SSL_CERT_FILE and SSL_CERT_DIR. The prompt and the key would then pass through a proxy
+      that the run does not record.
+    * no mounted transport: ``httpx.Client(proxy=...)`` or ``mounts=...`` route requests elsewhere whatever
+      ``trust_env`` says. httpx keeps them in ``_mounts`` (httpx 0.28.1, ``_client.py:697``), which is private,
+      so a client without that attribute passes this check.
+    """
+    problems: list[str] = []
+    follows = getattr(http_client, "follow_redirects", None)
+    if follows is not False:
+        problems.append(f"it must not follow redirects (follow_redirects={follows!r}, or unreadable)")
+    trusts = getattr(http_client, "trust_env", None)
+    if trusts is not False:
+        problems.append(
+            f"it must not read proxy or CA settings from shell variables or the system (trust_env={trusts!r}, or unreadable)"
+        )
+    if getattr(http_client, "_mounts", None):
+        problems.append("it mounts a proxy transport of its own")
+    return problems
+
+
 class OpenAIChatProvider:
     """Adapter for `client.chat.completions.create`. Non-streaming, no tools.
 
     `client` is an already-built `openai.OpenAI` (the caller decides where credentials and the
     transport come from). It must have `max_retries=0`: the SDK's hidden retries would send extra
-    requests that the run driver could neither count nor bound. Its httpx client must not follow
-    redirects: a followed redirect is a second request, possibly to another host, that the driver
-    could neither count nor bound. The constructor refuses a client that does.
+    requests that the run driver could neither count nor bound. Its httpx client must be direct
+    (`http_client_problems`): it must not follow redirects, because a followed redirect is a second request,
+    possibly to another host, that the driver could neither count nor bound. It must also not read shell
+    variables or system settings (`trust_env=False`), so proxy variables, CA-bundle variables and the operating
+    system's proxy settings cannot reroute the prompt and the key. A custom CA bundle or a TLS-intercepting
+    proxy is therefore not supported.
+    The constructor refuses a client that fails either test.
 
     `token_limit_param` names the request field that carries `max_output_tokens`. The default,
     `max_tokens`, is deprecated by OpenAI and rejected by o-series models, which need
     `max_completion_tokens`. The choice is part of `identity()`.
 
-    `tag_attempts=True` is opt-in and untested against the live API. It sends
-    `X-Client-Request-Id: <attempt_id>`, `store=True` and `metadata` holding the attempt and request
-    ids, so an operator can look an unknown attempt up with `GET /v1/chat/completions?metadata[...]`.
-    It stores the prompt and reply on OpenAI's side, so enabling it is a data-handling decision.
+    `storage` is the provider-side storage policy and is sent on every request:
+
+    * `STORAGE_DISABLED` (default) sends `store=false`. This is not zero retention: OpenAI keeps
+      abuse-monitoring logs for up to 30 days unless the organization has an approved Zero Data Retention
+      or Modified Abuse Monitoring control. Nor does it settle whether the dataset's terms allow sending the
+      documents to the provider.
+    * `STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP` is opt-in and untested against the live API. It sends
+      `X-Client-Request-Id: <attempt_id>`, `store=true` and `metadata` holding the attempt and request
+      ids, so an operator can look an unknown attempt up with `GET /v1/chat/completions?metadata[...]`.
+      It stores the prompt and reply on OpenAI's side, so enabling it is a data-handling decision.
+
+    Every request also sets `service_tier="default"`, the Standard tier the price table describes.
     """
 
     def __init__(
@@ -506,25 +577,28 @@ class OpenAIChatProvider:
         *,
         client: Any,
         token_limit_param: str = "max_tokens",
-        tag_attempts: bool = False,
+        storage: str = STORAGE_DISABLED,
     ) -> None:
         if not model:
             raise ValueError("model must be a non-empty string")
         if token_limit_param not in _TOKEN_LIMIT_PARAMS:
             raise ValueError(f"token_limit_param must be one of {_TOKEN_LIMIT_PARAMS}")
         _check_allowed_params(params, "params")
+        if not isinstance(storage, str) or storage not in STORAGE_POLICIES:
+            raise ValueError(f"storage must be one of {list(STORAGE_POLICIES)}, found {storage!r}")
         retries = getattr(client, "max_retries", None)
         if retries != 0:
             raise ValueError(f"client must be built with max_retries=0, found {retries!r}")
-        # openai-python 1.68.2 keeps the httpx client in `client._client` (_base_client.py:825) and
-        # httpx keeps the setting in `follow_redirects` (httpx/_client.py:213). The SDK's own default client
-        # sets it to True (_base_client.py:754), so the caller must pass `http_client`. Anything but an
-        # explicit False, including a client we cannot inspect, is refused.
-        follows = getattr(getattr(client, "_client", None), "follow_redirects", None)
-        if follows is not False:
+        # openai-python 1.68.2 keeps the httpx client in `client._client` (_base_client.py:825), and httpx keeps
+        # its settings as `follow_redirects` and `trust_env` (httpx/_client.py:213-231). The SDK's own default
+        # client sets follow_redirects=True (_base_client.py:754) and httpx defaults trust_env to True, so the
+        # caller must pass an `http_client` with both set to False. Anything else, including a client we cannot
+        # inspect, is refused.
+        problems = http_client_problems(getattr(client, "_client", None))
+        if problems:
             raise ValueError(
-                "client must not follow redirects: pass http_client=httpx.Client(follow_redirects=False), "
-                f"found follow_redirects={follows!r}"
+                "the client's HTTP client must be direct: pass "
+                "http_client=httpx.Client(follow_redirects=False, trust_env=False); " + "; ".join(problems)
             )
         # Kept only to scrub error records. `identity()` and every record leave it out.
         key = getattr(client, "api_key", None)
@@ -533,7 +607,7 @@ class OpenAIChatProvider:
         self._params = dict(params)
         self._client = client
         self._token_limit_param = token_limit_param
-        self._tag_attempts = tag_attempts
+        self._storage = storage
 
     def identity(self) -> dict[str, Any]:
         return {
@@ -544,7 +618,9 @@ class OpenAIChatProvider:
             "api": "chat.completions",
             "params": dict(self._params),
             "token_limit_param": self._token_limit_param,
-            "tag_attempts": self._tag_attempts,
+            "storage": self._storage,
+            "store": self._storage == STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP,
+            "service_tier": SERVICE_TIER_STANDARD,
             "sdk": {"name": "openai", "version": _sdk_version()},
             "engineering_only": False,
             "model_calls": True,
@@ -563,10 +639,17 @@ class OpenAIChatProvider:
             "messages": [dict(message) for message in request.messages],
             self._token_limit_param: request.max_output_tokens,
             "timeout": request.timeout_seconds,
+            # Both are set on every attempt. The account default must never decide either one, and neither is
+            # in ALLOWED_OPENAI_PARAMS, so `self._params` cannot override them.
+            "store": self._storage == STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP,
+            # Chat Completions reference (https://developers.openai.com/api/reference/python/resources/chat/
+            # subresources/completions/methods/create, read 2026-09-30): "default" is standard pricing. The
+            # installed SDK types the field as Literal["auto", "default"] (openai 1.68.2,
+            # types/chat/completion_create_params.py:211), so this value type-checks.
+            "service_tier": SERVICE_TIER_STANDARD,
             **self._params,
         }
-        if self._tag_attempts:
-            call["store"] = True
+        if self._storage == STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP:
             call["metadata"] = {"faar_attempt_id": request.attempt_id, "faar_request_id": request.request_id}
             if request.attempt_id.isascii() and len(request.attempt_id) <= 512:
                 call["extra_headers"] = {"X-Client-Request-Id": request.attempt_id}
@@ -607,13 +690,14 @@ class OpenAIChatProvider:
                 kind=KIND_MALFORMED_RESPONSE,
                 outcome=OUTCOME_UNKNOWN,
                 retryable=False,
-                # `usage`, `id` and `model` sit beside the payload so that a later bound on the payload's
+                # `usage`, `id`, `model` and `service_tier` sit beside the payload so that a later bound on the payload's
                 # size cannot drop what the reply cost and which request it was.
                 raw={
                     "reason": reason,
                     "usage": raw.get("usage"),
                     "id": raw.get("id"),
                     "model": raw.get("model"),
+                    "service_tier": raw.get("service_tier"),
                     "payload": raw,
                 },
             )
@@ -631,6 +715,7 @@ class OpenAIChatProvider:
         finish_reason = choice.get("finish_reason")
         returned_model = raw.get("model")
         response_id = raw.get("id")
+        service_tier = raw.get("service_tier")
         return ProviderResponse(
             text=text if isinstance(text, str) else None,
             finish_reason=finish_reason if isinstance(finish_reason, str) else None,
@@ -639,6 +724,8 @@ class OpenAIChatProvider:
             response_id=response_id if isinstance(response_id, str) else None,
             usage=usage_out,
             raw=raw,
+            # Exactly as returned. The run driver decides what a tier other than "default" means.
+            returned_service_tier=service_tier if isinstance(service_tier, str) else None,
         )
 
 
