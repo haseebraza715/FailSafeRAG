@@ -34,7 +34,14 @@ if str(SRC) not in sys.path:
 
 from faar import live_runner
 from faar.answer_providers import SimulatedCrash
-from faar.live_contract import ALLOWED_OPENAI_PARAMS
+from faar.live_contract import (
+    ALLOWED_OPENAI_PARAMS,
+    RETURNED_SERVICE_TIERS_ACCEPTED,
+    RUN_KIND_DEVELOPMENT,
+    RUN_KIND_ENGINEERING,
+    RUN_KINDS,
+    SERVICE_TIER_STANDARD,
+)
 from faar.live_runner import (
     EXIT_BUDGET_LIMITED,
     EXIT_EXECUTION_FAILED,
@@ -65,7 +72,8 @@ exit codes:
 
 safety_stop: before every dispatch the driver reads the run's records. It stops when a saved response reported more input
 tokens than the request's input bound (input_bound_exceeded), came from a model that is not the configured one
-(returned_model_mismatch), or when the safety ledger reports any anomaly (ledger_anomaly: a measured cost that differs from its
+(returned_model_mismatch), reported a service tier other than "{SERVICE_TIER_STANDARD}" or none at all
+(returned_service_tier_unverified), or when the safety ledger reports any anomaly (ledger_anomaly: a measured cost that differs from its
 usage, is above its own upper bound, or has no usable usage). The invocation ends with reason safety_stop, exit {EXIT_SAFETY_STOPPED}, and
 invocation_ended lists the violations by attempt id and condition. The response that broke the rule stays in
 responses/ with its usage, cost, model and provider payload. The run state is safety_stopped and valid_baseline is false.
@@ -79,6 +87,27 @@ incurred, and the ceiling guarantee depends on provider-reported usage and on va
 
 The returned-model check is an exact match. The configured model must be the dated snapshot the provider returns (for
 example gpt-4o-2024-11-20). A configured alias such as gpt-4o stops the run after the first response.
+
+service tier and storage: every run asks for the Standard tier ("service_tier": "{SERVICE_TIER_STANDARD}", the default) and
+disables provider-side storage ("store": false, the default). A provider config may state both, and only these values are
+accepted; store=true is refused because it needs a future explicit authorization. The price table of a live config must
+declare "service_tier": "{SERVICE_TIER_STANDARD}" too, because its rates are Standard-tier rates. Both settings are in the run
+identity. The returned tier of every response must be one of {list(RETURNED_SERVICE_TIERS_ACCEPTED)}; anything else, or no tier,
+is the safety stop returned_service_tier_unverified (exit {EXIT_SAFETY_STOPPED}).
+
+cost of an unverified tier: such a response keeps its usage in responses/ and predictions.jsonl, but is not counted as
+measured cost. run_summary.json cost.unverified_tier reports its attempts, usage and standard_rate_cost, which prices the usage at
+Standard rates and is not an actual-cost claim. The attempt stays reserved at its Standard-rate upper bound, and that bound is
+not an upper bound on the real charge when the tier bills more (the pricing page lists Fast gpt-4o at 1.7 times Standard).
+The stop cannot undo a charge. Compare the provider's usage export with the run.
+
+run kind: --run-kind {{{",".join(RUN_KINDS)}}} is required for --mode live and is part of the run identity. A fake run is always
+{RUN_KIND_ENGINEERING}. {RUN_KIND_ENGINEERING} marks a transport or accounting check (also any run of a subset or another selection), never a
+baseline. {RUN_KIND_DEVELOPMENT} is refused unless the run's runtime manifest is byte-identical to
+results/pilots/<pilot_id>/runtime_manifest.json ("canonical"). The identity records that manifest, its hash, the hash of the frozen
+one, whether they match, the question count and the hash of the question ids. run_summary.json, status and score_summary.json carry
+run_kind and canonical_manifest. valid_baseline is a mechanical check: it is false for an {RUN_KIND_ENGINEERING} and for a
+non-canonical manifest, and it never means scientific approval.
 
 The event log (attempts.jsonl) has no hash chain. The stop protects against the code's own behaviour and honest
 operation. run, status and export refuse a run_config.json whose identity no longer matches its identity_sha256, and a
@@ -173,6 +202,15 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--run-dir", type=Path, required=True, help="run directory, for example results/engineering/<run_id>")
     run.add_argument("--run-id", help="run id, lowercase [a-z0-9._-] (default: the run directory name)")
     run.add_argument("--mode", choices=("fake", "live"), default="fake", help="fake (default) or live")
+    run.add_argument(
+        "--run-kind",
+        choices=RUN_KINDS,
+        help=(
+            f"what the run is for; required with --mode live, and a fake run is always {RUN_KIND_ENGINEERING}. "
+            f"{RUN_KIND_ENGINEERING}: a transport or accounting check, never a baseline. "
+            f"{RUN_KIND_DEVELOPMENT}: only for the canonical frozen runtime manifest"
+        ),
+    )
     run.add_argument("--fake-script", type=Path, help="JSON script for the fake provider (required with --mode fake)")
     run.add_argument(
         "--provider-config", type=Path, help="provider config JSON (required with --mode live; optional override in fake mode)"
@@ -273,6 +311,7 @@ def main(argv: list[str] | None = None) -> int:
                 safety_ceiling=args.safety_ceiling,
                 environ=os.environ,
             )
+            live_runner.resolve_run_kind(args.mode, args.run_kind)
             if args.safety_ceiling is None:
                 raise RunnerRefusal("--safety-ceiling AMOUNT is required")
             config = (
@@ -294,6 +333,7 @@ def main(argv: list[str] | None = None) -> int:
                 cli_script=Path(__file__).resolve(),
                 code_root=REPO_ROOT,
                 command=["scripts/experiments/run_pilot_live.py", *args_list],
+                run_kind=args.run_kind,
             )
             factory, descriptor = live_runner.wire_provider(options, fake_script=args.fake_script, environ=os.environ)
             result = live_runner.execute_run(options, provider_factory=factory, descriptor=descriptor, environ=os.environ)

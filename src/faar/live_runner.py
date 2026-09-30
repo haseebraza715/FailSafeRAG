@@ -83,6 +83,13 @@ from .live_contract import (
     MODE_LIVE,
     MODES,
     OUTCOME_UNKNOWN,
+    RETURNED_SERVICE_TIERS_ACCEPTED,
+    RUN_KIND_DEVELOPMENT,
+    RUN_KIND_ENGINEERING,
+    RUN_KINDS,
+    SERVICE_TIER_STANDARD,
+    STORAGE_DISABLED,
+    STORAGE_POLICIES,
     EvidenceBlock,
     PriceTable,
     PromptPayload,
@@ -117,12 +124,16 @@ EXIT_NEEDS_ATTENTION = 5
 EXIT_SAFETY_STOPPED = 6
 
 SCHEMA_VERSION = 1
-KIND_FAKE = "engineering_check"
-KIND_LIVE = "development_pilot"
+KIND_FAKE = RUN_KIND_ENGINEERING
+KIND_LIVE = RUN_KIND_DEVELOPMENT
 LABEL_FAKE = (
     "Engineering check with a fake answer provider. No request leaves the process and nothing here measures a model."
 )
 LABEL_LIVE = "Development pilot with a real answer model under engineering retrieval settings. Not the approved protocol."
+LABEL_LIVE_ENGINEERING = (
+    "Engineering check with a real answer model: a transport and accounting check. It is not a baseline and "
+    "supports no claim about the model or the method."
+)
 
 RUN_CONFIG_NAME = "run_config.json"
 REQUESTS_NAME = "requests.jsonl"
@@ -179,7 +190,8 @@ END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTE
 
 # Safety stop. A saved response can show that an assumption behind the cost bound or the measurement failed:
 # it reports more input tokens than the request's input upper bound, it comes from a model other than the
-# configured one, or the safety ledger reports an anomaly. The driver keeps that response and all its
+# configured one, it comes from a service tier other than Standard (or names none), or the safety ledger
+# reports an anomaly. The driver keeps that response and all its
 # evidence, then dispatches nothing more. The violation is a function of the durable records (events, plus a
 # response file whose event was lost), so every restart, status and export rebuilds it. Nothing in the same
 # run directory clears it: not a raised ceiling, not reconcile, not reopen. A successor run with corrected code
@@ -194,6 +206,10 @@ END_REASONS = (END_COMPLETED, END_BUDGET, END_STOP, END_RECONCILIATION, END_INTE
 # out of scope: nothing here detects it, and nothing here claims to.
 VIOLATION_INPUT_BOUND = "input_bound_exceeded"
 VIOLATION_RETURNED_MODEL = "returned_model_mismatch"
+# The price table's rates apply to the Standard tier only. A response that names another tier, or none, cannot be
+# priced as verified cost. Only a run whose identity declares a service_tier is checked, so runs recorded before the
+# field existed load, export and report as they did.
+VIOLATION_RETURNED_TIER = "returned_service_tier_unverified"
 # Every anomaly kind that SafetyLedger reports is blocking today: a measured cost that differs from the cost
 # recomputed from its usage, a measured cost above its own upper bound, and a recorded cost whose usage cannot
 # reproduce it. A kind that request_budget adds later blocks too, on purpose. Relaxing that is a decision for
@@ -207,6 +223,11 @@ SAFETY_LIMIT_NOTE = (
 SAFETY_MODEL_NOTE = (
     "The returned-model check is an exact match, so the configured model must be the dated snapshot the provider "
     "returns (for example gpt-4o-2024-11-20). A configured alias such as gpt-4o stops the run after the first response."
+)
+SAFETY_TIER_NOTE = (
+    "A response from a tier other than Standard may have been billed above the Standard rates. Its usage is kept but is "
+    "not counted as measured cost, and the Standard-rate reservation is not an upper bound on the real charge "
+    "(the pricing page lists Fast gpt-4o at 1.7 times Standard). Check the provider's usage export."
 )
 SAFETY_NO_CLEAR_NOTE = (
     "Resuming, raising the safety ceiling, reconcile and reopen do not clear the violation. "
@@ -289,6 +310,10 @@ class ProviderConfig:
 
     ``endpoint`` is the API base URL the client sends to, for example ``https://api.openai.com/v1``. It is
     not a request path: the SDK adds ``/chat/completions``. The fake config uses ``fake://in-process``.
+
+    ``service_tier`` is the tier every request asks for and the price table's rates apply to. ``storage`` is the
+    provider-side storage policy of every request. Both are part of the identity, and a run this CLI starts accepts
+    only the Standard tier with storage disabled (see :func:`check_config_policy`).
     """
 
     provider: str
@@ -301,6 +326,8 @@ class ProviderConfig:
     tokenizer_bound: str
     prices: PriceTable
     token_limit_param: str = "max_tokens"
+    service_tier: str = SERVICE_TIER_STANDARD
+    storage: str = STORAGE_DISABLED
 
     def identity_block(self) -> dict[str, Any]:
         return {
@@ -313,6 +340,8 @@ class ProviderConfig:
             "timeout_seconds": self.timeout_seconds,
             "tokenizer_bound": self.tokenizer_bound,
             "token_limit_param": self.token_limit_param,
+            "service_tier": self.service_tier,
+            "storage": self.storage,
         }
 
 
@@ -335,7 +364,10 @@ FAKE_CONFIG = ProviderConfig(
         source="simulated: fictional rates for engineering checks",
         source_date="2026-09-29",
         simulated=True,
+        service_tier=SERVICE_TIER_STANDARD,
     ),
+    service_tier=SERVICE_TIER_STANDARD,
+    storage=STORAGE_DISABLED,
 )
 
 # Used by dry-run when no --provider-config is given. These are the study brief's proposed
@@ -359,7 +391,10 @@ PROVISIONAL_DRY_RUN_CONFIG = ProviderConfig(
         source="study brief section 15.5, option A (OpenAI model page)",
         source_date="2026-09-29",
         simulated=False,
+        service_tier=SERVICE_TIER_STANDARD,
     ),
+    service_tier=SERVICE_TIER_STANDARD,
+    storage=STORAGE_DISABLED,
 )
 
 
@@ -401,8 +436,44 @@ def _check_endpoint(endpoint: str, *, simulated: bool) -> None:
         raise RunnerRefusal(f"provider config: endpoint {endpoint!r} is refused: {problem}")
 
 
+STORE_AUTHORIZATION_NOTE = (
+    "Provider-side storage (store=true) needs a future explicit authorization, and no run this CLI starts has one."
+)
+
+
+def check_config_policy(config: ProviderConfig) -> None:
+    """Refuse a config object that asks for a tier or a storage policy this CLI does not start.
+
+    :func:`parse_provider_config` already refuses these values in a file. A config built in code can still carry
+    them, so ``run`` and ``dry-run`` check the object too. The price table must name the tier of the config.
+    """
+    _refuse(
+        config.service_tier == SERVICE_TIER_STANDARD,
+        f"provider config: service_tier must be {SERVICE_TIER_STANDARD!r} (the Standard tier the price table's rates "
+        f"apply to), got {config.service_tier!r}",
+    )
+    _refuse(
+        config.storage in STORAGE_POLICIES,
+        f"provider config: storage must be one of {STORAGE_POLICIES}, got {config.storage!r}",
+    )
+    _refuse(
+        config.storage == STORAGE_DISABLED,
+        f"provider config: storage {config.storage!r} is refused. {STORE_AUTHORIZATION_NOTE}",
+    )
+    _refuse(
+        config.prices.service_tier == config.service_tier,
+        f"provider config: prices.service_tier is {config.prices.service_tier!r}, the config's service_tier is "
+        f"{config.service_tier!r}. The rates must name the tier they apply to.",
+    )
+
+
 def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderConfig:
-    """Validate a provider config object. Raises :class:`RunnerRefusal` on any missing or odd field."""
+    """Validate a provider config object. Raises :class:`RunnerRefusal` on any missing or odd field.
+
+    ``service_tier`` and ``store`` are optional. When present they must be ``"default"`` and ``false``, which are
+    also the defaults. A price table that is not simulated must declare ``"service_tier": "default"``, because its
+    rates are Standard-tier rates and must say so.
+    """
     if not isinstance(payload, dict):
         raise RunnerRefusal("provider config is not a JSON object")
     required = (
@@ -450,6 +521,22 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
     cached = prices.get("cached_input_per_million")
     if cached is not None:
         _finite_positive(cached, "prices.cached_input_per_million")
+    if "service_tier" in payload:
+        _refuse(
+            isinstance(payload["service_tier"], str) and payload["service_tier"] == SERVICE_TIER_STANDARD,
+            f"provider config: service_tier must be {SERVICE_TIER_STANDARD!r} (the Standard tier) or absent, "
+            f"got {payload['service_tier']!r}",
+        )
+    if "store" in payload:
+        if payload["store"] is True:
+            raise RunnerRefusal(f"provider config: store must be false or absent, got true. {STORE_AUTHORIZATION_NOTE}")
+        _refuse(payload["store"] is False, f"provider config: store must be false or absent, got {payload['store']!r}")
+    if "service_tier" in prices or not simulated:
+        _refuse(
+            isinstance(prices.get("service_tier"), str) and prices["service_tier"] == SERVICE_TIER_STANDARD,
+            f"provider config: prices.service_tier must be {SERVICE_TIER_STANDARD!r}: the rates are Standard-tier rates "
+            f"and must say so, got {prices.get('service_tier')!r}",
+        )
     token_limit_param = payload.get("token_limit_param", "max_tokens")
     if token_limit_param not in TOKEN_LIMIT_PARAMS:
         raise RunnerRefusal(f"provider config: token_limit_param must be one of {TOKEN_LIMIT_PARAMS}, got {token_limit_param!r}")
@@ -463,6 +550,7 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
         source=prices["source"],
         source_date=prices["source_date"],
         simulated=simulated,
+        service_tier=SERVICE_TIER_STANDARD,
     )
     return ProviderConfig(
         provider=payload["provider"],
@@ -475,6 +563,8 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
         tokenizer_bound=payload["tokenizer_bound"],
         prices=price_table,
         token_limit_param=token_limit_param,
+        service_tier=SERVICE_TIER_STANDARD,
+        storage=STORAGE_DISABLED,
     )
 
 
@@ -944,6 +1034,28 @@ class EventLog:
 # ---------------------------------------------------------------------------
 
 
+def pilot_manifest_record(project_root: Path, retrieval_run: RetrievalRun) -> dict[str, Any]:
+    """Where the run's questions come from, judged by bytes.
+
+    ``canonical`` is true only when the run's runtime manifest has the same sha256 as
+    ``results/pilots/<pilot_id>/runtime_manifest.json`` under ``project_root``. It is never inferred from the
+    pilot id, the path or the question count: a subset, a reordered or reworded selection and a replaced
+    question all differ in bytes. ``frozen_runtime_manifest_sha256`` is null when that file is absent, and
+    the run is then not canonical.
+    """
+    frozen_path = project_root / "results" / "pilots" / retrieval_run.pilot_id / "runtime_manifest.json"
+    frozen = sha256_file(frozen_path) if frozen_path.is_file() else None
+    ids = [outcome.question.question_id for outcome in retrieval_run.questions]
+    return {
+        "parent_pilot_id": retrieval_run.pilot_id,
+        "frozen_runtime_manifest_sha256": frozen,
+        "run_runtime_manifest_sha256": retrieval_run.runtime_manifest_sha256,
+        "canonical": frozen is not None and frozen == retrieval_run.runtime_manifest_sha256,
+        "question_count": len(ids),
+        "question_ids_sha256": _sha_text("\n".join(ids)),
+    }
+
+
 def build_identity(
     *,
     mode: str,
@@ -953,9 +1065,21 @@ def build_identity(
     provider_descriptor: Mapping[str, Any],
     cli_script_sha256: str | None,
     scientific_budget: Any = None,
+    project_root: Path | None = None,
+    run_kind: str | None = None,
 ) -> dict[str, Any]:
-    """Content that decides the answers. No timestamps, no random ids, no safety ceiling."""
+    """Content that decides the answers. No timestamps, no random ids, no safety ceiling.
+
+    ``run_kind`` (what the run is for) and ``pilot_manifest`` (where its questions come from, needs
+    ``project_root``) are added when given. Runs recorded before they existed have neither.
+    """
+    extra: dict[str, Any] = {}
+    if run_kind is not None:
+        extra["run_kind"] = run_kind
+    if project_root is not None:
+        extra["pilot_manifest"] = pilot_manifest_record(project_root, retrieval_run)
     return {
+        **extra,
         "contract_version": CONTRACT_VERSION,
         "mode": mode,
         "pilot_id": retrieval_run.pilot_id,
@@ -1667,6 +1791,8 @@ class RunOptions:
     cli_script: Path | None = None
     code_root: Path | None = None
     command: Sequence[str] | None = None
+    # What the run is for (RUN_KINDS). A fake run is always an engineering_check. A live run must name its kind.
+    run_kind: str | None = None
 
 
 @dataclass(frozen=True)
@@ -1682,6 +1808,25 @@ def _validate_amount(value: float | None, what: str) -> float:
         f"{what} must be a finite amount above zero, got {value!r}",
     )
     return float(value)  # type: ignore[arg-type]
+
+
+def resolve_run_kind(mode: str, requested: str | None) -> str:
+    """The kind a run is recorded under. A fake run is an engineering check; a live run must say which kind it is."""
+    if mode == MODE_FAKE:
+        _refuse(
+            requested in (None, RUN_KIND_ENGINEERING),
+            f"a fake run is always an {RUN_KIND_ENGINEERING}, and --run-kind {requested} is refused. "
+            "Nothing was prepared.",
+        )
+        return RUN_KIND_ENGINEERING
+    _refuse(
+        requested in RUN_KINDS,
+        f"a live run needs --run-kind {{{','.join(RUN_KINDS)}}} (got {requested!r}): {RUN_KIND_ENGINEERING} for a transport "
+        f"or accounting check, {RUN_KIND_DEVELOPMENT} only for a run of the canonical frozen manifest. "
+        "Nothing was prepared and no client was built.",
+    )
+    assert requested is not None
+    return requested
 
 
 def _resolve_config(options: RunOptions) -> ProviderConfig:
@@ -1711,8 +1856,10 @@ def _initialise(
         "run_id": run_id,
         "pilot_id": retrieval_run.pilot_id,
         "mode": options.mode,
-        "kind": KIND_FAKE if options.mode == MODE_FAKE else KIND_LIVE,
-        "label": LABEL_FAKE if options.mode == MODE_FAKE else LABEL_LIVE,
+        "kind": identity["run_kind"],
+        "label": LABEL_FAKE
+        if options.mode == MODE_FAKE
+        else (LABEL_LIVE if identity["run_kind"] == RUN_KIND_DEVELOPMENT else LABEL_LIVE_ENGINEERING),
         "contract_version": CONTRACT_VERSION,
         "created_at": _now(),
         "identity": identity,
@@ -2013,6 +2160,10 @@ class _Driver:
             measured = self.services.measured_cost(response.usage, self.config.prices)
         except (ValueError, TypeError):
             measured = None
+        if self.config.prices.service_tier is not None and response.returned_service_tier not in RETURNED_SERVICE_TIERS_ACCEPTED:
+            # The rates are Standard-tier rates. A response from another tier is not measured cost at those rates:
+            # its usage stays in the record and the attempt stays reserved at its Standard-rate bound.
+            measured = None
         upper = state.request["input_token_upper_bound"]
         reported_input = response.usage.input_tokens
         payload = {
@@ -2023,6 +2174,7 @@ class _Driver:
             "attempt_id": attempt.attempt_id,
             "saved_by_invocation": self.log.invocation_id,
             "returned_model": response.returned_model,
+            "returned_service_tier": response.returned_service_tier,
             "response_id": response.response_id,
             "finish_reason": response.finish_reason,
             "usage": response.usage.as_dict(),
@@ -2049,8 +2201,12 @@ class _Driver:
 
 
 def saved_event_fields(payload: Mapping[str, Any], file_sha256: str) -> dict[str, Any]:
-    """The ``response_saved`` fields, derived from the response file so that recovery can rebuild them."""
-    return {
+    """The ``response_saved`` fields, derived from the response file so that recovery can rebuild them.
+
+    ``returned_service_tier`` is copied only when the file has it, so a response file written before the field
+    existed still rebuilds the event it always did.
+    """
+    fields = {
         "question_id": payload["question_id"],
         "request_id": payload["request_id"],
         "attempt": payload["attempt"],
@@ -2068,6 +2224,9 @@ def saved_event_fields(payload: Mapping[str, Any], file_sha256: str) -> dict[str
         "answer": payload["answer"],
         "abstained": payload["abstained"],
     }
+    if "returned_service_tier" in payload:
+        fields["returned_service_tier"] = payload["returned_service_tier"]
+    return fields
 
 
 # ---------------------------------------------------------------------------
@@ -2246,9 +2405,13 @@ def find_safety_violations(view: RunView, services: Services) -> list[dict[str, 
       reserved at the upper bound in the ledger, so the ceiling still holds.
     * ``returned_model_mismatch``: the returned model fails :func:`returned_model_matches` against the
       model in the run identity.
+    * ``returned_service_tier_unverified``: the run identity declares a ``service_tier`` and the response's
+      ``returned_service_tier`` is missing, null or anything but the Standard tier. Runs whose identity has no
+      ``service_tier`` (recorded before the field existed) are not checked.
     * ``ledger_anomaly``: ``SafetyLedger.anomalies`` is not empty. All anomaly kinds block.
     """
     requested = view.config["identity"]["provider"]["model"]
+    requires_tier = "service_tier" in view.config["identity"]["provider"]
     by_request = {request["request_id"]: request for request in view.requests}
     events = list(view.events) + _recoverable_saved_events(view)
     found: list[dict[str, Any]] = []
@@ -2284,6 +2447,19 @@ def find_safety_violations(view: RunView, services: Services) -> list[dict[str, 
                     f"the response came from model {event.get('returned_model')!r}, the run requested {requested!r}",
                 )
             )
+        if requires_tier and event.get("returned_service_tier") not in RETURNED_SERVICE_TIERS_ACCEPTED:
+            returned = event.get("returned_service_tier")
+            accepted = " or ".join(repr(tier) for tier in RETURNED_SERVICE_TIERS_ACCEPTED)
+            seen = "no service_tier (missing or null)" if returned is None else f"service tier {returned!r}"
+            found.append(
+                _violation(
+                    VIOLATION_RETURNED_TIER,
+                    attempt_id,
+                    question_id,
+                    f"the response reported {seen}, the run requires {accepted} (Standard). Its usage is not counted "
+                    "as measured cost",
+                )
+            )
     prices = PriceTable(**view.config["identity"]["prices"])
     question_of = {a.attempt_id: s.question_id for s in view.states.values() for a in s.attempts}
     for text in services.ledger_from_events(events, prices).anomalies:
@@ -2311,10 +2487,19 @@ def model_note(violations: Sequence[Mapping[str, Any]]) -> str:
     return SAFETY_MODEL_NOTE if any(v["condition"] == VIOLATION_RETURNED_MODEL for v in violations) else ""
 
 
+def tier_note(violations: Sequence[Mapping[str, Any]]) -> str:
+    """The cost warning, only when an unverified service tier is among the violations."""
+    return SAFETY_TIER_NOTE if any(v["condition"] == VIOLATION_RETURNED_TIER for v in violations) else ""
+
+
+def notes(violations: Sequence[Mapping[str, Any]]) -> str:
+    return " ".join(note for note in (model_note(violations), tier_note(violations)) if note)
+
+
 def safety_stop_message(run_dir: Path, violations: Sequence[Mapping[str, Any]]) -> str:
     return (
         f"run in {run_dir} is safety_stopped, so no request was sent. Violations: {describe_violations(violations)}. "
-        f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE} {model_note(violations)}".rstrip()
+        f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE} {notes(violations)}".rstrip()
     )
 
 
@@ -2427,6 +2612,15 @@ VALID_BASELINE_MEANS = (
     "input tokens than the input bound and the safety ledger reports no anomaly. It does not mean the prompt, "
     "the model, the retrieval settings or the budget are approved."
 )
+# Runs whose identity records a run kind and a manifest provenance. It is mechanical eligibility only.
+VALID_BASELINE_MEANS_WITH_PROVENANCE = (
+    "valid_baseline checks mechanical completeness and eligibility only. It is true when the run is live, its kind is development_pilot, "
+    "its runtime manifest is byte-identical to the frozen manifest of its pilot, its state is complete, no question is "
+    "execution_failed, every returned model equals the requested model, every response reported the Standard service "
+    "tier, no response reported more input tokens than the input bound and the safety ledger reports no anomaly. "
+    "It does not mean the prompt, the model, the retrieval settings or the budget are approved, and it is not "
+    "scientific approval of the run."
+)
 
 
 def returned_model_matches(requested: str, returned: str | None) -> bool:
@@ -2476,6 +2670,9 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
     bound_exceeded = sum(1 for event in saved_events if event.get("input_bound_exceeded"))
     anomalies = list(ledger.anomalies)
     violations = list(view.safety_violations or [])
+    identity = view.config["identity"]
+    run_kind = identity.get("run_kind")
+    pilot_manifest = identity.get("pilot_manifest")
     blockers = []
     if violations:
         blockers.append(f"the run stopped on {len(violations)} safety violation(s): {describe_violations(violations)}")
@@ -2491,6 +2688,34 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         blockers.append(f"{bound_exceeded} response(s) reported more input tokens than the input bound")
     if anomalies:
         blockers.append(f"the safety ledger reports {len(anomalies)} anomaly(ies)")
+    if run_kind is not None and run_kind != RUN_KIND_DEVELOPMENT:
+        blockers.append(f"the run kind is {run_kind}, not {RUN_KIND_DEVELOPMENT}")
+    if pilot_manifest is not None and not pilot_manifest["canonical"]:
+        blockers.append(
+            "the runtime manifest is not the canonical frozen manifest of pilot "
+            f"{pilot_manifest['parent_pilot_id']} (run manifest sha256 {pilot_manifest['run_runtime_manifest_sha256']}, "
+            f"frozen manifest sha256 {pilot_manifest['frozen_runtime_manifest_sha256']}, "
+            f"{pilot_manifest['question_count']} questions)"
+        )
+    provenance = {} if run_kind is None else {"run_kind": run_kind}
+    if pilot_manifest is not None:
+        provenance["canonical_manifest"] = pilot_manifest["canonical"]
+        provenance["pilot_manifest"] = dict(pilot_manifest)
+    cost = {
+        "currency": prices.currency,
+        "simulated": prices.simulated,
+        "measured": ledger.measured,
+        "reserved": ledger.reserved,
+        "committed_upper": ledger.committed_upper,
+        "anomalies": anomalies,
+    }
+    if ledger.unverified_tier:
+        cost["unverified_tier"] = dict(ledger.unverified_tier)  # absent for a clean run, so earlier exports stay byte-identical
+    tiers: dict[str, int] = {}
+    if "service_tier" in identity["provider"]:
+        for event in saved_events:
+            key = event.get("returned_service_tier") or "(none)"
+            tiers[key] = tiers.get(key, 0) + 1
     return {
         "schema_version": SCHEMA_VERSION,
         "run_id": view.config["run_id"],
@@ -2503,7 +2728,8 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         # True only when nothing blocks it. The lead sets any failure-rate limit and approves the prompt, model, retrieval and budget.
         "valid_baseline": not blockers,
         "valid_baseline_blockers": blockers,
-        "valid_baseline_means": VALID_BASELINE_MEANS,
+        "valid_baseline_means": VALID_BASELINE_MEANS if run_kind is None else VALID_BASELINE_MEANS_WITH_PROVENANCE,
+        **provenance,
         "exit_code": exit_code,
         "counts": {
             "questions": len(predictions),
@@ -2523,14 +2749,8 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         "requested_model": requested_model,
         "returned_model_mismatch": mismatches,
         "returned_models": dict(sorted(returned_models.items())),
-        "cost": {
-            "currency": prices.currency,
-            "simulated": prices.simulated,
-            "measured": ledger.measured,
-            "reserved": ledger.reserved,
-            "committed_upper": ledger.committed_upper,
-            "anomalies": anomalies,
-        },
+        **({"returned_service_tiers": dict(sorted(tiers.items()))} if "service_tier" in identity["provider"] else {}),
+        "cost": cost,
         "safety_ceiling": last_ceiling,
         "invocations": [
             {
@@ -2679,9 +2899,20 @@ def _run_message(summary: Mapping[str, Any], run_dir: Path) -> str:
     if summary.get("safety_violations"):
         message += (
             f" Safety stop, no further request was sent: {describe_violations(summary['safety_violations'])}. "
-            f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE} {model_note(summary['safety_violations'])}".rstrip()
+            f"{SAFETY_NO_CLEAR_NOTE} {SAFETY_LIMIT_NOTE} {notes(summary['safety_violations'])}".rstrip()
         )
+    if cost.get("unverified_tier"):
+        message += f" Unverified tier: {unverified_tier_line(cost)}"
     return message
+
+
+def unverified_tier_line(cost: Mapping[str, Any]) -> str:
+    """One sentence for the cost block that keeps unverified-tier responses apart from measured cost."""
+    block = cost["unverified_tier"]
+    return (
+        f"{block['attempts']} response(s) came from an unverified service tier and are not counted as measured cost; "
+        f"their usage priced at Standard rates is {block['standard_rate_cost']:.6f} {cost['currency']}. {block['note']}"
+    )
 
 
 def execute_run(
@@ -2712,9 +2943,21 @@ def execute_run(
     )
     project_root = options.project_root.resolve()
     run_dir = _absolute(options.run_dir)
+    run_kind = resolve_run_kind(options.mode, options.run_kind)
+    if run_kind == RUN_KIND_DEVELOPMENT and options.runtime_manifest_path is not None:
+        # The authoritative check runs on the run identity. This one refuses before a directory exists.
+        frozen = project_root / "results" / "pilots" / options.pilot_id / "runtime_manifest.json"
+        chosen = _absolute(options.runtime_manifest_path)
+        _refuse(
+            frozen.is_file() and chosen.is_file() and sha256_file(chosen) == sha256_file(frozen),
+            f"a {RUN_KIND_DEVELOPMENT} run needs the canonical frozen runtime manifest of pilot {options.pilot_id}, and "
+            f"{options.runtime_manifest_path} is not byte-identical to {frozen}. A subset or another selection is an "
+            f"{RUN_KIND_ENGINEERING}. Nothing was prepared.",
+        )
     refuse_run_directory(run_dir, project_root, options.mode)
     run_id = validate_run_id(options.run_id if options.run_id is not None else run_dir.name)
     config = _resolve_config(options)
+    check_config_policy(config)
     invocation_id = uuid.uuid4().hex
 
     created = not run_dir.exists()
@@ -2738,6 +2981,7 @@ def execute_run(
                 ceiling_requested=ceiling_requested,
                 raised=raised,
                 project_root=project_root,
+                run_kind=run_kind,
             )
         except RunnerRefusal:
             if created and not (run_dir / RUN_CONFIG_NAME).exists() and not (run_dir / REQUESTS_NAME).exists():
@@ -2815,6 +3059,7 @@ def _execute_locked(
     ceiling_requested: float,
     raised: float | None,
     project_root: Path,
+    run_kind: str,
 ) -> LiveResult:
     services = services or Services.default()
     directory = check_run_directory(run_dir)
@@ -2836,7 +3081,18 @@ def _execute_locked(
         services=services,
         provider_descriptor=descriptor,
         cli_script_sha256=script_sha,
+        project_root=project_root,
+        run_kind=run_kind,
     )
+    if run_kind == RUN_KIND_DEVELOPMENT:
+        manifest = identity["pilot_manifest"]
+        _refuse(
+            manifest["canonical"],
+            f"a {RUN_KIND_DEVELOPMENT} run needs the canonical frozen runtime manifest of pilot {manifest['parent_pilot_id']}, "
+            f"and this run's manifest (sha256 {manifest['run_runtime_manifest_sha256']}, {manifest['question_count']} questions) "
+            f"does not match it (frozen sha256 {manifest['frozen_runtime_manifest_sha256']}). A subset or another selection is "
+            f"an {RUN_KIND_ENGINEERING}. Nothing was prepared.",
+        )
     identity_hash = identity_sha256(identity)
     records = prepare_requests(retrieval_run, config=config, services=services, identity_hash=identity_hash)
     requests_text = _jsonl(strip_evidence_text(records))
@@ -3000,7 +3256,7 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
     if safety and not active:
         actions.append(
             f"safety stop: {describe_violations(safety)}. {SAFETY_NO_CLEAR_NOTE} Keep this directory as the record of what "
-            f"happened. {SAFETY_LIMIT_NOTE} {model_note(safety)}".rstrip()
+            f"happened. {SAFETY_LIMIT_NOTE} {notes(safety)}".rstrip()
         )
     if view.last_end_reason == END_CIRCUIT and not active and not safety:
         actions.append(
@@ -3011,10 +3267,12 @@ def run_status(run_dir: Path, services: Services | None = None) -> dict[str, Any
         actions.append("run again to serve the pending questions")
     if by_status[REQUEST_FAILED] and not active and not safety and not is_scored(run_dir):
         actions.append("after fixing the cause, reopen an execution_failed question to give it further attempts")
+    provenance = {key: summary[key] for key in ("run_kind", "canonical_manifest") if key in summary}
     return {
         "run_id": view.config["run_id"],
         "mode": view.config["mode"],
         "kind": view.config["kind"],
+        **provenance,
         "run_state": "active" if active else summary["run_state"],
         "exit_code": None if active else summary["exit_code"],
         "requests": by_status,
@@ -3051,6 +3309,19 @@ def format_status(status: Mapping[str, Any]) -> str:
         "cost: measured {measured:.6f}, reserved {reserved:.6f}, committed upper {committed_upper:.6f} {currency}{sim}".format(
             **status["cost"], sim=" (simulated)" if status["cost"]["simulated"] else ""
         ),
+        *(["unverified tier: " + unverified_tier_line(status["cost"])] if status["cost"].get("unverified_tier") else []),
+        *(
+            [
+                "runtime manifest: "
+                + (
+                    "canonical (byte-identical to the frozen manifest of its pilot)"
+                    if status["canonical_manifest"]
+                    else "NOT canonical (it differs from the frozen manifest of its pilot, so this run is not that pilot)"
+                )
+            ]
+            if "canonical_manifest" in status
+            else []
+        ),
         f"safety ceiling: {status['safety_ceiling']['amount'] if status['safety_ceiling'] else None}",
         f"last invocation ended: {status['last_invocation_ended']}",
         f"lock held by a running invocation: {status['lock_held']}",
@@ -3068,7 +3339,7 @@ def format_status(status: Mapping[str, Any]) -> str:
         lines.insert(
             1,
             f"SAFETY STOP: {len(status['safety_violations'])} violation(s). No further request will be sent for this run. "
-            f"{SAFETY_LIMIT_NOTE} {model_note(status['safety_violations'])}".rstrip(),
+            f"{SAFETY_LIMIT_NOTE} {notes(status['safety_violations'])}".rstrip(),
         )
     for attempt_id in status["in_flight"]:
         lines.append(f"in flight: {attempt_id} (dispatched, no result yet; its process is still running)")
@@ -3356,6 +3627,7 @@ def score_run_live(
             "kind": view.config["kind"],
             "label": view.config["label"],
             "run_state": run_summary["run_state"],
+            **{key: run_summary[key] for key in ("run_kind", "canonical_manifest") if key in run_summary},
             "valid_baseline": run_summary["valid_baseline"],
             "valid_baseline_blockers": run_summary["valid_baseline_blockers"],
             "valid_baseline_means": run_summary["valid_baseline_means"],
@@ -3428,6 +3700,7 @@ def dry_run(
     services = services or Services.default()
     provisional = config is None
     config = config or PROVISIONAL_DRY_RUN_CONFIG
+    check_config_policy(config)
     retrieval_run = retrieve_runtime_questions(
         project_root=project_root,
         pilot_id=pilot_id,
@@ -3441,6 +3714,7 @@ def dry_run(
         services=services,
         provider_descriptor={"adapter": "none (dry run)"},
         cli_script_sha256=None,
+        project_root=project_root,
     )
     identity_hash = identity_sha256(identity)
     records = prepare_requests(retrieval_run, config=config, services=services, identity_hash=identity_hash)
@@ -3460,6 +3734,7 @@ def dry_run(
         "provider_calls": 0,
         "pilot_id": retrieval_run.pilot_id,
         "runtime_manifest_sha256": retrieval_run.runtime_manifest_sha256,
+        "pilot_manifest": identity["pilot_manifest"],
         "template": {"template_id": services.template_id, "template_sha256": services.template_sha256},
         "provider_config": {
             "source": config_source or ("built-in provisional values from study brief 15.5 and 15.7 (not approved)" if provisional else "provider config file"),
