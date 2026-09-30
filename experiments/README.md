@@ -14,7 +14,10 @@ Validate it with:
 
 `check` rejects malformed records, identity changes under an existing run_id,
 and recorded outputs whose bytes changed. A tracked output that is missing is an
-error; an untracked one (ignored data, cluster outputs) is a warning.
+error; an untracked one (ignored data, cluster outputs) is a warning. When a
+record's outputs include a `run_config.json`, its `kind` must equal the record's
+`kind`. A live transport check with a real model is `engineering_check`, because
+it measures the execution path and not answer quality.
 
 ## Current runs
 
