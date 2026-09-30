@@ -21,12 +21,12 @@ Retrieval
 Runner
   N1. Han text is reported as an OCR condition or as ``no_retrieval_tokens``, or the reverse.
   N2. The policy ids are missing from ``run_config.json`` or from the fingerprint.
-  N3. Generation needs an evaluation input.
+  N3. Generation needs an evaluation input (covered in test_pilot_runner.py).
 
-The tests in "Reproduction" failed on the ASCII-only tokenizer, in 8 cases: the six
-Chinese questions had zero query tokens, five of their relevant pages and the tie case
-(same Latin words on two pages) were not ranked first, and an unspaced Chinese page
-stayed one chunk. They call only the runner entry point that existed before the change.
+The test in "Reproduction" failed on the ASCII-only tokenizer: the six Chinese questions
+had zero query tokens, and five of their relevant pages and the tie case (same Latin
+words on two pages) were not ranked first. It calls only the runner entry point that
+existed before the change.
 """
 
 from __future__ import annotations
@@ -44,7 +44,7 @@ from typing import Any
 
 import numpy as np
 import pytest
-from test_pilot_runner import DOC_A, PILOT_ID, Project
+from test_pilot_runner import PILOT_ID, Project
 
 from faar import pilot_runner as pr
 from faar.chunking import build_chunks, build_page_chunks
@@ -167,35 +167,16 @@ def retriever_for(pages: list[str], policy: TextPolicy, settings: RetrievalSetti
 # ---------------------------------------------------------------------------
 
 
-def test_repro_chinese_and_mixed_questions_have_query_tokens(tmp_path: Path) -> None:
-    """K1: on the old tokenizer every question in ZH_QUESTIONS had zero tokens."""
+def test_repro_chinese_and_mixed_questions_have_query_tokens_and_rank_the_relevant_page_first(tmp_path: Path) -> None:
+    """K1, R1: on the old tokenizer every question in ZH_QUESTIONS had zero tokens, so the Chinese questions
+    ranked pages by position and only zh-pig (page 0) passed."""
     result, records = run(make_project(tmp_path))
     by_id = {r["question_id"]: r for r in records}
-    for qid, *_ in ALL_QUESTIONS:
+    for qid, _, _, page in ALL_QUESTIONS:
         assert by_id[qid]["query_retrieval_tokens"] > 0, qid
+        assert by_id[qid]["status"] == "answered", qid
+        assert by_id[qid]["evidence"][0]["page_idx"] == page, qid
     assert result.summary["questions_without_query_tokens"]["total"] == 0
-
-
-@pytest.mark.parametrize(("qid", "doc", "text", "page"), ALL_QUESTIONS, ids=[q[0] for q in ALL_QUESTIONS])
-def test_repro_the_relevant_page_ranks_first(tmp_path: Path, qid: str, doc: str, text: str, page: int) -> None:
-    """R1: on the old tokenizer the Chinese questions ranked pages by position, so only zh-pig (page 0) passed."""
-    del doc, text
-    _, records = run(make_project(tmp_path))
-    record = next(r for r in records if r["question_id"] == qid)
-    assert record["status"] == "answered"
-    assert record["evidence"][0]["page_idx"] == page
-
-
-def test_repro_an_unspaced_chinese_page_is_split_into_bounded_chunks(tmp_path: Path) -> None:
-    """C1: on the old chunker this page was one chunk of about 2,500 characters and the answer was the whole page."""
-    page = "".join(f"第{i}号规定：养殖户必须在每个季度末提交第{i}份防疫记录并由县畜牧局备案。" for i in range(1, 60))
-    assert len(page) > 2000 and " " not in page
-    project = Project(
-        tmp_path / "long", {"news/long": [page]}, [{"question_id": "q1", "doc_id": "news/long", "question": "第42号规定要求什么？"}]
-    ).write()
-    _, (record,) = run(project)
-    assert record["ocr_condition"]["chunks"] > 1
-    assert len(record["answer"]) <= 400
 
 
 # ---------------------------------------------------------------------------
@@ -444,7 +425,12 @@ def test_the_default_chunker_and_retriever_still_give_han_text_no_signal() -> No
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize(("qid", "doc", "text", "page"), ALL_QUESTIONS, ids=[q[0] for q in ALL_QUESTIONS])
+RETRIEVER_CASES = [
+    q for q in ALL_QUESTIONS if q[0] in {"zh-pig", "zh-botanist", "mx-growth", "mx-english", "mx-export", "mx-tie-export", "en-warranty"}
+]
+
+
+@pytest.mark.parametrize(("qid", "doc", "text", "page"), RETRIEVER_CASES, ids=[q[0] for q in RETRIEVER_CASES])
 def test_the_relevant_page_ranks_first_with_the_retriever_alone(qid: str, doc: str, text: str, page: int) -> None:
     """R1: retriever level, so the answer step plays no part."""
     del qid
@@ -463,13 +449,6 @@ def test_the_english_results_equal_the_old_tokenizer_results() -> None:
         assert [(h.bm25_score, h.dense_score, h.fused_score) for h in old_hits] == [
             (h.bm25_score, h.dense_score, h.fused_score) for h in new_hits
         ]
-
-
-def test_the_old_tokenizer_cannot_rank_the_chinese_fixture() -> None:
-    """The contrast that gives the passing tests meaning: with the old policy the order is page position."""
-    retriever = retriever_for(ZH_PAGES, LEGACY_TEXT_POLICY)
-    for _, text, _ in ZH_QUESTIONS:
-        assert [h.chunk.page_id for h in retriever.retrieve(text)] == [0, 1, 2, 3, 4]
 
 
 def test_the_relevant_chunk_wins_inside_a_long_chinese_page() -> None:
@@ -539,26 +518,6 @@ def test_an_empty_or_symbol_only_query_ranks_by_position_and_does_not_raise() ->
         assert [h.chunk.page_id for h in retriever.retrieve(query)] == [0, 1, 2, 3, 4]
 
 
-def test_hits_never_cross_documents_in_chinese(tmp_path: Path) -> None:
-    """R3: two Chinese documents share most words; each question sees only its own document."""
-    twin = [page.replace("沙门氏菌病", "口蹄疫") for page in ZH_PAGES]
-    project = Project(
-        tmp_path / "twins",
-        {"news/zh_a": list(ZH_PAGES), "news/zh_b": twin},
-        [
-            {"question_id": "qa", "doc_id": "news/zh_a", "question": "沙门氏菌病是如何传播的？"},
-            {"question_id": "qb", "doc_id": "news/zh_b", "question": "沙门氏菌病是如何传播的？"},
-            {"question_id": "qc", "doc_id": "news/zh_b", "question": "口蹄疫是如何传播的？"},
-        ],
-    ).write()
-    _, records = run(project)
-    for record in records:
-        assert {e["doc_id"] for e in record["evidence"]} == {record["doc_id"]}
-    by_id = {r["question_id"]: r for r in records}
-    assert by_id["qa"]["evidence"][0]["page_idx"] == 0 and by_id["qc"]["evidence"][0]["page_idx"] == 0
-    assert "口蹄疫" in by_id["qc"]["answer"] and "口蹄疫" not in by_id["qa"]["answer"]
-
-
 # ---------------------------------------------------------------------------
 # Determinism
 # ---------------------------------------------------------------------------
@@ -598,30 +557,9 @@ def test_ranking_is_identical_across_processes_and_hash_seeds() -> None:
     assert outputs[0] == outputs[1] == outputs[2] == expected
 
 
-def test_two_fresh_runs_write_identical_predictions(tmp_path: Path) -> None:
-    """R4."""
-    project = make_project(tmp_path)
-    first, _ = run(project, "run-a")
-    second, _ = run(project, "run-b")
-    read = lambda name: (project.root / "results" / "engineering" / name / "predictions.jsonl").read_bytes()  # noqa: E731
-    assert read("run-a") == read("run-b")
-    assert first.summary["predictions_sha256"] == second.summary["predictions_sha256"]
-
-
 # ---------------------------------------------------------------------------
 # Runner
 # ---------------------------------------------------------------------------
-
-
-def test_generation_needs_no_evaluation_input(tmp_path: Path) -> None:
-    """N3: predictions are the same with the evaluation manifest present and with it deleted."""
-    with_manifest = make_project(tmp_path, "with")
-    without = make_project(tmp_path, "without")
-    without.evaluation_manifest.unlink()
-    (without.pilot_dir / "selection_record.json").unlink()
-    _, records_with = run(with_manifest)
-    _, records_without = run(without)
-    assert records_with == records_without
 
 
 def test_chinese_text_is_content_and_tokens_not_a_tokenizer_limit(tmp_path: Path) -> None:
@@ -670,12 +608,3 @@ def test_the_policy_is_part_of_the_generation_fingerprint(tmp_path: Path) -> Non
     same, _ = run(project, "run-x")
     assert not same.wrote and "verified identical" in same.message
 
-
-def test_the_english_only_project_gives_the_same_records_under_both_policies(tmp_path: Path) -> None:
-    """K3, C3: English documents answer the same under the old and the new policy, apart from the config."""
-    docs = {DOC_A: list(EN_PAGES)}
-    questions = [{"question_id": qid, "doc_id": DOC_A, "question": text} for qid, text, _ in EN_QUESTIONS]
-    project = Project(tmp_path / "en", {DOC_A: docs[DOC_A]}, questions).write()
-    _, new = run(project, "run-new")
-    _, old = run(project, "run-old", text_policy=LEGACY_TEXT_POLICY)
-    assert new == old

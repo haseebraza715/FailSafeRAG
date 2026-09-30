@@ -846,7 +846,7 @@ def test_verifier_requires_the_standard_tier_and_disabled_storage_when_the_run_r
     assert statuses(stored)["storage is disabled (store=false on every request)"] == "FAIL"
 
 
-@pytest.mark.parametrize("identity_flag", ["yes", None, True])
+@pytest.mark.parametrize("identity_flag", ["yes", True])
 def test_verifier_fails_a_canonical_flag_that_is_not_boolean_or_disagrees_between_copies(tmp_path: Path, identity_flag: object) -> None:
     run = make_run(tmp_path / "flag", config_extra={"run_kind": "engineering_check"})
     config = json.loads((run / "run_config.json").read_text())

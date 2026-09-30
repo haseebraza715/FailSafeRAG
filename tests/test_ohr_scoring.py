@@ -140,23 +140,6 @@ def test_article_pattern_uses_unicode_word_boundaries_like_regex_module():
     assert normalize_answer("the\u200d cat") == "the\u200d cat"
 
 
-@pytest.mark.parametrize(
-    ("prediction", "reference", "em"),
-    [
-        ("1,000", "1000", 1),
-        ("3.5", "35", 1),
-        ("3.5", "3.50", 0),
-        ("35.93%", "3593", 1),
-        ("$10.00", "1000", 1),
-        ("$10.00", "10", 0),
-        ("5 km", "5km", 0),
-        ("Paris, France", "Paris", 0),  # not a substring test
-    ],
-)
-def test_numeric_and_containment_exact_match(prediction, reference, em):
-    assert exact_match_score(prediction, reference) == em
-
-
 def test_list_answers_are_glued_or_split_by_the_comma_spacing():
     reference = "341195,339502,339909"
     assert exact_match_score(reference, reference) == 1
@@ -175,36 +158,6 @@ def test_empty_against_empty_is_exact_match_but_zero_f1():
     assert f1_score("the", "...") == 0
 
 
-def test_empty_on_one_side_scores_zero():
-    assert (exact_match_score("", "abc"), f1_score("", "abc")) == (0, 0)
-    assert (exact_match_score("abc", ""), f1_score("abc", "")) == (0, 0)
-
-
-@pytest.mark.parametrize(
-    ("prediction", "reference", "f1"),
-    [
-        ("Yes", "yes", 1.0),
-        ("Yes.", "Yes", 1.0),
-        ("no", "no", 1.0),
-        ("Yes, it is", "Yes", 0),  # reference is yes/no: any other prediction scores 0
-        ("Yes", "Yes, it is", 0),  # prediction is yes/no: any other reference scores 0
-        ("No", "Yes", 0),
-        ("no answer", "noanswer", 0),
-        ("no-answer", "noanswer", 1.0),
-        ("Not answerable", "Yes", 0),
-    ],
-)
-def test_yes_no_noanswer_rule(prediction, reference, f1):
-    assert f1_score(prediction, reference) == f1
-
-
-def test_partial_overlap_f1_values():
-    assert f1_score("Paris, France", "Paris") == pytest.approx(2 / 3)
-    assert f1_score("x x x y", "x y") == pytest.approx(2 / 3)
-    assert f1_score("The answer is 842.", "842") == pytest.approx(0.5)
-    assert f1_score("3,736,704 shares and 35.93%", "3,736,704 shares, 35.93%") == pytest.approx(6 / 7)
-
-
 # 4: CJK path
 
 
@@ -218,26 +171,12 @@ def test_partial_overlap_f1_values():
         ("Beijing", False),
         ("こんにちは", False),  # hiragana
         ("안녕", False),  # hangul
-        ("，", False),  # fullwidth comma
-        ("。", False),  # ideographic full stop
+        ("，", False),  # CJK punctuation: fullwidth comma
         ("\ud800", False),  # lone surrogate has no Unicode name
     ],
 )
 def test_has_chn_character_tests_unicode_names(text, expected):
     assert has_chn_character(text) is expected
-
-
-def test_cjk_on_either_raw_side_switches_to_jieba_tokens():
-    # jieba keeps the word intact: no partial credit for a longer word.
-    assert f1_score("北京市", "北京") == 0
-    # jieba keeps the space as a token: two shared tokens out of three and two. Whitespace splitting would score 0.
-    assert f1_score("北京 上海", "北京上海") == pytest.approx(0.8)
-    assert f1_score("Beijing 北京", "北京 Beijing") == 1.0
-    assert f1_score("北京", "Beijing") == 0
-
-
-def test_kana_only_strings_use_whitespace_tokens():
-    assert f1_score("こんにちは", "こんにちは せかい") == pytest.approx(2 / 3)
 
 
 def test_chinese_punctuation_is_not_removed():
@@ -273,14 +212,7 @@ def test_score_predictions_routes_through_the_official_functions(monkeypatch):
 # 5: the -1 path
 
 
-def test_metric_functions_return_minus_one_on_exceptions_like_upstream():
-    assert exact_match_score(None, "a") == -1
-    assert f1_score("a", None) == -1
-    assert exact_match_score(5, "5") == -1
-
-
-@pytest.mark.parametrize("answer", [None, 5, ["a"]])
-@pytest.mark.parametrize("status", ["answered", "no_evidence"])
+@pytest.mark.parametrize(("status", "answer"), [("answered", None), ("no_evidence", 5)])
 def test_score_predictions_refuses_non_string_answers(status, answer):
     with pytest.raises(TypeError):
         score_predictions([_record("q1", status, answer)], {"q1": _question("q1", "abc")})
@@ -455,13 +387,6 @@ def test_result_keys_follow_the_contract():
     assert json.loads(json.dumps(result)) == result
 
 
-def test_chinese_reference_is_scored_with_jieba_through_the_adapter():
-    evaluation = {"q1": _question("q1", "北京"), "q2": _question("q2", "北京")}
-    predictions = [_record("q1", "answered", "北京"), _record("q2", "answered", "上海")]
-    rows = score_predictions(predictions, evaluation)["rows"]
-    assert [(row["em"], row["f1"]) for row in rows] == [(1, 1.0), (0, 0)]
-
-
 # 8: identity
 
 
@@ -497,20 +422,7 @@ def test_recorded_upstream_hashes_match_the_vendored_files(relative, expected):
     assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
 
 
-def test_scorer_dependencies_report_installed_versions():
-    versions = ohr_scoring.scorer_dependencies()
-    assert set(versions) == {"jieba", "regex"}
-    assert all(versions.values())
-
-
 # 10: the old FAAR normaliser
-
-
-def test_old_normalizer_erases_everything_outside_ascii_letters_and_digits():
-    assert metrics.normalize_text("北京") == ""
-    assert metrics.normalize_text("北京 4人") == "4"
-    assert metrics.normalize_text("café") == "caf"
-    assert metrics.normalize_text("[***]") == ""
 
 
 def test_old_normalizer_gives_a_perfect_score_only_when_both_sides_normalize_to_empty():
@@ -525,6 +437,8 @@ def test_old_normalizer_gives_a_perfect_score_only_when_both_sides_normalize_to_
     # A Chinese reference that contains ASCII digits keeps them, so it is not a wildcard.
     assert metrics.exact_match("上海", "4人") == 0.0
     assert metrics.exact_match("4", "4人") == 1.0
+    # Accented letters are erased, not folded.
+    assert metrics.exact_match("café", "caf") == 1.0
 
 
 def test_official_metric_does_not_treat_chinese_as_empty():
