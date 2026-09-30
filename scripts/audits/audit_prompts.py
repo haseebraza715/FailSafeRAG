@@ -45,7 +45,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import (  # noqa: E402
+from _common import (
     EXIT_FAILED_CHECK,
     HAN,
     REPO_ROOT,
@@ -62,9 +62,9 @@ from _common import (  # noqa: E402
     write_json,
 )
 
-from faar import answer_prompt as ap  # noqa: E402
-from faar.live_contract import EvidenceBlock, PriceTable  # noqa: E402
-from faar.request_budget import MICRO, input_token_upper_bound, request_cost_upper_bound_micro  # noqa: E402
+from faar import answer_prompt as ap
+from faar.live_contract import EvidenceBlock, PriceTable
+from faar.request_budget import MICRO, input_token_upper_bound, request_cost_upper_bound_micro
 
 DEFAULT_DRY_RUN = ".local/work/dry-run"
 DEFAULT_OUT = ".local/work/audits"
@@ -72,9 +72,6 @@ DEFAULT_MANIFEST = "results/pilots/ohr_dev_v1/runtime_manifest.json"
 CONTROL_CATEGORIES = {"Cc", "Cf", "Cs", "Co", "Cn"}
 
 Findings = dict[str, list[Any]]
-
-
-# ---------------------------------------------------------------- patterns derived from the repository templates
 
 
 def _template_pattern(template: str, groups: dict[str, str]) -> re.Pattern[str]:
@@ -114,6 +111,7 @@ def parse_user_message(user: str, evidence: Sequence[dict[str, Any]]) -> dict[st
         if not head:
             problems.append(f"block {index}: header does not match the block template")
             break
+        text = block["text"]
         prefix = block["doc_id"] + "-"
         label = block["chunk_id"][len(prefix) :] if block["chunk_id"].startswith(prefix) else None
         if int(head["number"]) != index:
@@ -125,12 +123,11 @@ def parse_user_message(user: str, evidence: Sequence[dict[str, Any]]) -> dict[st
         fence = head["fence"]
         spans.append(("header", base + head.start(), base + head.start("fence")))
         spans.append(("fence", base + head.start("fence"), base + head.end()))
-        if fence != ap.fence_for(block["text"]):
+        if fence != ap.fence_for(text):
             problems.append(f"block {index}: fence differs from the repository's fence_for")
-        if len(fence) < ap.MIN_FENCE_LENGTH or len(fence) <= _longest_run(block["text"]):
+        if len(fence) < ap.MIN_FENCE_LENGTH or len(fence) <= _longest_run(text):
             problems.append(f"block {index}: fence is not longer than every tilde run in the text")
         pos = head.end()
-        text = block["text"]
         if not rest.startswith(text, pos):
             problems.append(f"block {index}: the saved user message does not hold the saved evidence text")
             break
@@ -154,7 +151,18 @@ def parse_user_message(user: str, evidence: Sequence[dict[str, Any]]) -> dict[st
     return {"question": match["question"], "question_span": match.span("question"), "spans": spans, "problems": problems}
 
 
-# ---------------------------------------------------------------- inputs
+def outside_evidence_text(record: dict[str, Any], message: dict[str, Any]) -> tuple[str, str]:
+    """Split a request into the text outside the evidence (question removed) and the question text."""
+    user = record["user"]
+    q_start, q_end = message["question_span"]
+    cut = sorted([(q_start, q_end)] + [(s, e) for kind, s, e in message["spans"] if kind == "evidence"])
+    pieces = [record["system"]]
+    cursor = 0
+    for start, end in cut:
+        pieces.append(user[cursor:start])
+        cursor = end
+    pieces.append(user[cursor:])
+    return "\n".join(pieces), user[q_start:q_end]
 
 
 def load_mineru_pages(manifest: dict[str, Any], project_root: Path) -> tuple[dict[str, dict[int, str]], list[str]]:
@@ -193,9 +201,6 @@ def _report(passed: bool, **details: Any) -> dict[str, Any]:
     return {"pass": passed, **details}
 
 
-# ---------------------------------------------------------------- checks
-
-
 def check_association(
     records: Sequence[dict[str, Any]],
     manifest: dict[str, Any],
@@ -206,8 +211,7 @@ def check_association(
     questions = {q["question_id"]: q for q in manifest["questions"]}
     documents = {d["doc_id"]: d for d in manifest["documents"]}
     found: Findings = defaultdict(list)
-    for problem in manifest_problems:
-        found["mineru_file_hash_differs_from_manifest"].append(problem)
+    found["mineru_file_hash_differs_from_manifest"].extend(manifest_problems)
     if [r["question_id"] for r in records] != list(questions):
         found["records_not_in_manifest_order"].append("ids or order differ")
     if ap.TEMPLATE_SHA256 != summary["template"]["template_sha256"]:
@@ -279,6 +283,7 @@ def check_association(
 
 def check_blocks(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
     hard: Findings = defaultdict(list)
+    control_character_questions: list[str] = []
     counts: Counter[str] = Counter()
     low_content: list[tuple[str, int, int]] = []
     chars: list[int] = []
@@ -301,7 +306,7 @@ def check_blocks(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
             hard["empty_question"].append(qid)
         elif any(unicodedata.category(c) in CONTROL_CATEGORIES for c in record["question"]):
             counts["questions_with_control_character"] += 1
-            hard.setdefault("_warning_question_with_control_character", []).append(qid)
+            control_character_questions.append(qid)
         for index, e in enumerate(evidence, start=1):
             text = e["text"]
             chars.append(len(text))
@@ -324,7 +329,7 @@ def check_blocks(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
                 low_content.append((qid, index, len(text)))
             if re.search(r"\\[a-zA-Z]+\{|<table|</?td>|\$\$", text):
                 markup_blocks += 1
-    warnings = {k[len("_warning_") :]: hard.pop(k) for k in [k for k in hard if k.startswith("_warning_")]}
+    warnings = {"question_with_control_character": control_character_questions} if control_character_questions else {}
     failures = {k: v for k, v in hard.items() if v}
     return _report(
         not failures,
@@ -371,18 +376,7 @@ def check_identity(records: Sequence[dict[str, Any]], parsed: dict[str, dict[str
         if record["action"] != "send" or record["question_id"] not in parsed:
             continue
         qid = record["question_id"]
-        user = record["user"]
-        message = parsed[qid]
-        outside = [record["system"]]
-        cursor = 0
-        keep_out: list[tuple[int, int]] = [message["question_span"]]
-        keep_out += [(s, e) for kind, s, e in message["spans"] if kind == "evidence"]
-        for start, end in sorted(keep_out):
-            outside.append(user[cursor:start])
-            cursor = end
-        outside.append(user[cursor:])
-        outside_text = "\n".join(outside).casefold()
-        question_text = user[slice(*message["question_span"])].casefold()
+        outside_text, question_text = (text.casefold() for text in outside_evidence_text(record, parsed[qid]))
         evidence_text = "\n".join(e["text"] for e in record["evidence"]).casefold()
         for name, fragment in _identity_fragments(record["doc_id"]).items():
             needle = fragment.casefold()
@@ -562,9 +556,6 @@ def check_reproducibility(records_path: Path, other: Path) -> dict[str, Any]:
     )
 
 
-# ---------------------------------------------------------------- optional trace of the files a dry run opens
-
-
 def trace_dry_run(project_root: Path, provider_config: Path | None, out_dir: Path) -> dict[str, Any]:
     """Run ``run_pilot_live.py dry-run`` in this process under an audit hook and list the data files it opens.
 
@@ -622,9 +613,6 @@ def trace_dry_run(project_root: Path, provider_config: Path | None, out_dir: Pat
         data_files_opened_while_importing_modules=at_import,
         forbidden_files_opened=forbidden,
     )
-
-
-# ---------------------------------------------------------------- main
 
 
 def main(argv: Sequence[str] | None = None) -> int:

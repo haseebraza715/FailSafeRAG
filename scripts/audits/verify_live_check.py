@@ -37,10 +37,10 @@ from pathlib import Path
 from typing import Any, NamedTuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import EXIT_FAILED_CHECK, fail, read_json, read_jsonl, require_dir, require_file, resolve  # noqa: E402
+from _common import EXIT_FAILED_CHECK, fail, read_json, read_jsonl, require_dir, require_file, resolve
 
-from faar.live_contract import PriceTable, ProviderUsage  # noqa: E402
-from faar.request_budget import BudgetError, LedgerError, SafetyLedger, measured_cost_micro  # noqa: E402
+from faar.live_contract import PriceTable, ProviderUsage
+from faar.request_budget import BudgetError, LedgerError, SafetyLedger, measured_cost_micro
 
 ABSENT = "absent"
 STANDARD_TIER = "default"
@@ -102,7 +102,7 @@ def verify(
         rows.append(Row("INFO", name, detail))
 
     # 1. provider identity
-    check("mode is live" if not allow_fake else "mode (fake allowed)", config["mode"] == "live" or allow_fake, config["mode"])
+    check("mode (fake allowed)" if allow_fake else "mode is live", config["mode"] == "live" or allow_fake, config["mode"])
     check("provider is openai", provider["provider"] == "openai", provider["provider"])
     check("requested model", provider["model"] == expect_model, provider["model"])
     base = provider.get("adapter", {}).get("base_url")
@@ -134,13 +134,12 @@ def verify(
             bool(flags) and all(isinstance(flag, bool) for flag in flags.values()) and len(set(flags.values())) == 1,
             json.dumps(flags),
         )
-    if run_kind != ABSENT and run_kind != "development_pilot":
+    if run_kind not in (ABSENT, "development_pilot"):
         check(
             "an engineering check is not eligible as a baseline (valid_baseline false)",
             summary.get("valid_baseline") is False,
             str(summary.get("valid_baseline")),
         )
-    # The runner records the storage policy as identity.provider.storage.
     storage = provider.get("storage", ABSENT)
     if storage == ABSENT:
         info("storage", ABSENT)

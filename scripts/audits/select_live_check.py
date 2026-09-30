@@ -36,7 +36,8 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import (  # noqa: E402
+from _common import (
+    EXIT_FAILED_CHECK,
     HAN,
     fail,
     ids_digest,
@@ -83,14 +84,13 @@ def select(rows: Sequence[dict[str, Any]]) -> dict[str, str]:
     chosen: dict[str, str] = {}
 
     def take(stratum: str, pool: Sequence[dict[str, Any]], count: int, key: Any = _rank) -> None:
-        picked = 0
-        for row in sorted((r for r in pool if r["question_id"] not in chosen), key=key):
-            if picked == count:
-                break
+        picked = sorted((r for r in pool if r["question_id"] not in chosen), key=key)[:count]
+        if len(picked) < count:
+            raise SelectionError(
+                f"stratum {stratum} needs {count} questions and the prepared requests give {len(picked)}"
+            )
+        for row in picked:
             chosen[row["question_id"]] = stratum
-            picked += 1
-        if picked < count:
-            raise SelectionError(f"stratum {stratum} needs {count} questions and the prepared requests give {picked}")
 
     take("L", sends, 1, key=lambda r: (-r["input_token_upper_bound"], _rank(r)))
     take("H", [r for r in sends if _has_han_question(r)], 2)
@@ -150,13 +150,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         chosen = select(rows)
     except SelectionError as exc:
-        fail(str(exc), code=1)
+        fail(str(exc), code=EXIT_FAILED_CHECK)
 
     ids = [qid for qid in manifest_ids if qid in chosen]
     derived = derive_manifest(frozen, set(ids))
-    data = manifest_bytes(derived)
     manifest_out = out / "runtime_manifest.livecheck-v1.json"
-    manifest_out.write_bytes(data)
+    manifest_out.write_bytes(manifest_bytes(derived))
     write_json(out / "selected_question_ids.json", ids)
     by_id = {r["question_id"]: r for r in rows}
     trace = [

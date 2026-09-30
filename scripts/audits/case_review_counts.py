@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import EXIT_FAILED_CHECK, fail, prepare_out, read_json, require_file, resolve, write_json  # noqa: E402
+from _common import EXIT_FAILED_CHECK, fail, prepare_out, read_json, require_file, resolve, write_json
 
 DEFAULT_CASES = "docs/reports/ohr-dev-v1-agent-review-2026-09-30.cases.json"
 ALLOWED = {

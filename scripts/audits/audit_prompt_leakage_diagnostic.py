@@ -37,7 +37,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import (  # noqa: E402
+from _common import (
     EXIT_FAILED_CHECK,
     REPO_ROOT,
     norm_ws,
@@ -49,7 +49,7 @@ from _common import (  # noqa: E402
     resolve,
     write_json,
 )
-from audit_prompts import parse_user_message  # noqa: E402
+from audit_prompts import outside_evidence_text, parse_user_message
 
 BANNER = (
     "DIAGNOSTIC that reads evaluation data. Never feed its output into runtime preparation, retrieval, gating, "
@@ -94,20 +94,6 @@ def load_reference_text(evaluation: dict[str, Any], project_root: Path, doc_ids:
         rows = read_json(path, "clean reference text")
         texts[doc_id] = _fold(" ".join(r.get("text", "") if isinstance(r, dict) else str(r) for r in rows))
     return texts
-
-
-def outside_evidence_text(record: dict[str, Any], message: dict[str, Any]) -> tuple[str, str]:
-    """Split a request into the text outside the evidence (question removed) and the question text."""
-    user = record["user"]
-    q_start, q_end = message["question_span"]
-    cut = sorted([(q_start, q_end)] + [(s, e) for kind, s, e in message["spans"] if kind == "evidence"])
-    pieces = [record["system"]]
-    cursor = 0
-    for start, end in cut:
-        pieces.append(user[cursor:start])
-        cursor = end
-    pieces.append(user[cursor:])
-    return "\n".join(pieces), user[q_start:q_end]
 
 
 def diagnose(
@@ -175,11 +161,10 @@ def diagnose(
         "prompt_does_not_parse",
     )
     failures = {k: found[k] for k in hard_keys if found.get(k)}
-    sent = len(page_rows)
     return {
         "pass": not failures,
         "failures": failures,
-        "sent_questions": sent,
+        "sent_questions": len(page_rows),
         "gold_shorter_than_4_characters_not_searched": short_gold,
         "gold_inside_question_text": found.get("gold_inside_question_text", []),
         "gold_inside_evidence_questions": len(found.get("gold_inside_evidence", [])),

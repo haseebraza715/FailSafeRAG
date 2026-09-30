@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import EXIT_FAILED_CHECK, ids_digest, read_json, resolve, sha256_file  # noqa: E402
+from _common import EXIT_FAILED_CHECK, ids_digest, read_json, resolve, sha256_file
 
 DEFAULT_FROZEN = "results/pilots/ohr_dev_v1/runtime_manifest.json"
 LISTS = ("documents", "questions")

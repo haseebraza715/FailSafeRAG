@@ -37,7 +37,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import (  # noqa: E402
+from _common import (
     EXIT_FAILED_CHECK,
     HAN,
     fail,
@@ -49,9 +49,9 @@ from _common import (  # noqa: E402
     write_json,
 )
 
-from faar.answer_prompt import estimate_tokens  # noqa: E402
-from faar.live_contract import PriceTable, ProviderUsage  # noqa: E402
-from faar.request_budget import (  # noqa: E402
+from faar.answer_prompt import estimate_tokens
+from faar.live_contract import PriceTable, ProviderUsage
+from faar.request_budget import (
     MICRO,
     SafetyLedger,
     input_token_upper_bound,
@@ -66,8 +66,7 @@ Plan = Callable[[int], list[str]]
 
 
 def load_prices(summary: dict[str, Any]) -> PriceTable:
-    prices = summary["provider_config"]["prices"]
-    return PriceTable(**prices)
+    return PriceTable(**summary["provider_config"]["prices"])
 
 
 def scaled(prices: PriceTable, factor: float) -> PriceTable:
@@ -311,8 +310,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         checks[f"no input bound above the limit ({limit})"] = b["input_bound_tokens"]["max"] <= limit
 
     tokens = [token_scenarios(r, args) for r in sends]
-    heuristic_saved = [r["token_estimate"]["estimate"] for r in sends]
-    checks["heuristic tokens equal the saved token_estimate"] = [t["central"] for t in tokens] == heuristic_saved
+    checks["heuristic tokens equal the saved token_estimate"] = [t["central"] for t in tokens] == [
+        r["token_estimate"]["estimate"] for r in sends
+    ]
 
     def estimate_block(p: PriceTable) -> dict[str, Any]:
         return {

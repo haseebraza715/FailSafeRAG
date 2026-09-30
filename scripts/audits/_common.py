@@ -12,7 +12,7 @@ import hashlib
 import json
 import re
 import sys
-from collections.abc import Iterable, Sequence
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, NoReturn
 
@@ -74,11 +74,6 @@ def read_jsonl(path: Path, what: str) -> list[dict[str, Any]]:
     return rows
 
 
-def canonical_bytes(value: Any) -> bytes:
-    """The serialisation `faar.answer_prompt` uses for its hashes: sorted keys, compact, UTF-8."""
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
-
-
 def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -113,8 +108,4 @@ def prepare_out(out: Path) -> Path:
 
 
 def write_json(path: Path, value: Any) -> None:
-    path.write_text(json.dumps(value, indent=2, ensure_ascii=False, sort_keys=False) + "\n", encoding="utf-8")
-
-
-def ids_in_order(rows: Iterable[dict[str, Any]]) -> list[str]:
-    return [row["question_id"] for row in rows]
+    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
