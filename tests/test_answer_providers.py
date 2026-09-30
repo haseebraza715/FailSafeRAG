@@ -29,7 +29,16 @@ from faar.answer_providers import (
     classify_openai_error,
     script_by_question,
 )
-from faar.live_contract import ALLOWED_OPENAI_PARAMS, ProviderError, ProviderRequest, ProviderUsage
+from faar.live_contract import (
+    ALLOWED_OPENAI_PARAMS,
+    SERVICE_TIER_STANDARD,
+    STORAGE_DISABLED,
+    STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP,
+    STORAGE_POLICIES,
+    ProviderError,
+    ProviderRequest,
+    ProviderUsage,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -248,7 +257,11 @@ def completion_payload(**overrides: Any) -> dict[str, Any]:
 
 
 def mock_client(
-    handler: Callable[[httpx.Request], httpx.Response], *, api_key: str = "test-not-a-key", follow_redirects: bool = False
+    handler: Callable[[httpx.Request], httpx.Response],
+    *,
+    api_key: str = "test-not-a-key",
+    follow_redirects: bool = False,
+    trust_env: bool = False,
 ) -> tuple[openai.OpenAI, list[httpx.Request]]:
     seen: list[httpx.Request] = []
 
@@ -258,7 +271,7 @@ def mock_client(
 
     client = openai.OpenAI(
         api_key=api_key,
-        http_client=httpx.Client(transport=httpx.MockTransport(recording), follow_redirects=follow_redirects),
+        http_client=httpx.Client(transport=httpx.MockTransport(recording), follow_redirects=follow_redirects, trust_env=trust_env),
         max_retries=0,
     )
     return client, seen
@@ -308,17 +321,19 @@ def test_request_body_and_headers() -> None:
         "max_tokens": 33,
         "temperature": 0,
         "seed": 7,
+        "store": False,
+        "service_tier": "default",
     }
     assert "x-client-request-id" not in request.headers
     assert request.extensions["timeout"] == {"connect": 30.0, "read": 30.0, "write": 30.0, "pool": 30.0}
     assert request.headers["authorization"] == "Bearer test-not-a-key"
 
 
-def test_max_completion_tokens_option_and_tag_attempts() -> None:
+def test_max_completion_tokens_option_and_attempt_lookup_storage() -> None:
     provider, seen = adapter(
         lambda request: httpx.Response(200, json=completion_payload()),
         token_limit_param="max_completion_tokens",
-        tag_attempts=True,
+        storage=STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP,
     )
     provider.send(make_request("abc", 2, max_output_tokens=10))
     body = json.loads(seen[0].content)
@@ -327,7 +342,8 @@ def test_max_completion_tokens_option_and_tag_attempts() -> None:
     assert body["metadata"] == {"faar_attempt_id": "abc-a2", "faar_request_id": "abc"}
     assert seen[0].headers["x-client-request-id"] == "abc-a2"
     identity = provider.identity()
-    assert identity["token_limit_param"] == "max_completion_tokens" and identity["tag_attempts"] is True
+    assert identity["token_limit_param"] == "max_completion_tokens"
+    assert identity["storage"] == STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP and identity["store"] is True
 
 
 def test_missing_usage_and_missing_details_are_none() -> None:
@@ -884,6 +900,9 @@ def test_identity_reports_the_configuration_without_touching_credentials() -> No
     assert identity["requested_model"] == "gpt-test"
     assert identity["endpoint"] == "https://api.openai.com/v1/"
     assert identity["params"] == {"temperature": 0}
+    assert identity["storage"] == STORAGE_DISABLED and identity["store"] is False
+    assert identity["service_tier"] == SERVICE_TIER_STANDARD == "default"
+    assert "tag_attempts" not in identity
     assert identity["sdk"] == {"name": "openai", "version": openai.__version__}
     assert identity["model_calls"] is True and identity["engineering_only"] is False
     assert "test-not-a-key" not in json.dumps(identity)
@@ -929,3 +948,239 @@ def test_cloudflare_origin_timeouts_are_unknown_outcomes_like_504(status: int) -
     error = caught.value
     assert seen, "the mock transport saw the request"
     assert (error.kind, error.outcome, error.retryable, error.http_status) == ("gateway_timeout", "unknown", False, status)
+
+
+# --------------------------------------------------------------------------- storage policy (O14)
+#
+# Ways the storage policy could fail, written before the code.
+#   S1. The default request leaves `store` out, so the account default decides (OpenAI documents Chat
+#       Completions as stored by default for new accounts) and the prompt is stored without anyone choosing it.
+#   S2. A retried attempt loses `store: false`, because the flag was set on one code path only.
+#   S3. `tag_attempts` and `storage` disagree and the request follows one while the identity reports the other.
+#   S4. An unknown storage value is accepted and silently treated as one of the two policies.
+#   S5. Turning provider storage off removes a local diagnostic (response id, x-request-id, attempt id).
+#   S6. `store` gets in through `params`, past the allowlist.
+
+
+def body_of(request: httpx.Request) -> dict[str, Any]:
+    return json.loads(request.content)
+
+
+def test_the_default_storage_policy_sends_store_false_and_no_attempt_metadata() -> None:
+    provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()))
+    provider.send(make_request("abc", 1))
+    body = body_of(seen[0])
+    assert body["store"] is False
+    assert "metadata" not in body and "x-client-request-id" not in seen[0].headers
+    identity = provider.identity()
+    assert identity["storage"] == STORAGE_DISABLED and identity["store"] is False
+
+
+def test_a_retried_attempt_sends_store_false_both_times() -> None:
+    """S2: a 408 is retryable; the second request is a new attempt and must carry the same policy."""
+    replies = iter([httpx.Response(408, json=error_body("timeout", type_="server_error")), httpx.Response(200, json=completion_payload())])
+    provider, seen = adapter(lambda request: next(replies))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request("abc", 1))
+    assert info.value.retryable is True
+    provider.send(make_request("abc", 2))
+    assert [body_of(request)["store"] for request in seen] == [False, False]
+    assert [body_of(request)["service_tier"] for request in seen] == ["default", "default"]
+
+
+def test_attempt_lookup_storage_sends_store_true_metadata_and_the_client_request_id() -> None:
+    provider, seen = adapter(
+        lambda request: httpx.Response(200, json=completion_payload()), storage=STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP
+    )
+    provider.send(make_request("abc", 3))
+    body = body_of(seen[0])
+    assert body["store"] is True
+    assert body["metadata"] == {"faar_attempt_id": "abc-a3", "faar_request_id": "abc"}
+    assert seen[0].headers["x-client-request-id"] == "abc-a3"
+    assert body["service_tier"] == "default"
+
+
+@pytest.mark.parametrize("storage", STORAGE_POLICIES)
+def test_local_diagnostics_do_not_depend_on_provider_storage(storage: str) -> None:
+    """S5: the response id and the x-request-id header stay available under both policies."""
+    provider, _ = adapter(
+        lambda request: httpx.Response(200, json=completion_payload(), headers={"x-request-id": "req_ok"}), storage=storage
+    )
+    response = provider.send(make_request("abc", 1))
+    assert response.response_id == "chatcmpl-test-1"
+    failing, _ = adapter(
+        lambda request: httpx.Response(502, json=error_body("bad gateway", type_="server_error"), headers={"x-request-id": "req_bad"}),
+        storage=storage,
+    )
+    with pytest.raises(ProviderError) as info:
+        failing.send(make_request("abc", 1))
+    assert info.value.raw["x_request_id"] == "req_bad"
+
+
+@pytest.mark.parametrize("storage", ["enabled", "STORAGE_DISABLED", "", None, True, 1, ["disabled"]])
+def test_an_unknown_storage_value_is_refused_at_construction(storage: Any) -> None:
+    client, seen = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
+    with pytest.raises(ValueError, match="storage"):
+        OpenAIChatProvider("gpt-test", {}, client=client, storage=storage)
+    assert seen == []
+
+
+def test_tag_attempts_is_gone_so_it_cannot_contradict_the_storage_policy() -> None:
+    """S3: one field decides. The old flag is not accepted as an alias, so it cannot disagree with `storage`."""
+    client, _ = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
+    with pytest.raises(TypeError, match="tag_attempts"):
+        OpenAIChatProvider("gpt-test", {}, client=client, tag_attempts=True)  # type: ignore[call-arg]
+
+
+def test_store_stays_refused_in_params_under_both_policies() -> None:
+    """S6"""
+    for storage in STORAGE_POLICIES:
+        client, _ = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
+        with pytest.raises(ValueError, match="not allowed"):
+            OpenAIChatProvider("gpt-test", {"store": False}, client=client, storage=storage)
+        provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()), storage=storage)
+        with pytest.raises(ValueError, match="not allowed"):
+            provider.send(make_request(params={"store": True}))
+        assert seen == []
+
+
+# --------------------------------------------------------------------------- service tier (O15)
+#
+#   T1. The request leaves `service_tier` out, so a project-level setting (for example Fast mode) can move the
+#       price outside the price table.
+#   T2. The adapter rewrites the returned tier (for example lower-cases it, or maps an unknown one to "default"),
+#       and the safety check downstream never sees the violation.
+#   T3. The SDK types the response field as Literal["scale", "default"] and could reject or change "priority".
+#   T4. The malformed-200 error keeps usage, id and model but drops the tier.
+
+
+def test_every_request_asks_for_the_standard_tier() -> None:
+    provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()))
+    provider.send(make_request())
+    assert body_of(seen[0])["service_tier"] == SERVICE_TIER_STANDARD == "default"
+    assert provider.identity()["service_tier"] == "default"
+
+
+def test_the_sdk_types_the_request_tier_as_auto_or_default() -> None:
+    """The value is documented for the Chat Completions API (openai-python 1.68.2 types it auto|default)."""
+    from openai.types.chat import completion_create_params
+
+    hint = str(completion_create_params.CompletionCreateParamsBase.__annotations__["service_tier"])
+    assert "default" in hint and "auto" in hint
+
+
+TIER_CASES = ["default", "priority", "flex", "scale", "fast", "DEFAULT"]
+
+
+@pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
+@pytest.mark.parametrize("returned", TIER_CASES)
+def test_a_returned_tier_is_recorded_exactly_as_the_provider_sent_it(returned: str) -> None:
+    provider, _ = adapter(lambda request: httpx.Response(200, json=completion_payload(service_tier=returned)))
+    response = provider.send(make_request())
+    assert response.returned_service_tier == returned  # never normalised
+    assert response.raw["service_tier"] == returned  # the payload is unchanged
+    assert response.text == "Paris"  # the SDK's narrower response type did not reject the reply
+
+
+@pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
+@pytest.mark.parametrize("label", ["missing", "null", "integer", "list", "object", "boolean"])
+def test_a_missing_or_non_string_tier_is_none(label: str) -> None:
+    payload = completion_payload()
+    if label != "missing":
+        payload["service_tier"] = {"null": None, "integer": 5, "list": ["default"], "object": {"tier": "default"}, "boolean": True}[label]
+    provider, _ = adapter(lambda request: httpx.Response(200, json=payload))
+    response = provider.send(make_request())
+    assert response.returned_service_tier is None
+    assert response.text == "Paris"
+
+
+@pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
+@pytest.mark.parametrize("returned", ["default", "priority", None])
+def test_a_malformed_200_keeps_the_tier_beside_usage_id_and_model(returned: str | None) -> None:
+    """T4"""
+    payload = completion_payload(choices=[], service_tier=returned)
+    provider, _ = adapter(lambda request: httpx.Response(200, json=payload))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    raw = info.value.raw
+    assert raw["service_tier"] == returned
+    assert raw["payload"]["service_tier"] == returned
+    assert (raw["id"], raw["model"]) == ("chatcmpl-test-1", "gpt-test-2026-01-01")
+
+
+@pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
+def test_a_malformed_200_without_a_tier_has_a_none_tier_in_raw() -> None:
+    provider, _ = adapter(lambda request: httpx.Response(200, json={"foo": 1}))
+    with pytest.raises(ProviderError) as info:
+        provider.send(make_request())
+    assert "service_tier" in info.value.raw and info.value.raw["service_tier"] is None
+
+
+# --------------------------------------------------------------------------- direct transport (O16)
+#
+#   R1. An injected client reads HTTPS_PROXY, HTTP_PROXY, ALL_PROXY or the operating system's proxy settings
+#       (`trust_env=True`), so the prompt and the key go through a proxy the run never recorded.
+#   R2. `trust_env` is truthy but not `False` (0, None), or cannot be read, and the check lets it through.
+#   R3. A client with an explicit proxy or mount is accepted because its `trust_env` is False.
+#   R4. Only the constructor path is checked; the SDK's own default client (trust_env=True) slips through.
+
+
+def test_a_client_that_reads_the_proxy_environment_is_refused_at_construction() -> None:
+    client, seen = mock_client(lambda request: httpx.Response(200, json=completion_payload()), trust_env=True)
+    with pytest.raises(ValueError, match="trust_env"):
+        OpenAIChatProvider("gpt-test", {}, client=client)
+    assert seen == []
+
+
+def test_the_sdk_default_client_is_refused_for_both_settings() -> None:
+    client = openai.OpenAI(api_key="test-not-a-key", max_retries=0)
+    with pytest.raises(ValueError) as info:
+        OpenAIChatProvider("gpt-test", {}, client=client)
+    assert "follow redirects" in str(info.value) and "trust_env" in str(info.value)
+
+
+class _StubInner:
+    def __init__(self, **attributes: Any) -> None:
+        for name, value in attributes.items():
+            setattr(self, name, value)
+
+
+class _StubClient:
+    max_retries = 0
+    api_key = "test-not-a-key"
+
+    def __init__(self, inner: Any) -> None:
+        self._client = inner
+
+
+@pytest.mark.parametrize(
+    "attributes",
+    [
+        {"follow_redirects": False, "trust_env": 0},
+        {"follow_redirects": False, "trust_env": None},
+        {"follow_redirects": False, "trust_env": "False"},
+        {"follow_redirects": False},  # trust_env cannot be read
+        {"trust_env": False},  # follow_redirects cannot be read
+        {"follow_redirects": 0, "trust_env": False},
+        {},
+    ],
+)
+def test_a_setting_that_is_not_exactly_false_or_cannot_be_read_is_refused(attributes: dict[str, Any]) -> None:
+    with pytest.raises(ValueError):
+        OpenAIChatProvider("gpt-test", {}, client=_StubClient(_StubInner(**attributes)))
+
+
+def test_a_client_without_an_http_client_is_refused() -> None:
+    with pytest.raises(ValueError):
+        OpenAIChatProvider("gpt-test", {}, client=_StubClient(None))
+
+
+def test_a_client_with_an_explicit_proxy_is_refused_even_when_trust_env_is_false() -> None:
+    """R3: `proxy=` adds a mount that routes every request through it, whatever trust_env says."""
+    client = openai.OpenAI(
+        api_key="test-not-a-key",
+        http_client=httpx.Client(follow_redirects=False, trust_env=False, proxy="http://127.0.0.1:9"),
+        max_retries=0,
+    )
+    with pytest.raises(ValueError, match="proxy"):
+        OpenAIChatProvider("gpt-test", {}, client=client)
