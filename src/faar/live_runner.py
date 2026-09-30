@@ -66,7 +66,6 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from .answer_providers import SimulatedCrash  # noqa: F401  (re-exported: crash hooks and the fake provider raise it)
 from .live_contract import (
     ALLOWED_OPENAI_PARAMS,
     CONTRACT_VERSION,
@@ -124,8 +123,6 @@ EXIT_NEEDS_ATTENTION = 5
 EXIT_SAFETY_STOPPED = 6
 
 SCHEMA_VERSION = 1
-KIND_FAKE = RUN_KIND_ENGINEERING
-KIND_LIVE = RUN_KIND_DEVELOPMENT
 LABEL_FAKE = (
     "Engineering check with a fake answer provider. No request leaves the process and nothing here measures a model."
 )
@@ -280,14 +277,6 @@ CRASH_AFTER_SEND = "after_send"  # window 3, response in memory only
 CRASH_AFTER_RESPONSE_FILE = "after_response_file"  # window 3, file on disk, no event
 CRASH_AFTER_SAVED = "after_response_saved"  # window 4 starts here
 CRASH_BEFORE_EXPORT = "before_export"  # window 4, after the last event
-CRASH_POINTS = (
-    CRASH_BEFORE_DISPATCH,
-    CRASH_AFTER_DISPATCH,
-    CRASH_AFTER_SEND,
-    CRASH_AFTER_RESPONSE_FILE,
-    CRASH_AFTER_SAVED,
-    CRASH_BEFORE_EXPORT,
-)
 
 # SimulatedCrash (from faar.answer_providers) derives from BaseException, so no ``except Exception`` in the
 # driver swallows it. The driver writes nothing after it, as after a real crash. A crash hook raises it, and so
@@ -523,7 +512,7 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
         _finite_positive(cached, "prices.cached_input_per_million")
     if "service_tier" in payload:
         _refuse(
-            isinstance(payload["service_tier"], str) and payload["service_tier"] == SERVICE_TIER_STANDARD,
+            payload["service_tier"] == SERVICE_TIER_STANDARD,
             f"provider config: service_tier must be {SERVICE_TIER_STANDARD!r} (the Standard tier) or absent, "
             f"got {payload['service_tier']!r}",
         )
@@ -533,7 +522,7 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
         _refuse(payload["store"] is False, f"provider config: store must be false or absent, got {payload['store']!r}")
     if "service_tier" in prices or not simulated:
         _refuse(
-            isinstance(prices.get("service_tier"), str) and prices["service_tier"] == SERVICE_TIER_STANDARD,
+            prices.get("service_tier") == SERVICE_TIER_STANDARD,
             f"provider config: prices.service_tier must be {SERVICE_TIER_STANDARD!r}: the rates are Standard-tier rates "
             f"and must say so, got {prices.get('service_tier')!r}",
         )
@@ -611,10 +600,7 @@ class Services:
 
     @classmethod
     def default(cls) -> Services:
-        try:
-            from . import answer_prompt, prompt_preview, request_budget, retry_policy
-        except ImportError as exc:  # pragma: no cover - the modules ship with this package
-            raise RunnerRefusal(f"the answer-model modules are not available in this checkout: {exc}") from exc
+        from . import answer_prompt, prompt_preview, request_budget, retry_policy
 
         def ledger_from_events(events: Sequence[Mapping[str, Any]], prices: PriceTable) -> Any:
             # The ledger treats question_reopened as costless: the attempts it follows are already counted.
@@ -637,10 +623,6 @@ class Services:
             retry_policy=retry_policy.RetryPolicy(),
         )
 
-
-# ---------------------------------------------------------------------------
-# Small helpers
-# ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 # Durable writes
@@ -1893,7 +1875,6 @@ def _initialise(
     atomic_write_text(run_dir / RUN_CONFIG_NAME, _dumps(run_config) + "\n")
 
 
-
 PROVIDER_RAW_LIMIT = 20_000
 # Fields that say what a reply cost, which request it was, and why it failed. They come first when a mapping
 # has more keys than _RAW_MAX_KEYS, so a wide payload cannot push them out.
@@ -2078,8 +2059,7 @@ class _Driver:
             except ProviderError as error:
                 latency = int((self.clock() - started) * 1000)
                 step = self._record_error(state, attempt_state, error, latency)
-                counted = step == "unknown" or step == DECISION_FAIL
-                if counted:
+                if step in ("unknown", DECISION_FAIL):
                     self.consecutive_failures += 1
                 if step == DECISION_RETRY:
                     continue
@@ -2695,7 +2675,6 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         exit_code = EXIT_BUDGET_LIMITED
     else:
         exit_code = EXIT_NEEDS_ATTENTION
-    last_ceiling = view.effective_ceiling
     requested_model = view.config["identity"]["provider"]["model"]
     saved_events = [a.resolution_event for a in attempts if a.outcome == "saved" and a.resolution_event]
     returned_models: dict[str, int] = {}
@@ -2788,7 +2767,7 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
         "returned_models": dict(sorted(returned_models.items())),
         **({"returned_service_tiers": dict(sorted(tiers.items()))} if "service_tier" in identity["provider"] else {}),
         "cost": cost,
-        "safety_ceiling": last_ceiling,
+        "safety_ceiling": view.effective_ceiling,
         "invocations": [
             {
                 "invocation_id": info.invocation_id,
@@ -3101,7 +3080,7 @@ def _execute_locked(
     services = services or Services.default()
     directory = check_run_directory(run_dir)
     _refuse(
-        not (run_dir / SCORES_NAME).exists() and not (run_dir / SCORE_SUMMARY_NAME).exists(),
+        not is_scored(run_dir),
         f"{run_dir} has been scored. Scoring is final for a run; start a new run directory to continue.",
     )
     retrieval_run = retrieve_runtime_questions(
@@ -3196,17 +3175,14 @@ def _execute_locked(
         )
         view = load_run(run_dir)
 
-    # From here on, events are appended.
     tail = quarantine_uncommitted_tail(run_dir, view, invocation_id)
-
-    invocations: list[InvocationInfo] = view.invocations
 
     def track(event: dict[str, Any]) -> None:
         view.events.append(event)
         if event["event"] == EVENT_INVOCATION_STARTED:
-            invocations.append(InvocationInfo(event["invocation_id"], event))
+            view.invocations.append(InvocationInfo(event["invocation_id"], event))
         elif event["event"] == EVENT_INVOCATION_ENDED:
-            invocations[-1].ended = event
+            view.invocations[-1].ended = event
 
     log = EventLog(run_dir / ATTEMPTS_NAME, invocation_id, len(view.events) + 1, track)
     try:
@@ -3443,7 +3419,6 @@ def reconcile_attempt(
     ``mark_failed`` ends the question as ``execution_failed``.
     """
     services = services or Services.default()
-    run_dir = _absolute(run_dir)
     _refuse(resolution in RESOLUTIONS, f"resolution must be one of {RESOLUTIONS}")
     _refuse(bool(note and note.strip()), "--note TEXT is required: say what you checked and what you found")
     run_dir = require_initialised_run(run_dir)
