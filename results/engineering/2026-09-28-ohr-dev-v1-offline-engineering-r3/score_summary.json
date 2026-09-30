@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-28-ohr-dev-v1-offline-engineering-r3",
+  "pilot_id": "ohr_dev_v1",
+  "kind": "engineering_check",
+  "label": "Engineering settings for an offline pipeline check. They are not the approved scientific protocol.",
+  "scorer": {
+    "name": "ohr-bench-official-qa",
+    "upstream_repo": "https://github.com/opendatalab/OHR-Bench",
+    "upstream_commit": "1f421eb428f9f5b8ac0bc8064d6ad1f13fab7af7",
+    "upstream_path": "src/metric/common.py",
+    "upstream_sha256": "9fe7eb527762d1be8a00d9a98a775b850bb42e9441a09db84e88996b94ef5a35",
+    "adapter_version": "1"
+  },
+  "scorer_environment": {
+    "jieba": "0.42.1",
+    "regex": "2024.7.24",
+    "unicodedata": "15.0.0"
+  },
+  "evaluation_manifest": {
+    "path": "results/pilots/ohr_dev_v1/evaluation_manifest.json",
+    "sha256": "7237cc2ca965f999a09606a6cdc9af4be8c17342d6d3319c4cfc40da19de2d28"
+  },
+  "generation_fingerprint": "6725749f435f3e119f700a70e9ca1c4b3bdeea57a2b4bbae4197f2711743de3f",
+  "predictions_sha256": "906310fd646f49f6f89ce9c1599c087a4cb836580c7da698ab1c56957b928d77",
+  "counts": {
+    "questions": 70,
+    "answered": 63,
+    "no_evidence": 7,
+    "execution_failed": 0,
+    "abstained": 7
+  },
+  "aggregates": {
+    "all_questions": {
+      "denominator": 70,
+      "em": 0.05714285714285714,
+      "f1": 0.09595117519725732,
+      "policy": "execution_failed scored as 0; no_evidence scored by the official metric on the empty abstention"
+    },
+    "answered_only": {
+      "denominator": 63,
+      "em": 0.06349206349206349,
+      "f1": 0.10661241688584147
+    },
+    "upstream_valid_only": {
+      "denominator": 63,
+      "em": 0.06349206349206349,
+      "f1": 0.10661241688584147,
+      "policy": "upstream OHR-Bench overall: mean over rows whose answer text is non-blank, as evaluator.remove_invalid keeps results with valid = len(generated_text.strip()) != 0; drops abstentions, blank answers and execution failures, so it is not the all-question view"
+    }
+  },
+  "scores_sha256": "f14bc2e812dc3d68b71bcc4625f6cdc0056e8b0633ffb242542de285a2ccb388"
+}

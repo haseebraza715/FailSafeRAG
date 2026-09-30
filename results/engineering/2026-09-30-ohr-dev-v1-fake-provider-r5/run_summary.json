@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-30-ohr-dev-v1-fake-provider-r5",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "fake",
+  "kind": "engineering_check",
+  "label": "Engineering check with a fake answer provider. No request leaves the process and nothing here measures a model.",
+  "identity_sha256": "b36cc21cf142ffd4951777bec1c44831f9a8e28ca20e2e2021ec14c50b7991a9",
+  "run_state": "complete",
+  "valid_baseline": false,
+  "valid_baseline_blockers": [
+    "the run is a fake run, not a live run",
+    "the run kind is engineering_check, not development_pilot"
+  ],
+  "valid_baseline_means": "valid_baseline checks mechanical completeness and eligibility only. It is true when the run is live, its kind is development_pilot, its runtime manifest is byte-identical to the frozen manifest of its pilot, its state is complete, no question is execution_failed, every returned model equals the requested model, every response reported the Standard service tier, no response reported more input tokens than the input bound and the safety ledger reports no anomaly. It does not mean the prompt, the model, the retrieval settings or the budget are approved, and it is not scientific approval of the run.",
+  "run_kind": "engineering_check",
+  "canonical_manifest": true,
+  "pilot_manifest": {
+    "parent_pilot_id": "ohr_dev_v1",
+    "frozen_runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+    "run_runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+    "canonical": true,
+    "question_count": 70,
+    "question_ids_sha256": "5f54c0f442f8fb1aea24081e432b0ad3c185561401cc9858b8505fe2fbf94d57"
+  },
+  "exit_code": 0,
+  "counts": {
+    "questions": 70,
+    "answered": 63,
+    "no_evidence": 7,
+    "execution_failed": 0,
+    "abstained": 7,
+    "model_abstained": 0,
+    "unserved": 0,
+    "awaiting_reconciliation": 0,
+    "prompt_over_limit": 0
+  },
+  "output_status": {
+    "ok": 63
+  },
+  "attempts": {
+    "total": 63,
+    "saved": 63,
+    "failed": 0,
+    "unknown": 0,
+    "open": 0
+  },
+  "input_bound_exceeded": 0,
+  "requested_model": "fake-answer-model-1",
+  "returned_model_mismatch": 0,
+  "returned_models": {
+    "fake-answer-model-1": 63
+  },
+  "returned_service_tiers": {
+    "default": 63
+  },
+  "cost": {
+    "currency": "USD",
+    "simulated": true,
+    "measured": 0.22148,
+    "reserved": 0.0,
+    "committed_upper": 0.22148,
+    "anomalies": []
+  },
+  "safety_ceiling": {
+    "amount": 5.0,
+    "currency": "USD",
+    "simulated": true
+  },
+  "invocations": [
+    {
+      "invocation_id": "d88e36f1f07b4b7980dd7fcf80f7497d",
+      "started_at": "2026-09-30T14:30:47.380Z",
+      "safety_ceiling": {
+        "amount": 5.0,
+        "currency": "USD",
+        "simulated": true
+      },
+      "ceiling_change": null,
+      "ended_reason": "completed"
+    }
+  ],
+  "uncommitted_tail_bytes": 0,
+  "predictions_sha256": "a353b57900028ae3250ae411afbb51cc6af2c367541790daa3eb431d3e71c1c1",
+  "requests_sha256": "376691a036ac1af18ad10a42cabf88387f2736922c585253e513fc5c036d5fe4"
+}

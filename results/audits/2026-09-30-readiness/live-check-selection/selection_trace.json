@@ -1,0 +1,77 @@
+{
+  "rule": "faar-live-check-v1",
+  "selected": [
+    {
+      "question_id": "50e1fdda-86c3-4047-9758-9cc633f33b00",
+      "stratum": "E",
+      "rank_sha256": "0d8a7c2ea63c3396d1e934bf4ea970fc9e9e4e610918cd3fd78c9217d452c7a9",
+      "action": "send",
+      "skip_reason": null,
+      "input_token_upper_bound": 7274,
+      "pages_total": 1
+    },
+    {
+      "question_id": "65ea29d1-adae-4e45-a036-e74be34d7804",
+      "stratum": "L",
+      "rank_sha256": "cfc30dfd6ad2d22eeafe971f0a80b127701860cb55cd5660d71a2b92a50aff3a",
+      "action": "send",
+      "skip_reason": null,
+      "input_token_upper_bound": 7920,
+      "pages_total": 1
+    },
+    {
+      "question_id": "76a3d0f7-998d-476a-aac4-55c92f7a8e02",
+      "stratum": "E",
+      "rank_sha256": "201f20cc074532bb534014209eea6bc6cd7a2cfe99102109d59c080b8b1d3bb4",
+      "action": "send",
+      "skip_reason": null,
+      "input_token_upper_bound": 4078,
+      "pages_total": 1
+    },
+    {
+      "question_id": "84403b37-b13b-4d4e-a368-f7d2d9732b86",
+      "stratum": "H",
+      "rank_sha256": "10a7b8d0959d7b2f1d8d34f5037b10e42d267ab699a26a6ba12b703346f4d7f4",
+      "action": "send",
+      "skip_reason": null,
+      "input_token_upper_bound": 4142,
+      "pages_total": 1
+    },
+    {
+      "question_id": "b7ad5f22-7e21-476c-9933-ea8fb579e050",
+      "stratum": "M",
+      "rank_sha256": "00a9483e0033bd066df3b99bf1d61a6d562339144144ce9b4890b9e130a996b3",
+      "action": "send",
+      "skip_reason": null,
+      "input_token_upper_bound": 6713,
+      "pages_total": 5
+    },
+    {
+      "question_id": "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7",
+      "stratum": "S",
+      "rank_sha256": "0e301f10fd85822a82d362d9c8944fee18757ef5282b412768c928fef92076ec",
+      "action": "skip",
+      "skip_reason": "no_text_chunks",
+      "input_token_upper_bound": null,
+      "pages_total": 1
+    },
+    {
+      "question_id": "ecccdf67-bc03-447c-a990-d5989185f21a",
+      "stratum": "S",
+      "rank_sha256": "9d4d8727e49830585feeed2e40c70370aeb7c99206b27067b6d38817a0a35641",
+      "action": "skip",
+      "skip_reason": "no_text_content",
+      "input_token_upper_bound": null,
+      "pages_total": 1
+    },
+    {
+      "question_id": "ecd44593-9f98-4aa0-9890-46dbf35c54ea",
+      "stratum": "H",
+      "rank_sha256": "117e311434e2211f3817de4cff86cd138302acbca65670cd10c3efc41b011569",
+      "action": "send",
+      "skip_reason": null,
+      "input_token_upper_bound": 1833,
+      "pages_total": 1
+    }
+  ]
+}

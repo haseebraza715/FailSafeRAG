@@ -168,8 +168,15 @@ def test_visual_fallback_openai_reports_image_read_error(tmp_path: Path) -> None
 
 
 def test_visual_fallback_openai_reports_client_error(tmp_path: Path, monkeypatch) -> None:
+    # The key is a placeholder that only satisfies the presence check. The patched
+    # OpenAI class replaces the real client, so no request leaves the process.
+    monkeypatch.setenv("OPENAI_API_KEY", "placeholder-key-for-mocked-client")
+    create_calls: list[dict] = []
+    constructed: list[dict] = []
+
     class FakeCompletions:
         def create(self, **kwargs):
+            create_calls.append(kwargs)
             raise TimeoutError("connection timed out")
 
     class FakeChat:
@@ -177,15 +184,20 @@ def test_visual_fallback_openai_reports_client_error(tmp_path: Path, monkeypatch
 
     class FakeClient:
         def __init__(self, **kwargs):
-            del kwargs
+            constructed.append(kwargs)
             self.chat = FakeChat()
 
     monkeypatch.setattr("faar.recovery.OpenAI", FakeClient)
+    monkeypatch.setattr("faar.recovery._sleep_before_retry", lambda *args, **kwargs: None)
     image = tmp_path / "page.png"
     image.write_bytes(b"\x89PNG\r\n\x1a\nfake-bytes")
-    settings = AppSettings()
+    settings = AppSettings(project_root=tmp_path)
     settings.recovery.vlm_backend = "openai"
     settings.recovery.api_enabled = True
     result = VisualFallback(settings).answer("Q?", [image], "context")
     assert result["status"] == "failed"
     assert result["reason"] == "openai_error:TimeoutError"
+    # The fake client was built and called, so the failure came from the mock.
+    assert constructed == [{"max_retries": 0}]
+    assert create_calls
+    assert (tmp_path / "logs/vlm_calls.jsonl").is_file()

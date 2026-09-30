@@ -1,6 +1,13 @@
 # FAAR -> AAAI: Full Experimental Plan
 
-> The current research plan is [study-brief.md](study-brief.md). Where this protocol conflicts with it, for example on changing the diagnosis module until FAAR beats B2, follow the study brief.
+> **Status: earlier plan, kept as evidence.** The current study design is
+> [study-brief.md](study-brief.md). Parts of this plan that the brief keeps
+> still apply: the fixed split, the model pins, cost and runtime logging, and the
+> before-submitting checks. The brief retires the rest from current use,
+> including the rule to fix the diagnosis module until FAAR beats B2, the
+> single-label annotation scheme, and runs on the test split. Section 13 of the
+> brief lists what is retired and why. Do not follow the phase order below as
+> instructions.
 
 Please work top to bottom, do not skip any phases.
 

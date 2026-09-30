@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-30-ohr-dev-v1-live-check-subset-fake-r2",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "fake",
+  "kind": "engineering_check",
+  "label": "Engineering check with a fake answer provider. No request leaves the process and nothing here measures a model.",
+  "contract_version": "1",
+  "created_at": "2026-09-30T20:33:02.489Z",
+  "identity": {
+    "run_kind": "engineering_check",
+    "pilot_manifest": {
+      "parent_pilot_id": "ohr_dev_v1",
+      "frozen_runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+      "run_runtime_manifest_sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3",
+      "canonical": false,
+      "question_count": 8,
+      "question_ids_sha256": "75ed63bf6c445875163e8802e496cf319cb61d658bfc620fcd93fd1729fbbff5"
+    },
+    "contract_version": "1",
+    "mode": "fake",
+    "pilot_id": "ohr_dev_v1",
+    "runtime_manifest_sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3",
+    "document_noisy_text_sha256": {
+      "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6": "407e83d4ed5fc2bcd9b8121e58cdf0a3f8ebba88940a52bc3d4870ae544da934",
+      "news/07_07": "b4ff8c371239e95502ff37ccf0cea8578151f9456a003c210d94c683b901cf49",
+      "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5": "efc0e62eb778a425d202745298c154832c4f2cdf57c4195a107583193644b2dc",
+      "textbook/GNHK_eng_EU_298": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/chem-323236.pdf_183": "1b67f538be60d27c11c4742fd0cfc1eb1a5f6d330ac6718d0596bb857a80a9f1",
+      "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161": "f38d374932f0a718c0053b07e022b5fc00cc185668d2632c10c4ced69bbb3b7f",
+      "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124": "56f8f08a6467706f8b21fde9b7782ad93d5dfbe2a3ed9d98f7416ab6de4cfee0",
+      "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74": "06044e749c1bc841c7f195141f01c9a7092fe4ec8eaf8c8674fca683288a7ca3"
+    },
+    "retrieval": {
+      "label": "Engineering settings for an offline pipeline check. They are not the approved scientific protocol.",
+      "scope": "one index per document, built from every declared page; a question searches only its own document",
+      "embedding_backend": "local-hash-v1",
+      "embedding_dimensions": 256,
+      "embedding": "signed feature hashing of blake2b token digests, L2-normalised, no model download",
+      "reranker": null,
+      "chunking": {
+        "function": "faar.chunking.build_page_chunks",
+        "policy": "cjk-weighted-words-v1",
+        "chunk_size_words": 180,
+        "chunk_overlap_words": 40,
+        "chunk_id": "<doc_id>-p<page_idx>-c<chunk_index>",
+        "pages_without_text": "empty or missing OCR gives no chunk and is counted in ocr_condition",
+        "units": "a CJK character (Han, Hiragana, Katakana) is one unit of weight 1; any other run of non-space characters is one unit of weight 2",
+        "cjk_chars_per_word": 2,
+        "window": "chunk_size_words * 2 weight, so a chunk holds at most 360 CJK characters or 180 other words; the window advances by (chunk_size_words - chunk_overlap_words) words on the same scale",
+        "chunk_text": "the page text of the span, each run of whitespace replaced by one space",
+        "without_cjk": "text with no CJK character gets the boundaries and the chunk text of whitespace-words-v1"
+      },
+      "tokenisation": {
+        "tokenizer": "multilingual-v1",
+        "definition": "NFKC, casefold, delete whitespace between CJK characters, then runs of Unicode letters or digits plus % and $ as word tokens and overlapping character bigrams for each CJK run",
+        "applied_to": "chunk text and query text alike, for BM25 and for the hashing embedder",
+        "retrieval_tokeniser": "multilingual-v1",
+        "normalisation": "Unicode NFKC, then casefold (the Unicode data version is in environment.unicodedata)",
+        "word_tokens": "runs of Unicode letters or digits plus % and $, so 12% and $5 stay whole; _ and other symbols separate tokens",
+        "han_script": "a run of Han, Hiragana or Katakana characters becomes overlapping character bigrams (one character gives itself); whitespace between two such characters is deleted first; no dictionary and no model",
+        "ascii_text": "pure ASCII text gets the same tokens as ascii-alnum-v1",
+        "limits": "a token count above zero says the question can be indexed, not that retrieval finds its evidence; bigrams of common Chinese function words count as tokens; Hangul is not segmented within a space-delimited word and Thai, Lao and Khmer are not segmented"
+      },
+      "ranking": {
+        "lexical": "BM25Okapi from rank_bm25, default parameters",
+        "fusion": "0.45 * min-max dense + 0.35 * min-max bm25 + 0.20 * reciprocal-rank component (k=60)",
+        "dense_note": "faiss returns the dense scores of the top_k chunks only; other chunks enter the fusion with a dense score of 0",
+        "order": "descending fused score",
+        "tie_breaking": "numpy stable argsort: equal scores keep chunk order (page_idx ascending, then chunk_index)"
+      },
+      "no_evidence_reasons": {
+        "no_text_chunks": "every declared page has empty or missing OCR, so the document has zero chunks (an OCR condition)",
+        "no_text_content": "the noisy text is non-empty but no chunk holds a letter or digit in any script (Unicode categories L and N), for example only Markdown heading markers. The input holds no usable evidence text. This is not missing OCR: the manifest records the page as ok because its text is non-empty",
+        "no_retrieval_tokens": "chunks hold letters or digits but the multilingual-v1 tokeniser yields no token for any of them, so BM25 cannot index the document (rank_bm25 divides by zero). This is a limitation of the engineering tokeniser, not an OCR condition. Only stand-alone Arabic diacritic letters (U+FC5E to U+FC63 and U+FE70 to U+FE7E) reach it, because NFKC turns each into a space and a combining mark. The document is listed in generation_summary.json",
+        "no_hits": "the retriever returned zero hits"
+      },
+      "top_k": 5,
+      "max_chunks": 10000,
+      "evidence_limit": "at most top_k hits per question, all saved in predictions.jsonl with their scores"
+    },
+    "prompt": {
+      "template_id": "faar-answer-draft-v1",
+      "template_sha256": "52044de279b32482e1b8b7f75f0b3455f5cb8e44e9178f8cec09c1615a89914d"
+    },
+    "provider": {
+      "provider": "fake",
+      "model": "fake-answer-model-1",
+      "endpoint": "fake://in-process",
+      "params": {
+        "temperature": 0
+      },
+      "max_output_tokens": 128,
+      "max_input_tokens": 12000,
+      "timeout_seconds": 60.0,
+      "tokenizer_bound": "utf8-bytes",
+      "token_limit_param": "max_tokens",
+      "service_tier": "default",
+      "storage": "disabled",
+      "adapter": {
+        "adapter": "faar.answer_providers.FakeProvider",
+        "fake_script_sha256": "eb7a2806a5801f658b87104f921ca8d33495f4c19a76faf6877283752ec5645d"
+      }
+    },
+    "prices": {
+      "provider": "fake",
+      "model": "fake-answer-model-1",
+      "currency": "USD",
+      "input_per_million": 2.5,
+      "cached_input_per_million": 1.25,
+      "output_per_million": 10.0,
+      "source": "simulated: fictional rates for engineering checks",
+      "source_date": "2026-09-29",
+      "simulated": true,
+      "service_tier": "default"
+    },
+    "retry_policy": {
+      "policy": "exponential-backoff-seeded-jitter-v1",
+      "max_attempts": 3,
+      "base_delay_seconds": 2.0,
+      "factor": 2.0,
+      "jitter_fraction": 0.25,
+      "seed": 0,
+      "max_delay_seconds": 60.0,
+      "stop_run_kinds": [
+        "auth",
+        "unknown_model",
+        "quota"
+      ],
+      "retryable_outcomes": [
+        "not_sent",
+        "rejected"
+      ],
+      "circuit_breaker": {
+        "consecutive_failures": 3,
+        "counts": [
+          "outcome unknown",
+          "any failure with decision fail_question, rejected or not_sent",
+          "exception that is not a ProviderError"
+        ],
+        "resets": [
+          "saved response"
+        ]
+      }
+    },
+    "scientific_budget": null,
+    "code": {
+      "measurement_code_digest": "4662845f266dd15280d8ff345c1c0d6829d8ed5138cb942cfc7f6ec27b67ade6",
+      "cli_script_sha256": "45b428c927c2ae98b7d31049cee07d018912eacff92fec9db9a87f3d0be401e3"
+    }
+  },
+  "identity_sha256": "adaea20b388d93995c8fdd7cf454b3a71c45e09ffd166d9b8ad0127dad0a0dcf",
+  "requests_sha256": "559bc3c83d5086afff9d439229b0363abe408d14ec77b58001189d055a80367b",
+  "provenance": {
+    "commit": "b7241a088a538deef6b6c3644e6ebdc300dbd910",
+    "dirty": true,
+    "dirty_paths": [
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/attempts.jsonl",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/predictions.jsonl",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/15cb6e27f984dc411256992a192f458b-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/1c7aacbdfef0933e193aa76bacf36878-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/22a3e0c972adafabf6415e8d9c6fa387-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/2710e761dd358149e9eb74b0ed8a2057-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/2b68ab0039aa373c42556ce7dfe92911-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/351c4d2f52cc3368f6ffeb0c2e92e097-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/3792cd954ff9d18d6c8ed7d7eb361598-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/3d2434fa944fb90c09fb730f09ea500f-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/3e6e90d36928cbb50e45d8e3e3b51284-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/438dc892e416859bd4b66bff1313ea77-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/469b80341599e3f89383e325777df011-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/484e0ce4d6cea08da82001a1d2723fd0-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/48eaefb3c6810df1091c2dd375ebc09a-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/55a8398c470339fd4bf59b06ef8a881a-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/59cab0d53627b4ed6bfa20e263a323fd-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/5ad4547de429168835a946a18ea4796d-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/699ded8090969acb27960aa95b6c9495-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/6a49b1e1dfce5bad483e6529fa8507cd-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/6e612695093dfd482343ff79f32753b1-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/773294ce5a03cb38edf583484979642c-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/777eecf32ceb37e693c5c26d7952cc80-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/7b515fc0e347b72ddbbd5d62e6677608-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/7bef8ef402b537e56f27ade8e1c5023b-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/7c048387dfbaf7a516c280e99f160112-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/85365f7a1b0f6477385e3a9e4c710e0e-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/85fe52a81bfa1c048a18d4347721e644-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/8a230545cc251ee43b6262d391ea484c-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/8d5c986497f086d46de366a3dc16c23e-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/9bbca61fa9ed5bc4e9a01218e861e203-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/9cc390ce8f368a0c0caff3fbbb80872f-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/9db624d88aab155299c05d06e7ca8801-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/9f1a24336be318e45edfcd147f592be5-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/a0a1f8cd727edbd550acec408ac95a1d-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/a2f0b79bc82860573c18483d463afcaf-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/a6b81e43562758f97f048c19efc1e0a7-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/aac5f7429720a4f7d32da5a664a5160c-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/b106c70907e9a8ce407cd844685d2129-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/b6d156becf5d132d09d47594ac3ef0e9-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/b730b9ca4c7c570267d522763deb68da-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/b8fed9870e28b4aea30534d493eb3786-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/bb55ac48167c16bbaab1bbdcf48effec-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/be1608c35baba2630b48f50871132f42-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/bff2afa49f1c55d1bea4a0c0d29beb87-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/c6b9b8eb92fd2bca03847a16daf94344-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/c993ed36e559f74a9c2f0cef47eed941-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/c9cf5c7bb9fc2cc20204a394432d0817-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/d41fe2b0c22b0b8ea4cf046515599c30-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/dd296686a0e6b678c787b96fb35aedfd-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/dd7cc9628c3fccc751730020ba6ab283-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/ddd97e6ea5915d98bfc11f1d6987f646-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/df868fdb35c62f75924975bc09433263-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/e70f3ce3a6474e565eaf57c3c63c31b0-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/ef8f003636b15acf3e39a26cf69b10c5-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/f2f1f94808a87477c0da2f2f146dae21-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/f30bcfc75402a80ff4d0fc12e93370de-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/f57ec92af47e395270ed0c44f1c8459c-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/f5dddc0d87c053a09fc6bd9c524f3878-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/f6fb033840c52f6b18e1712d3223c69b-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/f8123dd9d7503d5db23045a277f5c5c3-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/f9a98b4bbc93676e66799d0205befa5b-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/fcde2b6e1e87e8c463cb05919f03f329-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/fd8d757672a4068a0a1f08465d3d08fe-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/responses/fd94c3b7c45f5cfbc38d3d811de92be2-a1.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/run_config.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/run_summary.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/score_summary.json",
+      "results/engineering/2026-09-30-ohr-dev-v1-fake-provider-r6/scores.jsonl"
+    ],
+    "code_root": ".",
+    "environment": {
+      "python": "3.12.13",
+      "unicodedata": "15.0.0",
+      "numpy": "1.26.4",
+      "faiss-cpu": "1.9.0.post1",
+      "rank-bm25": "0.2.2"
+    },
+    "command": [
+      "scripts/experiments/run_pilot_live.py",
+      "run",
+      "--run-dir",
+      "results/engineering/2026-09-30-ohr-dev-v1-live-check-subset-fake-r2",
+      "--mode",
+      "fake",
+      "--runtime-manifest",
+      "results/audits/2026-09-30-readiness/live-check-selection/runtime_manifest.livecheck-v1.json",
+      "--fake-script",
+      "scripts/experiments/fake_scripts/answer_every_question.json",
+      "--safety-ceiling",
+      "0.15"
+    ]
+  },
+  "runtime_manifest": {
+    "path": "results/audits/2026-09-30-readiness/live-check-selection/runtime_manifest.livecheck-v1.json",
+    "sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3"
+  },
+  "inputs_read": [
+    "runtime manifest",
+    "MinerU JSON file of each declared document"
+  ],
+  "inputs_never_read": [
+    "evaluation_manifest.json (only the score subcommand opens it)",
+    "selection_record.json",
+    "inspection/",
+    "OHR-Bench/data/qas*.json",
+    "gt text",
+    "annotations"
+  ],
+  "safety_ceiling_note": "The safety ceiling is an operating limit and is not part of the identity. Each invocation_started records it."
+}

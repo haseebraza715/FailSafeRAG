@@ -12,11 +12,14 @@ visual fallback).
 | --- | --- |
 | Local implementation and regression tests | Ready |
 | OHR data audit and locked PDF archive | Done ([report](docs/reports/data_audit.md)) |
-| Development pilot `ohr_dev_v1` selection and inspection packet | Frozen; no model run ([report](docs/reports/pilot_readiness.md)) |
-| Bounded 108-page CUDA calibration on a shared cluster | Ready to run |
+| Development pilot `ohr_dev_v1` selection and inspection packet | Frozen; no real-model run ([report](docs/reports/pilot_readiness.md)) |
+| Offline engineering path: `src/faar/pilot_runner.py`, official scorer `src/faar/ohr_scoring.py` | Exists. Current run: [`results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`](results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/). It uses a rule-based extractor, no repair and no model call. It is an engineering check, not a baseline ([report](docs/reports/prebaseline-engineering.md)) |
+| First real baseline (no recovery, real answer model, `ohr_dev_v1`) | Proposed in [study brief section 15](docs/research/study-brief.md#15-first-real-baseline-proposed-protocol). Nothing is approved, and no model call has run |
+| Bounded 108-page CUDA calibration on a shared cluster | Commands are ready. On hold until the lead approves it. It is not the automatic next step |
 | Full OHR validation preparation and B0-B4 paper runs | Not done |
 
-Real GPU calibration measurements and full validation results are still pending.
+Real-model results, GPU calibration measurements and full validation results
+are still pending. The study brief is the only current plan.
 Older 40-example mock-backend numbers in `docs/history/reports/` and
 `artifacts/phase3/` are prototype evidence only. They are not AAAI baselines.
 
@@ -24,8 +27,8 @@ Older 40-example mock-backend numbers in `docs/history/reports/` and
 
 | Need | Location |
 | --- | --- |
-| Research question, first-study scope, open decisions (current plan) | [docs/research/study-brief.md](docs/research/study-brief.md) |
-| Earlier fixed protocol and B0-B4 order; the study brief takes precedence where they conflict | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
+| Current study design: question, comparisons, scoring, decisions | [docs/research/study-brief.md](docs/research/study-brief.md) |
+| Earlier AAAI plan, kept as evidence; the study brief says which parts still apply | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
 | Code | `src/faar/` (package), `scripts/` (CLIs), `cluster/` (launcher and scheduler templates), `tests/` |
 | Configuration and locks | `config/`: split, checksums, OHR PDF source lock, model revisions, pilot configs |
 | Benchmark inputs | `OHR-Bench/` (vendored upstream QA and text; tracked), `data/ohr_bench_raw/pdfs.zip` (locked archive; ignored) |
@@ -67,20 +70,45 @@ commit `.env`. Local `pytest` is a code check, not a paper result.
 
 ### Local checks and known issues
 
-Run project scripts with `.venv-aaai/bin/python`. The system `python3` may be
-older than 3.12.
+Run project scripts with a Python 3.12 environment built from the declared
+dependencies. The system `python3` may be older than 3.12. To build a fresh
+environment the way CI does, without the CPU-only PyTorch index that CI adds:
 
 ```bash
-.venv-aaai/bin/python -m pytest -q -p no:cacheprovider --ignore=tests/test_bounded_memory_batches.py
-KMP_DUPLICATE_LIB_OK=TRUE OMP_NUM_THREADS=1 .venv-aaai/bin/python -m pytest -q -p no:cacheprovider tests/test_bounded_memory_batches.py
-.venv-aaai/bin/ruff check .
+uv venv --python 3.12 --seed .local/venv-prebaseline
+.local/venv-prebaseline/bin/python -m pip install -c config/environment/constraints-aaai.txt -e ".[test,lint]"
+.local/venv-prebaseline/bin/python -m pytest -q -ra -p no:cacheprovider
+.local/venv-prebaseline/bin/ruff check .
+uv lock --check
 ```
 
-These issues predate the current layout and are not regressions:
+An older `.venv-aaai` built before these pins has `click` 8.4.2 and lacks
+`jieba`. There `faar-demo --help` fails with `TypeError: Secondary flag is not
+valid for non-boolean flag`, and `tests/test_cli_help.py` and
+`tests/test_ohr_scoring.py` fail. Install the pinned packages with
+`.venv-aaai/bin/python -m pip install -c config/environment/constraints-aaai.txt click jieba regex pypdfium2`.
 
-- On macOS the full suite segfaults in `tests/test_bounded_memory_batches.py` (OpenMP). Run that file separately, as above.
-- The suite appends mock entries to the git-ignored `logs/vlm_calls.jsonl`. Copy that file aside before a test run if you need it unchanged.
-- `faar-demo --help` fails with `TypeError: Secondary flag is not valid for non-boolean flag`. The installed `click` 8.4.2 is not pinned and is incompatible with the pinned `typer` 0.12.5.
+The test setup has these safeguards:
+
+- `tests/conftest.py` removes provider keys, blocks non-loopback network connections and sets `HF_HUB_OFFLINE=1`.
+- It sends API-call logs aimed at the repository's `logs/` to a temporary directory, and fails the run if any file under `logs/` changes.
+- On macOS it limits `faiss` and `torch` to one thread, because their wheels each bundle a `libomp` and a process that runs both at full thread count segfaults or hangs. The pytest header says when the limit is active.
+- `tests/test_b0_one_doc_smoke.py` skips one test when the prepared one-document smoke assets are absent, as in CI.
+
+**OpenMP on macOS.** The `faiss-cpu` and `torch` wheels each bundle their own
+`libomp.dylib`. Every macOS `faiss-cpu` wheel checked (1.9.0.post1, 1.10.0,
+1.11.0, 1.12.0, 1.13.2, 1.14.3 and 1.15.1) bundles one, so a faiss pin does not
+avoid a second runtime. With the pinned versions, a process that
+imports `faiss` and then runs a parallel torch operation, or the reverse,
+segfaults or hangs. `KMP_DUPLICATE_LIB_OK` does not prevent this, and a thread
+limit does. Run any macOS command that does real (sentence-transformers)
+retrieval with `OMP_NUM_THREADS=1`, for example
+`OMP_NUM_THREADS=1 faar-demo run-example ...`. That path was checked only with
+stand-in models, not the real ones. Local-hash runs such as
+`run_pilot_offline.py generate`, and `faar-demo --help`, need nothing. Linux and
+the cluster were not tested. To re-check after a dependency change, run
+`python scripts/diagnostics/openmp_check.py`. It prints a JSON report and takes
+about 6 minutes with the default 5 trials.
 
 ## First cluster commands
 
@@ -90,8 +118,9 @@ Login-node preflight, no CUDA:
 .venv-aaai/bin/python cluster/preflight.py --check --no-cuda --project-root "$PWD"
 ```
 
-Allocated-GPU preflight, then the bounded 108-page calibration. Submit nothing
-else until the calibration report is approved.
+Allocated-GPU preflight, then the bounded 108-page calibration. These commands
+are available. Do not submit them until the lead approves the calibration, and
+submit nothing else until its report is approved.
 
 ```bash
 sbatch cluster/templates/slurm_preflight.sbatch
@@ -102,13 +131,14 @@ Edit partition, account, QOS, and `FAAR_GPU_BUDGET_GB` in those templates before
 submission. Exact procedure, resume, shard merge, and stop conditions are in
 [SUPERVISOR_HANDOFF.md](SUPERVISOR_HANDOFF.md) and
 [docs/operations/runbook.md](docs/operations/runbook.md).
-The next cluster-only work is that preflight and calibration. Full validation
-stays blocked until those measurements are approved.
+The calibration is the only cluster job prepared so far. It waits for the
+lead's approval, and full validation stays blocked until its measurements are
+approved.
 
 ## Documentation
 
 - [Supervisor handoff](SUPERVISOR_HANDOFF.md)
 - [Shared-cluster runbook](docs/operations/runbook.md)
 - [Architecture](docs/architecture/overview.md)
-- [Experimental plan](docs/research/aaai-plan.md)
+- [Study design](docs/research/study-brief.md)
 - [Documentation index](docs/README.md)

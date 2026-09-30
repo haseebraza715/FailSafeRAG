@@ -35,11 +35,19 @@ python-dotenv==1.0.1
 rank-bm25==0.2.2
 symspellpy==6.9.0
 typer==0.12.5
+# click 8.2 and later break typer 0.12.5, so `faar-demo --help` fails without this pin.
+click==8.1.8
 
 # Compatibility-critical numerical, image, and export packages.
 numpy==1.26.4
 pillow==10.4.0
 kaleido==0.2.1
+pypdfium2==4.30.0
+
+# OHR-Bench official scorer dependencies, pinned as in OHR-Bench/requirements.txt.
+jieba==0.42.1
+regex==2024.7.24
 
 # Verification tooling.
 pytest==8.3.5
+ruff==0.16.3

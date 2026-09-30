@@ -1,11 +1,21 @@
-# Verified direct dependency set for Python 3.12. Install with:
-# python -m pip install -c constraints-py312.txt -e .
+# Direct dependency constraints for the base install on Python 3.12. Install with:
+# python -m pip install -c config/environment/constraints-py312.txt -e .
+#
+# These pins equal the base `dependencies` in pyproject.toml. An earlier version of
+# this file pinned older releases (for example typer 0.15.1 and numpy 2.0.2) that
+# conflict with pyproject.toml, so the install command above failed. Use
+# constraints-aaai.txt for the full AAAI environment.
+click==8.1.8
 faiss-cpu==1.9.0.post1
-langgraph==0.6.11
-numpy==2.0.2
-openai==1.59.8
+jieba==0.42.1
+langgraph==0.3.18
+numpy==1.26.4
+openai==1.68.2
+pillow==10.4.0
 pydantic==2.10.6
+pypdfium2==4.30.0
 rank-bm25==0.2.2
-sentence-transformers==3.3.1
-transformers==4.46.3
-typer==0.15.1
+regex==2024.7.24
+sentence-transformers==3.4.1
+transformers==4.51.3
+typer==0.12.5

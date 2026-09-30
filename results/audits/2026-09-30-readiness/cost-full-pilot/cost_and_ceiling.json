@@ -1,0 +1,167 @@
+{
+  "kind": "offline cost estimate; a bound is a fact about the requests, an expected cost is an estimate",
+  "requests": {
+    "questions": 70,
+    "sent": 63,
+    "skipped": 7
+  },
+  "prices": {
+    "provider": "openai",
+    "model": "gpt-4o-2024-11-20",
+    "currency": "USD",
+    "input_per_million": 2.5,
+    "cached_input_per_million": 1.25,
+    "output_per_million": 10.0,
+    "source": "UNAPPROVED CANDIDATE: OpenAI pricing page Standard gpt-4o row and gpt-4o model page, read 2026-09-30; recheck before use",
+    "source_date": "2026-09-30",
+    "simulated": false,
+    "service_tier": "default"
+  },
+  "assumptions": {
+    "output_tokens": {
+      "low": 5,
+      "central": 15,
+      "high": 40
+    },
+    "retry_rate": 0.0,
+    "study_brief": {
+      "output_tokens": 20,
+      "retry_rate": 0.1
+    },
+    "input_tokens": {
+      "central": "answer_prompt.estimate_tokens heuristic, not a tokenizer count",
+      "chars_per_token_low": 4.5,
+      "chars_per_token_high": 3.0,
+      "han_tokens_low": 0.6,
+      "han_tokens_high": 1.0,
+      "framing_tokens_added_to_high": 20
+    },
+    "max_attempts": 3,
+    "sensitivity_note": "the low and high input variants are a sensitivity check, not an envelope"
+  },
+  "heuristic_input_tokens": {
+    "low": 74535,
+    "central": 91785,
+    "high": 115066
+  },
+  "bounds": {
+    "input_bound_tokens": {
+      "min": 1550,
+      "median": 6563,
+      "max": 7920,
+      "total": 347702
+    },
+    "one_attempt_usd": 0.949909,
+    "max_request_usd": 0.02108,
+    "3_attempts_usd": 2.849727
+  },
+  "expected": {
+    "central_usd": 0.238927,
+    "range_low_usd": 0.189503,
+    "range_high_usd": 0.312881,
+    "study_brief_assumptions_usd": 0.2662847
+  },
+  "fast_tier": {
+    "multiplier": 1.7,
+    "one_attempt_usd": 1.614844,
+    "3_attempts_usd": 4.844532,
+    "expected": {
+      "central_usd": 0.406177,
+      "range_low_usd": 0.322151,
+      "range_high_usd": 0.531896,
+      "study_brief_assumptions_usd": 0.45268520000000007
+    }
+  },
+  "ceiling_replay": {
+    "ceiling_usd": 2.0,
+    "scenarios": [
+      {
+        "scenario": "all answered (central input, base output tokens)",
+        "completed_questions": 63,
+        "of": 63,
+        "stopped_at_question_index": null,
+        "measured_usd": 0.238927,
+        "reserved_usd": 0.0,
+        "committed_upper_usd": 0.238927
+      },
+      {
+        "scenario": "all answered (high input, high output tokens)",
+        "completed_questions": 63,
+        "of": 63,
+        "stopped_at_question_index": null,
+        "measured_usd": 0.312881,
+        "reserved_usd": 0.0,
+        "committed_upper_usd": 0.312881
+      },
+      {
+        "scenario": "every response saved without usage (reserved at bound)",
+        "completed_questions": 63,
+        "of": 63,
+        "stopped_at_question_index": null,
+        "measured_usd": 0.0,
+        "reserved_usd": 0.949909,
+        "committed_upper_usd": 0.949909
+      },
+      {
+        "scenario": "one rejected attempt per question, then answered",
+        "completed_questions": 63,
+        "of": 63,
+        "stopped_at_question_index": null,
+        "measured_usd": 0.238927,
+        "reserved_usd": 0.949909,
+        "committed_upper_usd": 1.188836
+      },
+      {
+        "scenario": "two rejected attempts per question, then answered",
+        "completed_questions": 57,
+        "of": 63,
+        "stopped_at_question_index": 57,
+        "measured_usd": 0.21539,
+        "reserved_usd": 1.769756,
+        "committed_upper_usd": 1.985146
+      },
+      {
+        "scenario": "two rejected attempts per question, low output tokens",
+        "completed_questions": 58,
+        "of": 63,
+        "stopped_at_question_index": 58,
+        "measured_usd": 0.21478,
+        "reserved_usd": 1.769756,
+        "committed_upper_usd": 1.984536
+      },
+      {
+        "scenario": "one unknown attempt per question, reconciled, then answered",
+        "completed_questions": 63,
+        "of": 63,
+        "stopped_at_question_index": null,
+        "measured_usd": 0.238927,
+        "reserved_usd": 0.949909,
+        "committed_upper_usd": 1.188836
+      },
+      {
+        "scenario": "two unknown attempts per question, then answered",
+        "completed_questions": 57,
+        "of": 63,
+        "stopped_at_question_index": 57,
+        "measured_usd": 0.21539,
+        "reserved_usd": 1.769756,
+        "committed_upper_usd": 1.985146
+      }
+    ],
+    "completion_thresholds": {
+      "max questions with 1 extra reserved attempt(s), placed first": 63,
+      "max questions with 1 extra reserved attempt(s), placed last": 63,
+      "max questions with 2 extra reserved attempt(s), placed first": 57,
+      "max questions with 2 extra reserved attempt(s), placed last": 59
+    }
+  },
+  "checks": {
+    "input bounds equal the saved input_token_upper_bound": true,
+    "per-request cost bounds equal the saved cost_upper_bound": true,
+    "one-attempt bound equals dry_run_summary.json": true,
+    "N-attempt bound equals dry_run_summary.json": true,
+    "input bound total equals dry_run_summary.json": true,
+    "no input bound above the limit (12000)": true,
+    "heuristic tokens equal the saved token_estimate": true
+  }
+}

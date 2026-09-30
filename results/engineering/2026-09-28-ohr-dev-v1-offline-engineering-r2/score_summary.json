@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-28-ohr-dev-v1-offline-engineering-r2",
+  "pilot_id": "ohr_dev_v1",
+  "kind": "engineering_check",
+  "label": "Engineering settings for an offline pipeline check. They are not the approved scientific protocol.",
+  "scorer": {
+    "name": "ohr-bench-official-qa",
+    "upstream_repo": "https://github.com/opendatalab/OHR-Bench",
+    "upstream_commit": "1f421eb428f9f5b8ac0bc8064d6ad1f13fab7af7",
+    "upstream_path": "src/metric/common.py",
+    "upstream_sha256": "9fe7eb527762d1be8a00d9a98a775b850bb42e9441a09db84e88996b94ef5a35",
+    "adapter_version": "1"
+  },
+  "evaluation_manifest": {
+    "path": "results/pilots/ohr_dev_v1/evaluation_manifest.json",
+    "sha256": "7237cc2ca965f999a09606a6cdc9af4be8c17342d6d3319c4cfc40da19de2d28"
+  },
+  "generation_fingerprint": "b518a9165d4f36d68ee767499c8f2d21593f696667dc58069d6245e9b6405deb",
+  "predictions_sha256": "7554354c14e7ef2e4e313b6658c3c35a1929114ec53540282193fed3e49824d9",
+  "counts": {
+    "questions": 70,
+    "answered": 63,
+    "no_evidence": 7,
+    "execution_failed": 0,
+    "abstained": 7
+  },
+  "aggregates": {
+    "all_questions": {
+      "denominator": 70,
+      "em": 0.05714285714285714,
+      "f1": 0.09595117519725732,
+      "policy": "execution_failed scored as 0; no_evidence scored by the official metric on the empty abstention"
+    },
+    "answered_only": {
+      "denominator": 63,
+      "em": 0.06349206349206349,
+      "f1": 0.10661241688584147
+    }
+  },
+  "scores_sha256": "f14bc2e812dc3d68b71bcc4625f6cdc0056e8b0633ffb242542de285a2ccb388"
+}

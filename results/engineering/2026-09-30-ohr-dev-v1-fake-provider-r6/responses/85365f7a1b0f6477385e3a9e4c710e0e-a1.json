@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "question_id": "c1bc68ba-2417-4739-9382-26867037b0ab",
+  "request_id": "85365f7a1b0f6477385e3a9e4c710e0e",
+  "attempt": 1,
+  "attempt_id": "85365f7a1b0f6477385e3a9e4c710e0e-a1",
+  "saved_by_invocation": "4e25e3ae258d47c19ef2ef856c85bd76",
+  "returned_model": "fake-answer-model-1",
+  "returned_service_tier": "default",
+  "response_id": "fake-85365f7a1b0f6477385e3a9e4c710e0e-a1",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1637,
+    "cached_input_tokens": 0,
+    "output_tokens": 8,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004173,
+  "input_bound_exceeded": false,
+  "latency_ms": 0,
+  "output_status": "ok",
+  "answer": "FAKE ANSWER (simulated provider)",
+  "abstained": false,
+  "provider_response": {
+    "text": "FAKE ANSWER (simulated provider)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "simulated": true,
+      "object": "fake.chat.completion",
+      "id": "fake-85365f7a1b0f6477385e3a9e4c710e0e-a1",
+      "model": "fake-answer-model-1",
+      "system_fingerprint": "fake",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "FAKE ANSWER (simulated provider)",
+            "refusal": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1637,
+        "completion_tokens": 8,
+        "total_tokens": 1645,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "service_tier": "default"
+    }
+  }
+}

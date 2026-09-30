@@ -1,0 +1,61 @@
+{
+ "schema_version": 1,
+ "kind": "audit_outputs",
+ "created_on": "2026-09-30",
+ "code_commit": "ca26e31e4a002cb68b7d0ed715d05491f8ff56c4",
+ "working_tree_clean_except": "results/ and experiments/ files added by this run",
+ "commands": [
+  ".local/venv-prebaseline/bin/python scripts/experiments/run_pilot_live.py dry-run --provider-config .local/work/provider-config.UNAPPROVED.gpt-4o-2024-11-20.json --out .local/work/prompt-preview-ca26e31-candidate",
+  ".local/venv-prebaseline/bin/python scripts/audits/audit_prompts.py --dry-run-dir .local/work/prompt-preview-ca26e31-candidate --out results/audits/2026-09-30-readiness/prompts --trace-dry-run --provider-config .local/work/provider-config.UNAPPROVED.gpt-4o-2024-11-20.json  (the trace's dry-run copy was then moved to .local/work/audits-ca26e31/, because it holds full prompts)",
+  ".local/venv-prebaseline/bin/python scripts/audits/audit_prompt_leakage_diagnostic.py --dry-run-dir .local/work/prompt-preview-ca26e31-candidate --out results/audits/2026-09-30-readiness/leakage-diagnostic",
+  ".local/venv-prebaseline/bin/python scripts/audits/cost_and_ceiling.py --dry-run-dir .local/work/prompt-preview-ca26e31-candidate --out results/audits/2026-09-30-readiness/cost-full-pilot --fast-multiplier 1.7",
+  ".local/venv-prebaseline/bin/python scripts/audits/cost_and_ceiling.py --dry-run-dir .local/work/prompt-preview-ca26e31-candidate --out results/audits/2026-09-30-readiness/cost-live-check --subset-ids results/audits/2026-09-30-readiness/live-check-selection/selected_question_ids.json --ceiling 0.15 --fast-multiplier 1.7",
+  ".local/venv-prebaseline/bin/python scripts/audits/select_live_check.py --dry-run-dir .local/work/prompt-preview-ca26e31-candidate --out results/audits/2026-09-30-readiness/live-check-selection",
+  ".local/venv-prebaseline/bin/python scripts/audits/check_subset.py --derived results/audits/2026-09-30-readiness/live-check-selection/runtime_manifest.livecheck-v1.json",
+  ".local/venv-prebaseline/bin/python scripts/audits/case_review_counts.py --check-markdown docs/reports/ohr-dev-v1-agent-review-2026-09-30.md --out results/audits/2026-09-30-readiness/case-review",
+  ".local/venv-prebaseline/bin/python scripts/audits/verify_live_check.py results/engineering/2026-09-30-ohr-dev-v1-live-check-subset-fake-r1 --allow-fake --expect-model fake-answer-model-1 > results/audits/2026-09-30-readiness/verify-live-check-on-subset-fake-r1.txt"
+ ],
+ "inputs_sha256": {
+  ".local/work/prompt-preview-ca26e31-candidate/prepared_requests.jsonl": "2b0bbd49b6c25b7d199b8b84ee1ce910942407d5088575caf9cf542180b22171",
+  ".local/work/prompt-preview-ca26e31-candidate/dry_run_summary.json": "20714adcf4b3ad55dc29713d1207773c721cee68b4c1d386aba60caefd0dd232",
+  ".local/work/provider-config.UNAPPROVED.gpt-4o-2024-11-20.json": "a1dd872833d63918233a0b3f286cca2e51fa291666bc34da93888a987b754d75",
+  "results/pilots/ohr_dev_v1/runtime_manifest.json": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+  "results/pilots/ohr_dev_v1/evaluation_manifest.json": "7237cc2ca965f999a09606a6cdc9af4be8c17342d6d3319c4cfc40da19de2d28",
+  "docs/reports/ohr-dev-v1-agent-review-2026-09-30.cases.json": "893a7828b91ff7a6b63c7e2332083e7a3c394210686f9adc828386e679820989",
+  "docs/reports/ohr-dev-v1-agent-review-2026-09-30.md": "0fbf47a99143a894ead9eca48ad43ef99ffb953d241f6548384ef5de9ef56281",
+  "results/engineering/2026-09-30-ohr-dev-v1-live-check-subset-fake-r1/run_summary.json": "792ff7cce0a0d658d4e34a4cb871534fba37621b1002c82ddbd721cc1134b546"
+ },
+ "tools_sha256": {
+  "scripts/audits/_common.py": "8bb1c1be1aec159729157409f8f5a54be28f58311aee3617270c36a119a08752",
+  "scripts/audits/audit_prompt_leakage_diagnostic.py": "0d009d2078891e330bccb0c74ec3e5237104785cf544a04fea3d964f4629090e",
+  "scripts/audits/audit_prompts.py": "cce10852e50b801cd3eaf37102971258139629bb3892661ca7881a4c0224bf98",
+  "scripts/audits/case_review_counts.py": "30d90bd9c1d15ccc58562fadc6230b75bb57b87812b13f5d72dcd9b56ceffa74",
+  "scripts/audits/check_subset.py": "c72ca76a59d9693c5e5094f72964cc0e0e4a8b2c10a77284894b467978921465",
+  "scripts/audits/cost_and_ceiling.py": "608dcd3ad864e9f99d29e2e0fcea5b883fb9b203e00d9edd6422ed189a12236b",
+  "scripts/audits/select_live_check.py": "5a4abef74f9a3f0a3f6efb438ac340c70620295265dfff81ce8ce5728539982f",
+  "scripts/audits/verify_live_check.py": "175be0e2bec0256e9bd3b1ab92452a9fbeaebc2fcc288650957e9ae282ed6ada"
+ },
+ "outputs_sha256": {
+  "case-review/case_review_counts.json": "c766e3feabc7e20935c345afc632edda4529cd4c0260a96c2a7b60dab4a9e2e9",
+  "cost-full-pilot/cost_and_ceiling.json": "6f053be66944be6df21793ff37013d9c04fe265d92904be5a8802eaa9a4bfe5e",
+  "cost-live-check/cost_and_ceiling.json": "50c8e508770b51e2a09856686c9ee9207171d9314273eed42f543d9b7b0d7144",
+  "leakage-diagnostic/audit_prompt_leakage_diagnostic.json": "0540c46694775d9c2e5e0042d058ad05f3195744fde3bc5294e5608d043f9c09",
+  "live-check-selection/runtime_manifest.livecheck-v1.json": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3",
+  "live-check-selection/selected_question_ids.json": "ad1fc4127e7a076ef2acb4e5d1a579012e06ecdd66ab4557f12b5b3023f3b730",
+  "live-check-selection/selection_trace.json": "3e304c6cb7b89e9b2a7c5258ba837368245f767f0a006c1e53500fc2ee303af6",
+  "prompts/audit_prompts.json": "d0a45fa5051d8d5830c099fc6972f42d6b4cf1fe86460f607590d93f26599e8c",
+  "verify-live-check-on-subset-fake-r1.txt": "7cfbd7fc4431f89183453246a11907dc324fa7a83cef7c696178d27f343d101f"
+ },
+ "local_inputs_not_committed": {
+  ".local/work/prompt-preview-ca26e31-candidate": "dry run; holds full document text; regenerate with the first command at code_commit",
+  ".local/work/provider-config.UNAPPROVED.gpt-4o-2024-11-20.json": "unapproved candidate config; only local copy, no backup",
+  ".local/work/audits-ca26e31/trace-dry-run/": "traced dry run with full prompts; local only"
+ },
+ "limitations": [
+  "A hash identifies a file. It is not a backup.",
+  "Costs are bounds and heuristic estimates, not tokenizer counts or bills.",
+  "The leakage diagnostic reads evaluation data and must never feed runtime preparation.",
+  "Case-review counts summarise an agent review, not human annotation.",
+  "The verify output is from a fake run: the provider and endpoint rows fail by design, because they expect the live OpenAI endpoint."
+ ]
+}

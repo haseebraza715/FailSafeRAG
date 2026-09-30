@@ -6,9 +6,26 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+
+# A newer push to the same pull request makes its running jobs obsolete. Runs on
+# main are not cancelled, so every commit on main keeps its own result.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  # ruff, pytest, torch and the other pinned packages come from this constraints file.
+  # The same file backs the local .venv-aaai environment.
+  CONSTRAINTS: config/environment/constraints-aaai.txt
+
 jobs:
-  pytest:
+  checks:
+    name: Lint and package checks
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Check out repository
@@ -19,14 +36,85 @@ jobs:
         with:
           python-version: "3.12"
           cache: "pip"
+          cache-dependency-path: |
+            pyproject.toml
+            config/environment/constraints-aaai.txt
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e . pytest ruff
+      # uv 0.10.12 wrote uv.lock. Keep this version in step with the lock file.
+      - name: Install lint and packaging tools
+        run: python -m pip install -c "$CONSTRAINTS" ruff build twine uv==0.10.12
 
       - name: Lint first-party code
         run: python -m ruff check .
 
-      - name: Run test suite
-        run: python -m pytest -q
+      - name: Check that uv.lock matches pyproject.toml
+        run: uv lock --check
+
+      - name: Build and inspect the distributions
+        run: |
+          python -m build
+          python -m twine check dist/*
+          python - <<'PY'
+          import glob
+          import zipfile
+
+          (wheel,) = glob.glob("dist/*.whl")
+          names = zipfile.ZipFile(wheel).namelist()
+          assert "faar/model_revisions.json" in names, "package data is missing from the wheel"
+          assert "faar/cli.py" in names, "faar/cli.py is missing from the wheel"
+          print(f"{wheel}: {len(names)} files")
+          PY
+
+  tests:
+    name: Offline tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: |
+            pyproject.toml
+            config/environment/constraints-aaai.txt
+
+      # torch 2.6.0 from PyPI on Linux depends on the nvidia-* CUDA wheels (over 1 GB
+      # in total), which a runner without a GPU never loads. The PyTorch CPU index
+      # serves the same release as 2.6.0+cpu. Pip prefers it over 2.6.0 because a
+      # local version sorts higher, and the pin "torch==2.6.0" still accepts it.
+      # Only this workflow passes the index, so macOS and the cluster keep the
+      # default wheels.
+      - name: Install the package with its test dependencies
+        run: >
+          python -m pip install
+          --extra-index-url https://download.pytorch.org/whl/cpu
+          -c "$CONSTRAINTS"
+          ".[test]"
+
+      - name: Check installed dependency consistency
+        run: python -m pip check
+
+      # `faar-demo --help` fails when click and typer are incompatible or the
+      # entry point is broken.
+      - name: Smoke-check the installed CLI
+        run: |
+          faar-demo --help
+          python -c "import faar, jieba, pypdfium2, regex; import torch; print('torch', torch.__version__)"
+
+      - name: Validate the experiment registry
+        run: python scripts/experiments/registry.py check
+
+      - name: Run the offline test suite
+        run: python -m pytest -q -ra -p no:cacheprovider
+
+      # Compares faar.ohr_scoring with the vendored upstream metric on about
+      # 99,000 answer pairs. The vendored files and qas_v2.json are tracked.
+      - name: Check scorer parity with the vendored OHR-Bench metric
+        run: |
+          python -W ignore::SyntaxWarning scripts/experiments/ohr_scoring_parity.py --check-fixture
+          python -W ignore::SyntaxWarning scripts/experiments/ohr_scoring_parity.py > parity_report.json

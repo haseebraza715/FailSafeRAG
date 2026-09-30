@@ -1,0 +1,4 @@
+{
+  "default": {"kind": "answer", "text": "FAKE ANSWER (simulated provider)"},
+  "script": {}
+}

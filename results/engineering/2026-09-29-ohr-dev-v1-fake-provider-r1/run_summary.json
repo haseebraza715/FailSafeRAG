@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-09-29-ohr-dev-v1-fake-provider-r1",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "fake",
+  "kind": "engineering_check",
+  "label": "Engineering check with a fake answer provider. No request leaves the process and nothing here measures a model.",
+  "identity_sha256": "14a2b9284f7c87d5c64125f04ec9cd7f2b2b36dc1def4689257a6c638d047419",
+  "run_state": "complete",
+  "valid_baseline": false,
+  "exit_code": 0,
+  "counts": {
+    "questions": 70,
+    "answered": 63,
+    "no_evidence": 7,
+    "execution_failed": 0,
+    "abstained": 7,
+    "model_abstained": 0,
+    "unserved": 0,
+    "awaiting_reconciliation": 0,
+    "prompt_over_limit": 0
+  },
+  "output_status": {
+    "ok": 63
+  },
+  "attempts": {
+    "total": 63,
+    "saved": 63,
+    "failed": 0,
+    "unknown": 0,
+    "open": 0
+  },
+  "input_bound_exceeded": 0,
+  "cost": {
+    "currency": "USD",
+    "simulated": true,
+    "measured": 0.228869,
+    "reserved": 0.0,
+    "committed_upper": 0.228869,
+    "anomalies": []
+  },
+  "safety_ceiling": {
+    "amount": 5.0,
+    "currency": "USD",
+    "simulated": true
+  },
+  "invocations": [
+    {
+      "invocation_id": "df6956154ce14178aa07bdadaf96d57a",
+      "started_at": "2026-09-29T16:30:49.276Z",
+      "safety_ceiling": {
+        "amount": 5.0,
+        "currency": "USD",
+        "simulated": true
+      },
+      "ceiling_change": null,
+      "ended_reason": "completed"
+    }
+  ],
+  "uncommitted_tail_bytes": 0,
+  "predictions_sha256": "007321fed89cbca4ccf75255520f5c59ad895f32f309916b4ce2d5b3ac7e28a6",
+  "requests_sha256": "ebfe795923f54a89ae32f94108baf62dd3f35cb649da2503fa9f2164f35a6c71"
+}

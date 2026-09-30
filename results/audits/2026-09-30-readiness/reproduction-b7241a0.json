@@ -1,0 +1,64 @@
+{
+ "schema_version": 1,
+ "kind": "audit_reproduction",
+ "created_on": "2026-09-30",
+ "code_commit": "b7241a088a538deef6b6c3644e6ebdc300dbd910",
+ "reproduces": "results/audits/2026-09-30-readiness (code ca26e31) after the deslop refactor of src/faar and scripts/audits",
+ "dry_runs": {
+  "full": {
+   "out": ".local/work/prompt-preview-b7241a0-candidate",
+   "dry_run_identity_sha256": "8eeff3f95f497e62919badddd95ee453c21000e85177ea280a7a2b0e5d53f74e",
+   "prepared_requests_sha256": "7848d5e010c3cd931c1ec1f0c0ed710c66b4d8ac04fc017e9f6f18009e234840",
+   "questions": 70,
+   "send": 63,
+   "skip": 7,
+   "per_attempt_bound_usd": 0.949909,
+   "worst_case_usd": 2.849727,
+   "prompts_identical_to_ca26e31_ignoring_request_id": true
+  },
+  "live_check_subset": {
+   "out": ".local/work/prompt-preview-b7241a0-subset",
+   "dry_run_identity_sha256": "d784d95c9bd4fd101a2ba59c3b64d6a0f5f08ecab23d5e2df499eb71fb3d2be6",
+   "questions": 8,
+   "send": 6,
+   "skip": 2,
+   "per_attempt_bound_usd": 0.087581,
+   "worst_case_usd": 0.262743,
+   "runtime_manifest_sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3",
+   "question_ids_sha256": "75ed63bf6c445875163e8802e496cf319cb61d658bfc620fcd93fd1729fbbff5"
+  }
+ },
+ "provider_config_sha256": "a1dd872833d63918233a0b3f286cca2e51fa291666bc34da93888a987b754d75",
+ "compact_outputs_vs_committed": {
+  "leakage-diagnostic/audit_prompt_leakage_diagnostic.json": "byte-identical",
+  "cost-full-pilot/cost_and_ceiling.json": "byte-identical",
+  "cost-live-check/cost_and_ceiling.json": "byte-identical",
+  "live-check-selection/runtime_manifest.livecheck-v1.json": "byte-identical",
+  "live-check-selection/selected_question_ids.json": "byte-identical",
+  "live-check-selection/selection_trace.json": "byte-identical"
+ },
+ "prompts_audit": {
+  "checks_pass": {
+   "association": true,
+   "blocks": true,
+   "identity": true,
+   "bounds": true,
+   "skipped": true,
+   "instructions": true,
+   "dry_run_file_access": true
+  },
+  "differs_from_committed_only_in": [
+   "checks.dry_run_file_access trace paths (--out)",
+   "dry_run_sha256.prepared_requests.jsonl (request ids derive from the code identity)"
+  ]
+ },
+ "successor_fake_runs": [
+  "2026-09-30-ohr-dev-v1-fake-provider-r6",
+  "2026-09-30-ohr-dev-v1-live-check-subset-fake-r2"
+ ],
+ "full_suite": "2494 passed, 2 skipped, exit 0 (.local/work/suite-full-b7241a0.log, local)",
+ "limitations": [
+  "A hash identifies a file. It is not a backup.",
+  "The dry runs hold full document text and stay local."
+ ]
+}
