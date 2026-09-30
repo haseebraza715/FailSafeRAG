@@ -5,7 +5,7 @@ The script reads ``run_config.json``, ``requests.jsonl``, ``attempts.jsonl``, ``
 It sends nothing and reads no credential. It exits 0 when no check fails and 1 otherwise.
 
 Each row is PASS, FAIL or INFO. A field that the runner records only in newer code (``returned_service_tier``,
-``run_kind``, ``pilot_manifest``, the storage policy) is read where it is present and reported as ``absent``
+``run_kind``, ``pilot_manifest``, ``identity.provider.storage``) is read where it is present and reported as ``absent``
 otherwise. An absent field is INFO, not a failure. A field that is present with a wrong value is a FAIL.
 
 The rows follow the criteria of the readiness report (section 5):
@@ -17,7 +17,7 @@ The rows follow the criteria of the readiness report (section 5):
     5  no attempt_failed, outcome_unknown or safety-violation event
     6  run_state is complete and no question is execution_failed
     7  the ledger has no anomaly and nothing reserved; the summary's measured cost equals the ledger's
-    8  the returned service tier is default or absent in every response
+    8  the returned service tier is default in every response (default or absent for runs without a tier policy)
 
 Usage:
     python scripts/audits/verify_live_check.py RUN_DIR [--expect-run-kind engineering_check] \\
@@ -118,9 +118,24 @@ def verify(
     else:
         check(f"run_kind is {expect_run_kind}", run_kind == expect_run_kind, str(run_kind))
     pilot_manifest = find_field("pilot_manifest", config, summary, identity)
-    info("pilot_manifest", ABSENT if pilot_manifest == ABSENT else _brief(pilot_manifest))
-    storage = find_field("storage_policy", provider, identity, config, summary)
-    info("storage_policy", str(storage))
+    if pilot_manifest == ABSENT:
+        info("pilot_manifest", ABSENT)
+    else:
+        info("pilot_manifest", _brief(pilot_manifest))
+        canonical = pilot_manifest.get("canonical") if isinstance(pilot_manifest, Mapping) else None
+        check("manifest provenance records a canonical flag", isinstance(canonical, bool), str(canonical))
+    if run_kind != ABSENT and run_kind != "development_pilot":
+        check(
+            "an engineering check is not eligible as a baseline (valid_baseline false)",
+            summary.get("valid_baseline") is False,
+            str(summary.get("valid_baseline")),
+        )
+    # The runner records the storage policy as identity.provider.storage.
+    storage = provider.get("storage", ABSENT)
+    if storage == ABSENT:
+        info("storage", ABSENT)
+    else:
+        check("storage is disabled (store=false on every request)", storage == "disabled", str(storage))
     price_tier = prices.service_tier
     if price_tier is None:
         info("price table service_tier", ABSENT)
@@ -210,11 +225,15 @@ def verify(
     check("no input bound exceeded", not over_bound, str(over_bound))
     info("finish reasons", json.dumps(finish))
     info("service tier source", json.dumps(tier_sources))
-    check(
-        "returned service tier is default or absent",
-        set(tier_values) <= {STANDARD_TIER, "None"} or allow_fake,
-        json.dumps(tier_values),
-    )
+    if "service_tier" in provider:
+        # The run requested the Standard tier, so every response must report it. A missing tier is a failure.
+        check("returned service tier is default in every response", set(tier_values) <= {STANDARD_TIER}, json.dumps(tier_values))
+    else:
+        check(
+            "returned service tier is default or absent (run records no tier policy)",
+            set(tier_values) <= {STANDARD_TIER, "None"} or allow_fake,
+            json.dumps(tier_values),
+        )
 
     # 5 and 6. failures, unknowns, run state
     failed = [e for e in events if e["event"] == "attempt_failed"]

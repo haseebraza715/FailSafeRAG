@@ -165,8 +165,16 @@ def simulate(
                     "output_tokens": output_tokens,
                     "reasoning_tokens": 0,
                 }
+                # An answered attempt in this replay is a Standard-tier response. Without the returned tier the
+                # ledger reserves it at its bound whenever the price table names a tier.
                 events.append(
-                    {"event": "response_saved", "attempt_id": attempt_id, "measured_cost": cost / MICRO, "usage": usage}
+                    {
+                        "event": "response_saved",
+                        "attempt_id": attempt_id,
+                        "measured_cost": cost / MICRO,
+                        "usage": usage,
+                        "returned_service_tier": prices.service_tier,
+                    }
                 )
             elif outcome == "no_usage":
                 events.append({"event": "response_saved", "attempt_id": attempt_id, "measured_cost": None, "usage": None})

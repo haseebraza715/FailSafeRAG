@@ -1184,3 +1184,14 @@ def test_a_client_with_an_explicit_proxy_is_refused_even_when_trust_env_is_false
     )
     with pytest.raises(ValueError, match="proxy"):
         OpenAIChatProvider("gpt-test", {}, client=client)
+
+
+def test_a_client_whose_own_transport_goes_through_a_proxy_is_refused() -> None:
+    import httpx
+
+    from faar.answer_providers import http_client_problems
+
+    proxied = httpx.Client(trust_env=False, follow_redirects=False, transport=httpx.HTTPTransport(proxy="http://127.0.0.1:9"))
+    direct = httpx.Client(trust_env=False, follow_redirects=False, transport=httpx.HTTPTransport())
+    assert http_client_problems(proxied), "a proxy inside the client's own transport must be refused"
+    assert http_client_problems(direct) == []

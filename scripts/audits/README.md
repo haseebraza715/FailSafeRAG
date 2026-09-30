@@ -29,7 +29,7 @@ The dry-run directory (`prepared_requests.jsonl`, `dry_run_summary.json`) holds 
 .local/venv-prebaseline/bin/python scripts/audits/case_review_counts.py --check-markdown docs/reports/ohr-dev-v1-agent-review-2026-09-30.md
 ```
 
-`--trace-dry-run` runs a dry run under a Python audit hook and lists the data files it opens. Importing `faar.settings` reads `config/model_revisions.json`, and the trace lists that read separately.
+`--trace-dry-run` runs a dry run under a Python audit hook and lists the data files it opens. Importing `faar.settings` reads `config/model_revisions.json`, and the trace lists that read separately. That import also calls `load_dotenv`, which reads a `.env` file in the working directory if one exists, so a traced dry run is not free of credential reads in a checkout that keeps keys in `.env`. The trace output lists file paths only, never values.
 
 ## Assumptions in the expected cost
 

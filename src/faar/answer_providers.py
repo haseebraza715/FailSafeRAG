@@ -521,9 +521,11 @@ def http_client_problems(http_client: Any) -> list[str]:
       operating system's proxy settings (``urllib.request.getproxies``, which reads the macOS system
       configuration) and SSL_CERT_FILE and SSL_CERT_DIR. The prompt and the key would then pass through a proxy
       that the run does not record.
-    * no mounted transport: ``httpx.Client(proxy=...)`` or ``mounts=...`` route requests elsewhere whatever
-      ``trust_env`` says. httpx keeps them in ``_mounts`` (httpx 0.28.1, ``_client.py:697``), which is private,
-      so a client without that attribute passes this check.
+    * no proxy of its own: ``httpx.Client(proxy=...)`` or ``mounts=...`` route requests elsewhere whatever
+      ``trust_env`` says, and so does ``transport=httpx.HTTPTransport(proxy=...)``. httpx keeps the first two in
+      ``_mounts`` (httpx 0.28.1, ``_client.py:697``) and the third in the transport's connection pool. Both are
+      private attributes, so a client or transport without them passes this check. The check runs when the
+      provider is built, so a setting changed on the client afterwards is not seen.
     """
     problems: list[str] = []
     follows = getattr(http_client, "follow_redirects", None)
@@ -536,6 +538,12 @@ def http_client_problems(http_client: Any) -> list[str]:
         )
     if getattr(http_client, "_mounts", None):
         problems.append("it mounts a proxy transport of its own")
+    # `httpx.Client(transport=httpx.HTTPTransport(proxy=...))` keeps the proxy in the transport's connection pool
+    # (httpcore `HTTPProxy`, `SOCKSProxy`), not in `_mounts`. A transport of another type (a test's
+    # `httpx.MockTransport`) has no pool and passes; the CLI never injects a transport.
+    pool = getattr(getattr(http_client, "_transport", None), "_pool", None)
+    if pool is not None and "proxy" in type(pool).__name__.lower():
+        problems.append(f"its transport sends through a proxy ({type(pool).__name__})")
     return problems
 
 

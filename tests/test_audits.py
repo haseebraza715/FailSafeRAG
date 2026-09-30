@@ -21,6 +21,7 @@ Failure list for the scripts (each item is covered below):
 
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 import json
 import math
@@ -708,6 +709,21 @@ def test_ceiling_replay_stops_exactly_at_the_ceiling(tmp_path: Path) -> None:
     assert replay(total)["committed_upper_usd"] == pytest.approx(total / 1e6, abs=1e-9)
 
 
+@pytest.mark.parametrize("tier", [None, "default"])
+def test_an_answered_replay_counts_measured_cost_with_or_without_a_tier_in_the_price_table(tmp_path: Path, tier: str | None) -> None:
+    world = build_audit_world(tmp_path)
+    records, _, _, summary = load_audit_inputs(world)
+    sends = [r for r in records if r["action"] == "send"]
+    prices = dataclasses.replace(cost_and_ceiling.load_prices(summary), service_tier=tier)
+    per_request = [
+        cost_and_ceiling.request_cost_upper_bound_micro(r["input_token_upper_bound"], r["max_output_tokens"], prices) for r in sends
+    ]
+    tokens = [{"central": 10, "low": 10, "high": 10}] * len(sends)
+    result = cost_and_ceiling.simulate(sends, per_request, tokens, prices, 100.0, lambda i: ["answered"], output_tokens=5)
+    measured = sum(cost_and_ceiling.usage_cost_micro(10, 5, prices) for _ in sends) / 1e6
+    assert result["committed_upper_usd"] == pytest.approx(measured, abs=1e-9), "answered attempts are measured, not reserved"
+
+
 # ---------------------------------------------------------------------------
 # 8. Live-check verifier
 # ---------------------------------------------------------------------------
@@ -764,6 +780,7 @@ def make_run(tmp: Path, *, event_extra: dict[str, Any] | None = None, config_ext
     (run / "run_config.json").write_text(json.dumps(config), encoding="utf-8")
     summary = {
         "run_state": "complete",
+        "valid_baseline": False,
         "counts": {"execution_failed": 0},
         "cost": {"measured": cost},
         "predictions_sha256": hashlib.sha256(predictions_text.encode()).hexdigest(),
@@ -787,9 +804,55 @@ def test_verifier_passes_a_run_from_an_older_runner_and_reports_new_fields_as_ab
     by_name = {r.name: r for r in rows}
     assert by_name["run_kind"].detail == "absent" and by_name["run_kind"].status == "INFO"
     assert by_name["pilot_manifest"].detail == "absent"
-    assert by_name["storage_policy"].detail == "absent"
+    assert by_name["storage"].detail == "absent"
     assert by_name["price table service_tier"].detail == "absent"
     assert json.loads(by_name["service tier source"].detail) == {"absent": 1}
+
+
+def provider_with(**fields: Any) -> dict[str, Any]:
+    return {
+        "provider": "openai",
+        "model": "gpt-4o-2024-11-20",
+        "endpoint": "https://api.openai.com/v1",
+        "params": {"temperature": 0},
+        "adapter": {"base_url": "https://api.openai.com/v1/"},
+        **fields,
+    }
+
+
+def with_provider(**fields: Any) -> dict[str, Any]:
+    identity = {
+        "provider": provider_with(**fields),
+        "prices": {**PRICES, "model": "gpt-4o-2024-11-20", "service_tier": "default"},
+        "runtime_manifest_sha256": "ab" * 32,
+    }
+    return {"identity": identity}
+
+
+def test_verifier_requires_the_standard_tier_and_disabled_storage_when_the_run_records_them(tmp_path: Path) -> None:
+    policy = {"service_tier": "default", "storage": "disabled"}
+    good = verify(make_run(tmp_path / "good", event_extra={"returned_service_tier": "default"}, config_extra=with_provider(**policy)))
+    assert statuses(good)["returned service tier is default in every response"] == "PASS"
+    assert statuses(good)["storage is disabled (store=false on every request)"] == "PASS"
+    missing = verify(make_run(tmp_path / "missing", event_extra={"returned_service_tier": None}, config_extra=with_provider(**policy)))
+    assert statuses(missing)["returned service tier is default in every response"] == "FAIL"
+    stored = verify(
+        make_run(
+            tmp_path / "stored",
+            event_extra={"returned_service_tier": "default"},
+            config_extra=with_provider(service_tier="default", storage="enabled_for_attempt_lookup"),
+        )
+    )
+    assert statuses(stored)["storage is disabled (store=false on every request)"] == "FAIL"
+
+
+def test_verifier_fails_an_engineering_check_that_claims_baseline_eligibility(tmp_path: Path) -> None:
+    run = make_run(tmp_path / "eligible", config_extra={"run_kind": "engineering_check"})
+    summary = json.loads((run / "run_summary.json").read_text())
+    summary["valid_baseline"] = True
+    (run / "run_summary.json").write_text(json.dumps(summary))
+    rows = verify(run)
+    assert statuses(rows)["an engineering check is not eligible as a baseline (valid_baseline false)"] == "FAIL"
 
 
 def test_verifier_reads_the_new_fields_and_rejects_wrong_values(tmp_path: Path) -> None:
@@ -809,10 +872,10 @@ def test_verifier_reads_the_new_fields_and_rejects_wrong_values(tmp_path: Path) 
     assert statuses(wrong_kind)["run_kind is engineering_check"] == "FAIL"
 
     priority = verify(make_run(tmp_path / "tier", event_extra={"returned_service_tier": "priority"}))
-    assert statuses(priority)["returned service tier is default or absent"] == "FAIL"
+    assert statuses(priority)["returned service tier is default or absent (run records no tier policy)"] == "FAIL"
 
     raw_tier = verify(make_run(tmp_path / "raw", raw={"service_tier": "flex"}))
-    assert statuses(raw_tier)["returned service tier is default or absent"] == "FAIL"
+    assert statuses(raw_tier)["returned service tier is default or absent (run records no tier policy)"] == "FAIL"
 
     other_manifest = verify(make_run(tmp_path / "hash"), expect_manifest_sha256="cd" * 32)
     assert statuses(other_manifest)["runtime manifest hash equals the expected hash"] == "FAIL"

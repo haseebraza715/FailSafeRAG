@@ -123,8 +123,14 @@ the count and the number.
 
 run directories:
   fake mode   results/engineering/<run_id>/ inside the project, or any directory outside it
-  live mode   results/development/<run_id>/ inside the project, or any directory outside it
+  live mode   results/development/<run_id>/ inside the project, or any directory outside it, whatever the
+              --run-kind: a live engineering_check lives there too
   never under results/pilots/
+
+transport: the live HTTP client ignores proxy variables (HTTPS_PROXY, HTTP_PROXY, ALL_PROXY, NO_PROXY), the
+operating system's proxy settings and SSL_CERT_FILE / SSL_CERT_DIR (trust_env=False), and never follows
+redirects. A network that reaches the provider only through a proxy gets connect errors, and nothing is sent.
+OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID and OPENAI_ORGANIZATION are refused.
 
 resume: run the same command again. A question that has a saved response is never sent again. The run
 identity (pilot, inputs, retrieval, prompt template, model settings, prices, retry parameters, code) must match

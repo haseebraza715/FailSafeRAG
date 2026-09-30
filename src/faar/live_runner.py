@@ -1767,7 +1767,11 @@ def build_live_provider(
         f"the client base_url {str(client.base_url)!r} differs from the config endpoint {config.endpoint!r}; nothing was sent",
     )
     return OpenAIChatProvider(
-        config.model, dict(config.params), client=client, token_limit_param=config.token_limit_param
+        config.model,
+        dict(config.params),
+        client=client,
+        token_limit_param=config.token_limit_param,
+        storage=config.storage,
     )
 
 
@@ -1893,7 +1897,7 @@ def _initialise(
 PROVIDER_RAW_LIMIT = 20_000
 # Fields that say what a reply cost, which request it was, and why it failed. They come first when a mapping
 # has more keys than _RAW_MAX_KEYS, so a wide payload cannot push them out.
-_RAW_PRIORITY_KEYS = ("usage", "id", "model", "reason", "http_status", "x_request_id", "error_code", "error_type", "payload", "body")
+_RAW_PRIORITY_KEYS = ("usage", "id", "model", "service_tier", "reason", "http_status", "x_request_id", "error_code", "error_type", "payload", "body")
 _RAW_MAX_KEYS = 16
 _RAW_MAX_DEPTH = 2
 _RAW_FIELD_LIMIT = 1_500
@@ -2394,6 +2398,23 @@ def _violation(condition: str, attempt_id: str | None, question_id: str | None, 
     return {"condition": condition, "attempt_id": attempt_id, "question_id": question_id, "detail": detail}
 
 
+_NO_TIER = object()
+
+
+def _error_reply_tier(provider_raw: Any) -> Any:
+    """The ``service_tier`` an error record's bounded provider payload reports, or ``_NO_TIER`` when it has none.
+
+    The adapter puts ``service_tier`` beside ``usage`` for an unusable 200 reply, and keeps the whole payload
+    under ``payload``. A null value counts as no tier.
+    """
+    if not isinstance(provider_raw, Mapping):
+        return _NO_TIER
+    for holder in (provider_raw, provider_raw.get("payload")):
+        if isinstance(holder, Mapping) and holder.get("service_tier") is not None:
+            return holder["service_tier"]
+    return _NO_TIER
+
+
 def find_safety_violations(view: RunView, services: Services) -> list[dict[str, Any]]:
     """Every safety violation in the durable records, in event order, then ledger anomalies.
 
@@ -2416,6 +2437,21 @@ def find_safety_violations(view: RunView, services: Services) -> list[dict[str, 
     events = list(view.events) + _recoverable_saved_events(view)
     found: list[dict[str, Any]] = []
     for event in events:
+        if requires_tier and event["event"] in (EVENT_OUTCOME_UNKNOWN, EVENT_ATTEMPT_FAILED):
+            # A reply that could not be used (for example a 200 with no choices) can still name the tier that
+            # served and billed it. Only a tier that is reported and is not Standard stops the run here: an error
+            # reply without a tier says nothing about billing and is handled by reconciliation.
+            reported_tier = _error_reply_tier(event.get("provider_raw"))
+            if reported_tier is not _NO_TIER and reported_tier not in RETURNED_SERVICE_TIERS_ACCEPTED:
+                found.append(
+                    _violation(
+                        VIOLATION_RETURNED_TIER,
+                        event["attempt_id"],
+                        event["question_id"],
+                        f"an unusable reply reported service tier {reported_tier!r}, the run requires the Standard tier",
+                    )
+                )
+            continue
         if event["event"] != EVENT_RESPONSE_SAVED:
             continue
         attempt_id, question_id = event["attempt_id"], event["question_id"]
@@ -2714,7 +2750,8 @@ def summarise_run(view: RunView, predictions_text: str, services: Services) -> d
     tiers: dict[str, int] = {}
     if "service_tier" in identity["provider"]:
         for event in saved_events:
-            key = event.get("returned_service_tier") or "(none)"
+            returned = event.get("returned_service_tier")
+            key = "(none)" if returned is None else "(empty)" if returned == "" else str(returned)
             tiers[key] = tiers.get(key, 0) + 1
     return {
         "schema_version": SCHEMA_VERSION,

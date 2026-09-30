@@ -453,3 +453,41 @@ def test_a_run_whose_identity_declares_no_tier_is_not_stopped_for_a_response_wit
     legacy.events[:] = stripped
     assert lr.find_safety_violations(legacy, lr.Services.default()) == []
     assert lr.find_safety_violations(view, lr.Services.default()) == []
+
+
+def malformed_step(tier: object) -> Any:
+    import httpx
+    from test_live_http_outcomes import completion
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        body = completion()
+        body["choices"] = []
+        if tier == "absent":
+            body.pop("service_tier", None)
+        else:
+            body["service_tier"] = tier
+        return httpx.Response(200, json=body, headers={"x-request-id": "req_malformed"})
+
+    return respond
+
+
+@pytest.mark.parametrize("tier", ["priority", "flex", ""])
+def test_an_unusable_reply_that_reports_another_tier_stops_dispatch(project: Project, tier: str) -> None:
+    from test_live_http_outcomes import Session, Wire
+
+    wire = Wire({"q2": [malformed_step(tier)]})
+    result = Session(project, wire).run()
+    assert wire.seen == ["q1", "q2"], "no request leaves after a reply that reports a non-Standard tier"
+    assert result.exit_code == SAFETY_EXIT
+    assert [v["condition"] for v in result.summary["safety_violations"]] == [CONDITION]
+    again = Session(project, Wire()).run()
+    assert again.exit_code == SAFETY_EXIT
+
+
+def test_an_unusable_reply_with_no_tier_waits_for_reconciliation_and_is_not_a_tier_stop(project: Project) -> None:
+    from test_live_http_outcomes import Session, Wire
+
+    wire = Wire({"q2": [malformed_step("absent")]})
+    result = Session(project, wire).run()
+    assert result.exit_code != SAFETY_EXIT
+    assert "safety_violations" not in result.summary
