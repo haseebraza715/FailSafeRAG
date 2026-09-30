@@ -1,0 +1,427 @@
+{
+  "record_type": "AGENT REVIEW",
+  "not_human_annotation": true,
+  "not_ground_truth": true,
+  "notice": "Model workers wrote this review and the lead spot-checked it. It is not human annotation, it is not independent ground truth, and it is not the development inspection that study brief section 10 asks a person to do. Do not copy any field into results/pilots/ohr_dev_v1/inspection/annotations.csv.",
+  "source_report": "docs/reports/ohr-dev-v1-agent-review-2026-09-30.md",
+  "reviewed_commit": "c9b7ad5",
+  "review_date": "2026-09-30",
+  "sample": "purposive: the 20 inspection cases of ohr_dev_v1, chosen by category quotas (purposive-quota-hash-rank-v1). It is not a random sample and gives no estimate of dataset-wide error rates.",
+  "gold_questionable_status": "provisional agent concern, not an adjudicated correction. The frozen gold answers are unchanged.",
+  "field_values": {
+    "ocr_preserves": [
+      "survives",
+      "damaged",
+      "lost",
+      "uncertain"
+    ],
+    "retrieval_contains": [
+      "yes",
+      "partly",
+      "no",
+      "not_sent"
+    ],
+    "gold_questionable": [
+      "yes",
+      "no",
+      "uncertain"
+    ],
+    "page_readable": [
+      "yes",
+      "partly"
+    ]
+  },
+  "field_notes": {
+    "sent": "true when the dry run builds a prompt. False for the three empty-OCR cases.",
+    "retrieval_contains": "whether the evidence in the sent prompt holds the answer: yes (fully), partly, no, or not_sent.",
+    "retrieval_rank": "rank of the best block, where the report states one.",
+    "needs_crop": "the report says the body text needs a crop of the full-resolution page to read.",
+    "note": "a short paraphrase of the report's uncertainty bullet. It quotes no document text beyond single words."
+  },
+  "cases": [
+    {
+      "case": 1,
+      "question_id": "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7",
+      "doc_id": "textbook/GNHK_eng_EU_298",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "empty OCR, handwriting",
+      "sent": false,
+      "skip_reason": "no_text_chunks",
+      "page_readable": "partly",
+      "needs_crop": false,
+      "ocr_preserves": "lost",
+      "retrieval_contains": "not_sent",
+      "retrieval_rank": null,
+      "likely_origin": "OCR",
+      "gold_questionable": "yes",
+      "note": "Gold fits the printed card, not the handwriting. The handwriting was only partly legible. The cause of the empty OCR is unknown."
+    },
+    {
+      "case": 2,
+      "question_id": "9cb9f9aa-bf4d-4eaa-81f2-005bc7537df5",
+      "doc_id": "textbook/GNHK_eng_AS_022",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "empty OCR, handwriting",
+      "sent": false,
+      "skip_reason": "no_text_chunks",
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "lost",
+      "retrieval_contains": "not_sent",
+      "retrieval_rank": null,
+      "likely_origin": "OCR",
+      "gold_questionable": "uncertain",
+      "note": "The first letter of one site name reads as either of two letters in a full-resolution crop. The second name is hard to read. Not sent, so no effect on the run."
+    },
+    {
+      "case": 3,
+      "question_id": "a7005e84-52db-4271-931d-a9205b6fc91a",
+      "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "empty OCR, notes",
+      "sent": false,
+      "skip_reason": "no_text_chunks",
+      "page_readable": "partly",
+      "needs_crop": false,
+      "ocr_preserves": "lost",
+      "retrieval_contains": "not_sent",
+      "retrieval_rank": null,
+      "likely_origin": "OCR",
+      "gold_questionable": "no",
+      "note": "Only the rule for item (8) was checked. The source image is small (774 x 1095) and the Chinese glyphs are near the limit of legibility."
+    },
+    {
+      "case": 4,
+      "question_id": "b7b6de06-f264-4539-bed9-373b5285b1a8",
+      "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+      "page_idx_list": [
+        0,
+        1
+      ],
+      "condition": "two pages",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "question ambiguity",
+      "gold_questionable": "yes",
+      "note": "Gold answers the who half and omits the stated reason (the report was corrected on this point). Whether the two similar names on the page are one person is unclear."
+    },
+    {
+      "case": 5,
+      "question_id": "b839af51-a618-411f-8eb4-51b948d2339f",
+      "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+      "page_idx_list": [
+        0,
+        2
+      ],
+      "condition": "two pages",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "Page 1 is not in the packet and was not viewed. Page 2 alone suffices."
+    },
+    {
+      "case": 6,
+      "question_id": "b7bd7bec-4295-4976-b0ee-0dd8eff42770",
+      "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+      "page_idx_list": [
+        0,
+        1
+      ],
+      "condition": "two pages, two sources",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 2,
+      "likely_origin": "mild ambiguity",
+      "gold_questionable": "no",
+      "note": "The answer needs a link from a marker in the letter to its comment. Another reading is possible."
+    },
+    {
+      "case": 7,
+      "question_id": "b7bd77ce-af3a-4f3c-b86f-591a6cf81cbf",
+      "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+      "page_idx_list": [
+        0,
+        1
+      ],
+      "condition": "same pages as 6",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "uncertain",
+      "retrieval_contains": "partly",
+      "retrieval_rank": null,
+      "likely_origin": "question ambiguity",
+      "gold_questionable": "yes",
+      "note": "The source is fragmentary. No sentence states who oversees personnel, and the gold is hedged."
+    },
+    {
+      "case": 8,
+      "question_id": "844629d9-e065-41f1-a353-f41b1573ec4c",
+      "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "Han table",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "Scorer treatment of the unit suffix against the bare number was not checked."
+    },
+    {
+      "case": 9,
+      "question_id": "c1bd4467-7db1-4e3f-9c91-7bc9fc625b02",
+      "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "Han newspaper",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "Reading order was checked only around the answer."
+    },
+    {
+      "case": 10,
+      "question_id": "8445b560-af74-4c54-b7ca-306245f188ea",
+      "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "Han table",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "One word is corrupted by OCR. Its effect on a model answer cannot be tested without a model."
+    },
+    {
+      "case": 11,
+      "question_id": "6b0bbdf8-3437-4798-8b5a-07c1234bf373",
+      "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "formula",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "answer format",
+      "gold_questionable": "no",
+      "note": "Gold is one string with two equalities. Scorer LaTeX normalisation was not checked. OCR errors elsewhere on the page lie outside the answer span."
+    },
+    {
+      "case": 12,
+      "question_id": "6af79ad2-993e-48c6-a6b1-06e289110af0",
+      "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "formula",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "answer format",
+      "gold_questionable": "no",
+      "note": "A correct answer written in plain text may miss the gold under exact match. Scorer behaviour was not checked."
+    },
+    {
+      "case": 13,
+      "question_id": "c13c36b1-9a26-4370-a351-c31601ffcd2c",
+      "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "Han, reading order",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "partly",
+      "needs_crop": true,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "answer format",
+      "gold_questionable": "no",
+      "note": "Reading order is scrambled elsewhere on the page but not in the answer chunk. The long two-part Chinese gold is a scoring risk. The page-wide column flow was not traced."
+    },
+    {
+      "case": 14,
+      "question_id": "4f1728e0-a481-4fc5-95d8-3d89694241b7",
+      "doc_id": "news/08_02",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "text",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": true,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "partly",
+      "retrieval_rank": 1,
+      "likely_origin": "question ambiguity",
+      "gold_questionable": "yes",
+      "note": "The page attributes the aim to three people together and the gold names one. The sentence continues on a page that is not in the file."
+    },
+    {
+      "case": 15,
+      "question_id": "339bfba4-d220-4c8e-a2d4-174a81cf8010",
+      "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "text",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "The amount is written in LaTeX form. Numeric scorer handling of that form was not checked."
+    },
+    {
+      "case": 16,
+      "question_id": "76a933cf-65fd-4f69-93a2-5c9b6e3a52d7",
+      "doc_id": "textbook/chem-323236.pdf_183",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "text",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 2,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "Word spacing is lost in many lines. The effect on a model was not tested."
+    },
+    {
+      "case": 17,
+      "question_id": "a0ec729f-b41c-480a-bcfb-8a406fda1a8b",
+      "doc_id": "textbook/GNHK_eng_EU_310",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "handwriting",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "lost",
+      "retrieval_contains": "no",
+      "retrieval_rank": null,
+      "likely_origin": "OCR",
+      "gold_questionable": "yes",
+      "note": "The sent text is degenerate formula text. The gold appears to fold an address number into the phone number. This is inferred from layout, and the reading of the last digits is uncertain."
+    },
+    {
+      "case": 18,
+      "question_id": "99e0aff2-f4f1-4be2-b904-753e088e0faf",
+      "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+      "page_idx_list": [
+        1
+      ],
+      "condition": "photographed notice",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "damaged",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 2,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "The needed clause survives, but word boundaries are lost and some words are corrupted. The effect on a model was not tested."
+    },
+    {
+      "case": 19,
+      "question_id": "76a3d0f7-998d-476a-aac4-55c92f7a8e02",
+      "doc_id": "textbook/chem-323236.pdf_183",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "table",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "yes",
+      "retrieval_rank": 1,
+      "likely_origin": "none expected",
+      "gold_questionable": "no",
+      "note": "Whether the table continues on a later page was not checked."
+    },
+    {
+      "case": 20,
+      "question_id": "33a1d1c2-ad4a-4155-809f-cd8f739cd488",
+      "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+      "page_idx_list": [
+        0
+      ],
+      "condition": "text",
+      "sent": true,
+      "skip_reason": null,
+      "page_readable": "yes",
+      "needs_crop": false,
+      "ocr_preserves": "survives",
+      "retrieval_contains": "no",
+      "retrieval_rank": null,
+      "likely_origin": "retrieval",
+      "gold_questionable": "no",
+      "note": "The needed chunks were not sent. Why they ranked below the sent chunks was not investigated, and retrieval was not run."
+    }
+  ]
+}

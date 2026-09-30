@@ -1,6 +1,21 @@
 # AGENT REVIEW: the 20 inspection cases of ohr_dev_v1 (2026-09-30)
 
+## Corrections (2026-09-30, later)
+
+This note lists what changed after the first version of this review. It changes no frozen question, gold answer, pilot selection or annotation.
+
+- **Retrieval count.** The summary said the sent evidence holds the answer fully in 15 of the 17 sent cases. The table rows give 13 fully (4, 5, 6, 8, 9, 10, 11, 12, 13, 15, 16, 18, 19), 2 partly (7, 14) and 2 not at all (17, 20). The summary now says 13. `scripts/audits/case_review_counts.py` derives the counts from [the structured file](ohr-dev-v1-agent-review-2026-09-30.cases.json), and its `--check-markdown` option compares every row with the table below.
+- **Structured data.** The same 20 rows are committed as `ohr-dev-v1-agent-review-2026-09-30.cases.json`. It carries the header "AGENT REVIEW" and marks itself as neither human annotation nor ground truth. Its notes paraphrase the uncertainty bullets and quote no document text beyond single words.
+- **Wording.** Five interpretations were reworded, and each change is in the text below:
+  - noisy OCR text that exists is not shown to be correct, and the `ok` status only says text exists;
+  - a gold page among the retrieved pages does not show that the needed passage was retrieved (case 20);
+  - evidence missing from the first prompt does not mean a case tests only abstention, because it also bears on later retrieval or OCR repair;
+  - agent concerns about gold answers are provisional and not adjudicated corrections;
+  - the 20 cases are a purposive diagnostic sample and give no estimate of dataset-wide error rates.
+
 **This is an agent review.** Two model workers wrote it and the lead spot-checked it. It is not human annotation, it is not independent ground truth, and it is not the development inspection that study brief section 10 asks a person to do. Do not copy any field of it into `results/pilots/ohr_dev_v1/inspection/annotations.csv`, which stays blank (24 rows, 0 filled). The readiness review that uses it is [live-baseline-readiness-2026-09-30.md](live-baseline-readiness-2026-09-30.md).
+
+The 20 cases come from the purposive quota selection `purposive-quota-hash-rank-v1`, which fills category quotas (such as OCR gap, multi-page evidence and Han script) in hash-rank order. `inspection_cases.json` warns that the category proportions are not prevalence estimates. The sample is diagnostic. No count in this review estimates an error rate for the dataset or for the 70 pilot questions.
 
 ## How the review was done
 
@@ -40,11 +55,13 @@
 | 19 | `76a3d0f7` | table | yes | survives | yes, rank 1 | none expected | no |
 | 20 | `33a1d1c2` | text | yes | survives | no | retrieval | no |
 
-Counts over the 20 cases, all agent judgement:
+In the table, "survives" means the reviewer found the answer text in the MinerU output. It does not show that the rest of the page text is correct. The "Gold questionable" column records a provisional agent concern (see the count below). It is not a finding about the gold answer.
+
+Counts over the 20 cases, all agent judgement on a purposive sample:
 
 - **Sent.** 17 of 20. Cases 1 to 3 have empty MinerU text, so no request is sent for them.
-- **Answer present in the sent evidence.** 15 of 17 sent cases hold it fully and 2 hold it partly (cases 7 and 14). It is absent in 2: case 17, where the OCR lost it, and case 20, a retrieval miss.
-- **Gold answer questionable.** 5 cases (1, 4, 7, 14, 17), and case 2 is uncertain. Four of them are sent (4, 7, 14, 17), so a correct model answer there can score 0.
+- **Answer present in the sent evidence.** 13 of 17 sent cases hold it fully and 2 hold it partly (cases 7 and 14). It is absent in 2: case 17, where the OCR lost it, and case 20, a retrieval miss. In the cases where it is absent, the first prompt can be answered only by abstaining or guessing. That does not make them abstention tests. A later retrieval or OCR repair step could supply the missing evidence.
+- **Gold answer questionable (provisional).** The agents raised a concern about the gold answer in 5 cases (1, 4, 7, 14, 17) and were unsure about case 2. Four of the five are sent (4, 7, 14, 17). If a concern is right, a correct model answer there can score 0. A person has not adjudicated any of these concerns, and the frozen gold answers stay unchanged.
 - **Answer-format risk.** Cases 11, 12 and 13 have long or formula-shaped gold strings that a correct paraphrase would miss.
 - **Page readability.** Every page is readable at 150 DPI when the full-resolution PNG is viewed. Cases 1 and 3 are only partly readable (skewed handwriting, a small source image), and cases 13 and 14 need a crop to read the body text.
 
@@ -82,7 +99,7 @@ Each case lists observations first and interpretation second.
   - Page 0 says a different person, spelled Serna, told her by email that she was not approved. That text is in rank 5.
   - On page 1, in chunks `p1-c0` and `p1-c1`, Serna describes the list's criterion: faculty whose professionalism or time in the classroom may not meet expectations. Rodriguez then says she still does not know why she was not approved.
   - The gold names Sena and gives no reason.
-- **Interpretation.** The "why" half has a general answer, the list's criterion, but no reason specific to her, and the gold omits it. The "who" half has two defensible answers. The gold is questionable because it answers only half the question. OCR and retrieval are not the expected cause of a miss. Lead check: the question text, the gold text and the Serna passage are as stated. The first draft of this review wrongly said the article gives no reason, and an independent reviewer caught it.
+- **Interpretation.** The "why" half has a general answer, the list's criterion, but no reason specific to her, and the gold omits it. The "who" half has two defensible answers. The agents doubt the gold because it answers only half the question. This is a provisional concern. OCR and retrieval are not the expected cause of a miss. Lead check: the question text, the gold text and the Serna passage are as stated. The first draft of this review wrongly said the article gives no reason, and an independent reviewer caught it.
 - **Uncertain.** Whether Sena and Serna are the same person. The page prints them as two different names.
 
 ### Case 5: `b839af51-a618-411f-8eb4-51b948d2339f`, `law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT`, pages 0 and 2
@@ -163,7 +180,7 @@ Each case lists observations first and interpretation second.
   - Three people are quoted in turn: Loomer, then Carlson, then Lil Pump. The next sentence says "Their comments, seemingly aimed at suggesting to Black voters" and breaks off at "Continued on Page A15".
   - The gold is "Tucker Carlson".
   - Rank 1 holds the three quotes. The "Their comments" sentence is in `p0-c6`, which was not sent.
-- **Interpretation.** The page attributes the aim to all three people together, so the gold naming only Carlson is questionable. Lead check: confirmed in the MinerU text.
+- **Interpretation.** The page attributes the aim to all three people together, so the agents doubt the gold that names only Carlson. Lead check: the attribution is confirmed in the MinerU text. Whether the gold is wrong is not adjudicated.
 - **Uncertain.** Page A15 is not in the document.
 
 ### Case 15: `339bfba4-d220-4c8e-a2d4-174a81cf8010`, law document as case 5, page 0
@@ -188,7 +205,7 @@ Each case lists observations first and interpretation second.
   - The MinerU text contains no word from the page. It is two trigonometric fractions and then a long repeated `R o_{\Delta}` fragment.
   - The chunk is sent as evidence anyway. `ocr_condition` reports the page as `ok`.
   - The gold is "18 2959355".
-- **Interpretation.** This is a clear OCR loss, and the status field does not flag it. Lead check on the image: "18" follows "Sandyford Ind. Est.", which reads as the Dublin 18 postal district and not as part of the number. The gold is therefore questionable.
+- **Interpretation.** This is a clear OCR loss, and the status field does not flag it. The `ok` status says the page has text, not that the text is correct. Lead check on the image: "18" follows "Sandyford Ind. Est.", which reads as the Dublin 18 postal district and not as part of the number. The agents therefore doubt the gold. A person has not confirmed the doubt.
 - **Uncertain.** The reading of the last digits, and whether "18" belongs to the address. The address reading is an inference from the layout.
 
 ### Case 18: `99e0aff2-f4f1-4be2-b904-753e088e0faf`, `administration/DUDE_aae11c0a8c4869c113687f3413f47300`, page 1
@@ -212,18 +229,20 @@ Each case lists observations first and interpretation second.
   - The needed definition, with "during or after working hours", is on page 0 in chunks `p0-c3` and `p0-c4`, and the OCR keeps it.
   - Neither chunk was sent. None of the five sent chunks contains "working hours".
   - The gold is "Yes".
-- **Interpretation.** A retrieval miss. With this evidence the model can only guess. Lead check: confirmed on the prepared request.
+- **Interpretation.** A retrieval miss. With this evidence the model can only abstain or guess. The gold page 0 is among the retrieved pages, because `p0-c0` was sent. A page-level check would therefore count this case as covered, and the passage the question needs was not retrieved. Lead check: confirmed on the prepared request.
 - **Uncertain.** Why the lexical ranking placed the two chunks below the sent five.
 
 ## Patterns across cases
 
 - **Whole documents reach the model.** In 11 of the 17 sent cases (4, 6, 7, 8, 10, 11, 12, 16, 17, 18 and 19) the retriever sent every chunk of the document, so retrieval cannot fail there. This matches study brief section 15.12.
-- **OCR status misses degenerate text.** `ocr_condition` counts a page as `ok` whenever it has text. Case 17 shows that degenerate text passes as `ok` and is sent.
+- **OCR status misses degenerate text.** `ocr_condition` counts a page as `ok` whenever it has text. The status says only that text exists. It does not show that the text is correct. Case 17 shows that degenerate text passes as `ok` and is sent.
 - **Cases that do not test their category.** Case 13 does not test reading order, and cases 6 and 7 share their evidence exactly.
 - **No instructions aimed at a model.** Instruction-like wording in the evidence ("Please be advised", "Please wire") is ordinary document speech. The prompt audit found the same over all 63 prompts.
 
 ## What this review cannot show
 
+- It estimates no rate. The 20 cases are a purposive diagnostic sample, so no count above says how often OCR loses an answer, retrieval misses one or a gold answer is wrong across the dataset.
+- The concerns about gold answers are not adjudicated. A person has to confirm or reject each one.
 - It is not a second labeller and gives no agreement figure. The diagnosis study needs at least two independent people (study brief section 10).
 - No model was run, so every "no failure expected" is a judgement about the evidence, not an observed answer.
 - Scorer normalisation of LaTeX, units and Chinese spans was not tested case by case.
