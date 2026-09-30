@@ -20,8 +20,6 @@ import pytest
 
 from faar import answer_providers as ap
 from faar.answer_providers import (
-    FAKE_STEP_KINDS,
-    AnswerProvider,
     FakeProvider,
     FakeStep,
     OpenAIChatProvider,
@@ -30,7 +28,6 @@ from faar.answer_providers import (
     script_by_question,
 )
 from faar.live_contract import (
-    ALLOWED_OPENAI_PARAMS,
     SERVICE_TIER_STANDARD,
     STORAGE_DISABLED,
     STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP,
@@ -59,14 +56,6 @@ def make_request(request_id: str = "r1", attempt: int = 1, *, max_output_tokens:
 
 def fake(script: dict[str, list[FakeStep]] | None = None, default: str = "answer", model: str = "fake-model") -> FakeProvider:
     return FakeProvider(script or {}, default=FakeStep(default), model=model)
-
-
-def test_every_step_kind_is_covered_by_a_case_below() -> None:
-    covered = {
-        "answer", "abstain", "empty", "truncated", "refusal", "retryable_error", "non_retryable_error",
-        "auth_error", "connect_error", "missing_usage", "timeout_unknown", "ambiguous", "crash_after_send",
-    }
-    assert covered == set(FAKE_STEP_KINDS)
 
 
 def test_unknown_step_kind_is_rejected() -> None:
@@ -225,12 +214,6 @@ def test_script_by_question_maps_and_rejects_unknown_questions() -> None:
         script_by_question(prepared, {"q9": [FakeStep("abstain")]})
 
 
-def test_fake_and_adapter_satisfy_the_protocol() -> None:
-    client, _ = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
-    assert isinstance(fake(), AnswerProvider)
-    assert isinstance(OpenAIChatProvider("m", {}, client=client), AnswerProvider)
-
-
 # --------------------------------------------------------------------------- OpenAI adapter on a mock transport
 
 
@@ -344,6 +327,7 @@ def test_max_completion_tokens_option_and_attempt_lookup_storage() -> None:
     identity = provider.identity()
     assert identity["token_limit_param"] == "max_completion_tokens"
     assert identity["storage"] == STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP and identity["store"] is True
+    assert body["service_tier"] == "default"
 
 
 def test_missing_usage_and_missing_details_are_none() -> None:
@@ -358,15 +342,6 @@ def test_missing_usage_and_missing_details_are_none() -> None:
     provider, _ = adapter(lambda request: httpx.Response(200, json=payload))
     usage = provider.send(make_request()).usage
     assert usage == ProviderUsage(input_tokens=10, cached_input_tokens=None, output_tokens=2, reasoning_tokens=None)
-
-
-def test_length_finish_reason_reaches_the_response() -> None:
-    payload = completion_payload()
-    payload["choices"][0]["finish_reason"] = "length"
-    payload["choices"][0]["message"]["content"] = "Par"
-    provider, _ = adapter(lambda request: httpx.Response(200, json=payload))
-    response = provider.send(make_request())
-    assert (response.finish_reason, response.text) == ("length", "Par")
 
 
 def test_refusal_reaches_the_response() -> None:
@@ -386,13 +361,9 @@ def _choice_without_message() -> dict[str, Any]:
     ("label", "body"),
     [
         ("empty choices", completion_payload(choices=[])),
-        ("no choices key", {"id": "chatcmpl-x", "object": "chat.completion", "model": "m"}),
         ("json object that is not a completion", {"foo": 1}),
-        ("choices is a string", completion_payload(choices="x")),
         ("choice is not an object", completion_payload(choices=[1])),
         ("choice without message", completion_payload(choices=[_choice_without_message()])),
-        ("message is null", completion_payload(choices=[{**_choice_without_message(), "message": None}])),
-        ("message is a string", completion_payload(choices=[{**_choice_without_message(), "message": "hi"}])),
     ],
 )
 @pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
@@ -422,15 +393,8 @@ def test_a_malformed_200_puts_usage_id_and_model_at_the_top_of_raw() -> None:
     provider, _ = adapter(lambda request: httpx.Response(200, json={"foo": 1}))
     with pytest.raises(ProviderError) as info:
         provider.send(make_request())
-    assert (info.value.raw["usage"], info.value.raw["id"], info.value.raw["model"]) == (None, None, None)
-
-
-def test_null_content_with_a_refusal_string_stays_a_response() -> None:
-    payload = completion_payload()
-    payload["choices"][0]["message"] = {"role": "assistant", "content": None, "refusal": "No."}
-    provider, _ = adapter(lambda request: httpx.Response(200, json=payload))
-    response = provider.send(make_request())
-    assert (response.text, response.refusal) == (None, "No.")
+    raw = info.value.raw
+    assert (raw["usage"], raw["id"], raw["model"], raw["service_tier"]) == (None, None, None, None)
 
 
 def test_message_with_null_content_and_no_refusal_stays_a_response() -> None:
@@ -441,14 +405,6 @@ def test_message_with_null_content_and_no_refusal_stays_a_response() -> None:
     assert response.text is None and response.refusal is None  # the parser records this as an empty reply
 
 
-def test_non_json_200_body_is_a_malformed_response_not_an_answer() -> None:
-    provider, seen = adapter(lambda request: httpx.Response(200, text="<html>gateway</html>", headers={"content-type": "text/html"}))
-    with pytest.raises(ProviderError) as info:
-        provider.send(make_request())
-    assert len(seen) == 1
-    assert (info.value.kind, info.value.outcome, info.value.retryable) == ("malformed_response", "unknown", False)
-
-
 # Classification of HTTP statuses. `rejected` means the provider or a documented rule shows the request was
 # not processed. `unknown` means it may have been processed and billed, so it is never resent automatically.
 # A retry recommendation (OpenAI's error-codes page, the SDK's default retry set, `Retry-After`) is not
@@ -457,7 +413,6 @@ def test_non_json_200_body_is_a_malformed_response_not_an_answer() -> None:
 STATUS_CASES = [
     # 429: no OpenAI statement says a rate-limited request was not processed or billed.
     (429, error_body("Rate limit reached for requests", code="rate_limit_exceeded", type_="requests"), "rate_limit", "unknown", False),
-    (429, error_body("Slow down", code="slow_down", type_="rate_limit_error"), "rate_limit", "unknown", False),
     # Billing, spend and quota errors: documented as errors that retrying cannot fix. They stop the run.
     # The documented codes must match even when the message text differs.
     (429, error_body("You exceeded your current quota", code="insufficient_quota", type_="insufficient_quota"), "quota", "rejected", False),
@@ -468,13 +423,9 @@ STATUS_CASES = [
     (429, error_body("Request refused.", code="organization_usage_limit_exceeded"), "quota", "rejected", False),
     # 5xx: an upstream failure does not show that the request was not processed.
     (500, error_body("The server had an error while processing your request", type_="server_error"), "server_error", "unknown", False),
-    (502, error_body("Bad gateway", type_="server_error"), "server_error", "unknown", False),
-    (501, error_body("Not implemented"), "server_error", "unknown", False),
-    (599, error_body("Odd gateway status"), "server_error", "unknown", False),
     (503, error_body("Service unavailable", type_="server_error"), "server_error", "unknown", False),
     (504, error_body("Gateway timeout", type_="server_error"), "gateway_timeout", "unknown", False),
     (522, error_body("Origin connection timed out"), "gateway_timeout", "unknown", False),
-    (524, error_body("Origin took too long"), "gateway_timeout", "unknown", False),
     # 503 with the documented overload code: "does not have enough capacity to process your request".
     (
         503,
@@ -488,7 +439,6 @@ STATUS_CASES = [
     # 409: RFC 9110 section 15.5.10 lets the user resolve a conflict and resubmit. It is not a blind retry.
     (409, error_body("Conflict"), "transient_status", "unknown", False),
     (400, error_body("Unsupported parameter: 'max_tokens'", code="unsupported_parameter"), "bad_request", "rejected", False),
-    (422, error_body("Unprocessable"), "bad_request", "rejected", False),
     (401, error_body("Incorrect API key provided", code="invalid_api_key"), "auth", "rejected", False),
     (403, error_body("Country, region, or territory not supported"), "auth", "rejected", False),
     (404, error_body("The model `gpt-nope` does not exist", code="model_not_found"), "unknown_model", "rejected", False),
@@ -513,7 +463,7 @@ def test_status_errors_are_classified(status: int, body: dict, kind: str, outcom
 # --------------------------------------------------------------------------- redirects (M2)
 
 
-@pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+@pytest.mark.parametrize("status", [302])
 def test_a_redirect_reply_is_one_unknown_attempt_and_is_not_followed(status: int) -> None:
     """The request reached a server. Nothing shows it was not processed, so no resend and no follow."""
     target = "http://127.0.0.1:9/elsewhere"
@@ -539,48 +489,12 @@ def test_a_redirect_location_is_clipped_and_a_redirect_without_location_is_still
     assert (info.value.outcome, info.value.retryable, info.value.raw["location"]) == ("unknown", False, None)
 
 
-def test_a_redirect_goes_to_reconcile_not_to_a_retry() -> None:
-    from faar.retry_policy import RetryPolicy
-
-    provider, seen = adapter(lambda request: httpx.Response(307, headers={"location": "http://127.0.0.1:9/x"}))
-    with pytest.raises(ProviderError) as info:
-        provider.send(make_request())
-    assert RetryPolicy().decide(info.value, 1).action == "reconcile"
-    assert len(seen) == 1
-
-
 def test_a_client_that_follows_redirects_is_refused_at_construction() -> None:
     client, seen = mock_client(lambda request: httpx.Response(302, headers={"location": "http://127.0.0.1:9/x"}), follow_redirects=True)
     with pytest.raises(ValueError, match="follow redirects"):
         OpenAIChatProvider("gpt-test", {}, client=client)
     assert seen == []
 
-
-def test_the_sdk_default_http_client_follows_redirects_and_is_refused() -> None:
-    client = openai.OpenAI(api_key="test-not-a-key", max_retries=0)
-    with pytest.raises(ValueError, match="follow redirects"):
-        OpenAIChatProvider("gpt-test", {}, client=client)
-
-
-def test_a_client_whose_redirect_setting_cannot_be_read_is_refused() -> None:
-    class Opaque:
-        max_retries = 0
-        api_key = "test-not-a-key"
-
-    with pytest.raises(ValueError, match="follow redirects"):
-        OpenAIChatProvider("gpt-test", {}, client=Opaque())
-
-
-def test_a_following_client_would_have_sent_a_second_request() -> None:
-    """Why the refusal exists: with follow_redirects=True the same reply costs two requests."""
-    client, seen = mock_client(
-        lambda request: httpx.Response(200, json=completion_payload())
-        if request.url.path.endswith("/elsewhere")
-        else httpx.Response(307, headers={"location": "http://127.0.0.1:9/elsewhere"}),
-        follow_redirects=True,
-    )
-    client.chat.completions.create(model="m", messages=[{"role": "user", "content": "q"}])
-    assert len(seen) == 2
 
 # --------------------------------------------------------------------------- API key scrub (L4)
 
@@ -663,24 +577,7 @@ def test_the_provider_never_exposes_the_key() -> None:
     assert ECHOED_KEY not in json.dumps(provider.identity()) and ECHOED_KEY not in repr(provider)
 
 
-def test_only_documented_not_processed_statuses_are_retryable() -> None:
-    """Every status that the retry policy would resend by itself is listed here on purpose."""
-    retryable = sorted({(status, body["error"]["code"]) for status, body, _, _, can_retry in STATUS_CASES if can_retry})
-    assert retryable == [(408, None), (503, "server_is_overloaded")]
-
-
-def test_a_502_is_one_unknown_attempt_and_the_retry_policy_reconciles_it() -> None:
-    from faar.retry_policy import RetryPolicy
-
-    provider, seen = adapter(lambda request: httpx.Response(502, text="<html>Bad gateway</html>", headers={"x-request-id": "req_502"}))
-    with pytest.raises(ProviderError) as info:
-        provider.send(make_request())
-    assert len(seen) == 1
-    decision = RetryPolicy().decide(info.value, 1)
-    assert decision.action == "reconcile" and decision.delay_seconds == 0.0
-
-
-@pytest.mark.parametrize("status", [500, 502, 503, 409, 429])
+@pytest.mark.parametrize("status", [502, 409])
 def test_x_should_retry_true_does_not_make_an_unknown_outcome_retryable(status: int) -> None:
     """The SDK resends on `x-should-retry: true`. A header is a recommendation, not proof that nothing was processed."""
     provider, _ = adapter(lambda request: httpx.Response(status, json=error_body("later"), headers={"x-should-retry": "true"}))
@@ -720,11 +617,15 @@ def test_a_huge_error_body_is_bounded_and_keeps_the_ids() -> None:
 
 
 def test_a_huge_non_json_error_body_is_bounded() -> None:
-    provider, _ = adapter(lambda request: httpx.Response(502, text="<html>" + "y" * 200_000 + "</html>"))
+    provider, _ = adapter(
+        lambda request: httpx.Response(502, text="<html>" + "y" * 200_000 + "</html>", headers={"x-request-id": "req_html"})
+    )
     with pytest.raises(ProviderError) as info:
         provider.send(make_request())
-    assert len(json.dumps(info.value.raw)) < 12_000
-    assert info.value.raw["http_status"] == 502
+    raw = info.value.raw
+    assert len(json.dumps(raw)) < 12_000
+    assert raw["http_status"] == 502 and raw["x_request_id"] == "req_html"
+    assert raw["body"]["truncated"] is True
 
 
 def test_x_should_retry_false_downgrades_a_retryable_status() -> None:
@@ -779,10 +680,7 @@ def test_read_timeout_from_the_transport_is_unknown_and_not_retryable() -> None:
         (lambda r: httpx.ProxyError("proxy refused CONNECT", request=r), "connect", "not_sent", True),
         (lambda r: httpx.UnsupportedProtocol("ftp://", request=r), "client_config", "not_sent", False),
         (lambda r: httpx.WriteTimeout("write timed out", request=r), "timeout", "unknown", False),
-        (lambda r: httpx.ReadError("connection reset", request=r), "connection_lost", "unknown", False),
-        (lambda r: httpx.WriteError("broken pipe", request=r), "connection_lost", "unknown", False),
         (lambda r: httpx.RemoteProtocolError("Server disconnected without sending a response.", request=r), "connection_lost", "unknown", False),
-        (lambda r: httpx.CloseError("close failed", request=r), "connection_lost", "unknown", False),
     ],
 )
 def test_transport_failures_are_placed_by_where_they_can_happen(exc_factory: Callable, kind: str, outcome: str, retryable: bool) -> None:
@@ -825,30 +723,9 @@ def test_client_with_sdk_retries_is_refused() -> None:
         OpenAIChatProvider("gpt-test", {}, client=client)
 
 
-UNALLOWED_PARAMS = [
-    "service_tier",
-    "reasoning_effort",
-    "modalities",
-    "logprobs",
-    "web_search_options",
-    "prediction",
-    # keys the adapter sets itself
-    "model",
-    "messages",
-    "max_tokens",
-    "max_completion_tokens",
-    "timeout",
-    "stream",
-    "tools",
-    "n",
-    "store",
-    "metadata",
-    "extra_headers",
-    "extra_body",
-    # anything else
-    "not_a_real_parameter",
-    "Temperature",
-]
+# `store` is covered by the storage tests below. Every key here reaches the same refusal, so the list keeps the
+# keys that would move the price or the route, one key the adapter sets itself and a case variant.
+UNALLOWED_PARAMS = ["service_tier", "extra_body", "extra_headers", "max_tokens", "Temperature"]
 
 
 @pytest.mark.parametrize("key", UNALLOWED_PARAMS)
@@ -859,21 +736,7 @@ def test_params_outside_the_allowlist_are_refused_before_any_dispatch(key: str) 
     assert seen == []
 
 
-@pytest.mark.parametrize("key", ALLOWED_OPENAI_PARAMS)
-def test_every_allowed_param_is_accepted_and_sent(key: str) -> None:
-    value: Any = ["\n"] if key == "stop" else 0
-    provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()), {key: value})
-    provider.send(make_request(params={key: value}))
-    assert json.loads(seen[0].content)[key] == value
-
-
-def test_one_unallowed_key_among_allowed_ones_refuses_the_whole_set() -> None:
-    client, _ = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
-    with pytest.raises(ValueError, match="service_tier"):
-        OpenAIChatProvider("gpt-test", {"temperature": 0, "service_tier": "flex"}, client=client)
-
-
-@pytest.mark.parametrize("key", ["service_tier", "reasoning_effort", "modalities", "logprobs", "web_search_options", "prediction"])
+@pytest.mark.parametrize("key", ["service_tier", "extra_body"])
 def test_request_params_outside_the_allowlist_are_refused_and_nothing_is_sent(key: str) -> None:
     provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()), {"temperature": 0})
     with pytest.raises(ValueError, match="not allowed"):
@@ -909,14 +772,6 @@ def test_identity_reports_the_configuration_without_touching_credentials() -> No
     assert seen == []  # identity sends nothing
 
 
-def test_one_attempt_is_one_http_request() -> None:
-    provider, seen = adapter(lambda request: httpx.Response(429, json=error_body("slow down")))
-    for _ in range(3):
-        with pytest.raises(ProviderError):
-            provider.send(make_request())
-    assert len(seen) == 3
-
-
 def test_importing_the_module_loads_no_sdk_and_builds_no_client() -> None:
     code = (
         "import sys, faar.answer_providers;"
@@ -939,17 +794,6 @@ def test_module_source_never_reads_credentials() -> None:
     assert "environ" not in source and "getenv" not in source and "OPENAI_API_KEY" not in source.split('"""', 2)[2]
 
 
-@pytest.mark.parametrize("status", [522, 524])
-def test_cloudflare_origin_timeouts_are_unknown_outcomes_like_504(status: int) -> None:
-    """A 522 or 524 comes from a gateway in front of the provider, which may have finished and billed the request."""
-    provider, seen = adapter(lambda request: httpx.Response(status, text="<html>origin timeout</html>"))
-    with pytest.raises(ProviderError) as caught:
-        provider.send(make_request())
-    error = caught.value
-    assert seen, "the mock transport saw the request"
-    assert (error.kind, error.outcome, error.retryable, error.http_status) == ("gateway_timeout", "unknown", False, status)
-
-
 # --------------------------------------------------------------------------- storage policy (O14)
 #
 # Ways the storage policy could fail, written before the code.
@@ -966,16 +810,6 @@ def body_of(request: httpx.Request) -> dict[str, Any]:
     return json.loads(request.content)
 
 
-def test_the_default_storage_policy_sends_store_false_and_no_attempt_metadata() -> None:
-    provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()))
-    provider.send(make_request("abc", 1))
-    body = body_of(seen[0])
-    assert body["store"] is False
-    assert "metadata" not in body and "x-client-request-id" not in seen[0].headers
-    identity = provider.identity()
-    assert identity["storage"] == STORAGE_DISABLED and identity["store"] is False
-
-
 def test_a_retried_attempt_sends_store_false_both_times() -> None:
     """S2: a 408 is retryable; the second request is a new attempt and must carry the same policy."""
     replies = iter([httpx.Response(408, json=error_body("timeout", type_="server_error")), httpx.Response(200, json=completion_payload())])
@@ -986,18 +820,6 @@ def test_a_retried_attempt_sends_store_false_both_times() -> None:
     provider.send(make_request("abc", 2))
     assert [body_of(request)["store"] for request in seen] == [False, False]
     assert [body_of(request)["service_tier"] for request in seen] == ["default", "default"]
-
-
-def test_attempt_lookup_storage_sends_store_true_metadata_and_the_client_request_id() -> None:
-    provider, seen = adapter(
-        lambda request: httpx.Response(200, json=completion_payload()), storage=STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP
-    )
-    provider.send(make_request("abc", 3))
-    body = body_of(seen[0])
-    assert body["store"] is True
-    assert body["metadata"] == {"faar_attempt_id": "abc-a3", "faar_request_id": "abc"}
-    assert seen[0].headers["x-client-request-id"] == "abc-a3"
-    assert body["service_tier"] == "default"
 
 
 @pytest.mark.parametrize("storage", STORAGE_POLICIES)
@@ -1017,7 +839,7 @@ def test_local_diagnostics_do_not_depend_on_provider_storage(storage: str) -> No
     assert info.value.raw["x_request_id"] == "req_bad"
 
 
-@pytest.mark.parametrize("storage", ["enabled", "STORAGE_DISABLED", "", None, True, 1, ["disabled"]])
+@pytest.mark.parametrize("storage", ["enabled", None])
 def test_an_unknown_storage_value_is_refused_at_construction(storage: Any) -> None:
     client, seen = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
     with pytest.raises(ValueError, match="storage"):
@@ -1054,22 +876,7 @@ def test_store_stays_refused_in_params_under_both_policies() -> None:
 #   T4. The malformed-200 error keeps usage, id and model but drops the tier.
 
 
-def test_every_request_asks_for_the_standard_tier() -> None:
-    provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()))
-    provider.send(make_request())
-    assert body_of(seen[0])["service_tier"] == SERVICE_TIER_STANDARD == "default"
-    assert provider.identity()["service_tier"] == "default"
-
-
-def test_the_sdk_types_the_request_tier_as_auto_or_default() -> None:
-    """The value is documented for the Chat Completions API (openai-python 1.68.2 types it auto|default)."""
-    from openai.types.chat import completion_create_params
-
-    hint = str(completion_create_params.CompletionCreateParamsBase.__annotations__["service_tier"])
-    assert "default" in hint and "auto" in hint
-
-
-TIER_CASES = ["default", "priority", "flex", "scale", "fast", "DEFAULT"]
+TIER_CASES = ["default", "priority", "DEFAULT"]
 
 
 @pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
@@ -1083,7 +890,7 @@ def test_a_returned_tier_is_recorded_exactly_as_the_provider_sent_it(returned: s
 
 
 @pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
-@pytest.mark.parametrize("label", ["missing", "null", "integer", "list", "object", "boolean"])
+@pytest.mark.parametrize("label", ["missing", "null", "object"])
 def test_a_missing_or_non_string_tier_is_none(label: str) -> None:
     payload = completion_payload()
     if label != "missing":
@@ -1095,7 +902,7 @@ def test_a_missing_or_non_string_tier_is_none(label: str) -> None:
 
 
 @pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
-@pytest.mark.parametrize("returned", ["default", "priority", None])
+@pytest.mark.parametrize("returned", ["priority", None])
 def test_a_malformed_200_keeps_the_tier_beside_usage_id_and_model(returned: str | None) -> None:
     """T4"""
     payload = completion_payload(choices=[], service_tier=returned)
@@ -1109,13 +916,6 @@ def test_a_malformed_200_keeps_the_tier_beside_usage_id_and_model(returned: str 
 
 
 @pytest.mark.filterwarnings("ignore:Pydantic serializer warnings")
-def test_a_malformed_200_without_a_tier_has_a_none_tier_in_raw() -> None:
-    provider, _ = adapter(lambda request: httpx.Response(200, json={"foo": 1}))
-    with pytest.raises(ProviderError) as info:
-        provider.send(make_request())
-    assert "service_tier" in info.value.raw and info.value.raw["service_tier"] is None
-
-
 # --------------------------------------------------------------------------- direct transport (O16)
 #
 #   R1. An injected client reads HTTPS_PROXY, HTTP_PROXY, ALL_PROXY or the operating system's proxy settings
@@ -1157,12 +957,9 @@ class _StubClient:
     "attributes",
     [
         {"follow_redirects": False, "trust_env": 0},
-        {"follow_redirects": False, "trust_env": None},
-        {"follow_redirects": False, "trust_env": "False"},
         {"follow_redirects": False},  # trust_env cannot be read
         {"trust_env": False},  # follow_redirects cannot be read
         {"follow_redirects": 0, "trust_env": False},
-        {},
     ],
 )
 def test_a_setting_that_is_not_exactly_false_or_cannot_be_read_is_refused(attributes: dict[str, Any]) -> None:

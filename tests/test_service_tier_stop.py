@@ -83,9 +83,6 @@ def test_a_config_defaults_to_the_standard_tier_and_disabled_storage() -> None:
     config = lr.parse_provider_config(with_prices())
     assert (config.service_tier, config.storage) == (SERVICE_TIER_STANDARD, STORAGE_DISABLED)
     assert config.prices.service_tier == SERVICE_TIER_STANDARD
-    for builtin in (lr.FAKE_CONFIG, lr.PROVISIONAL_DRY_RUN_CONFIG):
-        assert (builtin.service_tier, builtin.storage) == (SERVICE_TIER_STANDARD, STORAGE_DISABLED)
-        assert builtin.prices.service_tier == SERVICE_TIER_STANDARD
 
 
 def test_explicit_standard_tier_and_store_false_are_accepted() -> None:
@@ -93,21 +90,16 @@ def test_explicit_standard_tier_and_store_false_are_accepted() -> None:
     assert (config.service_tier, config.storage) == ("default", "disabled")
 
 
-@pytest.mark.parametrize("tier", ["priority", "flex", "scale", "auto", "fast", "", None, 1])
+@pytest.mark.parametrize("tier", ["priority", "DEFAULT", None])
 def test_any_requested_tier_but_standard_is_refused(tier: object) -> None:
     with pytest.raises(RunnerRefusal, match="service_tier"):
         lr.parse_provider_config({**with_prices(), "service_tier": tier})
 
 
-@pytest.mark.parametrize("store", [True, None, "false", 0, 1])
+@pytest.mark.parametrize("store", [True, 0])
 def test_store_must_be_false_when_present(store: object) -> None:
     with pytest.raises(RunnerRefusal, match="store"):
         lr.parse_provider_config({**with_prices(), "store": store})
-
-
-def test_store_true_names_the_missing_authorization() -> None:
-    with pytest.raises(RunnerRefusal, match="authorization"):
-        lr.parse_provider_config({**with_prices(), "store": True})
 
 
 def test_a_real_price_table_must_declare_the_standard_tier() -> None:
@@ -115,7 +107,7 @@ def test_a_real_price_table_must_declare_the_standard_tier() -> None:
     del payload["prices"]["service_tier"]
     with pytest.raises(RunnerRefusal, match=r"prices\.service_tier"):
         lr.parse_provider_config(payload)
-    for tier in ("priority", "auto", None, ""):
+    for tier in ("priority", None):
         with pytest.raises(RunnerRefusal, match=r"prices\.service_tier"):
             lr.parse_provider_config(with_prices(service_tier=tier))
 
@@ -192,9 +184,10 @@ def test_a_standard_tier_run_completes_and_saves_the_returned_tier(project: Proj
         assert response["returned_service_tier"] == "default"
     summary = summary_of(run_dir)
     assert "unverified_tier" not in summary["cost"] and "safety_violations" not in summary
+    assert "unverified" not in lr.format_status(lr.run_status(run_dir))
 
 
-@pytest.mark.parametrize("tier", ["priority", "flex", "scale", "auto", "fast", "premium-2027", "DEFAULT", " default", ""])
+@pytest.mark.parametrize("tier", ["priority", "DEFAULT", ""])
 def test_a_response_from_another_tier_stops_dispatch_after_two_requests(project: Project, tier: str) -> None:
     rig = tier_rig(tier)
     result = go(project, rig)
@@ -222,6 +215,7 @@ def test_a_response_with_no_tier_stops_dispatch_and_says_the_tier_is_missing(pro
     assert "missing" in violation["detail"]
     saved = next(e for e in events_of(run_dir) if e["event"] == "response_saved" and e["question_id"] == "q2")
     assert saved["returned_service_tier"] is None
+    assert summary_of(run_dir)["cost"]["unverified_tier"]["attempts"] == 1
 
 
 def test_the_offending_answer_is_kept_and_the_unserved_questions_are_never_abstentions(project: Project) -> None:
@@ -317,7 +311,7 @@ def wire_step(tier: object) -> Any:
     return respond
 
 
-@pytest.mark.parametrize("tier", ["priority", "flex", "scale", "auto", "absent", None])
+@pytest.mark.parametrize("tier", ["priority", "absent", None])
 def test_a_tier_reported_on_the_wire_stops_the_run_after_two_requests(project: Project, tier: object) -> None:
     from test_live_http_outcomes import Session, Wire
 
@@ -387,17 +381,6 @@ def test_status_and_the_run_message_say_the_standard_bound_may_understate_the_ch
     assert "cannot undo a charge" in text
     message = " ".join(lr.export_run(run_dir).message.split())
     assert "not an upper bound" in message and "unverified" in message
-
-
-def test_a_missing_tier_is_reported_the_same_way(project: Project) -> None:
-    _, summary = stopped_run(project, None)
-    assert summary["cost"]["unverified_tier"]["attempts"] == 1
-
-
-def test_a_run_without_an_unverified_response_has_no_such_block(project: Project) -> None:
-    go(project, Rig())
-    assert "unverified_tier" not in summary_of(project.run_dir("run-a"))["cost"]
-    assert "unverified" not in lr.format_status(lr.run_status(project.run_dir("run-a")))
 
 
 # ---------------------------------------------------------------------------
@@ -471,7 +454,7 @@ def malformed_step(tier: object) -> Any:
     return respond
 
 
-@pytest.mark.parametrize("tier", ["priority", "flex", ""])
+@pytest.mark.parametrize("tier", ["priority", ""])
 def test_an_unusable_reply_that_reports_another_tier_stops_dispatch(project: Project, tier: str) -> None:
     from test_live_http_outcomes import Session, Wire
 

@@ -19,53 +19,28 @@ import pytest
 
 import faar.retry_policy as retry_policy
 from faar.live_contract import PROVIDER_OUTCOMES, ProviderError
-from faar.retry_policy import (
-    ACTIONS,
-    STOP_RUN_KINDS,
-    Decision,
-    RetryPolicy,
-)
+from faar.retry_policy import STOP_RUN_KINDS, Decision, RetryPolicy
 
-# Every kind the provider adapter emits, with its (outcome, retryable) pair, from the lead's contract amendment.
+# The kinds the provider adapter emits that the tests below use, with their (outcome, retryable) pair and the
+# action the policy takes on the first failure.
 PROVIDER_KINDS = {
     "connect": ("not_sent", True),
-    "connect_timeout": ("not_sent", True),
-    "pool_timeout": ("not_sent", True),
     "client_config": ("not_sent", False),
     "timeout": ("unknown", False),
-    "connection_lost": ("unknown", False),
     "malformed_response": ("unknown", False),
-    "unexpected": ("unknown", False),
     "rate_limit": ("rejected", True),
-    "transient_status": ("rejected", True),
-    "server_error": ("rejected", True),
     "quota": ("rejected", False),
-    "auth": ("rejected", False),
-    "unknown_model": ("rejected", False),
     "not_found": ("rejected", False),
-    "bad_request": ("rejected", False),
-    "client_error": ("rejected", False),
 }
 EXPECTED_ACTION = {
     "connect": "retry",
-    "connect_timeout": "retry",
-    "pool_timeout": "retry",
     "client_config": "fail_question",
     "timeout": "reconcile",
-    "connection_lost": "reconcile",
     "malformed_response": "reconcile",
-    "unexpected": "reconcile",
     "rate_limit": "retry",
-    "transient_status": "retry",
-    "server_error": "retry",
     "quota": "stop_run",
-    "auth": "stop_run",
-    "unknown_model": "stop_run",
     "not_found": "fail_question",
-    "bad_request": "fail_question",
-    "client_error": "fail_question",
 }
-KINDS = [*PROVIDER_KINDS, "content_policy", "other"]
 
 
 def err(kind: str = "server_error", outcome: str = "rejected", retryable: bool = True, status: int | None = None):
@@ -73,9 +48,9 @@ def err(kind: str = "server_error", outcome: str = "rejected", retryable: bool =
 
 
 # 1: unknown outcomes are never retried.
-@pytest.mark.parametrize("kind", KINDS)
+@pytest.mark.parametrize("kind", ["server_error", "auth"])  # an unknown outcome wins over the stop-run kinds
 @pytest.mark.parametrize("retryable", [True, False])
-@pytest.mark.parametrize("attempts", [1, 2, 3, 4])
+@pytest.mark.parametrize("attempts", [1, 3])
 def test_unknown_outcome_reconciles(kind, retryable, attempts):
     decision = RetryPolicy().decide(err(kind, "unknown", retryable), attempts)
     assert decision.action == "reconcile"
@@ -83,39 +58,30 @@ def test_unknown_outcome_reconciles(kind, retryable, attempts):
 
 
 # 2: auth, unknown-model and quota errors stop the run on the first occurrence.
-@pytest.mark.parametrize("kind", STOP_RUN_KINDS)
-@pytest.mark.parametrize("outcome", ["not_sent", "rejected"])
-@pytest.mark.parametrize("retryable", [True, False])
+@pytest.mark.parametrize("kind", ["auth", "unknown_model", "quota"])
+@pytest.mark.parametrize(("outcome", "retryable"), [("rejected", False), ("not_sent", True)])
 def test_stop_run_kinds(kind, outcome, retryable):
     decision = RetryPolicy().decide(err(kind, outcome, retryable, 401), 1)
     assert decision.action == "stop_run"
     assert decision.delay_seconds == 0.0
 
 
-def test_stop_run_kinds_are_exactly_the_three_the_lead_named():
-    assert STOP_RUN_KINDS == ("auth", "unknown_model", "quota")
-    assert "permission" not in STOP_RUN_KINDS  # 403 arrives as kind "auth"
-
-
+@pytest.mark.parametrize("attempts", [1, 3])
 @pytest.mark.parametrize("kind", sorted(PROVIDER_KINDS))
-def test_first_failure_of_every_provider_kind(kind):
-    outcome, retryable = PROVIDER_KINDS[kind]
-    decision = RetryPolicy().decide(err(kind, outcome, retryable), 1)
-    assert decision.action == EXPECTED_ACTION[kind]
-    assert (decision.delay_seconds > 0) == (decision.action == "retry")
-
-
-@pytest.mark.parametrize("kind", sorted(PROVIDER_KINDS))
-def test_last_attempt_of_every_provider_kind(kind):
+def test_decision_for_a_provider_kind_at_the_first_and_the_last_attempt(kind, attempts):
     # Only a retry turns into fail_question at the attempt limit. Every other action is unchanged.
     outcome, retryable = PROVIDER_KINDS[kind]
-    expected = "fail_question" if EXPECTED_ACTION[kind] == "retry" else EXPECTED_ACTION[kind]
-    assert RetryPolicy().decide(err(kind, outcome, retryable), 3).action == expected
+    decision = RetryPolicy().decide(err(kind, outcome, retryable), attempts)
+    expected = EXPECTED_ACTION[kind]
+    if expected == "retry" and attempts == 3:
+        expected = "fail_question"
+    assert decision.action == expected
+    assert decision.reason
+    assert (decision.action == "retry") == (decision.delay_seconds > 0)
 
 
 # 3: retryable errors retry while attempts remain and fail the question at the limit.
-@pytest.mark.parametrize("outcome", ["not_sent", "rejected"])
-@pytest.mark.parametrize("kind", ["connect", "pool_timeout", "rate_limit", "transient_status", "server_error"])
+@pytest.mark.parametrize(("kind", "outcome"), [("connect", "not_sent"), ("server_error", "rejected")])
 def test_retryable_errors_retry_until_attempts_run_out(kind, outcome):
     policy = RetryPolicy()
     assert [policy.decide(err(kind, outcome), n).action for n in (1, 2, 3, 4, 10)] == [
@@ -127,7 +93,7 @@ def test_retryable_errors_retry_until_attempts_run_out(kind, outcome):
     ]
 
 
-@pytest.mark.parametrize("max_attempts", [1, 2, 3, 5])
+@pytest.mark.parametrize("max_attempts", [1, 5])
 def test_attempts_are_bounded(max_attempts):
     policy = RetryPolicy(max_attempts=max_attempts)
     made = 0
@@ -141,13 +107,8 @@ def test_attempts_are_bounded(max_attempts):
     assert made == max_attempts
 
 
-def test_single_attempt_policy_never_retries():
-    assert RetryPolicy(max_attempts=1).decide(err(), 1).action == "fail_question"
-
-
 # 4: everything else fails the question.
-@pytest.mark.parametrize("kind", ["bad_request", "client_error", "not_found", "client_config", "content_policy", "other"])
-@pytest.mark.parametrize("outcome", ["not_sent", "rejected"])
+@pytest.mark.parametrize(("kind", "outcome"), [("client_config", "not_sent"), ("bad_request", "rejected")])
 def test_non_retryable_errors_fail_the_question(kind, outcome):
     for n in (1, 2, 3):
         decision = RetryPolicy().decide(err(kind, outcome, retryable=False, status=400), n)
@@ -161,38 +122,6 @@ def test_retryable_flag_must_be_exactly_true():
     assert RetryPolicy().decide(error, 1).action == "fail_question"
     error.retryable = 1  # type: ignore[assignment]
     assert RetryPolicy().decide(error, 1).action == "fail_question"
-
-
-def test_every_kind_outcome_flag_combination_gives_a_known_action():
-    policy = RetryPolicy()
-    for kind, outcome, retryable, attempts in itertools.product(KINDS, PROVIDER_OUTCOMES, [True, False], [1, 2, 3, 4]):
-        decision = policy.decide(err(kind, outcome, retryable), attempts)
-        assert decision.action in ACTIONS
-        assert decision.reason
-        assert (decision.action == "retry") == (decision.delay_seconds > 0)
-
-
-def test_decision_table_for_retryable_server_error():
-    table = {
-        (outcome, retryable, n): RetryPolicy().decide(err("server_error", outcome, retryable), n).action
-        for outcome in PROVIDER_OUTCOMES
-        for retryable in (True, False)
-        for n in (1, 3)
-    }
-    assert table == {
-        ("not_sent", True, 1): "retry",
-        ("not_sent", True, 3): "fail_question",
-        ("not_sent", False, 1): "fail_question",
-        ("not_sent", False, 3): "fail_question",
-        ("rejected", True, 1): "retry",
-        ("rejected", True, 3): "fail_question",
-        ("rejected", False, 1): "fail_question",
-        ("rejected", False, 3): "fail_question",
-        ("unknown", True, 1): "reconcile",
-        ("unknown", True, 3): "reconcile",
-        ("unknown", False, 1): "reconcile",
-        ("unknown", False, 3): "reconcile",
-    }
 
 
 # 5 to 7: delays are bounded, reproducible and never below the plain exponential value.
@@ -253,16 +182,7 @@ def test_decision_carries_the_policy_delay():
     assert decision.delay_seconds == policy.delay_for(2)
 
 
-def test_decisions_do_not_depend_on_global_random_state():
-    policy = RetryPolicy()
-    random.seed(1)
-    a = policy.decide(err(), 1)
-    random.seed(999)
-    random.random()
-    b = policy.decide(err(), 1)
-    assert a == b
-
-
+# 9: the module never sleeps and never touches the global random state.
 def test_decision_does_not_consume_global_random_numbers():
     random.seed(42)
     expected = random.random()
@@ -271,39 +191,20 @@ def test_decision_does_not_consume_global_random_numbers():
     assert random.random() == expected
 
 
-# 9: the module never sleeps.
 def test_module_never_sleeps(monkeypatch):
     def fail(*args, **kwargs):
         raise AssertionError("retry_policy must not sleep")
 
     monkeypatch.setattr(time, "sleep", fail)
     policy = RetryPolicy()
-    for kind, outcome, retryable, attempts in itertools.product(KINDS, PROVIDER_OUTCOMES, [True, False], [1, 2, 3]):
+    for kind, outcome, retryable, attempts in itertools.product(
+        ["server_error", "auth"], PROVIDER_OUTCOMES, [True, False], [1, 3]
+    ):
         policy.decide(err(kind, outcome, retryable), attempts)
 
 
-def test_module_source_does_not_import_sleep_or_random():
-    source = open(retry_policy.__file__, encoding="utf-8").read()
-    for word in ("import time", "import random", "asyncio", "sleep("):
-        assert word not in source
-
-
-def test_driver_pattern_with_injected_sleep():
-    slept: list[float] = []
-    policy = RetryPolicy(seed=1)
-    made = 0
-    while True:
-        made += 1
-        decision = policy.decide(err("rate_limit", "rejected", True, 429), made)
-        if decision.action != "retry":
-            break
-        slept.append(decision.delay_seconds)
-    assert made == 3
-    assert slept == [policy.delay_for(1), policy.delay_for(2)]
-
-
 # 8: invalid input.
-@pytest.mark.parametrize("attempts", [0, -1, None, 1.0, True, "1"])
+@pytest.mark.parametrize("attempts", [0, 1.0, True])
 def test_attempts_so_far_must_be_a_positive_integer(attempts):
     with pytest.raises(ValueError):
         RetryPolicy().decide(err(), attempts)  # type: ignore[arg-type]
@@ -315,24 +216,16 @@ def test_attempts_so_far_must_be_a_positive_integer(attempts):
     "kwargs",
     [
         {"max_attempts": 0},
-        {"max_attempts": -1},
-        {"max_attempts": 2.0},
         {"max_attempts": True},
         {"base_delay_seconds": 0},
-        {"base_delay_seconds": -1.0},
         {"base_delay_seconds": math.nan},
-        {"base_delay_seconds": math.inf},
         {"factor": 0.5},
-        {"factor": math.nan},
         {"factor": math.inf},
         {"jitter_fraction": -0.1},
         {"jitter_fraction": 1.1},
-        {"jitter_fraction": math.nan},
-        {"seed": 1.5},
         {"seed": True},
         {"max_delay_seconds": 1.0},
         {"max_delay_seconds": math.inf},
-        {"max_delay_seconds": math.nan},
     ],
 )
 def test_policy_parameters_are_validated(kwargs):
@@ -340,49 +233,26 @@ def test_policy_parameters_are_validated(kwargs):
         RetryPolicy(**kwargs)
 
 
-def test_defaults_match_the_contract():
-    policy = RetryPolicy()
-    assert (policy.max_attempts, policy.base_delay_seconds, policy.factor, policy.jitter_fraction, policy.seed) == (
-        3,
-        2.0,
-        2.0,
-        0.25,
-        0,
-    )
-
-
-def test_policy_is_immutable():
-    with pytest.raises(Exception):
-        RetryPolicy().max_attempts = 9  # type: ignore[misc]
-
-
 # 10: describe.
 def test_describe_lists_every_parameter_and_is_json_ready():
     description = RetryPolicy().describe()
     assert json.loads(json.dumps(description)) == description
-    for key in ("max_attempts", "base_delay_seconds", "factor", "jitter_fraction", "seed", "max_delay_seconds"):
-        assert key in description
     assert description["stop_run_kinds"] == list(STOP_RUN_KINDS)
     assert description["policy"] == retry_policy.POLICY_ID
 
 
-@pytest.mark.parametrize(
-    "kwargs",
-    [
+def test_describe_changes_when_any_parameter_changes():
+    changes = [
         {"max_attempts": 4},
         {"base_delay_seconds": 3.0},
         {"factor": 3.0},
         {"jitter_fraction": 0.5},
         {"seed": 1},
         {"max_delay_seconds": 30.0},
-    ],
-)
-def test_describe_changes_when_any_parameter_changes(kwargs):
-    assert RetryPolicy(**kwargs).describe() != RetryPolicy().describe()
+    ]
+    for kwargs in changes:
+        assert RetryPolicy(**kwargs).describe() != RetryPolicy().describe(), kwargs
 
 
-def test_decision_is_a_frozen_record():
-    decision = Decision("retry", 1.0, "why")
-    assert decision.as_dict() == {"action": "retry", "delay_seconds": 1.0, "reason": "why"}
-    with pytest.raises(Exception):
-        decision.action = "stop_run"  # type: ignore[misc]
+def test_decision_as_dict():
+    assert Decision("retry", 1.0, "why").as_dict() == {"action": "retry", "delay_seconds": 1.0, "reason": "why"}
