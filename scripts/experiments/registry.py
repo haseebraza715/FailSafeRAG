@@ -4,7 +4,8 @@ The registry is append-only JSON Lines. Each line is a complete snapshot of one
 run record; the last line for a run_id is its current state and earlier lines
 are its history. The format is documented in experiments/README.md.
 
-    check                      validate every line; verify recorded output checksums
+    check                      validate every line; verify recorded output checksums and that a recorded
+                               run_config.json names the record's kind
     add RECORD.json            append a new run (run_id must be unused)
     attempt RUN_ID --status S  append a new attempt (resume) after checking identity files are unchanged
     finish RUN_ID --status S   close the latest attempt and optionally hash outputs
@@ -168,7 +169,20 @@ def check(root: Path, registry: Path) -> tuple[list[str], list[str]]:
                 (errors if output["in_git"] else warnings).append(f"{run_id}: output {output['path']} is not present")
             elif output["sha256"] and path.is_file() and sha256_file(path) != output["sha256"]:
                 errors.append(f"{run_id}: output {output['path']} no longer matches its recorded sha256")
+            elif path.is_file() and path.name == "run_config.json":
+                errors += kind_mismatch(run_id, record, output["path"], path)
     return errors, warnings
+
+
+def kind_mismatch(run_id: str, record: dict[str, Any], rel: str, path: Path) -> list[str]:
+    """A run_config.json among a record's outputs must name the record's kind. A file with no kind is not checked."""
+    try:
+        config = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return []
+    if isinstance(config, dict) and "kind" in config and config["kind"] != record["kind"]:
+        return [f"{run_id}: kind {record['kind']!r} differs from kind {config['kind']!r} in its output {rel}"]
+    return []
 
 
 def append(registry: Path, record: dict[str, Any]) -> None:

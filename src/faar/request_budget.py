@@ -53,6 +53,14 @@ Ledger
      that disagrees with the usage, is reported in ``anomalies`` and counted
      at the higher figure.
 
+Service tier
+ 21. A response whose returned service tier is not verified as Standard must not
+     count as measured cost at the price table's Standard rates. The ledger keeps
+     its attempt reserved at the Standard-rate upper bound and reports its usage
+     and its Standard-rate cost apart, in ``unverified_tier``. That bound is not an
+     upper bound on the real charge when the tier bills more. Only a price table
+     that declares a ``service_tier`` is checked, so older records read as before.
+
 Rounding rule
 =============
 
@@ -93,6 +101,7 @@ from faar.live_contract import (
     EVENT_RESPONSE_SAVED,
     OUTCOME_NOT_SENT,
     OUTCOME_REJECTED,
+    RETURNED_SERVICE_TIERS_ACCEPTED,
     PriceTable,
     ProviderUsage,
 )
@@ -108,7 +117,17 @@ STATE_NOT_SENT = "not_sent"
 STATE_REJECTED = "rejected"
 STATE_OUTCOME_UNKNOWN = "outcome_unknown"
 STATE_NO_MEASURED_COST = "response_without_measured_cost"
-RESERVED_STATES = (STATE_UNRESOLVED, STATE_REJECTED, STATE_OUTCOME_UNKNOWN, STATE_NO_MEASURED_COST)
+STATE_UNVERIFIED_TIER = "unverified_service_tier"
+RESERVED_STATES = (STATE_UNRESOLVED, STATE_REJECTED, STATE_OUTCOME_UNKNOWN, STATE_NO_MEASURED_COST, STATE_UNVERIFIED_TIER)
+
+UNVERIFIED_TIER_NOTE = (
+    "These responses did not report the Standard service tier, so their usage is not counted as measured cost. "
+    "standard_rate_cost prices that usage at the Standard rates of the price table. It is not an actual-cost claim: "
+    "a tier that bills more (the pricing page lists Fast gpt-4o at 1.7 times Standard) charged more. Each attempt "
+    "stays reserved at its Standard-rate upper bound, and that bound is not an upper bound on the real charge. "
+    "Check the provider's usage export."
+)
+USAGE_KEYS = ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_tokens")
 
 RECONCILE_RESOLUTIONS = ("allow_new_attempt", "mark_failed")
 
@@ -394,6 +413,8 @@ class SafetyLedger:
     attempts: tuple[AttemptAccount, ...] = ()
     per_question: Mapping[str | None, QuestionAccount] = field(default_factory=dict)
     anomalies: tuple[str, ...] = ()
+    # Responses whose returned service tier is not verified as Standard. Empty when there are none.
+    unverified_tier: Mapping[str, Any] = field(default_factory=dict)
 
     # -- amounts (floats are views of the integer micro-unit fields) --------
 
@@ -455,7 +476,7 @@ class SafetyLedger:
         return self.committed_upper_micro + upper_micro <= ceiling_micro
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        data = {
             "currency": self.currency,
             "simulated": self.simulated,
             "measured": self.measured,
@@ -465,6 +486,9 @@ class SafetyLedger:
             "per_question": {str(key): account.as_dict() for key, account in self.per_question.items()},
             "anomalies": list(self.anomalies),
         }
+        if self.unverified_tier:
+            data["unverified_tier"] = dict(self.unverified_tier)
+        return data
 
     @classmethod
     def from_events(cls, events: Iterable[Mapping[str, Any]], prices: PriceTable) -> SafetyLedger:
@@ -475,7 +499,9 @@ class SafetyLedger:
         * ``reserved``: the ``cost_upper_bound`` of every dispatched attempt
           without a measured cost. That covers an attempt with no later event,
           ``outcome_unknown``, ``attempt_failed`` with outcome ``rejected``,
-          and ``response_saved`` with ``measured_cost`` null.
+          ``response_saved`` with ``measured_cost`` null, and ``response_saved``
+          whose ``returned_service_tier`` is not Standard when the price table
+          declares a service tier (see ``unverified_tier``).
         * A ``not_sent`` failure costs nothing.
         * ``reconciled`` records the resolution and releases nothing.
 
@@ -497,6 +523,8 @@ class _Attempt:
     measured_micro: int = 0
     reconciled: str | None = None
     notes: list[str] = field(default_factory=list)
+    usage: Mapping[str, Any] | None = None
+    standard_micro: int | None = None
 
 
 def _attempt_id(event: Mapping[str, Any], position: int) -> str:
@@ -549,6 +577,18 @@ def _apply_event(state: dict[str, _Attempt], event: Mapping[str, Any], prices: P
     if name == EVENT_RESPONSE_SAVED:
         attempt_id, attempt = _resolve(state, event, position)
         recorded = event.get("measured_cost")
+        if prices.service_tier is not None and event.get("returned_service_tier") not in RETURNED_SERVICE_TIERS_ACCEPTED:
+            # The rates apply to the Standard tier only. Keep the usage, count nothing as measured, stay reserved.
+            attempt.state = STATE_UNVERIFIED_TIER
+            attempt.usage = event.get("usage") if isinstance(event.get("usage"), Mapping) else {}
+            try:
+                recorded_micro = None if recorded is None else _amount_to_micro(recorded, "measured_cost", up=True)
+            except BudgetError as exc:
+                raise LedgerError(f"event {position}: {exc}") from exc
+            recomputed_micro = _recomputed(event, prices)
+            known = [m for m in (recorded_micro, recomputed_micro) if m is not None]
+            attempt.standard_micro = max(known) if known else None
+            return
         if recorded is None:
             attempt.state = STATE_NO_MEASURED_COST
             return
@@ -609,7 +649,10 @@ def _build(state: Mapping[str, _Attempt], prices: PriceTable) -> SafetyLedger:
     anomalies: list[str] = []
     measured_total = 0
     reserved_total = 0
+    unverified_ids: list[str] = []
     for attempt_id, attempt in state.items():
+        if attempt.state == STATE_UNVERIFIED_TIER:
+            unverified_ids.append(attempt_id)
         reserved = attempt.upper_micro if attempt.state in RESERVED_STATES else 0
         measured = attempt.measured_micro if attempt.state == STATE_MEASURED else 0
         anomalies.extend(attempt.notes)
@@ -643,4 +686,27 @@ def _build(state: Mapping[str, _Attempt], prices: PriceTable) -> SafetyLedger:
             for key, (n, m, r) in per_question.items()
         },
         anomalies=tuple(anomalies),
+        unverified_tier=_unverified_block(state, unverified_ids),
     )
+
+
+def _unverified_block(state: Mapping[str, _Attempt], attempt_ids: Sequence[str]) -> dict[str, Any]:
+    """Usage and Standard-rate cost of the attempts whose returned tier is not verified. Empty when there are none."""
+    if not attempt_ids:
+        return {}
+    usage = dict.fromkeys(USAGE_KEYS, 0)
+    priced = [state[attempt_id].standard_micro for attempt_id in attempt_ids]
+    for attempt_id in attempt_ids:
+        reported = state[attempt_id].usage or {}
+        for key in USAGE_KEYS:
+            value = reported.get(key)
+            if _is_int(value):
+                usage[key] += value
+    return {
+        "attempts": len(attempt_ids),
+        "attempt_ids": list(attempt_ids),
+        "usage": usage,
+        "standard_rate_cost": micro_to_amount(sum(m for m in priced if m is not None)),
+        "unpriceable_attempts": sum(1 for m in priced if m is None),
+        "note": UNVERIFIED_TIER_NOTE,
+    }

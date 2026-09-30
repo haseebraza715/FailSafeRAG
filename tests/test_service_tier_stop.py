@@ -37,7 +37,6 @@ from test_live_runner import (
     events_of,
     file_snapshot,
     go,
-    go_without_provider,
     options,
     requests_of,
     stop_violations,
@@ -244,13 +243,16 @@ def test_a_restart_builds_no_provider_and_dispatches_nothing(project: Project) -
     assert result.exit_code == SAFETY_EXIT and "cannot undo a charge" in result.message
     assert fresh.factory_calls == 0 and fresh.providers == []
     assert {k: v for k, v in file_snapshot(run_dir).items() if k != "run.lock"} == before
-    assert go_without_provider(project).exit_code == SAFETY_EXIT
+    bare = lr.execute_run(
+        options(project), provider_factory=None, descriptor=tier_rig("priority").descriptor, sleep=lambda s: None, environ={}
+    )
+    assert bare.exit_code == SAFETY_EXIT
 
 
 def test_a_raised_ceiling_reconcile_and_reopen_do_not_clear_the_tier_stop_and_score_refuses(project: Project) -> None:
     go(project, tier_rig("priority"))
     run_dir = project.run_dir("run-a")
-    later = Rig()
+    later = tier_rig("priority")
     raised = go(project, later, safety_ceiling=100.0, raise_safety_ceiling=500.0, authorization_note="lead approved")
     assert raised.exit_code == SAFETY_EXIT and later.factory_calls == 0
     assert summary_of(run_dir)["safety_ceiling"]["amount"] == 100.0
@@ -271,7 +273,7 @@ def test_a_crash_between_the_response_file_and_its_event_still_stops_on_restart(
     with pytest.raises(SimulatedCrash):
         go(project, tier_rig("priority"), crash_hook=crash_at(lr.CRASH_AFTER_RESPONSE_FILE, "q2"))
     run_dir = project.run_dir("run-a")
-    restart = Rig()
+    restart = tier_rig("priority")
     result = go(project, restart)
     assert result.exit_code == SAFETY_EXIT and restart.factory_calls == 0
     assert (attempt_id_of(run_dir, "q2"), CONDITION) in conditions(result.summary["safety_violations"])
