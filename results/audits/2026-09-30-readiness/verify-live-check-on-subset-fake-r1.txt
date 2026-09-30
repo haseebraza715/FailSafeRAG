@@ -1,0 +1,42 @@
+PASS  mode (fake allowed)                                                           fake
+FAIL  provider is openai                                                            fake
+PASS  requested model                                                               fake-answer-model-1
+PASS  client base_url recorded and exact                                            None
+FAIL  endpoint in config                                                            fake://in-process
+PASS  params are only temperature=0                                                 {"temperature": 0}
+INFO  kind (recorded by the runner at the top of run_config.json)                   engineering_check
+PASS  run_kind is engineering_check                                                 engineering_check
+INFO  pilot_manifest                                                                {"canonical": false, "frozen_runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1", "parent_pilot_id": "ohr_dev_v1", "...
+PASS  manifest provenance records a boolean canonical flag, the same in every copy  {"identity": false, "run_summary": false}
+PASS  an engineering check is not eligible as a baseline (valid_baseline false)     False
+PASS  storage is disabled (store=false on every request)                            disabled
+PASS  price table service_tier is default                                           default
+INFO  runtime manifest sha256 (identity)                                            a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3
+PASS  send count                                                                    6
+PASS  skip count                                                                    2
+PASS  no question dispatched more than once                                         [["50e1fdda-86c3-4047-9758-9cc633f33b00", 1], ["65ea29d1-adae-4e45-a036-e74be34d7804", 1], ["76a3d0f7-998d-476a-aac4-55c92f7a8e02", 1]]
+PASS  every sendable question dispatched                                            6 dispatched
+PASS  skipped questions never dispatched                                            
+PASS  one saved response per sendable question                                      6
+PASS  every response file is readable                                               []
+PASS  usage (input and output tokens) present on every response                     []
+PASS  measured_cost equals usage x rates (micro-unit rounding up)                   []
+PASS  returned model equals requested model exactly                                 []
+PASS  no input bound exceeded                                                       []
+INFO  finish reasons                                                                {"stop": 6}
+INFO  service tier source                                                           {"event.returned_service_tier": 6}
+PASS  returned service tier is default in every response                            {"default": 6}
+PASS  no attempt_failed events (explain any)                                        []
+PASS  no outcome_unknown events (explain any)                                       []
+PASS  run_state complete                                                            complete
+PASS  no safety violations                                                          
+PASS  no execution_failed                                                           {"questions": 8, "answered": 6, "no_evidence": 2, "execution_failed": 0, "abstained": 2, "model_abstained": 0, "unserved": 0, "awaiting_reconciliation": 0, "prompt_over_limit": 0}
+PASS  ledger has no anomalies                                                       ()
+PASS  summary measured equals ledger                                                0.020374 vs 0.020374
+PASS  nothing reserved at the end                                                   0.0
+PASS  sum of per-response measured cost equals ledger measured                      
+PASS  predictions has one record per request, same order                            
+PASS  skipped questions exported as no_evidence with empty answer                   2
+PASS  predictions_sha256 recorded matches file                                      
+PASS  committed upper within ceiling                                                0.020374 <= 0.15
+INFO  totals                                                                        measured 0.020374 USD; committed_upper 0.020374; 6 questions, 6 dispatches

@@ -12,13 +12,60 @@ This note lists what changed after the first version of this review. It changes 
   - agent concerns about gold answers are provisional and not adjudicated corrections;
   - the 20 inspection cases are a purposive diagnostic sample and give no estimate of dataset-wide error rates.
 - **Audit scripts.** The audit scripts are now in [scripts/audits/](../../scripts/audits/README.md), with offline tests in `tests/test_audits.py`. Sections 1, 5 and 7 point to them. Run against the c9b7ad5 dry run, they reproduce these figures: 70 records (63 sent, 7 skipped), 243 evidence blocks, input bounds of 1,550, 6,563, 7,920 and 347,702 in total, cost bounds of $0.949909 and $2.849727, the expected cost of $0.24 (range $0.19 to $0.31), the Fast-tier bounds ($1.614844 and $4.844532), the stop after 57 of 63 questions (58 with 5 output tokens) when every question has two rejected attempts under the $2.00 ceiling, the 8 live-check ids and the derived manifest hash `a1e147c0...`.
-- **Not updated here.** Sections 2 and 3 (B1, B2, the proxy setting, the subset blocker and the hard-coded run kind) and the decisions in section 4 describe the runner at `c9b7ad5`. Code changes made after that commit are not reflected in them. Update those sections when the code lands.
+- **Safeguards added after this review.** The section below, "Update after the safeguards", records what the code at `ca26e31` now enforces and which findings it closes. Sections 2 to 5 below still describe the runner at `c9b7ad5`. Where they conflict with the update, the update is current.
+
+## Update after the safeguards (code `ca26e31`)
+
+These are facts about the code at `ca26e31`, checked offline with the fake provider and `httpx.MockTransport`. No live request was made. Nothing here approves the model, the prompt, the ceilings or the data handling.
+
+- **Storage.** Every request sends `store: false`. The CLI refuses provider-side storage, and the storage policy is part of the run identity. This removes the code part of B1. The data-handling decision in B1 remains open: `store: false` does not remove OpenAI's 30-day abuse-monitoring copy, and it does not settle whether the dataset terms allow sending the documents.
+- **Service tier.** Every request sends `service_tier: "default"`, the Standard tier, so a project setting cannot change it. The price table must declare that tier. A saved response whose returned tier is not `default` stops the run before the next dispatch, and so does a missing tier or an unusable reply that names another tier. A restart builds no provider. Such a response keeps its usage, but its cost is left out of `cost.measured` and reported under `cost.unverified_tier`, labelled as not an actual-cost claim. This closes the code part of B2. A dashboard check of the Project Service Tier is still sensible, and the live check prints the returned tiers.
+- **Transport.** The live client ignores proxy variables, macOS system proxies and `SSL_CERT_FILE` / `SSL_CERT_DIR` (`trust_env=False`), and it never follows redirects. An injected client that trusts the environment, follows redirects or routes through its own proxy is refused. A network that reaches OpenAI only through a proxy gets connect errors, and nothing is sent. The `env -u` wrapper in the commands is no longer needed.
+- **Run kind and subsets.** A live run needs `--run-kind`. The identity records whether the run's manifest is byte-identical to the frozen `results/pilots/ohr_dev_v1/runtime_manifest.json`. A subset, or a same-sized altered selection, is not canonical. A `development_pilot` on a non-canonical manifest is refused. An `engineering_check` never has `valid_baseline: true`. `valid_baseline` is a mechanical eligibility flag, not scientific approval.
+- **Successor fake runs.**
+  - `2026-09-30-ohr-dev-v1-fake-provider-r5` supersedes r4. It is complete (63 answered, 7 no_evidence, 0 execution_failed, 0.221480 simulated USD), with every returned tier `default`, a canonical manifest, and `valid_baseline: false`.
+  - `2026-09-30-ohr-dev-v1-live-check-subset-fake-r1` rehearses the live check on the 8-question subset: 6 answered and 2 no_evidence. It is `engineering_check`, not canonical, and ineligible, with three blockers.
+  - Against r4 and the previous preview, only request, attempt and response ids changed. Question text, evidence, prompts, bounds and scores are identical. The ids changed because the identity gained the new fields and the code changed.
+- **Audit outputs.** Compact outputs with commands and hashes are in [results/audits/2026-09-30-readiness/](../../results/audits/2026-09-30-readiness/README.md). At `ca26e31` they reproduce every figure in this review.
+- **Decisions in section 4 after this update.**
+  - Decision 2 is reduced to an optional dashboard check.
+  - Decision 3 is done in code. The code freeze still needs the lead's approval.
+  - Decision 10 no longer needs a registry workaround: the check runs as `engineering_check`.
+  - All other decisions stay open: data handling, model, prices, ceilings, rate limits, prompt, input limit and retrieval, human inspection and licensing.
+- **Live-check commands (NOT EXECUTED), current version.** Run them from the repository root. They replace the commands in section 5.
+
+```bash
+RUN=YYYY-MM-DD-ohr-dev-v1-live-check-r1
+CFG=.local/work/provider-config.<approved>.json
+MAN=results/audits/2026-09-30-readiness/live-check-selection/runtime_manifest.livecheck-v1.json
+shasum -a 256 "$MAN"
+```
+
+The hash must be `a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3`. The approved config must include `"service_tier": "default"` in `prices`.
+
+```bash
+.local/venv-prebaseline/bin/python scripts/experiments/run_pilot_live.py dry-run --runtime-manifest "$MAN" --provider-config "$CFG" --out .local/work/livecheck/dry-run
+```
+
+This offline dry run must report 8 questions, 6 to send and a one-attempt bound of 0.087581.
+
+NOT EXECUTED. The next command spends money. `OPENAI_API_KEY` is set by the lead.
+
+```bash
+FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY .local/venv-prebaseline/bin/python scripts/experiments/run_pilot_live.py run --mode live --run-kind engineering_check --runtime-manifest "$MAN" --provider-config "$CFG" --run-dir "results/development/$RUN" --run-id "$RUN" --safety-ceiling 0.15
+```
+
+```bash
+.local/venv-prebaseline/bin/python scripts/audits/verify_live_check.py "results/development/$RUN"
+```
+
+Score only if the verifier reports no FAIL, using the subset evaluation manifest described in section 5.
 
 Status: a review for the research lead, to be checked by an independent reviewer. It makes no decision and it is not an authorization to spend. No paid request, connectivity probe or credential load took place. No human annotation was written.
 
 The review asks one question: are the selected data, the retrieved evidence, the prompts and the proposed execution settings fit for the first real-model development baseline on `ohr_dev_v1`? It does not test whether diagnosis-selected repair beats simpler recovery.
 
-**Verdict.** The prompts, the retrieval records, the cost bounds and the runner's accounting pass every offline check. Two findings block paid requests until the research lead acts on them.
+**Verdict at `c9b7ad5`** (see the update above for the current state). The prompts, the retrieval records, the cost bounds and the runner's accounting pass every offline check. Two findings block paid requests until the research lead acts on them.
 
 - **B1.** Nobody has decided how the transmitted documents are handled, and the runner cannot send `store=false`. This blocks every paid request, including the live check.
 - **B2.** The runner cannot see which service tier bills the requests. A free dashboard check clears it for the live check. The lead should decide on a code safeguard before the full pilot.
@@ -34,7 +81,7 @@ In this report, "the lead" is the human research lead, and "the coordinating age
   - The full `doc_id`, its basename and its folder prefix appear 0 times in any prompt.
   - An audit hook shows that the dry run opens only the runtime manifest, the provider config and the 30 MinerU files. It never opens `evaluation_manifest.json`, the clean reference text, annotations or `selection_record.json`. Importing the modules also reads `config/model_revisions.json` (through `faar.settings`), which is not part of the dry run itself. `scripts/audits/audit_prompts.py --trace-dry-run` reproduces the trace and lists that import-time read separately.
   - No gold answer of 4 or more characters appears outside the OCR evidence. The 15 gold strings found inside evidence blocks are legitimate OCR text.
-- **Stable construction.** Dry runs with different `PYTHONHASHSEED`, working directory, `TZ` and `LC_ALL` values give byte-identical files. The dry run at `c9b7ad5` equals `.local/work/prompt-preview-final/` byte for byte. `audit_prompts.py --compare-dry-run` checks that byte equality for two dry-run directories. The runs under other environment values were made by hand and are not scripted.
+- **Stable construction.** Dry runs with different `PYTHONHASHSEED`, working directory, `TZ` and `LC_ALL` values give byte-identical files. The dry run at `c9b7ad5` (not later code, whose identity changes every `request_id`) equals `.local/work/prompt-preview-final/` byte for byte. `audit_prompts.py --compare-dry-run` checks that byte equality for two dry-run directories. The runs under other environment values were made by hand and are not scripted.
 - **Size accounting.** The input bound is `16 + sum over the two messages of (UTF-8 bytes + 4)`, from `src/faar/request_budget.py:232-243`.
   - It recomputes for all 63 prompts: minimum 1,550, median 6,563, maximum 7,920 (`65ea29d1`), total 347,702. None exceeds the 12,000 limit.
   - `max_tokens` = 128 is sent on every request (`src/faar/answer_providers.py:558`).
@@ -236,6 +283,8 @@ Accuracy is not a criterion. The check passes only if all of the following hold:
 A helper, `scripts/audits/verify_live_check.py`, checks criteria 1 to 8 from the run directory. It is committed and has no independent review. It passed on a fake subset run and failed as intended when given wrong expectations. It has never seen a live run. It reads the fields that newer runner code adds (`returned_service_tier`, `run_kind`, `pilot_manifest`, the storage policy) when they are present and reports `absent` otherwise, so re-run it after the code lands.
 
 ### Commands (NOT EXECUTED)
+
+These commands are for the code at `c9b7ad5` and are superseded. Use the current version in "Update after the safeguards". They are kept as the record of what this review proposed.
 
 Pre-flight by hand: resolve B1 and B2, freeze the code, write the approved config, and add a `planned` registry record. Run from the repository root.
 

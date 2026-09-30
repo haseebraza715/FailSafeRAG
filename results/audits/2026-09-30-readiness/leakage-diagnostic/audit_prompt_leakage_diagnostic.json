@@ -1,0 +1,129 @@
+{
+  "notice": "DIAGNOSTIC that reads evaluation data. Never feed its output into runtime preparation, retrieval, gating, diagnosis or recovery.",
+  "pass": true,
+  "failures": {},
+  "sent_questions": 63,
+  "gold_shorter_than_4_characters_not_searched": [
+    "33a1d1c2-ad4a-4155-809f-cd8f739cd488",
+    "4f1be99c-316e-4285-b5b2-8dfec52d96b8",
+    "4f36d949-6bdb-46b7-8b41-7b8a62b6d721",
+    "65ea29d1-adae-4e45-a036-e74be34d7804",
+    "76a933cf-65fd-4f69-93a2-5c9b6e3a52d7",
+    "843f36fb-80a4-4486-a135-3c36fed0fe37",
+    "84403b37-b13b-4d4e-a368-f7d2d9732b86",
+    "8443e6fc-ddf7-413b-99bb-79250fe7e7c1",
+    "8445b560-af74-4c54-b7ca-306245f188ea",
+    "844629d9-e065-41f1-a353-f41b1573ec4c",
+    "9f46ab56-9295-4da8-b229-3f56295c3860",
+    "b839af51-a618-411f-8eb4-51b948d2339f"
+  ],
+  "gold_inside_question_text": [],
+  "gold_inside_evidence_questions": 15,
+  "gold_inside_evidence": [
+    [
+      "339bfba4-d220-4c8e-a2d4-174a81cf8010",
+      [
+        1
+      ]
+    ],
+    [
+      "4bc8754f-28af-4080-8f40-0449d986ee5f",
+      [
+        1
+      ]
+    ],
+    [
+      "4f1728e0-a481-4fc5-95d8-3d89694241b7",
+      [
+        1
+      ]
+    ],
+    [
+      "4fab2ad8-8091-421d-a637-c09facf606fc",
+      [
+        1
+      ]
+    ],
+    [
+      "4fac816c-e2d3-41cc-9883-502e7f320e78",
+      [
+        1,
+        2
+      ]
+    ],
+    [
+      "50e1fdda-86c3-4047-9758-9cc633f33b00",
+      [
+        2
+      ]
+    ],
+    [
+      "50ed6af2-235f-4be1-b8b5-5fb556d1079c",
+      [
+        1
+      ]
+    ],
+    [
+      "76a3d0f7-998d-476a-aac4-55c92f7a8e02",
+      [
+        1
+      ]
+    ],
+    [
+      "7d154385-52fb-443b-9954-6eb400257ad1",
+      [
+        1
+      ]
+    ],
+    [
+      "903dbc9b-9965-4d42-93e5-3530a75b8a95",
+      [
+        1
+      ]
+    ],
+    [
+      "c124ca55-e0e8-4da1-8276-0e0749b4b7c4",
+      [
+        1
+      ]
+    ],
+    [
+      "c13c0802-fe54-4c5c-bdb6-0b91133e156f",
+      [
+        1
+      ]
+    ],
+    [
+      "c13c36b1-9a26-4370-a351-c31601ffcd2c",
+      [
+        1
+      ]
+    ],
+    [
+      "c1b51377-737c-4de0-a057-13cd784cfe45",
+      [
+        1,
+        4
+      ]
+    ],
+    [
+      "c1bf5e37-8462-46db-bdd3-cb3c704b2b61",
+      [
+        2
+      ]
+    ]
+  ],
+  "gold_inside_evidence_note": "OCR text of the document; every chunk is a substring of its MinerU page",
+  "reference_searched": true,
+  "page_coverage": {
+    "all_gold_pages_in_prompt": 61,
+    "not_all_gold_pages_in_prompt": [
+      "8e391133-8339-4035-8252-5a3694211554",
+      "b89d6523-85c6-40cd-9d60-db0fd596f619"
+    ],
+    "no_gold_page_in_prompt": [
+      "8e391133-8339-4035-8252-5a3694211554"
+    ],
+    "note": "page coverage overstates evidence coverage: a gold page among the retrieved pages does not show that the needed passage was retrieved"
+  }
+}

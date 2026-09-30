@@ -1,0 +1,197 @@
+{
+  "kind": "runtime-only prompt audit; reads no evaluation data",
+  "dry_run_sha256": {
+    "prepared_requests.jsonl": "2b0bbd49b6c25b7d199b8b84ee1ce910942407d5088575caf9cf542180b22171"
+  },
+  "template_sha256": "52044de279b32482e1b8b7f75f0b3455f5cb8e44e9178f8cec09c1615a89914d",
+  "records": 70,
+  "sent": 63,
+  "skipped": 7,
+  "evidence_blocks": 243,
+  "checks": {
+    "association": {
+      "pass": true,
+      "records_checked": 63,
+      "failures": {}
+    },
+    "blocks": {
+      "pass": true,
+      "blocks": 243,
+      "counts": {
+        "fewer_than_5_blocks": 25,
+        "questions_with_control_character": 1,
+        "blocks_with_tilde": 3
+      },
+      "block_chars": {
+        "min": 23,
+        "median": 993,
+        "max": 2254
+      },
+      "blocks_with_latex_or_table_markup": 46,
+      "short_or_symbol_heavy_blocks": 1,
+      "short_or_symbol_heavy_block_ids": [
+        [
+          "a1ab17c0-7662-49cc-9af9-5c78247f4d97",
+          1,
+          23
+        ]
+      ],
+      "warnings": {
+        "question_with_control_character": [
+          "6ac85f42-a9c0-4dec-ac25-aad69dcc668f"
+        ]
+      },
+      "failures": {}
+    },
+    "identity": {
+      "pass": true,
+      "full_identity_hits_outside_evidence_and_question": [],
+      "unexplained_basename_token_hits_outside_evidence_and_question": [],
+      "identity_fragments_and_basename_tokens_that_are_template_wording": {
+        "Number": 4
+      },
+      "fragment_hits_inside_question_text": {},
+      "fragment_hits_inside_evidence_text": {},
+      "note": "hits inside the question or the evidence are runtime text; only hits elsewhere fail"
+    },
+    "bounds": {
+      "pass": true,
+      "conditions": {
+        "input_bounds_equal_saved": true,
+        "cost_bounds_equal_saved": true,
+        "heuristic_estimates_equal_saved": true,
+        "no_bound_above_limit": true,
+        "bound_total_equals_summary": true,
+        "bound_max_equals_summary": true,
+        "one_attempt_cost_equals_summary": true,
+        "worst_case_cost_equals_summary": true,
+        "sent_count_equals_summary": true
+      },
+      "input_bound": {
+        "min": 1550,
+        "median": 6563,
+        "max": 7920,
+        "total": 347702,
+        "limit": 12000
+      },
+      "cost_bound_usd": {
+        "one_attempt": 0.949909,
+        "3_attempts": 2.849727
+      },
+      "max_output_tokens_on_sent_requests": {
+        "128": 63
+      },
+      "mismatched_bound": [],
+      "mismatched_cost": [],
+      "mismatched_heuristic": [],
+      "formula": "16 + sum over the two messages of (UTF-8 bytes + 4), from faar.request_budget.input_token_upper_bound"
+    },
+    "skipped": {
+      "pass": true,
+      "skipped": 7,
+      "reason_counts": {
+        "no_text_chunks": 6,
+        "no_text_content": 1
+      },
+      "every_manifest_question_has_a_record": true,
+      "details": [
+        {
+          "question_id": "9cb9f9aa-bf4d-4eaa-81f2-005bc7537df5",
+          "skip_reason": "no_text_chunks",
+          "reason_true_per_mineru": true,
+          "page_text_lengths": [
+            0
+          ],
+          "no_prompt_or_evidence": true
+        },
+        {
+          "question_id": "9d99eb49-f01e-44df-b15f-d5e8fc3a49ce",
+          "skip_reason": "no_text_chunks",
+          "reason_true_per_mineru": true,
+          "page_text_lengths": [
+            0
+          ],
+          "no_prompt_or_evidence": true
+        },
+        {
+          "question_id": "9e95f8bc-eade-486e-bc82-343d22faf888",
+          "skip_reason": "no_text_chunks",
+          "reason_true_per_mineru": true,
+          "page_text_lengths": [
+            0
+          ],
+          "no_prompt_or_evidence": true
+        },
+        {
+          "question_id": "a7005e84-52db-4271-931d-a9205b6fc91a",
+          "skip_reason": "no_text_chunks",
+          "reason_true_per_mineru": true,
+          "page_text_lengths": [
+            0
+          ],
+          "no_prompt_or_evidence": true
+        },
+        {
+          "question_id": "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7",
+          "skip_reason": "no_text_chunks",
+          "reason_true_per_mineru": true,
+          "page_text_lengths": [
+            0
+          ],
+          "no_prompt_or_evidence": true
+        },
+        {
+          "question_id": "eccc944b-bdbf-461d-be32-632c58943915",
+          "skip_reason": "no_text_chunks",
+          "reason_true_per_mineru": true,
+          "page_text_lengths": [
+            0
+          ],
+          "no_prompt_or_evidence": true
+        },
+        {
+          "question_id": "ecccdf67-bc03-447c-a990-d5989185f21a",
+          "skip_reason": "no_text_content",
+          "reason_true_per_mineru": true,
+          "page_text_lengths": [
+            5
+          ],
+          "no_prompt_or_evidence": true
+        }
+      ]
+    },
+    "instructions": {
+      "pass": true,
+      "strong_hits": 0,
+      "strong_hit_locations": [],
+      "weak_hits": 19,
+      "weak_hits_by_pattern": {
+        "zh_must": 12,
+        "you_must_should_are": 2,
+        "instruction_word": 3,
+        "zh_please": 2
+      },
+      "questions_with_weak_hits": 14,
+      "note": "locations are (question_id, rank, pattern, character offset in the block). Weak hits are ordinary document wording, such as 'must' or 'instructions'. The system rule covers text inside the fences."
+    },
+    "dry_run_file_access": {
+      "pass": true,
+      "dry_run_exit_code": 0,
+      "mineru_files_opened": 30,
+      "other_data_files_opened_during_dry_run": [
+        ".local/work/provider-config.UNAPPROVED.gpt-4o-2024-11-20.json",
+        "results/audits/2026-09-30-readiness/prompts/trace-dry-run",
+        "results/audits/2026-09-30-readiness/prompts/trace-dry-run/.dry_run_summary.json.oqhwy6pk.tmp",
+        "results/audits/2026-09-30-readiness/prompts/trace-dry-run/.prepared_requests.jsonl.pc5u_fqx.tmp",
+        "results/audits/2026-09-30-readiness/prompts/trace-dry-run/.prompt_preview.md.dlmrcasc.tmp",
+        "results/pilots/ohr_dev_v1/runtime_manifest.json"
+      ],
+      "data_files_opened_while_importing_modules": [
+        ".env",
+        "config/model_revisions.json",
+        "src/faar.egg-info/entry_points.txt"
+      ],
+      "forbidden_files_opened": []
+    }
+  }
+}

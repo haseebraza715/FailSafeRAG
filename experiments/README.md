@@ -37,7 +37,9 @@ it measures the execution path and not answer quality.
 | `2026-09-29-ohr-dev-v1-fake-provider-r1` | engineering_check | completed; superseded by fake-provider-r2 after the review fixes |
 | `2026-09-29-ohr-dev-v1-fake-provider-r2` | engineering_check | completed; superseded by fake-provider-r3 after the fix-verification findings |
 | `2026-09-29-ohr-dev-v1-fake-provider-r3` | engineering_check | completed; superseded by fake-provider-r4 after the safety-stop and HTTP-outcome fixes |
-| `2026-09-29-ohr-dev-v1-fake-provider-r4` | engineering_check | completed (answer-model path with the fake provider; answers and costs simulated; not a baseline) |
+| `2026-09-29-ohr-dev-v1-fake-provider-r4` | engineering_check | completed; superseded by fake-provider-r5 after the storage, service-tier, transport and run-kind safeguards |
+| `2026-09-30-ohr-dev-v1-fake-provider-r5` | engineering_check | completed (answer-model path with the fake provider; answers and costs simulated; not a baseline) |
+| `2026-09-30-ohr-dev-v1-live-check-subset-fake-r1` | engineering_check | completed (fake rehearsal of the 8-question live check; not canonical, never a baseline) |
 
 No scientific evaluation has run. This table is a convenience; the registry is
 authoritative.

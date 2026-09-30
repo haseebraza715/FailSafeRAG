@@ -1,0 +1,337 @@
+{
+ "contract": "inputs a later system may read: question text, document identity, complete PDF page inventory and noisy-text references. No gold answers, evidence labels, evidence contexts, gt text or annotations.",
+ "documents": [
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "doc_type": "academic",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.json",
+    "problems": [],
+    "sha256": "407e83d4ed5fc2bcd9b8121e58cdf0a3f8ebba88940a52bc3d4870ae544da934",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "9fc608e8b480f874ccdeadf0d5ef2d5a7104bd277710270f18e6a3f9b91fba25",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "171ab2dc2365e9fd2e23a651314a8a98b3a7a21c789b1b6dcf8f78537607f495",
+     "page_idx": 1,
+     "pdf_page_number": 2
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "0ef4fb727b0754c0232675ac84d8448f3f9c2738c60c45d1d3fac6a5add5b632",
+     "page_idx": 2,
+     "pdf_page_number": 3
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "81a4234dd53183c4869f056905728ada43cd3ec48c9732c87b59e8a162a87b61",
+     "page_idx": 3,
+     "pdf_page_number": 4
+    },
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "ab2806c0fb5107553260fbea440858b00773540d4d49864bd7ecf5687a5f1e58",
+     "page_idx": 4,
+     "pdf_page_number": 5
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 2821752,
+    "member": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6.pdf",
+    "page_count": 5,
+    "sha256": "87250d7990435d0729b95d0fa9cbeeaa0115f6cf27fe91318a123c9636fbb87f"
+   },
+   "qa_doc_names": [
+    "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6"
+   ]
+  },
+  {
+   "doc_id": "news/07_07",
+   "doc_type": "news",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/news/07_07.json",
+    "problems": [],
+    "sha256": "b4ff8c371239e95502ff37ccf0cea8578151f9456a003c210d94c683b901cf49",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "f783e417b350ef376afe5c5ba0811aac34046813462b8bd6703a7a1b008b9674",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 3330913,
+    "member": "news/07_07.pdf",
+    "page_count": 1,
+    "sha256": "de0bba87a3e24888c2edbf02260bcc66d15b7b03682c34b035bcb5524e32e323"
+   },
+   "qa_doc_names": [
+    "news/07_07"
+   ]
+  },
+  {
+   "doc_id": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5.json",
+    "problems": [],
+    "sha256": "efc0e62eb778a425d202745298c154832c4f2cdf57c4195a107583193644b2dc",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "61cf3e5d6fb6f489408f8d8a8da5de447a68edb0aa577a5c0062fdf59e257394",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 704521,
+    "member": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5.pdf",
+    "page_count": 1,
+    "sha256": "ac8b1aad0b06073995ab879cfcd8402e265034258ff1a4bf6ceef3acdd0efe0e"
+   },
+   "qa_doc_names": [
+    "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5"
+   ]
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/GNHK_eng_EU_298.json",
+    "problems": [],
+    "sha256": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "empty",
+     "ocr_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 110673,
+    "member": "textbook/GNHK_eng_EU_298.pdf",
+    "page_count": 1,
+    "sha256": "e77ba1802af64b4b369aeb83b0f0d73c2021fb4d511026921ecf061c5de02cf4"
+   },
+   "qa_doc_names": [
+    "textbook/GNHK_eng_EU_298"
+   ]
+  },
+  {
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/chem-323236.pdf_183.json",
+    "problems": [],
+    "sha256": "1b67f538be60d27c11c4742fd0cfc1eb1a5f6d330ac6718d0596bb857a80a9f1",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "929691cd68e51321ff7c8d6935f8b1a046525b973839807d003c14743f10f186",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 341185,
+    "member": "textbook/chem-323236.pdf_183.pdf",
+    "page_count": 1,
+    "sha256": "480aa7d8996ecb93917a2bff83c752a08add3248e3ed1468feffb39eb5395d0b"
+   },
+   "qa_doc_names": [
+    "textbook/chem-323236.pdf_183"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "doc_type": "textbook",
+   "excerpt_document": true,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.json",
+    "problems": [],
+    "sha256": "f38d374932f0a718c0053b07e022b5fc00cc185668d2632c10c4ced69bbb3b7f",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "bfc7309246a0c59f3791478705cbc039f549883bf479f142e40ae9ca9449ba4c",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 630629,
+    "member": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161.pdf",
+    "page_count": 1,
+    "sha256": "d16d33051e7aaf09877ac29ec7deca0fc22e5bbdac9dfb60bfe945eeed0fc3f0"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124.json",
+    "problems": [],
+    "sha256": "56f8f08a6467706f8b21fde9b7782ad93d5dfbe2a3ed9d98f7416ab6de4cfee0",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "ca03491127ec60d5ea8c8caf54974e70dc9d69178e0625eaaaa21af9a40e6bc3",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 75012,
+    "member": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124.pdf",
+    "page_count": 1,
+    "sha256": "6a8e3c1c471040e6dfd10ea289ae874ec0d021a4e91dae5d3be38b5ff9ef4ebc"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124"
+   ]
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "doc_type": "textbook",
+   "excerpt_document": false,
+   "noisy_text": {
+    "path": "OHR-Bench/data/retrieval_base/MinerU/textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74.json",
+    "problems": [],
+    "sha256": "06044e749c1bc841c7f195141f01c9a7092fe4ec8eaf8c8674fca683288a7ca3",
+    "source": "MinerU",
+    "status": "present"
+   },
+   "pages": [
+    {
+     "ocr_status": "ok",
+     "ocr_text_sha256": "6cee7808448e765ed13392f7aa7b2a48b86c5f642d2c90d9ef4a7ea267e351ae",
+     "page_idx": 0,
+     "pdf_page_number": 1
+    }
+   ],
+   "pdf": {
+    "archive": "data/ohr_bench_raw/pdfs.zip",
+    "bytes": 61701,
+    "member": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74.pdf",
+    "page_count": 1,
+    "sha256": "0ffb22093297380ae7e3f55a1490fcab9e2b5216462d2446b1c1ebf3481e6e9b"
+   },
+   "qa_doc_names": [
+    "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74"
+   ]
+  }
+ ],
+ "kind": "runtime",
+ "ocr_status_values": {
+  "empty": "noisy text entry present but blank",
+  "missing": "no noisy text entry for this PDF page",
+  "ok": "noisy text present and non-empty"
+ },
+ "page_convention": "page_idx is 0-based and equals the PDF page index; pdf_page_number = page_idx + 1",
+ "pilot_id": "ohr_dev_v1",
+ "questions": [
+  {
+   "doc_id": "news/07_07",
+   "question": "Who confronted his commander after witnessing the shooting of a wounded and unarmed Russian soldier in Ukraine?",
+   "question_id": "50e1fdda-86c3-4047-9758-9cc633f33b00"
+  },
+  {
+   "doc_id": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5",
+   "question": "Does the BASC-2 Teacher Report Scale-Child Form Adaptive Scale have higher alpha reliability compared to its inter-rater reliability?",
+   "question_id": "65ea29d1-adae-4e45-a036-e74be34d7804"
+  },
+  {
+   "doc_id": "textbook/chem-323236.pdf_183",
+   "question": "What is the prefix used to specify a molecule with four atoms of an element according to Table 5.8.1?",
+   "question_id": "76a3d0f7-998d-476a-aac4-55c92f7a8e02"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+   "question": "弗朗西斯科·埃尔南德斯·托莱多博士在墨西哥的自然科学研究持续了多少年？",
+   "question_id": "84403b37-b13b-4d4e-a368-f7d2d9732b86"
+  },
+  {
+   "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+   "question": "How does Dentascan improve the evaluation of oral scc compared to past methods?",
+   "question_id": "b7ad5f22-7e21-476c-9933-ea8fb579e050"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_298",
+   "question": "What is the central theme of the document?",
+   "question_id": "ecbf8bf8-e836-4b50-8ca8-ebc629deb1d7"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+   "question": "在审题过程中，应该遵循哪些步骤来确保答题质量？",
+   "question_id": "ecccdf67-bc03-447c-a990-d5989185f21a"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+   "question": "在北方地区，华北平原的作物熟制是什么？",
+   "question_id": "ecd44593-9f98-4aa0-9890-46dbf35c54ea"
+  }
+ ],
+ "schema_version": 1,
+ "sources": {
+  "noisy_text": {
+   "limitation": "MinerU engine version and settings are unknown; bytes match the upstream repository",
+   "root": "OHR-Bench/data/retrieval_base/MinerU",
+   "source": "MinerU",
+   "tree_digest": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "a0d022f0359f127d8b90af8ebbb4fafe7ac541549f90f4ccf0c3ae83231bd18c"
+   },
+   "upstream_reference": "config/ohr_pdf_source_lock.json"
+  },
+  "pdf_archive": {
+   "local_path": "data/ohr_bench_raw/pdfs.zip",
+   "lock": "config/ohr_pdf_source_lock.json",
+   "sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783"
+  }
+ }
+}

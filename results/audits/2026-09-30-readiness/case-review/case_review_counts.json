@@ -1,0 +1,73 @@
+{
+  "record_type": "AGENT REVIEW",
+  "cases": 20,
+  "sent": 17,
+  "not_sent": 3,
+  "not_sent_cases": [
+    1,
+    2,
+    3
+  ],
+  "retrieval_contains_among_sent": {
+    "no": 2,
+    "partly": 2,
+    "yes": 13
+  },
+  "retrieval_partly_cases": [
+    7,
+    14
+  ],
+  "retrieval_no_cases": [
+    17,
+    20
+  ],
+  "ocr_preserves_all": {
+    "damaged": 1,
+    "lost": 4,
+    "survives": 14,
+    "uncertain": 1
+  },
+  "ocr_preserves_among_sent": {
+    "damaged": 1,
+    "lost": 1,
+    "survives": 14,
+    "uncertain": 1
+  },
+  "gold_questionable_all": {
+    "no": 14,
+    "uncertain": 1,
+    "yes": 5
+  },
+  "gold_questionable_yes_cases": [
+    1,
+    4,
+    7,
+    14,
+    17
+  ],
+  "gold_questionable_uncertain_cases": [
+    2
+  ],
+  "gold_questionable_yes_among_sent": [
+    4,
+    7,
+    14,
+    17
+  ],
+  "likely_origin_all": {
+    "OCR": 4,
+    "answer format": 3,
+    "mild ambiguity": 1,
+    "none expected": 8,
+    "question ambiguity": 3,
+    "retrieval": 1
+  },
+  "likely_origin_among_sent": {
+    "OCR": 1,
+    "answer format": 3,
+    "mild ambiguity": 1,
+    "none expected": 8,
+    "question ambiguity": 3,
+    "retrieval": 1
+  }
+}
