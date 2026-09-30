@@ -1,5 +1,19 @@
 # Live-baseline readiness review (2026-09-30)
 
+## Corrections (2026-09-30, later)
+
+This note lists what changed after the first version of this review. It changes no frozen question, gold answer, pilot selection or annotation.
+
+- **Agent review counts.** The agent review summary said the sent evidence holds the answer fully in 15 of 17 sent cases. The table rows give 13 fully, 2 partly (cases 7 and 14) and 2 not at all (cases 17 and 20). [The agent review](ohr-dev-v1-agent-review-2026-09-30.md) is corrected. This review did not repeat the wrong number.
+- **Wording.** Five interpretations were reworded in sections 3 and 6:
+  - noisy OCR text that exists is not shown to be correct, and the `ok` status only says text exists;
+  - a gold page among the retrieved pages does not show that the needed passage was retrieved;
+  - evidence missing from the first prompt does not mean a case tests only abstention, because it also bears on later retrieval or OCR repair;
+  - agent concerns about gold answers are provisional and not adjudicated corrections;
+  - the 20 inspection cases are a purposive diagnostic sample and give no estimate of dataset-wide error rates.
+- **Audit scripts.** The audit scripts are now in [scripts/audits/](../../scripts/audits/README.md), with offline tests in `tests/test_audits.py`. Sections 1, 5 and 7 point to them. Run against the c9b7ad5 dry run, they reproduce these figures: 70 records (63 sent, 7 skipped), 243 evidence blocks, input bounds of 1,550, 6,563, 7,920 and 347,702 in total, cost bounds of $0.949909 and $2.849727, the expected cost of $0.24 (range $0.19 to $0.31), the Fast-tier bounds ($1.614844 and $4.844532), the stop after 57 of 63 questions (58 with 5 output tokens) when every question has two rejected attempts under the $2.00 ceiling, the 8 live-check ids and the derived manifest hash `a1e147c0...`.
+- **Not updated here.** Sections 2 and 3 (B1, B2, the proxy setting, the subset blocker and the hard-coded run kind) and the decisions in section 4 describe the runner at `c9b7ad5`. Code changes made after that commit are not reflected in them. Update those sections when the code lands.
+
 Status: a review for the research lead, to be checked by an independent reviewer. It makes no decision and it is not an authorization to spend. No paid request, connectivity probe or credential load took place. No human annotation was written.
 
 The review asks one question: are the selected data, the retrieved evidence, the prompts and the proposed execution settings fit for the first real-model development baseline on `ohr_dev_v1`? It does not test whether diagnosis-selected repair beats simpler recovery.
@@ -18,9 +32,9 @@ In this report, "the lead" is the human research lead, and "the coordinating age
   - All 243 evidence blocks match the MinerU page text exactly, with the right rank, page and label. All `evidence_sha256` and `prompt_sha256` values recompute.
   - Blocks: 0 empty, 0 markup-only, 0 duplicated and 0 fence collisions.
   - The full `doc_id`, its basename and its folder prefix appear 0 times in any prompt.
-  - An audit hook shows that the dry run opens only the runtime manifest, the provider config and the 30 MinerU files. It never opens `evaluation_manifest.json`, the clean reference text, annotations or `selection_record.json`.
+  - An audit hook shows that the dry run opens only the runtime manifest, the provider config and the 30 MinerU files. It never opens `evaluation_manifest.json`, the clean reference text, annotations or `selection_record.json`. Importing the modules also reads `config/model_revisions.json` (through `faar.settings`), which is not part of the dry run itself. `scripts/audits/audit_prompts.py --trace-dry-run` reproduces the trace and lists that import-time read separately.
   - No gold answer of 4 or more characters appears outside the OCR evidence. The 15 gold strings found inside evidence blocks are legitimate OCR text.
-- **Stable construction.** Dry runs with different `PYTHONHASHSEED`, working directory, `TZ` and `LC_ALL` values give byte-identical files. The dry run at `c9b7ad5` equals `.local/work/prompt-preview-final/` byte for byte.
+- **Stable construction.** Dry runs with different `PYTHONHASHSEED`, working directory, `TZ` and `LC_ALL` values give byte-identical files. The dry run at `c9b7ad5` equals `.local/work/prompt-preview-final/` byte for byte. `audit_prompts.py --compare-dry-run` checks that byte equality for two dry-run directories. The runs under other environment values were made by hand and are not scripted.
 - **Size accounting.** The input bound is `16 + sum over the two messages of (UTF-8 bytes + 4)`, from `src/faar/request_budget.py:232-243`.
   - It recomputes for all 63 prompts: minimum 1,550, median 6,563, maximum 7,920 (`65ea29d1`), total 347,702. None exceeds the 12,000 limit.
   - `max_tokens` = 128 is sent on every request (`src/faar/answer_providers.py:558`).
@@ -119,14 +133,16 @@ In this report, "the lead" is the human research lead, and "the coordinating age
 
 ### Data and evidence (from the agent review and the prompt audit)
 
-- **Gold answers.** The agent review of the 20 inspection cases ([ohr-dev-v1-agent-review-2026-09-30.md](ohr-dev-v1-agent-review-2026-09-30.md)) flags the gold answer as questionable in 5 cases (1, 4, 7, 14, 17), and case 2 is uncertain.
+The 20 inspection cases are a purposive diagnostic sample. The counts taken from the agent review describe those cases and estimate no rate for the dataset or for the 70 pilot questions.
+
+- **Gold answers.** The agent review of the 20 inspection cases ([ohr-dev-v1-agent-review-2026-09-30.md](ohr-dev-v1-agent-review-2026-09-30.md)) raises a concern about the gold answer in 5 cases (1, 4, 7, 14, 17) and is unsure about case 2. These concerns are provisional agent judgement. A person has not adjudicated them.
   - Four of the five are sent to the model.
   - Two examples. Case 14's page attributes the quoted aim to three people and the gold names one. In case 17 the gold appears to fold the "18" of the Dublin 18 postal district into the phone number.
-  - The frozen QA file stays unchanged. These questions stay in the denominator, and a person should confirm the flags.
+  - The frozen QA file stays unchanged. These questions stay in the denominator, and a person should confirm or reject each concern.
 - **Retrieval.** Case 20 is a retrieval miss. The needed definition is in `p0-c3` and `p0-c4`, neither was sent, and no sent chunk contains "working hours".
   - Over all 63 prompts, 61 include every gold page. `8e391133` and `b89d6523` miss one.
-  - Page coverage overstates evidence coverage, as case 20 shows: its gold page 0 is present through `p0-c0`, but the needed chunk is not.
-- **Degenerate OCR is sent as evidence.** In case 17 the MinerU text is a hallucinated formula and a repetition loop, and `ocr_condition` still counts the page as `ok`. At least 6 sent prompts lack the answer in their evidence. The prompt audit found 4 (`8e391133`, `ecb5f40d`, `a1ab17c0`, `a12ab315`), and the agent review adds cases 17 (`a0ec729f`) and 20 (`33a1d1c2`). They test abstention, not answering.
+  - A gold page among the retrieved pages does not show that the needed passage was retrieved. Case 20 shows it: its gold page 0 is present through `p0-c0`, and the needed chunks are not. Page coverage overstates evidence coverage.
+- **Degenerate OCR is sent as evidence.** In case 17 the MinerU text is a hallucinated formula and a repetition loop, and `ocr_condition` still counts the page as `ok`. That status says only that text exists. It does not show that the text is correct. At least 6 sent prompts lack the answer in their evidence. The prompt audit found 4 (`8e391133`, `ecb5f40d`, `a1ab17c0`, `a12ab315`), and the agent review adds cases 17 (`a0ec729f`) and 20 (`33a1d1c2`). In the first prompt, the model can only abstain or guess on these. That does not make them abstention tests, because the missing evidence also bears on later retrieval or OCR repair.
 - **A control character in a frozen question.** `6ac85f42` sends U+0007 where the source had the `a` of `\alpha`. The vendored `OHR-Bench/data/qas_v2.json` contains 12 `\u0007` escapes. This is an upstream data defect, logged and not edited.
 - **Category coverage.**
   - Case 13 was selected for reading order, but the misordering does not touch its answer chunk.
@@ -180,10 +196,11 @@ The rule uses runtime fields only: question text, evidence text, page count and 
 - **Result.** The rule gives 8 questions from 8 documents: 6 sent and 2 skipped.
 - **Verification.** The coordinating agent and the independent reviewer each re-derived the selection from `prepared_requests.jsonl`, and both got the same 8 IDs.
 - **Derived manifest.** `.local/work/livecheck/runtime_manifest.livecheck-v1.json`, sha256 `a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3`. It is an exact subset of the frozen runtime manifest, in manifest order, with identical document entries and top-level fields. The frozen pilot is untouched.
+- **Regeneration.** `scripts/audits/select_live_check.py --dry-run-dir <dir> --out .local/work/livecheck` applies the rule and writes the ids and the derived manifest. Run on the `c9b7ad5` dry run, it gives the same 8 ids and a manifest that is byte-identical to the scratch one. `scripts/audits/check_subset.py --derived <manifest>` verifies the exact-subset property and prints the sha256, the question count (8) and the digest of the question ids (sha256 of the ids in manifest order joined by a newline, `75ed63bf...`).
 
 ### Cost of the check
 
-The figures below use $2.50 input and $10.00 output per 1M tokens.
+The figures below use $2.50 input and $10.00 output per 1M tokens. `scripts/audits/cost_and_ceiling.py --subset-ids <ids file> --ceiling 0.15` reproduces them and states every assumption of the estimate as an argument.
 
 | Quantity | Value | Kind |
 | --- | --- | --- |
@@ -216,7 +233,7 @@ Accuracy is not a criterion. The check passes only if all of the following hold:
 9. The dashboard usage for the check's time window matches the run summary, checked by hand.
 10. `score --evaluation-manifest <subset>` runs. Its numbers are not used for any decision.
 
-A helper, `.local/work/livecheck/verify_livecheck.py`, checks criteria 1 to 8 from the run directory. It is local and unreviewed. It passed on a fake subset run and failed as intended when given wrong expectations. It has never seen a live run.
+A helper, `scripts/audits/verify_live_check.py`, checks criteria 1 to 8 from the run directory. It is committed and has no independent review. It passed on a fake subset run and failed as intended when given wrong expectations. It has never seen a live run. It reads the fields that newer runner code adds (`returned_service_tier`, `run_kind`, `pilot_manifest`, the storage policy) when they are present and reports `absent` otherwise, so re-run it after the code lands.
 
 ### Commands (NOT EXECUTED)
 
@@ -250,7 +267,7 @@ Then inspect the run. Both commands are read-only.
 ```
 
 ```bash
-.local/venv-prebaseline/bin/python .local/work/livecheck/verify_livecheck.py "results/development/$RUN"
+.local/venv-prebaseline/bin/python scripts/audits/verify_live_check.py "results/development/$RUN"
 ```
 
 Score only if every criterion holds. Scoring is final: after it, `run`, `reopen` and `reconcile` refuse the run. First derive the subset evaluation manifest. It holds reference answers, so keep it local.
@@ -298,11 +315,11 @@ A $2.00 ceiling admits every first attempt plus about $1.75 of extra reservation
   - the tokens, dollars and latency per question;
   - a first EM and F1 with a wide interval (study brief section 15.10).
 - **What it cannot support.** Claims of significance, behaviour on unseen documents, benchmark failure frequencies, anything about diagnosis or repair, chart questions, or long documents. 23 of its 30 documents are single pages.
-- **Coverage.** The six empty-OCR questions and one heading-only question never reach the model. Four of the sent questions have questionable gold answers, and at least six have no answer in their evidence. Report the Han-script and empty-OCR groups as their own rows.
+- **Coverage.** The six empty-OCR questions and one heading-only question never reach the model. The agents doubt the gold answer of four of the sent questions (a provisional concern), and at least six sent questions have no answer in their evidence. Report the Han-script and empty-OCR groups as their own rows.
 - **Human inspection still needed.**
   - The 20-case packet is unlabelled: 24 rows, 0 filled.
   - A person should label the text defects and evidence impact blind to this review (study brief section 10), then compare with it.
-  - In particular, a person should confirm the gold-answer flags for cases 1, 2, 4, 7, 14 and 17, the retrieval miss in case 20, and the degenerate OCR in case 17.
+  - In particular, a person should confirm or reject the provisional gold-answer concerns for cases 1, 2, 4, 7, 14 and 17, and check the retrieval miss in case 20 and the degenerate OCR in case 17.
   - The diagnosis study needs a second independent labeller.
 - **Unapproved.** Nothing in section 4 is decided. The prompt, model, prices, ceilings, retrieval settings, failure-rate limit, input-limit rule, storage, service tier and code freeze all remain open.
 - **Licensing, unchanged since [ohr-scorer-provenance.md](ohr-scorer-provenance.md).**
@@ -342,8 +359,8 @@ A $2.00 ceiling admits every first attempt plus about $1.75 of extra reservation
     - the storage, service-tier, price and deprecation text in the raw documentation;
     - `trust_env`;
     - the live-check selection.
-- **Worker outputs.** Audit scripts, full notes and the fake subset run are in the session's scratch directory. They are not committed and have no backup.
-- **Live-check files.** The derived manifest, `selected_question_ids.json`, `select_livecheck.py` and `verify_livecheck.py` are in `.local/work/livecheck/`. That directory is git-ignored, and no other copy exists. The rule in section 5 regenerates the selection.
+- **Worker outputs.** The audit scripts are now in [scripts/audits/](../../scripts/audits/README.md), and the structured agent-review rows are in [ohr-dev-v1-agent-review-2026-09-30.cases.json](ohr-dev-v1-agent-review-2026-09-30.cases.json). Full prompts, OCR text and page images stay local by policy and are not preserved. Also not preserved, and kept only in the session's scratch directory without a backup: the workers' full markdown notes (they quote document text), the fake subset run, the retry-table script (`error_table.py`), the multi-environment stability runs, and the extra prompt-audit pass (OCR-noise ranking, reference-answer lengths, multi-page structure).
+- **Live-check files.** `select_live_check.py`, `check_subset.py` and `verify_live_check.py` are in `scripts/audits/`. The derived manifest and `selected_question_ids.json` in `.local/work/livecheck/` are git-ignored. Run `select_live_check.py` to regenerate them from a dry run. The regenerated manifest is byte-identical to the scratch one.
 - **Independent fact-check.** A separate `faar-worker` reviewer checked both reports. It found no critical issues, 4 high, 6 medium and 6 low.
   - All four high findings were fixed before commit. They covered B1 and B2 overstated as blocking, an output-limit cost that was 10 times too low, and the case 4 reason.
   - One medium finding was dismissed. It claimed the helper's safety-violation check reads a missing key. `run_summary.json` has `safety_violations` whenever there are violations (`src/faar/live_runner.py:2504`), so the check works.

@@ -6,7 +6,7 @@
   "source_report": "docs/reports/ohr-dev-v1-agent-review-2026-09-30.md",
   "reviewed_commit": "c9b7ad5",
   "review_date": "2026-09-30",
-  "sample": "purposive: the 20 inspection cases of ohr_dev_v1. It is not a random sample and gives no estimate of dataset-wide error rates.",
+  "sample": "purposive: the 20 inspection cases of ohr_dev_v1, chosen by category quotas (purposive-quota-hash-rank-v1). It is not a random sample and gives no estimate of dataset-wide error rates.",
   "gold_questionable_status": "provisional agent concern, not an adjudicated correction. The frozen gold answers are unchanged.",
   "field_values": {
     "ocr_preserves": [
