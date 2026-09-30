@@ -665,6 +665,20 @@ def _finite(value: float) -> bool:
     return isinstance(value, float) and math.isfinite(value)
 
 
+def _check_hits(question: RuntimeQuestion, hits: Sequence[RetrievalHit]) -> None:
+    for hit in hits:
+        if hit.chunk.doc_name != question.doc_id:
+            raise RetrievalScopeError(
+                f"hit {hit.chunk.chunk_id!r} belongs to {hit.chunk.doc_name!r}, not to {question.doc_id!r}"
+            )
+        if not all(_finite(v) for v in (hit.fused_score, hit.bm25_score, hit.dense_score)):
+            raise ValueError(f"hit {hit.chunk.chunk_id!r} has a non-finite score")
+
+
+def _failure(stage: str, exc: Exception) -> dict[str, str]:
+    return {"stage": stage, "type": type(exc).__name__, "message": str(exc)[:FAILURE_MESSAGE_LIMIT]}
+
+
 def _evidence_record(rank: int, hit: RetrievalHit) -> dict[str, Any]:
     return {
         "rank": rank,
@@ -722,13 +736,7 @@ def answer_question(
         hits: list[RetrievalHit] = []
         if retriever is not None:
             hits = list(retriever.retrieve(question.question))
-        for hit in hits:
-            if hit.chunk.doc_name != question.doc_id:
-                raise RetrievalScopeError(
-                    f"hit {hit.chunk.chunk_id!r} belongs to {hit.chunk.doc_name!r}, not to {question.doc_id!r}"
-                )
-            if not all(_finite(v) for v in (hit.fused_score, hit.bm25_score, hit.dense_score)):
-                raise ValueError(f"hit {hit.chunk.chunk_id!r} has a non-finite score")
+        _check_hits(question, hits)
         evidence = [_evidence_record(rank, hit) for rank, hit in enumerate(hits, start=1)]
         stage = "answer"
         inject("answer")
@@ -741,8 +749,7 @@ def answer_question(
             raise TypeError("answer backend must return a str answer and a str or None answer_mode")
         return _record(question, STATUS_ANSWERED, loaded, query_tokens, answer=answer, answer_mode=mode, evidence=evidence)
     except Exception as exc:
-        failure = {"stage": stage, "type": type(exc).__name__, "message": str(exc)[:FAILURE_MESSAGE_LIMIT]}
-        return _record(question, STATUS_EXECUTION_FAILED, loaded, query_tokens, evidence=evidence, failure=failure)
+        return _record(question, STATUS_EXECUTION_FAILED, loaded, query_tokens, evidence=evidence, failure=_failure(stage, exc))
 
 
 def check_terminal_records(questions: Sequence[RuntimeQuestion], records: Sequence[Mapping[str, Any]]) -> None:
@@ -808,22 +815,14 @@ class RetrievalRun:
 
 def _retrieve_question(question: RuntimeQuestion, loaded: LoadedDocument, index: _DocumentIndex) -> QuestionRetrieval:
     query_tokens = index.query_token_count(question.question)
-    stage = "retrieve"
     hits: list[RetrievalHit] = []
     try:
         retriever = index.retriever()
         if retriever is not None:
             hits = list(retriever.retrieve(question.question))
-        for hit in hits:
-            if hit.chunk.doc_name != question.doc_id:
-                raise RetrievalScopeError(
-                    f"hit {hit.chunk.chunk_id!r} belongs to {hit.chunk.doc_name!r}, not to {question.doc_id!r}"
-                )
-            if not all(_finite(v) for v in (hit.fused_score, hit.bm25_score, hit.dense_score)):
-                raise ValueError(f"hit {hit.chunk.chunk_id!r} has a non-finite score")
+        _check_hits(question, hits)
     except Exception as exc:
-        failure = {"stage": stage, "type": type(exc).__name__, "message": str(exc)[:FAILURE_MESSAGE_LIMIT]}
-        return QuestionRetrieval(question, (), None, query_tokens, loaded.ocr_condition, failure)
+        return QuestionRetrieval(question, (), None, query_tokens, loaded.ocr_condition, _failure("retrieve", exc))
     reason = None if hits else (index.empty_reason or NO_HITS)
     return QuestionRetrieval(question, tuple(hits), reason, query_tokens, loaded.ocr_condition, None)
 
@@ -885,17 +884,16 @@ def summarise_generation(
     counts = {status: 0 for status in TERMINAL_STATUSES}
     stages: dict[str, int] = {}
     reasons: dict[str, int] = {}
+    without_tokens = {status: 0 for status in TERMINAL_STATUSES}
     for record in records:
         counts[record["status"]] += 1
+        if record["query_retrieval_tokens"] == 0:
+            without_tokens[record["status"]] += 1
         if record["no_evidence_reason"] is not None:
             reasons[record["no_evidence_reason"]] = reasons.get(record["no_evidence_reason"], 0) + 1
         if record["failure"] is not None:
             stages[record["failure"]["stage"]] = stages.get(record["failure"]["stage"], 0) + 1
     failed = counts[STATUS_EXECUTION_FAILED]
-    without_tokens = {status: 0 for status in TERMINAL_STATUSES}
-    for record in records:
-        if record["query_retrieval_tokens"] == 0:
-            without_tokens[record["status"]] += 1
     pages = {status: 0 for status in OCR_STATUSES}
     for loaded in loaded_documents.values():
         for status in loaded.page_status.values():
@@ -960,10 +958,9 @@ def git_provenance(code_root: Path | None, exclude: Sequence[Path] = ()) -> dict
     ).stdout.strip()
     top_path = Path(top).resolve() if top else code_root.resolve()
     excluded = [p.resolve() for p in exclude]
-    entries = status.split("\0")
     paths: list[str] = []
     skip_next = False
-    for entry in entries:
+    for entry in status.split("\0"):
         if skip_next:
             skip_next = False
             continue
@@ -1019,10 +1016,6 @@ def refuse_pilot_directory(run_dir: Path, project_root: Path) -> None:
         )
 
 
-def _read_json_file(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
 @dataclass(frozen=True)
 class ExistingRun:
     config: dict[str, Any]
@@ -1052,7 +1045,7 @@ def inspect_run_dir(run_dir: Path) -> ExistingRun | None:
         "Keep the directory as a record of the interrupted attempt and choose a new run directory.",
     )
     try:
-        config = _read_json_file(run_dir / RUN_CONFIG_NAME)
+        config = json.loads((run_dir / RUN_CONFIG_NAME).read_text(encoding="utf-8"))
         summary_text = (run_dir / GENERATION_SUMMARY_NAME).read_text(encoding="utf-8")
         summary = json.loads(summary_text)
         predictions_text = (run_dir / PREDICTIONS_NAME).read_text(encoding="utf-8")
@@ -1311,7 +1304,7 @@ def score_run(
         "kind": RUN_KIND,
         "label": ENGINEERING_LABEL,
         "scorer": scoring.scorer_identity(),
-        # jieba sets the Chinese tokenisation, regex the article pattern and unicodedata the CJK test.
+        # unicodedata is recorded too: it decides which characters the CJK test in the scorer accepts.
         "scorer_environment": {**scoring.scorer_dependencies(), "unicodedata": unicodedata.unidata_version},
         "evaluation_manifest": {"path": _display_path(path, project_root), "sha256": sha256_bytes(evaluation_bytes)},
         "generation_fingerprint": existing.config["fingerprint"],

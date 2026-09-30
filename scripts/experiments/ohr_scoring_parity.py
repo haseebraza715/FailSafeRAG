@@ -335,7 +335,8 @@ def main() -> int:
     parser.add_argument("--pilot-manifest", type=Path, default=PILOT_MANIFEST)
     args = parser.parse_args()
 
-    if file_sha256(UPSTREAM_MODULE) != ohr_scoring.UPSTREAM_SHA256:
+    upstream_sha256 = file_sha256(UPSTREAM_MODULE)
+    if upstream_sha256 != ohr_scoring.UPSTREAM_SHA256:
         print("vendored upstream file differs from the sha256 recorded in faar.ohr_scoring", file=sys.stderr)
         return 1
     upstream = load_upstream()
@@ -354,12 +355,11 @@ def main() -> int:
 
     versions = {name: metadata.version(name) for name in PINNED}
     report: dict[str, Any] = {
-        "upstream_sha256": file_sha256(UPSTREAM_MODULE),
+        "upstream_sha256": upstream_sha256,
         "versions": versions,
         "pinned_versions_in_use": versions == PINNED,
     }
-    edge = [(case_id, p, r) for case_id, p, r in EDGE_CASES + SCRIPT_ONLY_CASES]
-    report["edge_cases"] = compare(ohr_scoring, upstream, edge)
+    report["edge_cases"] = compare(ohr_scoring, upstream, EDGE_CASES + SCRIPT_ONLY_CASES)
 
     qas = json.loads(args.qas.read_text(encoding="utf-8"))
     qas_refs = [item["answers"] for item in qas]

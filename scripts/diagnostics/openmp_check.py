@@ -142,8 +142,9 @@ def loaded_images() -> list[str]:
         with open("/proc/self/maps", encoding="utf-8") as handle:
             for line in handle:
                 parts = line.split(None, 5)
-                if len(parts) == 6 and parts[5].strip().startswith("/") and parts[5].strip() not in paths:
-                    paths.append(parts[5].strip())
+                path = parts[5].strip() if len(parts) == 6 else ""
+                if path.startswith("/") and path not in paths:
+                    paths.append(path)
         return paths
     return []
 
