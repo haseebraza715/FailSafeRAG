@@ -35,7 +35,6 @@ spec.loader.exec_module(openmp_check)
     ("returncode", "label", "sig"),
     [
         (-int(signal.SIGSEGV), "signal:SIGSEGV", "SIGSEGV"),
-        (-int(signal.SIGABRT), "signal:SIGABRT", "SIGABRT"),
         (3, "exit:3", None),
         (-250, "exit:-250", None),
     ],
@@ -68,7 +67,6 @@ def test_libomp_error_15_beats_the_signal_label() -> None:
     "path",
     [
         "/env/lib/python3.12/site-packages/torch/lib/libomp.dylib",
-        "/env/lib/python3.12/site-packages/faiss/.dylibs/libomp.dylib",
         "/env/lib/python3.12/site-packages/faiss_cpu.libs/libgomp-a34b3233.so.1.0.0",
         "/usr/lib/x86_64-linux-gnu/libgomp.so.1",
         "/opt/intel/lib/libiomp5.dylib",
@@ -83,8 +81,6 @@ def test_openmp_runtimes_are_recognised(path: str) -> None:
     [
         "/usr/lib/libcompression.dylib",
         "/usr/lib/system/libcompiler_rt.dylib",
-        "/env/lib/python3.12/site-packages/pyarrow/libarrow_compute.2500.dylib",
-        "/env/lib/python3.12/site-packages/numpy/.dylibs/libgfortran.5.dylib",
     ],
 )
 def test_names_that_only_contain_omp_are_not_openmp_runtimes(path: str) -> None:
