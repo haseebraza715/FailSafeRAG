@@ -71,6 +71,7 @@ def completion(text: str = "twelve months") -> dict[str, Any]:
         "model": lr.FAKE_CONFIG.model,
         "choices": [{"index": 0, "finish_reason": "stop", "message": {"role": "assistant", "content": text, "refusal": None}}],
         "usage": {"prompt_tokens": 40, "completion_tokens": 3, "total_tokens": 43},
+        "service_tier": "default",
     }
 
 

@@ -111,7 +111,8 @@ def test_store_true_names_the_missing_authorization() -> None:
 
 
 def test_a_real_price_table_must_declare_the_standard_tier() -> None:
-    payload = valid_live_config()  # its prices carry no service_tier
+    payload = valid_live_config()
+    del payload["prices"]["service_tier"]
     with pytest.raises(RunnerRefusal, match=r"prices\.service_tier"):
         lr.parse_provider_config(payload)
     for tier in ("priority", "auto", None, ""):
@@ -120,7 +121,9 @@ def test_a_real_price_table_must_declare_the_standard_tier() -> None:
 
 
 def test_a_simulated_price_table_may_omit_the_tier() -> None:
-    config = lr.parse_provider_config(valid_live_config(), simulated=True)
+    payload = valid_live_config()
+    del payload["prices"]["service_tier"]
+    config = lr.parse_provider_config(payload, simulated=True)
     assert config.prices.service_tier == SERVICE_TIER_STANDARD
 
 
@@ -294,6 +297,52 @@ def test_a_saved_event_that_differs_from_its_response_file_in_the_tier_is_refuse
     (run_dir / "attempts.jsonl").write_text("\n".join(edited) + "\n")
     with pytest.raises(RunnerRefusal, match="returned_service_tier"):
         lr.load_run(run_dir)
+
+
+# The real adapter on a mock transport: the tier the wire reports reaches the stop.
+
+
+def wire_step(tier: object) -> Any:
+    import httpx
+    from test_live_http_outcomes import completion
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        body = completion()
+        if tier == "absent":
+            body.pop("service_tier", None)
+        else:
+            body["service_tier"] = tier
+        return httpx.Response(200, json=body, headers={"x-request-id": "req_tier"})
+
+    return respond
+
+
+@pytest.mark.parametrize("tier", ["priority", "flex", "scale", "auto", "absent", None])
+def test_a_tier_reported_on_the_wire_stops_the_run_after_two_requests(project: Project, tier: object) -> None:
+    from test_live_http_outcomes import Session, Wire
+
+    wire = Wire({"q2": [wire_step(tier)]})
+    session = Session(project, wire)
+    result = session.run()
+    assert wire.seen == ["q1", "q2"], "no request leaves after the offending response"
+    assert result.exit_code == SAFETY_EXIT
+    violations = result.summary["safety_violations"]
+    assert [v["condition"] for v in violations] == [CONDITION]
+    saved = next(e for e in events_of(session.run_dir) if e["event"] == "response_saved" and e["question_id"] == "q2")
+    assert saved["returned_service_tier"] == (None if tier in ("absent", None) else tier)
+    assert all(body["service_tier"] == "default" and body["store"] is False for body in wire.bodies)
+    restart = Session(project, Wire())
+    again = restart.run()
+    assert again.exit_code == SAFETY_EXIT and restart.wire.providers == 0 and restart.wire.seen == []
+
+
+def test_the_standard_tier_reported_on_the_wire_completes_the_run(project: Project) -> None:
+    from test_live_http_outcomes import Session, Wire
+
+    wire = Wire()
+    result = Session(project, wire).run()
+    assert result.exit_code == 0 and wire.seen == SENT
+    assert result.summary["returned_service_tiers"] == {"default": len(SENT)}
 
 
 # T6, T7: cost honesty

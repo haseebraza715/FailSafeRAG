@@ -1734,7 +1734,7 @@ def valid_live_config() -> dict[str, Any]:
         "max_output_tokens": 128,
         "timeout_seconds": 60,
         "tokenizer_bound": "utf8-bytes",
-        "prices": {"currency": "USD", "input_per_million": 2.5, "cached_input_per_million": 1.25, "output_per_million": 10.0, "source": "test fixture", "source_date": "2026-09-29"},
+        "prices": {"currency": "USD", "input_per_million": 2.5, "cached_input_per_million": 1.25, "output_per_million": 10.0, "source": "test fixture", "source_date": "2026-09-29", "service_tier": "default"},
     }
 
 
@@ -2180,7 +2180,7 @@ def test_the_live_client_is_built_on_the_configured_base_url_with_no_network(mon
         return httpx.Response(200, json=_completion_json())
 
     config = live_config(endpoint="https://gateway.example.test/v1")
-    provider = lr.build_live_provider(config, {"OPENAI_API_KEY": "test-not-a-key"}, http_client=httpx.Client(transport=httpx.MockTransport(handler)))
+    provider = lr.build_live_provider(config, {"OPENAI_API_KEY": "test-not-a-key"}, http_client=httpx.Client(transport=httpx.MockTransport(handler), trust_env=False))
     assert str(provider._client.base_url) == "https://gateway.example.test/v1/"
     assert provider.identity()["endpoint"] == "https://gateway.example.test/v1/"
     response = provider.send(
@@ -2751,7 +2751,7 @@ def test_status_says_what_to_do_after_the_breaker_tripped(project: Project) -> N
 # ---------------------------------------------------------------------------
 
 
-def live_run(project: Project, rig: Rig, name: str = "live-a", *, services: lr.Services | None = None, monkeypatch: pytest.MonkeyPatch | None = None) -> lr.LiveResult:
+def live_run(project: Project, rig: Rig, name: str = "live-a", *, services: lr.Services | None = None, monkeypatch: pytest.MonkeyPatch | None = None, run_kind: str = "development_pilot") -> lr.LiveResult:
     """A live-mode run driven by a fake provider through the factory seam. No client is built and nothing is sent."""
     if monkeypatch is not None:
         for env_name in CLIENT_ENV_VARS:
@@ -2764,6 +2764,7 @@ def live_run(project: Project, rig: Rig, name: str = "live-a", *, services: lr.S
         pilot_id=PILOT_ID,
         safety_ceiling=100.0,
         config=config,
+        run_kind=run_kind,
     )
     factory = lambda ctx: lr.build_fake_provider(rig.steps, rig.default, config, ctx)  # noqa: E731
     return lr.execute_run(
@@ -2811,7 +2812,7 @@ def test_a_missing_returned_model_counts_as_a_mismatch(project: Project, monkeyp
     rig = Rig()
     opts = lr.RunOptions(
         project_root=project.root, run_dir=project.root / "results" / "development" / "live-a", mode=lr.MODE_LIVE,
-        pilot_id=PILOT_ID, safety_ceiling=100.0, config=config,
+        pilot_id=PILOT_ID, safety_ceiling=100.0, config=config, run_kind="development_pilot",
     )
     result = lr.execute_run(
         opts, provider_factory=lambda ctx: NoModel(lr.build_fake_provider(rig.steps, rig.default, config, ctx)),

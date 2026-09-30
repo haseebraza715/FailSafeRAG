@@ -60,9 +60,7 @@ def sha(data: bytes) -> str:
 
 
 def live_config() -> lr.ProviderConfig:
-    payload = valid_live_config()
-    payload["prices"] = {**payload["prices"], "service_tier": "default"}
-    return lr.parse_provider_config(payload)
+    return lr.parse_provider_config(valid_live_config())
 
 
 def live(
@@ -254,6 +252,7 @@ def test_a_development_pilot_on_an_altered_selection_is_refused_before_anything_
     with pytest.raises(RunnerRefusal, match="canonical"):
         live(project, run_kind=RUN_KIND_DEVELOPMENT, manifest=manifest, rig=rig)
     assert rig.factory_calls == 0 and not live_dir(project).exists()
+    assert not (project.root / "results" / "development").exists(), "the refusal comes before any directory is made"
 
 
 def test_the_question_count_and_the_ids_hash_describe_the_run_not_the_frozen_pilot(project: Project) -> None:
@@ -324,9 +323,7 @@ def test_a_subset_run_scores_against_a_subset_evaluation_manifest_and_says_it_is
 
 def cli_live_args(project: Project, tmp: Path, *extra: str) -> list[str]:
     config = tmp / "provider.json"
-    payload = valid_live_config()
-    payload["prices"] = {**payload["prices"], "service_tier": "default"}
-    config.write_text(json.dumps(payload))
+    config.write_text(json.dumps(valid_live_config()))
     return [
         "run", "--mode", "live", "--pilot-id", PILOT_ID, "--project-root", str(project.root),
         "--run-dir", str(live_dir(project, "cli-live")), "--provider-config", str(config), "--safety-ceiling", "1", *extra,

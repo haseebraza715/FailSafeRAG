@@ -89,7 +89,6 @@ from .live_contract import (
     RUN_KINDS,
     SERVICE_TIER_STANDARD,
     STORAGE_DISABLED,
-    STORAGE_ENABLED_FOR_ATTEMPT_LOOKUP,
     STORAGE_POLICIES,
     EvidenceBlock,
     PriceTable,
@@ -2615,7 +2614,7 @@ VALID_BASELINE_MEANS = (
 )
 # Runs whose identity records a run kind and a manifest provenance. It is mechanical eligibility only.
 VALID_BASELINE_MEANS_WITH_PROVENANCE = (
-    "valid_baseline checks mechanical eligibility only. It is true when the run is live, its kind is development_pilot, "
+    "valid_baseline checks mechanical completeness and eligibility only. It is true when the run is live, its kind is development_pilot, "
     "its runtime manifest is byte-identical to the frozen manifest of its pilot, its state is complete, no question is "
     "execution_failed, every returned model equals the requested model, every response reported the Standard service "
     "tier, no response reported more input tokens than the input bound and the safety ledger reports no anomaly. "
@@ -2945,6 +2944,16 @@ def execute_run(
     project_root = options.project_root.resolve()
     run_dir = _absolute(options.run_dir)
     run_kind = resolve_run_kind(options.mode, options.run_kind)
+    if run_kind == RUN_KIND_DEVELOPMENT and options.runtime_manifest_path is not None:
+        # The authoritative check runs on the run identity. This one refuses before a directory exists.
+        frozen = project_root / "results" / "pilots" / options.pilot_id / "runtime_manifest.json"
+        chosen = _absolute(options.runtime_manifest_path)
+        _refuse(
+            frozen.is_file() and chosen.is_file() and sha256_file(chosen) == sha256_file(frozen),
+            f"a {RUN_KIND_DEVELOPMENT} run needs the canonical frozen runtime manifest of pilot {options.pilot_id}, and "
+            f"{options.runtime_manifest_path} is not byte-identical to {frozen}. A subset or another selection is an "
+            f"{RUN_KIND_ENGINEERING}. Nothing was prepared.",
+        )
     refuse_run_directory(run_dir, project_root, options.mode)
     run_id = validate_run_id(options.run_id if options.run_id is not None else run_dir.name)
     config = _resolve_config(options)
