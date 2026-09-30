@@ -122,8 +122,18 @@ def verify(
         info("pilot_manifest", ABSENT)
     else:
         info("pilot_manifest", _brief(pilot_manifest))
-        canonical = pilot_manifest.get("canonical") if isinstance(pilot_manifest, Mapping) else None
-        check("manifest provenance records a canonical flag", isinstance(canonical, bool), str(canonical))
+        # The identity copy is the one the run hash covers. Every copy the run records must agree with it.
+        copies = [
+            ("identity", identity.get("pilot_manifest")),
+            ("run_config", config.get("pilot_manifest")),
+            ("run_summary", summary.get("pilot_manifest")),
+        ]
+        flags = {where: copy.get("canonical") for where, copy in copies if isinstance(copy, Mapping)}
+        check(
+            "manifest provenance records a boolean canonical flag, the same in every copy",
+            bool(flags) and all(isinstance(flag, bool) for flag in flags.values()) and len(set(flags.values())) == 1,
+            json.dumps(flags),
+        )
     if run_kind != ABSENT and run_kind != "development_pilot":
         check(
             "an engineering check is not eligible as a baseline (valid_baseline false)",
