@@ -154,7 +154,15 @@ def text_file_index(project_root: Path, source: str) -> dict[str, Path]:
 # ---------------------------------------------------------------- selection
 
 
-def build_pool(inputs: dict[str, Any]) -> dict[str, Any]:
+POOL_RULES = {
+    "train_exclusive": "documents all of whose questions are in the train split",
+    "train_without_test": "documents with at least one train question and no test question (validation questions allowed)",
+}
+
+
+def build_pool(inputs: dict[str, Any], pool_kind: str = "train_exclusive") -> dict[str, Any]:
+    if pool_kind not in POOL_RULES:
+        raise PilotError(f"unknown selection.pool {pool_kind!r}; known: {sorted(POOL_RULES)}")
     manifest, qas, split = inputs["manifest"], inputs["qas"], inputs["split"]
     split_of = {qid: name for name, ids in split["splits"].items() for qid in ids}
     raw_docs = {str(r["doc_name"]) for r in qas}
@@ -166,10 +174,14 @@ def build_pool(inputs: dict[str, Any]) -> dict[str, Any]:
         splits_by_doc[cid].add(split_of.get(str(r["ID"]), "unassigned"))
         raw_by_doc[cid].add(str(r["doc_name"]))
     train_exclusive = sorted(d for d, s in splits_by_doc.items() if s == {"train"})
+    if pool_kind == "train_exclusive":
+        candidates = train_exclusive
+    else:
+        candidates = sorted(d for d, s in splits_by_doc.items() if "train" in s and "test" not in s)
     pdf_docs = manifest["ohr"]["coverage"]["pdf_per_document"]
     gt_unresolved = set(manifest["ohr"]["coverage"]["text_sources"]["gt"]["unresolved_documents"])
     eligible, exclusions = [], []
-    for cid in train_exclusive:
+    for cid in candidates:
         reasons = []
         raws = sorted(raw_by_doc[cid])
         if len(raws) > 1:
@@ -191,6 +203,7 @@ def build_pool(inputs: dict[str, Any]) -> dict[str, Any]:
         "splits_by_doc": {d: sorted(s) for d, s in splits_by_doc.items()},
         "raw_by_doc": {d: sorted(s) for d, s in raw_by_doc.items()},
         "train_exclusive": train_exclusive,
+        "candidates": candidates,
         "eligible": eligible,
         "exclusions": exclusions,
     }
@@ -246,6 +259,10 @@ def allocate(counts: dict[str, int], total: int, minimum: int) -> list[dict[str,
 
 def select_documents(eligible: list[str], config: dict[str, Any]) -> tuple[list[str], list[dict[str, Any]], dict[str, str]]:
     sel = config["selection"]
+    if sel["documents"] == "all":  # take the whole eligible pool; ranks are still recorded
+        if not eligible:
+            raise PilotError("the eligible pool is empty; refusing to freeze a pilot with no documents")
+        sel = {**sel, "documents": len(eligible)}
     if len(eligible) < sel["documents"]:
         raise PilotError(f"eligible pool has {len(eligible)} documents; the config asks for {sel['documents']}. Not expanding beyond the train-exclusive pool.")
     by_type: dict[str, list[str]] = defaultdict(list)
@@ -336,8 +353,18 @@ def build_documents(project_root: Path, inputs: dict[str, Any], pool: dict[str, 
     return docs
 
 
+def question_rows(inputs: dict[str, Any], pool: dict[str, Any], doc_ids: Any, config: dict[str, Any]) -> list[dict[str, Any]]:
+    """QA rows of the given documents, limited to ``selection.question_splits`` when the config names any."""
+    splits = config["selection"].get("question_splits")
+    return sorted(
+        (r for r in inputs["qas"] if pool["canon"][str(r["doc_name"])] in doc_ids
+         and (splits is None or pool["split_of"].get(str(r["ID"])) in splits)),
+        key=lambda r: str(r["ID"]),
+    )
+
+
 def build_manifests(project_root: Path, inputs: dict[str, Any], pool: dict[str, Any], docs: dict[str, dict[str, Any]], config: dict[str, Any]) -> tuple[dict, dict, list[dict[str, Any]]]:
-    rows = sorted((r for r in inputs["qas"] if pool["canon"][str(r["doc_name"])] in docs), key=lambda r: str(r["ID"]))
+    rows = question_rows(inputs, pool, docs, config)
     lock = inputs["lock"]
     runtime = {
         "schema_version": SCHEMA_VERSION,
@@ -699,10 +726,16 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
         raise PilotError(f"config selection algorithm must be {SELECTION_ALGORITHM}")
     out = project_root / config["output_dir"]
     inputs = load_inputs(project_root, config)
-    pool = build_pool(inputs)
+    sel_cfg = config["selection"]
+    pool_kind = sel_cfg.get("pool", "train_exclusive")
+    pool = build_pool(inputs, pool_kind)
     excluded, excluded_records = excluded_pilot_documents(project_root, config)
     if excluded_records:
         pool = {**pool, "eligible": [d for d in pool["eligible"] if d not in excluded]}
+    min_pages = sel_cfg.get("min_pages")
+    if min_pages is not None:
+        pdf_docs = inputs["manifest"]["ohr"]["coverage"]["pdf_per_document"]
+        pool = {**pool, "eligible": [d for d in pool["eligible"] if pdf_docs[pool["raw_by_doc"][d][0]]["pdf_pages"] >= min_pages]}
     selected, allocation, ranks = select_documents(pool["eligible"], config)
     docs = build_documents(project_root, inputs, pool, selected, config)
     runtime, evaluation, qflags = build_manifests(project_root, inputs, pool, docs, config)
@@ -712,6 +745,8 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
             raise PilotError(f"question {q['question_id']} is not in train")
 
     pages, ocr, pool_q = pool_profiles(project_root, inputs, pool, config)
+    if sel_cfg.get("question_splits") is not None:
+        pool_q = [q for q in pool_q if pool["split_of"].get(q["question_id"]) in sel_cfg["question_splits"]]
     selection = {
         "schema_version": SCHEMA_VERSION,
         "pilot_id": config["pilot_id"],
@@ -754,6 +789,12 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
         },
         "manifest_digests": {"runtime": digest(runtime), "evaluation": digest(evaluation)},
     }
+    if pool_kind != "train_exclusive" or min_pages is not None or sel_cfg.get("question_splits") is not None:
+        # only for configs that use these options, so an earlier pilot's record reproduces unchanged
+        selection["algorithm"]["pool_rule"] = POOL_RULES[pool_kind]
+        selection["algorithm"]["page_rule"] = f"documents with at least {min_pages} PDF pages" if min_pages is not None else None
+        selection["algorithm"]["question_rule"] = f"only questions in the splits {sel_cfg.get('question_splits')}"
+        selection["pool"]["pool_documents"] = len(pool["candidates"])
     if excluded_records:  # only for configs that exclude, so an earlier pilot's record reproduces unchanged
         selection["algorithm"]["exclusion_rule"] = "documents selected by the named frozen pilots are removed from the eligible pool before allocation"
         selection["pool"]["excluded_pilots"] = excluded_records

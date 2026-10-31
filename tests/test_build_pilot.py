@@ -332,3 +332,32 @@ def test_successor_pilot_excludes_the_earlier_pilots_documents(project: Path) ->
     config["selection"]["exclude_documents_of_pilots"] = ["first"]
     _write(project / "config/pilots/third.json", config)
     assert build(project, project / "config/pilots/third.json", "--no-render") == pilot.EXIT_INVALID  # E2
+
+
+# Failure list for the longer-document pool (pool "train_without_test", min_pages, documents "all",
+# question_splits): L1 a document with a test question enters; L2 a validation question enters the manifests;
+# L3 a document below min_pages enters; L4 "all" leaves an eligible document out; L5 a validation-only document
+# enters; L6 the composition counts validation questions.
+
+
+def test_longer_document_pool_keeps_test_documents_and_validation_questions_out(project: Path) -> None:
+    config = json.loads(write_config(project, name="long").read_text())
+    config["selection"].update(pool="train_without_test", documents="all", min_pages=2, question_splits=["train"])
+    path = project / "config/pilots/long.json"
+    _write(path, config)
+    assert build(project, path, "--no-render") == 0
+    record, runtime, evaluation = load(project, "long")
+    chosen = {d["doc_id"] for d in record["selected_documents"]}
+    assert "news/testonly" not in chosen  # L1
+    assert "finance/shared" in chosen and "textbook/book.pdf_9" not in chosen  # L5
+    qids = {q["question_id"] for q in runtime["questions"]}
+    assert "s1" in qids and "s2" not in qids and "v1" not in qids and set(evaluation["questions"]) == qids  # L2
+    assert chosen == {"finance/f1", "finance/f2", "news/n1", "news/n2", "textbook/book.pdf_5", "finance/shared"}  # L4
+    assert record["composition"]["pilot"]["questions"] == len(qids)  # L6
+    assert record["algorithm"]["pool_rule"].startswith("documents with at least one train question")
+    assert build(project, path, "--no-render") == 0  # reproduces
+
+    config["pilot_id"], config["output_dir"] = "long3", "results/pilots/long3"
+    config["selection"]["min_pages"] = 3
+    _write(project / "config/pilots/long3.json", config)
+    assert build(project, project / "config/pilots/long3.json", "--no-render") == pilot.EXIT_INVALID  # L3: no 3-page document
