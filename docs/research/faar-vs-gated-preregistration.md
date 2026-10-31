@@ -161,3 +161,50 @@ needs its own no-recovery and gated visual runs first, and is costed when its sa
    questions at 12.9% disagreement, so 835 questions cover every disagreement rate observed so far.
 5. **Cost tolerance** 1.10. The correction model and any new retry expansion are chosen on development data.
 
+
+## 12. Development runs on `ohr_long_dev_v1`: plan and cost (2026-11-01, nothing authorised)
+
+Built and tested offline: the gate and diagnosis (`src/faar/diagnosis.py`, `scripts/experiments/diagnose_run.py`),
+`retry_retrieval` with two expansion rules and `correct_text` with SymSpell (`src/faar/text_repair.py`,
+`scripts/experiments/run_text_repair.py`). Both runners use the ledger, cap and resend rule of
+`run_visual_repair.py`. ByT5 is not available: it needs a model download of about 1 GB that has not been authorised.
+
+Offline facts on `ohr_long_dev_v1`, from a dry run and a retrieval replay:
+
+- The no-recovery run sends all 423 questions (every document has text). Prompts average 6,962 characters, against
+  5,941 on `ohr_dev_v2`.
+- The page policy would attach 3 images to 357 questions and 2 to 66 (2.84 on average), against 1.55 on `ohr_dev_v2`.
+- On `ohr_dev_v1`, the current expansion rule `append-anchor-words-v0` sends exactly the same chunks again for 38 of
+  63 questions. `exclude-seen-v1` finds new chunks for 35 of 63; the rest are documents with no unseen chunk.
+
+Unit costs, measured on the `ohr_dev_v2` runs: a text request about 1,516 input and 15 output tokens (0.0016 USD),
+scaled to 0.00185 USD for the longer prompts here; one page image about 2,570 input tokens (0.0026 USD), so a
+repair request with 2.84 images costs about 0.0093 USD.
+
+| Step | Requests | Expected USD |
+| --- | ---: | ---: |
+| 1. No-recovery run (`faar-answer-v2`) on all 423 | 423 | 0.78 |
+| 2. Choose the gate's confidence condition (rule below), diagnose | 0 | 0 |
+| 3. `retry_retrieval`, `exclude-seen-v1`, on the flagged set | about 150 to 215 | 0.28 to 0.40 |
+| 4. `retry_retrieval`, `append-anchor-words-v0`, on the flagged set | about 215 | 0.40 |
+| 5. `correct_text`, SymSpell, on the flagged set | about 180 to 215 | 0.33 to 0.40 |
+| 6. Visual repair on the flagged set (needed for the all-repairs diagnostic and the bar) | about 215 | 2.00 |
+| Total | | about 3.8 to 4.0 |
+
+The flagged set is not known until step 1 runs. The estimate assumes about 215 of 423 flagged: 110 questions on
+documents with an empty page, about 35 abstentions and about 70 from the confidence condition.
+
+**This does not fit the 2.29 USD left.** Steps 1 to 5 fit (about 1.9 USD, cap 2.25). Step 6 needs about 2 USD more.
+Dropping step 4 saves 0.40 USD but leaves the current expansion rule untested against the new one.
+
+**Proposed rule for choosing the confidence condition, fixed before step 1.** On `ohr_long_dev_v1` only, for each
+feature in `CONFIDENCE_FEATURES` and each threshold at the observed feature values, compute how well "feature below
+threshold" separates questions whose no-recovery answer is wrong (official EM 0) from those it got right: true
+positive rate minus false positive rate (Youden's J). Choose the feature and threshold with the highest J, subject
+to the confidence condition flagging at most 30% of the questions that the base gate does not already flag. Ties go
+to the lower flag rate. This uses development gold answers only to choose one global threshold, which the brief
+allows on development data. It never uses validation.
+
+The confirmation on the 835 validation questions is costed later. At these unit costs it is roughly 1.6 USD for the
+no-recovery run, 3 to 4 USD for the gated visual bar, and about 2 USD for FAAR's text repairs and the random policy,
+so about 7 to 8 USD.
