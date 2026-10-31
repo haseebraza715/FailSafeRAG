@@ -18,7 +18,9 @@ conditions with the prompt `faar-answer-v2`. Four findings shape the plan. All c
    wording, list format, LaTeX notation or a fullwidth character. Seven more rest on a questionable gold answer.
 2. The prompt `faar-answer-v2` raised EM from 0.214 to 0.314 on the same evidence (McNemar 8 gained, 1 lost), by
    fixing 8 of those 27 cases. The other 19 differ from the gold in span boundaries that no prompt can know. They
-   still dilute every comparison. v2 was written after reading these cases, so its gain is optimistic.
+   still dilute every comparison. v2 was written after reading these cases, so its gain is optimistic. On the
+   414 new questions of `ohr_dev_v2` it scored the same as v1 (EM 0.287 against 0.290, 19 gained and 20 lost):
+   the gain on `ohr_dev_v1` came from tuning on those questions.
 3. OCR is the primary cause in 13 of 55 cases. Ten are pages where MinerU lost the text (mostly handwriting). With
    v2, the gold page image added 7.1 EM points over all 70 questions and 9.0 on the 67 that both runs answered;
    clean text and the gold page's MinerU text added 1.4 each. Only the image interval reached above zero.
@@ -52,10 +54,9 @@ No question in it is inspected before the confirmation run. The train split limi
 
 ## 3. Fixed before any repair run
 
-1. **The answer prompt and its output format.** The development step is done: `faar-answer-v2` was written,
-   recorded as the no-recovery run `2026-10-31-ohr-dev-v1-baseline-answer-v2-terra-r1`, and compared with v1
-   (finding 2). It becomes the shared prompt only when the lead approves it. All policies then share it, and it is
-   never changed after a repair result is seen.
+1. **The answer prompt and its output format.** Frozen by the lead on 2026-11-01 (amendment 2): every shared run
+   uses `faar-answer-v2`, because every repair run so far already uses it. It is not better than
+   `faar-answer-draft-v1` on new questions (finding 2). It is never changed after a repair result is seen.
 2. The answer model and its settings, the retrieval settings, the gate and its threshold (chosen on development data
    only), the diagnosis rules, the repair implementations, the image budget and page-selection policy, the random
    seeds, and the cost-matching rule. Each is a brief "Lead decision" or "Proposed default"; this plan uses whatever
@@ -115,8 +116,9 @@ development evidence only.
 - A null or negative result is reported as such, with the interval. The experiment is not rerun with changed settings
   on the confirmation sample to look for a different result.
 - If a policy runs out of budget, the comparison is reported as budget-limited with the counts (brief section 5).
-- If more than the lead's maximum execution-failure rate fails, the run is `failed` and is reported, not replaced
-  silently.
+- A run is invalid if more than 2% of its questions are still blocked after the one resend that amendment 1 allows,
+  or if the blocked rates of two compared conditions differ by more than 1 percentage point (amendment 2). An invalid
+  run is recorded as `failed` and reported, not replaced silently.
 
 ## 8. Reporting
 
@@ -130,10 +132,11 @@ Development results and confirmation results are never pooled.
 2. Approve the answer-format work in section 3 item 1 as a development step before any repair run.
 3. Decide the confirmation sample: its source, its selection rule and the budget that sets its size.
 4. The brief's open decisions that every repair run depends on: image budget and page selection, gate threshold,
-   maximum execution-failure rate, spending cap, and the longer-document development sample.
+   spending cap, and the longer-document development sample. The maximum execution-failure rate was decided on
+   2026-11-01 (section 7, amendment 2).
 5. Who the two human labellers are for Q4, and whether the agent coding of the 55 baseline failures is used only as
    development material.
-6. Approve `faar-answer-v2` as the shared prompt (section 3 item 1).
+6. Decided on 2026-11-01: `faar-answer-v2` is the shared prompt (section 3 item 1, amendment 2).
 7. Approve the first experiment in section 10, its sample and its spending cap.
 8. Decide whether to adopt a normalised EM as a secondary score next to official EM (section 4). This plan proposes
    NFKC EM as FAAR-defined and secondary only. The primary score stays official EM unless the lead decides
@@ -207,4 +210,21 @@ The lead approved `ohr_dev_v2` and the first experiment with these changes:
    (development data, against the existing v2 no-recovery run there), then the visual repair on `ohr_dev_v2`. The
    comparison script for `ohr_dev_v2` is committed before the first of these runs. Nobody reads the `ohr_dev_v2`
    answers before the script has computed the comparisons. The spending cap for the stage is 6.00 USD, counting reserved cost.
+
+## 13. Amendment 2 (2026-11-01, after the `ohr_dev_v2` runs and before any further run)
+
+The lead decided, after reading the `ohr_dev_v2` comparison
+(`results/analysis/2026-10-31-ohr-dev-v2-confirmation/`):
+
+1. **Prompt.** `faar-answer-v2` is frozen for every shared run (section 3 item 1). The documents say plainly that it
+   is no better than v1 on new questions.
+2. **Execution-failure rule.** A run is invalid if more than 2% of its questions are still blocked after the one
+   resend of amendment 1, or if the blocked rates of two compared conditions differ by more than 1 percentage point
+   (section 7). Every comparison reports blocked questions per condition. No run so far breaks the rule: all of
+   them ended with 0 blocked questions.
+3. **The bar for the main comparison.** The gated visual repair (`abstain-or-ocr-gap-v1`) is the comparator for the
+   diagnosis-based policy: +8.5 EM points over no recovery at 0.0027 USD per question on `ohr_dev_v2`. Its
+   pre-registration is drafted in [faar-vs-gated-preregistration.md](faar-vs-gated-preregistration.md) and is not
+   approved.
+4. **Sample.** A longer-document sample comes before that comparison. Nothing is frozen until the lead approves it.
 

@@ -3,9 +3,24 @@
 Written on 2026-10-31 after `compare.py` produced `report.md` and `results.json` (SHA-256 `10ab0608…`). The
 comparison script and the decision rules were committed before the first run on `ohr_dev_v2` (commit `4bf0c48`,
 amendment 1 of `docs/research/repair-analysis-plan.md`). Commit `83fd04a` changed only the report title and the
-`pilot_id` label, after the v2 baseline ran and before any result was read. Measured results and interpretation are kept apart below.
-All numbers are official EM over all 414 questions unless stated. No question failed in any run, so the
-"served by both" view equals the primary view.
+`pilot_id` label, after the v2 baseline ran and before any result was read. Measured results and interpretation
+are kept apart below. All numbers are official EM over all 414 questions unless stated. No question failed in any
+run, so the "served by both" view equals the primary view. The summary was moved to the top on 2026-11-01 at the
+lead's request; no number changed.
+
+## Summary
+
+**The gain is "show the page image when the OCR text is empty". It is not evidence of good page choice.** All 42
+questions the visual repair gained are on single-page documents. On the 128 questions on multi-page documents it
+gained none and lost 4 (the gated policy gained none and lost 1). Twenty-seven of the 42 gains are questions with no
+text evidence at all, 22 of them on evidence pages where MinerU produced no text.
+
+The multi-page documents in this sample have almost no empty-OCR cases: 1 question with an empty evidence page and
+0 without text evidence. So the sample shows that the image does not help when MinerU text exists. It cannot say
+whether the page policy picks the right page when it matters. Testing that needs longer documents with OCR gaps.
+
+The faar-answer-v2 prompt is no better than v1 on these new questions (EM 0.287 against 0.290). Its +10-point gain
+on `ohr_dev_v1` came from tuning on those questions. It stays the shared prompt because every repair run uses it.
 
 ## Measured
 
@@ -33,7 +48,8 @@ the repair on every question and 0.00132 for no recovery. This contrast has no d
 | Not flagged | 6 | 6 |
 
 On the 56 questions whose evidence page has empty MinerU text, EM went from 0.000 to 0.393. On the other 358 it went
-from 0.332 to 0.369.
+from 0.332 to 0.369. By document length: single-page documents 42 gained and 3 lost (286 questions); multi-page
+documents 0 gained and 4 lost (128 questions), EM 0.312 to 0.281.
 
 **Execution.** The three repair-side runs had 6 TLS drops in 414 image requests on `ohr_dev_v2` (1.4%) and 2 in 70 on
 `ohr_dev_v1`. Every drop was `connection_lost` and was resent once under `one-resend-connection-lost-v1`. Every resend
