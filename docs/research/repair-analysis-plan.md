@@ -228,3 +228,24 @@ The lead decided, after reading the `ohr_dev_v2` comparison
    approved.
 4. **Sample.** A longer-document sample comes before that comparison. Nothing is frozen until the lead approves it.
 
+## 14. Amendment 3 (2026-11-01, before any run for the FAAR comparison)
+
+The lead decided, after reading the longer-document report and the FAAR pre-registration draft:
+
+1. **Gate.** The main comparison uses `abstain-or-ocr-gap-v1` extended with a retrieval-confidence condition. The
+   condition and its threshold are chosen on development data only. The gated visual bar is rerun under that same
+   gate, so FAAR and the bar act on one flagged set.
+2. **`missing_text` diagnosis.** Approved, routing to `invoke_vlm`. The method record discloses that the `ohr_dev_v2`
+   results informed it. For that reason, and because FAAR and the gated repair give the same answers on empty-text
+   questions, `ohr_dev_v2` is not the confirmation sample for FAAR against the gated repair.
+3. **Longer-document development sample.** `ohr_long_dev_v1` (option F): all 423 train questions on the 101
+   multi-page documents with no test question, document-disjoint from `ohr_dev_v1` and `ohr_dev_v2`. 81 of its
+   documents also carry validation questions, which are excluded and not read. Only global settings may be tuned on
+   it, never a setting per document or per document type.
+4. **Confirmation sample.** One run after the method freeze, on the OHR-Bench validation questions on multi-page
+   documents outside `ohr_long_dev_v1`: 835 questions on 259 documents (counted with
+   `scripts/data/count_multipage_pools.py`, pool G, from metadata only). No validation question is read before that run.
+5. **Cost and repairs.** The cost tolerance for "similar cost" is 1.10. The `correct_text` model (ByT5 or SymSpell)
+   is chosen on development data. `retry_retrieval` may get a new query-expansion rule, developed on development data
+   only.
+

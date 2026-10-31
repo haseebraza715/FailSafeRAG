@@ -1,6 +1,8 @@
 # Pre-registration draft: diagnosis-based repair (FAAR) against gated visual repair
 
-**Status: draft for the research lead, written 2026-11-01. Not approved, nothing built for it, nothing run.** It
+**Status: draft for the research lead, written 2026-11-01. The lead decided the open points of section 9 on
+2026-11-01 (analysis plan, amendment 3); section 11 records them and overrides the earlier sections where they
+differ. Nothing has run.** It
 follows the decision of 2026-11-01 (analysis plan, amendment 2, item 3): the bar is the gated visual repair, which
 raised official EM by 8.5 points over no recovery on `ohr_dev_v2` at 0.0027 USD per question. FAAR has to beat it
 at similar cost. Sections 9 and 10 list what must be decided and built first.
@@ -143,3 +145,19 @@ needs its own no-recovery and gated visual runs first, and is costed when its sa
    rule and boundary checks, and the same answer prompt.
 3. The random-repair assignment and the reuse of byte-identical image responses.
 4. A comparison script, committed before the confirmation run.
+
+## 11. Decisions of 2026-11-01
+
+1. **Gate:** `abstain-or-ocr-gap-v1` plus a retrieval-confidence condition, chosen on development data only. The
+   gated visual bar is rerun under the same gate.
+2. **`missing_text`:** approved, routing to `invoke_vlm`. The method record says that `ohr_dev_v2` results informed
+   it. `ohr_dev_v2` is not the confirmation sample for this comparison.
+3. **Development samples:** `ohr_dev_v1` and `ohr_long_dev_v1` (423 questions, 101 multi-page documents). Only
+   global settings are tuned.
+4. **Confirmation:** one run after the method freeze on the 835 validation questions on the 259 multi-page documents
+   outside `ohr_long_dev_v1`. No validation question is read before it. At 6% disagreement a 5-point gain needs 186
+   questions without clustering; at 10%, 312; at 12.9%, 403. With 3.22 questions per document the design effect is
+   1.19 to 1.89 for the intraclass correlations seen so far (0.086 and 0.40). Then a 5-point gain needs 480 to 761
+   questions at 12.9% disagreement, so 835 questions cover every disagreement rate observed so far.
+5. **Cost tolerance** 1.10. The correction model and any new retry expansion are chosen on development data.
+
