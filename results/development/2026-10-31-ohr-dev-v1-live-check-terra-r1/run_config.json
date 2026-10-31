@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-10-31-ohr-dev-v1-live-check-terra-r1",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "live",
+  "kind": "engineering_check",
+  "label": "Engineering check with a real answer model: a transport and accounting check. It is not a baseline and supports no claim about the model or the method.",
+  "contract_version": "1",
+  "created_at": "2026-10-31T18:55:25.927Z",
+  "identity": {
+    "run_kind": "engineering_check",
+    "pilot_manifest": {
+      "parent_pilot_id": "ohr_dev_v1",
+      "frozen_runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+      "run_runtime_manifest_sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3",
+      "canonical": false,
+      "question_count": 8,
+      "question_ids_sha256": "75ed63bf6c445875163e8802e496cf319cb61d658bfc620fcd93fd1729fbbff5"
+    },
+    "contract_version": "1",
+    "mode": "live",
+    "pilot_id": "ohr_dev_v1",
+    "runtime_manifest_sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3",
+    "document_noisy_text_sha256": {
+      "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6": "407e83d4ed5fc2bcd9b8121e58cdf0a3f8ebba88940a52bc3d4870ae544da934",
+      "news/07_07": "b4ff8c371239e95502ff37ccf0cea8578151f9456a003c210d94c683b901cf49",
+      "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5": "efc0e62eb778a425d202745298c154832c4f2cdf57c4195a107583193644b2dc",
+      "textbook/GNHK_eng_EU_298": "216f68d9f9f74b324dae0889ea16d8256cf71f00b4678bf59b625fc8f21b0fce",
+      "textbook/chem-323236.pdf_183": "1b67f538be60d27c11c4742fd0cfc1eb1a5f6d330ac6718d0596bb857a80a9f1",
+      "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161": "f38d374932f0a718c0053b07e022b5fc00cc185668d2632c10c4ced69bbb3b7f",
+      "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124": "56f8f08a6467706f8b21fde9b7782ad93d5dfbe2a3ed9d98f7416ab6de4cfee0",
+      "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74": "06044e749c1bc841c7f195141f01c9a7092fe4ec8eaf8c8674fca683288a7ca3"
+    },
+    "retrieval": {
+      "label": "Engineering settings for an offline pipeline check. They are not the approved scientific protocol.",
+      "scope": "one index per document, built from every declared page; a question searches only its own document",
+      "embedding_backend": "local-hash-v1",
+      "embedding_dimensions": 256,
+      "embedding": "signed feature hashing of blake2b token digests, L2-normalised, no model download",
+      "reranker": null,
+      "chunking": {
+        "function": "faar.chunking.build_page_chunks",
+        "policy": "cjk-weighted-words-v1",
+        "chunk_size_words": 180,
+        "chunk_overlap_words": 40,
+        "chunk_id": "<doc_id>-p<page_idx>-c<chunk_index>",
+        "pages_without_text": "empty or missing OCR gives no chunk and is counted in ocr_condition",
+        "units": "a CJK character (Han, Hiragana, Katakana) is one unit of weight 1; any other run of non-space characters is one unit of weight 2",
+        "cjk_chars_per_word": 2,
+        "window": "chunk_size_words * 2 weight, so a chunk holds at most 360 CJK characters or 180 other words; the window advances by (chunk_size_words - chunk_overlap_words) words on the same scale",
+        "chunk_text": "the page text of the span, each run of whitespace replaced by one space",
+        "without_cjk": "text with no CJK character gets the boundaries and the chunk text of whitespace-words-v1"
+      },
+      "tokenisation": {
+        "tokenizer": "multilingual-v1",
+        "definition": "NFKC, casefold, delete whitespace between CJK characters, then runs of Unicode letters or digits plus % and $ as word tokens and overlapping character bigrams for each CJK run",
+        "applied_to": "chunk text and query text alike, for BM25 and for the hashing embedder",
+        "retrieval_tokeniser": "multilingual-v1",
+        "normalisation": "Unicode NFKC, then casefold (the Unicode data version is in environment.unicodedata)",
+        "word_tokens": "runs of Unicode letters or digits plus % and $, so 12% and $5 stay whole; _ and other symbols separate tokens",
+        "han_script": "a run of Han, Hiragana or Katakana characters becomes overlapping character bigrams (one character gives itself); whitespace between two such characters is deleted first; no dictionary and no model",
+        "ascii_text": "pure ASCII text gets the same tokens as ascii-alnum-v1",
+        "limits": "a token count above zero says the question can be indexed, not that retrieval finds its evidence; bigrams of common Chinese function words count as tokens; Hangul is not segmented within a space-delimited word and Thai, Lao and Khmer are not segmented"
+      },
+      "ranking": {
+        "lexical": "BM25Okapi from rank_bm25, default parameters",
+        "fusion": "0.45 * min-max dense + 0.35 * min-max bm25 + 0.20 * reciprocal-rank component (k=60)",
+        "dense_note": "faiss returns the dense scores of the top_k chunks only; other chunks enter the fusion with a dense score of 0",
+        "order": "descending fused score",
+        "tie_breaking": "numpy stable argsort: equal scores keep chunk order (page_idx ascending, then chunk_index)"
+      },
+      "no_evidence_reasons": {
+        "no_text_chunks": "every declared page has empty or missing OCR, so the document has zero chunks (an OCR condition)",
+        "no_text_content": "the noisy text is non-empty but no chunk holds a letter or digit in any script (Unicode categories L and N), for example only Markdown heading markers. The input holds no usable evidence text. This is not missing OCR: the manifest records the page as ok because its text is non-empty",
+        "no_retrieval_tokens": "chunks hold letters or digits but the multilingual-v1 tokeniser yields no token for any of them, so BM25 cannot index the document (rank_bm25 divides by zero). This is a limitation of the engineering tokeniser, not an OCR condition. Only stand-alone Arabic diacritic letters (U+FC5E to U+FC63 and U+FE70 to U+FE7E) reach it, because NFKC turns each into a space and a combining mark. The document is listed in generation_summary.json",
+        "no_hits": "the retriever returned zero hits"
+      },
+      "top_k": 5,
+      "max_chunks": 10000,
+      "evidence_limit": "at most top_k hits per question, all saved in predictions.jsonl with their scores"
+    },
+    "prompt": {
+      "template_id": "faar-answer-draft-v1",
+      "template_sha256": "52044de279b32482e1b8b7f75f0b3455f5cb8e44e9178f8cec09c1615a89914d"
+    },
+    "provider": {
+      "provider": "openai",
+      "model": "gpt-6.1-terra",
+      "endpoint": "https://api.openai.com/v1",
+      "params": {
+        "temperature": 0,
+        "reasoning_effort": "none"
+      },
+      "max_output_tokens": 128,
+      "max_input_tokens": 12000,
+      "timeout_seconds": 60.0,
+      "tokenizer_bound": "utf8-bytes",
+      "token_limit_param": "max_completion_tokens",
+      "service_tier": "default",
+      "storage": "disabled",
+      "adapter": {
+        "adapter": "faar.answer_providers.OpenAIChatProvider",
+        "base_url": "https://api.openai.com/v1/",
+        "openai_sdk": "1.68.2"
+      }
+    },
+    "prices": {
+      "provider": "openai",
+      "model": "gpt-6.1-terra",
+      "currency": "USD",
+      "input_per_million": 1.0,
+      "cached_input_per_million": 0.05,
+      "output_per_million": 5.0,
+      "source": "OpenAI pricing page, Standard tier, short context (<=272K input), gpt-6.1-terra row, read 2026-10-31; chosen by the user on 2026-10-31",
+      "source_date": "2026-10-31",
+      "simulated": false,
+      "service_tier": "default"
+    },
+    "retry_policy": {
+      "policy": "exponential-backoff-seeded-jitter-v1",
+      "max_attempts": 3,
+      "base_delay_seconds": 2.0,
+      "factor": 2.0,
+      "jitter_fraction": 0.25,
+      "seed": 0,
+      "max_delay_seconds": 60.0,
+      "stop_run_kinds": [
+        "auth",
+        "unknown_model",
+        "quota"
+      ],
+      "retryable_outcomes": [
+        "not_sent",
+        "rejected"
+      ],
+      "circuit_breaker": {
+        "consecutive_failures": 3,
+        "counts": [
+          "outcome unknown",
+          "any failure with decision fail_question, rejected or not_sent",
+          "exception that is not a ProviderError"
+        ],
+        "resets": [
+          "saved response"
+        ]
+      }
+    },
+    "scientific_budget": null,
+    "code": {
+      "measurement_code_digest": "087e20dcc3369eceba43422daf724e186c0673e83b61e1ae88c2d7f4c2b29886",
+      "cli_script_sha256": "45b428c927c2ae98b7d31049cee07d018912eacff92fec9db9a87f3d0be401e3"
+    }
+  },
+  "identity_sha256": "8d24201bc0e655a93f0ac83930a54919b6d20a2279cffd12033651571ad308d8",
+  "requests_sha256": "3264e08cde32f7d3d1ce3608fd507a5cc4d355a8d9ae80c9bce7c169044ac5be",
+  "provenance": {
+    "commit": "cf98b84a5eb1d2f0bdcd7c8ea8b344c6d09df0e7",
+    "dirty": true,
+    "dirty_paths": [
+      "experiments/registry.jsonl",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/attempts.jsonl",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/predictions.jsonl",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/070a08f43963c76cdc6447fcb3ef3203-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/0852fdf38598e9a8c2a36f97eda7f41b-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/0a602b81b65b44382ad9591a1d8bddc7-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/0d4b7037304f23601d94b39d2a3d5556-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/0ea44bf5de85c8a8dba6baeffef5b435-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/0ed58f12f53db1a8aa54458130a8e8e4-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/12ac21933c5dfc47265248bb1b8949e0-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/1a98a877b651304b9e9f6841e1862f4f-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/1b17378b3a53500dfef81a0f3781b49a-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/224cab1b7e4c5db05e7086548bf52f05-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/274bd7c765ae97d1706c44dc9b3cb360-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/29d81a92d0b9cca0de1dd0b9823083f1-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/2d5885aad043ba858adbb067b9b4675c-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/2fbe768978e08cfe90c1de19b0d2e165-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/37e878704c2510c6d887bceaba37e9fe-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/388636f109041155ace90f4eafa97c0c-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/44bb9b9dae8e7c8d834c7dff1c81004a-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/465a0e660bb66351ab1db7fec416c664-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/494848e63934456d3b7bd7baf2b3b908-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/4a50afce38bee83f3c5f1831e12dcb1d-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/4ba47aa0bed5b81c8ad80deb26315c1e-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/4ca484911fc934bb40763390216a7f80-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/542bc29ec3abc22f13571cf5a3e6072f-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/5767b6a2d44993877cd81e011fa3b092-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/5a4e09b51aba3c66f97519176e8f46b4-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/5cb3135ba1744f282a4524bc2a92ab04-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/622bcfe4c72e72370c64d6441544e002-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/689d21130717f4ce35b12858bbb7ecb9-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/6a9e71e156bfda51a342f2018d87778d-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/6f38b67521d364e2a2dde8411b0d4d1a-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/71be274a3d87aa0f85998a9fd3439123-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/726eab503af53674c7a812519deef0e8-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/73e6f47a15c79eb3bdff6b603eab762d-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/749dec9aedabf490ae151ea8ebebb690-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/757a3b1e70a1dbd2e0764ea04e3c934e-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/767ac5fcad9403e7e45f4bd5a04f5666-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/7a42b06b25e8df814c4a1a081056eabc-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/854500caa58ad481150419abd3801674-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/85e0a1602c3c37705c77d5614efb984d-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/8821c5963d1282e8fe03aba0da8b481f-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/88f43b1559b8f452dd8711b64f0753b5-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/8d66a36cc4e0bac3997bf19909f26b6e-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/8ea3a744719cfad6262ece8c289d552c-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/934213179a35dc773074f7efc3afcd29-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/9879e1b106097da8393abfc5c290b403-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/ab9b68cece53d0ad00231c92ac9917bb-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/b47949f49d3a7514a305fab3b8e32055-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/b7549b2bcb47813f51ff572ec7c1eb03-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/bb7057ab55fa0f8f1564ab1b089bf382-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/c13080918fa0d16f1b7df4882fcea573-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/c1c43bcc03783fc41870190ed5f5ef66-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/c35ae22a07d70269028a2f4356fd7527-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/c44af14413e8a46f90f07b74d03f8fa7-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/c724bd92202be8fcf8253de9c4ec9862-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/c8b887f9411e3b68e278a8e00f7496d0-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/ce76c713809e7ccce7e62b4170fae6d4-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/cea0b7dd09af671427d54b5061eec331-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/dfadfc93fb32ea90437fe627ad764d6b-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/e2f01c5d82f0eca64be7a882686dc3a3-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/e4a0eb3f2db0fb984112ac7138218ded-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/f36cc19d3be777c7feb211f624314432-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/f458d5709fef95ebaba69038b7c0e8b8-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/responses/fa7e3af49aa7799d79eb06c30c1aadb5-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/run_config.json",
+      "results/development/2026-10-31-ohr-dev-v1-baseline-r1/run_summary.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/attempts.jsonl",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/predictions.jsonl",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/responses/05ca0dfc0294f12c2a3c0198e845bb97-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/responses/27ae803079a1ed1d18e8818e9388f331-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/responses/3ac6aca08c603d176faf1e3a3218fe92-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/responses/98115fd2132ae62c15625cb2b862350c-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/responses/cdaacb10d01ba72e90dbd4a28b68ab39-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/responses/fe1271aa2f84fe5974c52fa5d7e7afa2-a1.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/run_config.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/run_summary.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/score_summary.json",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-r2/scores.jsonl",
+      "src/faar/answer_providers.py",
+      "src/faar/live_contract.py",
+      "src/faar/live_runner.py",
+      "tests/test_answer_providers.py",
+      "tests/test_live_contract_consistency.py",
+      "tests/test_live_runner.py"
+    ],
+    "code_root": ".",
+    "environment": {
+      "python": "3.12.13",
+      "unicodedata": "15.0.0",
+      "numpy": "1.26.4",
+      "faiss-cpu": "1.9.0.post1",
+      "rank-bm25": "0.2.2"
+    },
+    "command": [
+      "scripts/experiments/run_pilot_live.py",
+      "run",
+      "--mode",
+      "live",
+      "--run-kind",
+      "engineering_check",
+      "--runtime-manifest",
+      "results/audits/2026-09-30-readiness/live-check-selection/runtime_manifest.livecheck-v1.json",
+      "--provider-config",
+      ".local/work/provider-config.gpt-6.1-terra.json",
+      "--run-dir",
+      "results/development/2026-10-31-ohr-dev-v1-live-check-terra-r1",
+      "--run-id",
+      "2026-10-31-ohr-dev-v1-live-check-terra-r1",
+      "--safety-ceiling",
+      "0.15"
+    ]
+  },
+  "runtime_manifest": {
+    "path": "results/audits/2026-09-30-readiness/live-check-selection/runtime_manifest.livecheck-v1.json",
+    "sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3"
+  },
+  "inputs_read": [
+    "runtime manifest",
+    "MinerU JSON file of each declared document"
+  ],
+  "inputs_never_read": [
+    "evaluation_manifest.json (only the score subcommand opens it)",
+    "selection_record.json",
+    "inspection/",
+    "OHR-Bench/data/qas*.json",
+    "gt text",
+    "annotations"
+  ],
+  "safety_ceiling_note": "The safety ceiling is an operating limit and is not part of the identity. Each invocation_started records it."
+}

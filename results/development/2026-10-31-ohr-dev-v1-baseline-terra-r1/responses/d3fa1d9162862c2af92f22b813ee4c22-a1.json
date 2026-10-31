@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "843f2774-85f0-4f5e-ab99-017191bb94d6",
+  "request_id": "d3fa1d9162862c2af92f22b813ee4c22",
+  "attempt": 1,
+  "attempt_id": "d3fa1d9162862c2af92f22b813ee4c22-a1",
+  "saved_by_invocation": "b68c19c7b1ab42b38b11a57a1951afdc",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8YMzoap5Na4kGA3oDJZkuX7piaj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1236,
+    "cached_input_tokens": 0,
+    "output_tokens": 52,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001496,
+  "input_bound_exceeded": false,
+  "latency_ms": 1411,
+  "output_status": "ok",
+  "answer": "对弗吉尼亚的植物进行了深入调查，将以正规植物学方式记录的考察笔记和亲手绘制的植物图鉴交给约翰·雷，编入《植物通史》第二卷。",
+  "abstained": false,
+  "provider_response": {
+    "text": "对弗吉尼亚的植物进行了深入调查，将以正规植物学方式记录的考察笔记和亲手绘制的植物图鉴交给约翰·雷，编入《植物通史》第二卷。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8YMzoap5Na4kGA3oDJZkuX7piaj",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "对弗吉尼亚的植物进行了深入调查，将以正规植物学方式记录的考察笔记和亲手绘制的植物图鉴交给约翰·雷，编入《植物通史》第二卷。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793473034,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 52,
+        "prompt_tokens": 1236,
+        "total_tokens": 1288,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1233
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "9c9bb784-0ea2-41d4-993c-c52a23b37499",
+  "request_id": "274bd7c765ae97d1706c44dc9b3cb360",
+  "attempt": 1,
+  "attempt_id": "274bd7c765ae97d1706c44dc9b3cb360-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PVZjvamQga0sgx0MEBYz2T6OuE",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1237,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003313,
+  "input_bound_exceeded": false,
+  "latency_ms": 600,
+  "output_status": "ok",
+  "answer": "汉斯·斯隆（Hans Sloan）, 杰纳斯·哈洛 (Janes Harlow)",
+  "abstained": false,
+  "provider_response": {
+    "text": "汉斯·斯隆（Hans Sloan）, 杰纳斯·哈洛 (Janes Harlow)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PVZjvamQga0sgx0MEBYz2T6OuE",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "汉斯·斯隆（Hans Sloan）, 杰纳斯·哈洛 (Janes Harlow)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472485,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1237,
+        "total_tokens": 1259,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

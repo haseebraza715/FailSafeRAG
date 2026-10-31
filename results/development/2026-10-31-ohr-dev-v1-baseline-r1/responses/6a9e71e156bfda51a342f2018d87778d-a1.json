@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "c13a5633-1414-4d65-b83f-514c1dc5e898",
+  "request_id": "6a9e71e156bfda51a342f2018d87778d",
+  "attempt": 1,
+  "attempt_id": "6a9e71e156bfda51a342f2018d87778d-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PgTEyhUegAj7avDGVy0gn0bv2L",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 1769,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005703,
+  "input_bound_exceeded": false,
+  "latency_ms": 971,
+  "output_status": "truncated",
+  "answer": "根据农民的上访，何仁芽几次带队到安乡县暗访，在掌握大量的第一手资料以后，多次向县委、县政府提出整改要求。他提出对农民负担过重地方实行重点监控的建议，得到了省委、省政府的采纳。从2006年起，湖南省在全国率先将农民负担问题相对突出的县市区作为农民负担重点整治对象，由省减负办、省纠风办实行挂牌整治。何仁芽多次到这些县市进行调查研究帮助他们制定",
+  "abstained": false,
+  "provider_response": {
+    "text": "根据农民的上访，何仁芽几次带队到安乡县暗访，在掌握大量的第一手资料以后，多次向县委、县政府提出整改要求。他提出对农民负担过重地方实行重点监控的建议，得到了省委、省政府的采纳。从2006年起，湖南省在全国率先将农民负担问题相对突出的县市区作为农民负担重点整治对象，由省减负办、省纠风办实行挂牌整治。何仁芽多次到这些县市进行调查研究帮助他们制定",
+    "finish_reason": "length",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PgTEyhUegAj7avDGVy0gn0bv2L",
+      "choices": [
+        {
+          "finish_reason": "length",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "根据农民的上访，何仁芽几次带队到安乡县暗访，在掌握大量的第一手资料以后，多次向县委、县政府提出整改要求。他提出对农民负担过重地方实行重点监控的建议，得到了省委、省政府的采纳。从2006年起，湖南省在全国率先将农民负担问题相对突出的县市区作为农民负担重点整治对象，由省减负办、省纠风办实行挂牌整治。何仁芽多次到这些县市进行调查研究帮助他们制定",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472496,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 128,
+        "prompt_tokens": 1769,
+        "total_tokens": 1897,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

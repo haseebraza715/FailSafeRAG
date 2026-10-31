@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "c1b51377-737c-4de0-a057-13cd784cfe45",
+  "request_id": "85e0a1602c3c37705c77d5614efb984d",
+  "attempt": 1,
+  "attempt_id": "85e0a1602c3c37705c77d5614efb984d-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PjV3vTJSpMyDbrv3L8veKs2clZ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1809,
+    "cached_input_tokens": 0,
+    "output_tokens": 8,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004603,
+  "input_bound_exceeded": false,
+  "latency_ms": 524,
+  "output_status": "ok",
+  "answer": "招商引资、银企对接",
+  "abstained": false,
+  "provider_response": {
+    "text": "招商引资、银企对接",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PjV3vTJSpMyDbrv3L8veKs2clZ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "招商引资、银企对接",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472499,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 1809,
+        "total_tokens": 1817,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

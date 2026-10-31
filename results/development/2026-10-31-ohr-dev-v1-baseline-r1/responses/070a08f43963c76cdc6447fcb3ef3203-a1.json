@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "3e896c64-e117-4ac3-919c-4ea3e1805081",
+  "request_id": "070a08f43963c76cdc6447fcb3ef3203",
+  "attempt": 1,
+  "attempt_id": "070a08f43963c76cdc6447fcb3ef3203-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8P9aKAmeiXzMWcUtmiXr2ZprJJF",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 1889,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006003,
+  "input_bound_exceeded": false,
+  "latency_ms": 902,
+  "output_status": "truncated",
+  "answer": "病猪和带菌猪是本病的主要传染源,从粪便、尿液、乳汁以及流产的胎儿、胎衣及羊水等排出大量的病菌。本病主要经消化道感染,还可以通过交配或人工授精等途径发生感染。急性型(败血型):仔猪发病初期多为急性,体温升至41℃以上,食欲不振,精神萎靡,初便秘,后腹泻，但也有不腹泻的。在鼻端、耳、",
+  "abstained": false,
+  "provider_response": {
+    "text": "病猪和带菌猪是本病的主要传染源,从粪便、尿液、乳汁以及流产的胎儿、胎衣及羊水等排出大量的病菌。本病主要经消化道感染,还可以通过交配或人工授精等途径发生感染。急性型(败血型):仔猪发病初期多为急性,体温升至41℃以上,食欲不振,精神萎靡,初便秘,后腹泻，但也有不腹泻的。在鼻端、耳、",
+    "finish_reason": "length",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8P9aKAmeiXzMWcUtmiXr2ZprJJF",
+      "choices": [
+        {
+          "finish_reason": "length",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "病猪和带菌猪是本病的主要传染源,从粪便、尿液、乳汁以及流产的胎儿、胎衣及羊水等排出大量的病菌。本病主要经消化道感染,还可以通过交配或人工授精等途径发生感染。急性型(败血型):仔猪发病初期多为急性,体温升至41℃以上,食欲不振,精神萎靡,初便秘,后腹泻，但也有不腹泻的。在鼻端、耳、",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472463,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 128,
+        "prompt_tokens": 1889,
+        "total_tokens": 2017,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

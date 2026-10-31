@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b7ad5f22-7e21-476c-9933-ea8fb579e050",
+  "request_id": "a27d68ff26f411cb2f15891d941db6a6",
+  "attempt": 1,
+  "attempt_id": "a27d68ff26f411cb2f15891d941db6a6-a1",
+  "saved_by_invocation": "eff21b2f35eb459bbc18a0911d15bfd4",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8WhIq9FlOeNjJOAvLDRdUVurxaL",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1468,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001613,
+  "input_bound_exceeded": false,
+  "latency_ms": 1535,
+  "output_status": "ok",
+  "answer": "The oblique sagittal view permits evaluation of distinctly buccal and lingual cortical bone margins and clear visualization of internal structures.",
+  "abstained": false,
+  "provider_response": {
+    "text": "The oblique sagittal view permits evaluation of distinctly buccal and lingual cortical bone margins and clear visualization of internal structures.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8WhIq9FlOeNjJOAvLDRdUVurxaL",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "The oblique sagittal view permits evaluation of distinctly buccal and lingual cortical bone margins and clear visualization of internal structures.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472931,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 1468,
+        "total_tokens": 1497,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1465
+        }
+      }
+    }
+  }
+}

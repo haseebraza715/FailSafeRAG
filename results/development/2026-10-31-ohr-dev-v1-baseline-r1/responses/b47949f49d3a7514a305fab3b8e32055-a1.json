@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "903c205e-4096-4680-8dbc-f79de4cae32d",
+  "request_id": "b47949f49d3a7514a305fab3b8e32055",
+  "attempt": 1,
+  "attempt_id": "b47949f49d3a7514a305fab3b8e32055-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PRf8OdjhMbJDAZo6q0B9VG90XR",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1036,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00271,
+  "input_bound_exceeded": false,
+  "latency_ms": 519,
+  "output_status": "ok",
+  "answer": "4” x 1” Whit. Hex Bolt and Nut",
+  "abstained": false,
+  "provider_response": {
+    "text": "4” x 1” Whit. Hex Bolt and Nut",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PRf8OdjhMbJDAZo6q0B9VG90XR",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "4” x 1” Whit. Hex Bolt and Nut",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472481,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1036,
+        "total_tokens": 1048,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

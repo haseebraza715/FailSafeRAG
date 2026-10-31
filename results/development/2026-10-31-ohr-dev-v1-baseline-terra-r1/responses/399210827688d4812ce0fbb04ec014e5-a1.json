@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "3e896c64-e117-4ac3-919c-4ea3e1805081",
+  "request_id": "399210827688d4812ce0fbb04ec014e5",
+  "attempt": 1,
+  "attempt_id": "399210827688d4812ce0fbb04ec014e5-a1",
+  "saved_by_invocation": "b68c19c7b1ab42b38b11a57a1951afdc",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8XzRlsUyznTWu0KbXhI4Uo4T5Yg",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1888,
+    "cached_input_tokens": 0,
+    "output_tokens": 105,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002413,
+  "input_bound_exceeded": false,
+  "latency_ms": 2221,
+  "output_status": "ok",
+  "answer": "病猪和带菌猪通过粪便、尿液、乳汁及流产的胎儿、胎衣和羊水排出病菌，主要经消化道感染，也可通过交配或人工授精传播。仔猪急性发病时体温升至41℃以上，食欲不振、精神萎靡，初便秘后腹泻，皮肤出现紫斑，迅速消瘦、行走不稳。",
+  "abstained": false,
+  "provider_response": {
+    "text": "病猪和带菌猪通过粪便、尿液、乳汁及流产的胎儿、胎衣和羊水排出病菌，主要经消化道感染，也可通过交配或人工授精传播。仔猪急性发病时体温升至41℃以上，食欲不振、精神萎靡，初便秘后腹泻，皮肤出现紫斑，迅速消瘦、行走不稳。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8XzRlsUyznTWu0KbXhI4Uo4T5Yg",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "病猪和带菌猪通过粪便、尿液、乳汁及流产的胎儿、胎衣和羊水排出病菌，主要经消化道感染，也可通过交配或人工授精传播。仔猪急性发病时体温升至41℃以上，食欲不振、精神萎靡，初便秘后腹泻，皮肤出现紫斑，迅速消瘦、行走不稳。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793473011,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 105,
+        "prompt_tokens": 1888,
+        "total_tokens": 1993,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1885
+        }
+      }
+    }
+  }
+}

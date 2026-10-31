@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c1bd4467-7db1-4e3f-9c91-7bc9fc625b02",
+  "request_id": "4956c657382c947e15d925fcd3c8acf0",
+  "attempt": 1,
+  "attempt_id": "4956c657382c947e15d925fcd3c8acf0-a1",
+  "saved_by_invocation": "b68c19c7b1ab42b38b11a57a1951afdc",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8Z3pkfu1CVH8v6v6uCMsJgLlMag",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1821,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001896,
+  "input_bound_exceeded": false,
+  "latency_ms": 2065,
+  "output_status": "ok",
+  "answer": "免费为规模养殖大户提供建设规划图纸",
+  "abstained": false,
+  "provider_response": {
+    "text": "免费为规模养殖大户提供建设规划图纸",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8Z3pkfu1CVH8v6v6uCMsJgLlMag",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "免费为规模养殖大户提供建设规划图纸",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793473077,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1821,
+        "total_tokens": 1836,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1818
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "97078c0e-3812-4f4a-b9c3-2574c3eb9ff7",
+  "request_id": "934213179a35dc773074f7efc3afcd29",
+  "attempt": 1,
+  "attempt_id": "934213179a35dc773074f7efc3afcd29-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PSoXio0Gqc6SiccHGuNrVcakLZ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1541,
+    "cached_input_tokens": 0,
+    "output_tokens": 47,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004323,
+  "input_bound_exceeded": false,
+  "latency_ms": 814,
+  "output_status": "ok",
+  "answer": "\"What we have is certainly a list of faculty whose either professionalism or time in the classroom may not be at the level of expectations that we have here for adjunct faculty and therefore are not going to be considered for adjunct work in the future.\"",
+  "abstained": false,
+  "provider_response": {
+    "text": "\"What we have is certainly a list of faculty whose either professionalism or time in the classroom may not be at the level of expectations that we have here for adjunct faculty and therefore are not going to be considered for adjunct work in the future.\"",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PSoXio0Gqc6SiccHGuNrVcakLZ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\"What we have is certainly a list of faculty whose either professionalism or time in the classroom may not be at the level of expectations that we have here for adjunct faculty and therefore are not going to be considered for adjunct work in the future.\"",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472482,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 47,
+        "prompt_tokens": 1541,
+        "total_tokens": 1588,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

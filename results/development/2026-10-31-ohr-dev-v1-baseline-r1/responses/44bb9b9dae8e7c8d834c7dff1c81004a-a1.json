@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "c1bc68ba-2417-4739-9382-26867037b0ab",
+  "request_id": "44bb9b9dae8e7c8d834c7dff1c81004a",
+  "attempt": 1,
+  "attempt_id": "44bb9b9dae8e7c8d834c7dff1c81004a-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PksCnqoym6Ojf0yEaLzK6I9KWn",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1835,
+    "cached_input_tokens": 0,
+    "output_tokens": 43,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005018,
+  "input_bound_exceeded": false,
+  "latency_ms": 730,
+  "output_status": "ok",
+  "answer": "外三元杂交肉猪、PIC 优质配套系肉猪、安格斯和西门塔尔杂交肉牛、黑山羊、南江黄羊、波尔山羊",
+  "abstained": false,
+  "provider_response": {
+    "text": "外三元杂交肉猪、PIC 优质配套系肉猪、安格斯和西门塔尔杂交肉牛、黑山羊、南江黄羊、波尔山羊",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PksCnqoym6Ojf0yEaLzK6I9KWn",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "外三元杂交肉猪、PIC 优质配套系肉猪、安格斯和西门塔尔杂交肉牛、黑山羊、南江黄羊、波尔山羊",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472500,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 43,
+        "prompt_tokens": 1835,
+        "total_tokens": 1878,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

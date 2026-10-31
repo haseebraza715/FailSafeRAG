@@ -43,6 +43,10 @@ it measures the execution path and not answer quality.
 | `2026-09-30-ohr-dev-v1-fake-provider-r6` | engineering_check | completed (answer-model path with the fake provider; answers and costs simulated; not a baseline) |
 | `2026-09-30-ohr-dev-v1-live-check-subset-fake-r2` | engineering_check | completed (fake rehearsal of the 8-question live check; not canonical, never a baseline) |
 | `2026-09-30-ohr-dev-v1-live-check-r1` | engineering_check | abandoned (first live invocation under Approval A; HTTP 401 `invalid_api_key` on the first request, nothing processed or billed; the code changed afterwards, so it cannot resume and a successor run takes its place) |
+| `2026-10-31-ohr-dev-v1-live-check-r2` | engineering_check | completed (successor of live-check-r1 on gpt-4o-2024-11-20; 6 sent, 2 no_evidence, $0.019; verifier 0 FAIL) |
+| `2026-10-31-ohr-dev-v1-baseline-r1` | development_pilot | completed (no-recovery baseline on gpt-4o-2024-11-20; 63 answered, 7 no_evidence, $0.223; not scored, because the answer model changed to gpt-6.1-terra) |
+| `2026-10-31-ohr-dev-v1-live-check-terra-r1` | engineering_check | completed (8-question live check on gpt-6.1-terra with reasoning_effort none; $0.008; verifier 0 FAIL) |
+| `2026-10-31-ohr-dev-v1-baseline-terra-r1` | development_pilot | completed (no-recovery baseline on gpt-6.1-terra; 63 answered, 7 no_evidence, $0.086; all-question EM 0.214, F1 0.468; development data, not a scientific evaluation) |
 
 No scientific evaluation has run. This table is a convenience; the registry is
 authoritative.

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "50e1fdda-86c3-4047-9758-9cc633f33b00",
+  "request_id": "542bc29ec3abc22f13571cf5a3e6072f",
+  "attempt": 1,
+  "attempt_id": "542bc29ec3abc22f13571cf5a3e6072f-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PFrjpr33OvTDiDP0Ws0b6qesdf",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1589,
+    "cached_input_tokens": 1408,
+    "output_tokens": 4,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002253,
+  "input_bound_exceeded": false,
+  "latency_ms": 609,
+  "output_status": "ok",
+  "answer": "Caspar Grosse",
+  "abstained": false,
+  "provider_response": {
+    "text": "Caspar Grosse",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PFrjpr33OvTDiDP0Ws0b6qesdf",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Caspar Grosse",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472469,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 4,
+        "prompt_tokens": 1589,
+        "total_tokens": 1593,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1408
+        }
+      }
+    }
+  }
+}

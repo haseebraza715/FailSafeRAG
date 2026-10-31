@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-10-31-ohr-dev-v1-baseline-terra-r1",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "live",
+  "kind": "development_pilot",
+  "label": "Development pilot with a real answer model under engineering retrieval settings. Not the approved protocol.",
+  "run_state": "complete",
+  "run_kind": "development_pilot",
+  "canonical_manifest": true,
+  "valid_baseline": true,
+  "valid_baseline_blockers": [],
+  "valid_baseline_means": "valid_baseline checks mechanical completeness and eligibility only. It is true when the run is live, its kind is development_pilot, its runtime manifest is byte-identical to the frozen manifest of its pilot, its state is complete, no question is execution_failed, every returned model equals the requested model, every response reported the Standard service tier, no response reported more input tokens than the input bound and the safety ledger reports no anomaly. It does not mean the prompt, the model, the retrieval settings or the budget are approved, and it is not scientific approval of the run.",
+  "scorer": {
+    "name": "ohr-bench-official-qa",
+    "upstream_repo": "https://github.com/opendatalab/OHR-Bench",
+    "upstream_commit": "1f421eb428f9f5b8ac0bc8064d6ad1f13fab7af7",
+    "upstream_path": "src/metric/common.py",
+    "upstream_sha256": "9fe7eb527762d1be8a00d9a98a775b850bb42e9441a09db84e88996b94ef5a35",
+    "adapter_version": "1"
+  },
+  "scorer_environment": {
+    "jieba": "0.42.1",
+    "regex": "2024.7.24",
+    "unicodedata": "15.0.0"
+  },
+  "evaluation_manifest": {
+    "path": "results/pilots/ohr_dev_v1/evaluation_manifest.json",
+    "sha256": "7237cc2ca965f999a09606a6cdc9af4be8c17342d6d3319c4cfc40da19de2d28"
+  },
+  "identity_sha256": "5505def83d980f44c43cb16e2209931eef6908c69645dde9d494ae1ae479ab22",
+  "predictions_sha256": "be694bd038cf2704eaa5d6cefc83802d6d49b4ec8ab87d5893443c9295bfcb34",
+  "counts": {
+    "questions": 70,
+    "answered": 63,
+    "no_evidence": 7,
+    "execution_failed": 0,
+    "abstained": 13
+  },
+  "aggregates": {
+    "all_questions": {
+      "denominator": 70,
+      "em": 0.21428571428571427,
+      "f1": 0.4682180917509472,
+      "policy": "execution_failed scored as 0; no_evidence scored by the official metric on the empty abstention"
+    },
+    "answered_only": {
+      "denominator": 63,
+      "em": 0.23809523809523808,
+      "f1": 0.5202423241677191
+    },
+    "upstream_valid_only": {
+      "denominator": 57,
+      "em": 0.2631578947368421,
+      "f1": 0.5750046740801106,
+      "policy": "upstream OHR-Bench overall: mean over rows whose answer text is non-blank, as evaluator.remove_invalid keeps results with valid = len(generated_text.strip()) != 0; drops abstentions, blank answers and execution failures, so it is not the all-question view"
+    }
+  },
+  "scores_sha256": "2c6fa46cce7a82a39f60dd6eadaf37974f2b0af56eed0d98aa69df6624701506"
+}

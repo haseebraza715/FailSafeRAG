@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "b7ad5f22-7e21-476c-9933-ea8fb579e050",
+  "request_id": "5cb3135ba1744f282a4524bc2a92ab04",
+  "attempt": 1,
+  "attempt_id": "5cb3135ba1744f282a4524bc2a92ab04-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PYDxwCdIQeqxqcXWnCKQlZZCQC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1469,
+    "cached_input_tokens": 1280,
+    "output_tokens": 47,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002543,
+  "input_bound_exceeded": false,
+  "latency_ms": 830,
+  "output_status": "ok",
+  "answer": "Unlike the previous imaging technique, the oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals.",
+  "abstained": false,
+  "provider_response": {
+    "text": "Unlike the previous imaging technique, the oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PYDxwCdIQeqxqcXWnCKQlZZCQC",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Unlike the previous imaging technique, the oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472488,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 47,
+        "prompt_tokens": 1469,
+        "total_tokens": 1516,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 1280
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "c1bf5e37-8462-46db-bdd3-cb3c704b2b61",
+  "request_id": "c724bd92202be8fcf8253de9c4ec9862",
+  "attempt": 1,
+  "attempt_id": "c724bd92202be8fcf8253de9c4ec9862-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PlGVNpUy7NpqGJeYnpDl14pl69",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1962,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005155,
+  "input_bound_exceeded": false,
+  "latency_ms": 714,
+  "output_status": "ok",
+  "answer": "生长后期抑制能量饲料投放量，一般不超过总食量的85%。",
+  "abstained": false,
+  "provider_response": {
+    "text": "生长后期抑制能量饲料投放量，一般不超过总食量的85%。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PlGVNpUy7NpqGJeYnpDl14pl69",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "生长后期抑制能量饲料投放量，一般不超过总食量的85%。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472501,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 25,
+        "prompt_tokens": 1962,
+        "total_tokens": 1987,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

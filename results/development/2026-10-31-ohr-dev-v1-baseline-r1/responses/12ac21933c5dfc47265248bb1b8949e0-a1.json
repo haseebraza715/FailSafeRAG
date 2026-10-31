@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "844629d9-e065-41f1-a353-f41b1573ec4c",
+  "request_id": "12ac21933c5dfc47265248bb1b8949e0",
+  "attempt": 1,
+  "attempt_id": "12ac21933c5dfc47265248bb1b8949e0-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PPiBtmggKgyrE0cJjJhLuWzRsX",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1239,
+    "cached_input_tokens": 0,
+    "output_tokens": 2,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003118,
+  "input_bound_exceeded": false,
+  "latency_ms": 450,
+  "output_status": "ok",
+  "answer": "7年",
+  "abstained": false,
+  "provider_response": {
+    "text": "7年",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PPiBtmggKgyrE0cJjJhLuWzRsX",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "7年",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472479,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 1239,
+        "total_tokens": 1241,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

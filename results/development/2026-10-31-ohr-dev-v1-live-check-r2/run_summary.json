@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-10-31-ohr-dev-v1-live-check-r2",
+  "pilot_id": "ohr_dev_v1",
+  "mode": "live",
+  "kind": "engineering_check",
+  "label": "Engineering check with a real answer model: a transport and accounting check. It is not a baseline and supports no claim about the model or the method.",
+  "identity_sha256": "f378ae23d2ee4ba79d274d7a1df852e98d66aab4893034864146224f3c41e2a7",
+  "run_state": "complete",
+  "valid_baseline": false,
+  "valid_baseline_blockers": [
+    "the run kind is engineering_check, not development_pilot",
+    "the runtime manifest is not the canonical frozen manifest of pilot ohr_dev_v1 (run manifest sha256 a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3, frozen manifest sha256 08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1, 8 questions)"
+  ],
+  "valid_baseline_means": "valid_baseline checks mechanical completeness and eligibility only. It is true when the run is live, its kind is development_pilot, its runtime manifest is byte-identical to the frozen manifest of its pilot, its state is complete, no question is execution_failed, every returned model equals the requested model, every response reported the Standard service tier, no response reported more input tokens than the input bound and the safety ledger reports no anomaly. It does not mean the prompt, the model, the retrieval settings or the budget are approved, and it is not scientific approval of the run.",
+  "run_kind": "engineering_check",
+  "canonical_manifest": false,
+  "pilot_manifest": {
+    "parent_pilot_id": "ohr_dev_v1",
+    "frozen_runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+    "run_runtime_manifest_sha256": "a1e147c0dbe47274fa7bdbc381035f54490ac8b3b567ea54fdcf1807ad23a0c3",
+    "canonical": false,
+    "question_count": 8,
+    "question_ids_sha256": "75ed63bf6c445875163e8802e496cf319cb61d658bfc620fcd93fd1729fbbff5"
+  },
+  "exit_code": 0,
+  "counts": {
+    "questions": 8,
+    "answered": 6,
+    "no_evidence": 2,
+    "execution_failed": 0,
+    "abstained": 2,
+    "model_abstained": 0,
+    "unserved": 0,
+    "awaiting_reconciliation": 0,
+    "prompt_over_limit": 0
+  },
+  "output_status": {
+    "ok": 6
+  },
+  "attempts": {
+    "total": 6,
+    "saved": 6,
+    "failed": 0,
+    "unknown": 0,
+    "open": 0
+  },
+  "input_bound_exceeded": 0,
+  "requested_model": "gpt-4o-2024-11-20",
+  "returned_model_mismatch": 0,
+  "returned_models": {
+    "gpt-4o-2024-11-20": 6
+  },
+  "returned_service_tiers": {
+    "default": 6
+  },
+  "cost": {
+    "currency": "USD",
+    "simulated": false,
+    "measured": 0.01936,
+    "reserved": 0.0,
+    "committed_upper": 0.01936,
+    "anomalies": []
+  },
+  "safety_ceiling": {
+    "amount": 0.15,
+    "currency": "USD",
+    "simulated": false
+  },
+  "invocations": [
+    {
+      "invocation_id": "99139cd74cc44795a6c62f8169f13293",
+      "started_at": "2026-10-31T18:44:36.672Z",
+      "safety_ceiling": {
+        "amount": 0.15,
+        "currency": "USD",
+        "simulated": false
+      },
+      "ceiling_change": null,
+      "ended_reason": "completed"
+    },
+    {
+      "invocation_id": "3f7b77f6f7f54db88adc1f3a415ddc6c",
+      "started_at": "2026-10-31T18:45:00.319Z",
+      "safety_ceiling": {
+        "amount": 0.15,
+        "currency": "USD",
+        "simulated": false
+      },
+      "ceiling_change": null,
+      "ended_reason": "completed"
+    }
+  ],
+  "uncommitted_tail_bytes": 0,
+  "predictions_sha256": "64735f082cf188f827c3f035add6f9e6c9f3f43cab15671feb7a2a2d2a054e93",
+  "requests_sha256": "d04dd8ae9662d18c5be00e763ca50e0ff9b5f2120f816955cccd0e1e25788fd7"
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "c124ca55-e0e8-4da1-8276-0e0749b4b7c4",
+  "request_id": "29d81a92d0b9cca0de1dd0b9823083f1",
+  "attempt": 1,
+  "attempt_id": "29d81a92d0b9cca0de1dd0b9823083f1-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PfgTphdzJTf6Gv99L0qYh2JKVc",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1381,
+    "cached_input_tokens": 0,
+    "output_tokens": 5,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003503,
+  "input_bound_exceeded": false,
+  "latency_ms": 674,
+  "output_status": "ok",
+  "answer": "NPS, BLM",
+  "abstained": false,
+  "provider_response": {
+    "text": "NPS, BLM",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PfgTphdzJTf6Gv99L0qYh2JKVc",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "NPS, BLM",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472495,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 5,
+        "prompt_tokens": 1381,
+        "total_tokens": 1386,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}

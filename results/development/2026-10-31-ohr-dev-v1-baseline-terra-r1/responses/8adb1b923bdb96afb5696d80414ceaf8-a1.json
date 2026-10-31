@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "97078c0e-3812-4f4a-b9c3-2574c3eb9ff7",
+  "request_id": "8adb1b923bdb96afb5696d80414ceaf8",
+  "attempt": 1,
+  "attempt_id": "8adb1b923bdb96afb5696d80414ceaf8-a1",
+  "saved_by_invocation": "b68c19c7b1ab42b38b11a57a1951afdc",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8YZDvtA9Y5eMypSThF2SvWy4pJQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1540,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00165,
+  "input_bound_exceeded": false,
+  "latency_ms": 1193,
+  "output_status": "ok",
+  "answer": "Either professionalism or time in the classroom may not be at the level of expectations for adjunct faculty.",
+  "abstained": false,
+  "provider_response": {
+    "text": "Either professionalism or time in the classroom may not be at the level of expectations for adjunct faculty.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8YZDvtA9Y5eMypSThF2SvWy4pJQ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Either professionalism or time in the classroom may not be at the level of expectations for adjunct faculty.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793473047,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1540,
+        "total_tokens": 1562,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1537
+        }
+      }
+    }
+  }
+}

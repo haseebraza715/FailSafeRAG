@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question_id": "c13c0802-fe54-4c5c-bdb6-0b91133e156f",
+  "request_id": "0ed58f12f53db1a8aa54458130a8e8e4",
+  "attempt": 1,
+  "attempt_id": "0ed58f12f53db1a8aa54458130a8e8e4-a1",
+  "saved_by_invocation": "c76e67d5ce524b5ca569ab6f28a0ed08",
+  "returned_model": "gpt-4o-2024-11-20",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef8PhqXEJI0Q3YCTCcavMMUUJdmPs",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1780,
+    "cached_input_tokens": 0,
+    "output_tokens": 126,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00571,
+  "input_bound_exceeded": false,
+  "latency_ms": 935,
+  "output_status": "ok",
+  "answer": "接到农民投拆后，何仁芽迅速到省主管部门了解情况，并专程赶赴桃江县调查，在查清全部情况后，责成该县迅速整改，强调任何试点必须在政策范围内，不得侵犯农民的自主权，好事要办好，让老百姓真正高兴和受益。通过反复做工作，桃江县采取断然措施，对强行扣款的乡镇粮补资金被抵扣的问题，何仁芽四进岳阳县摸清情况后，提请纪检监察机关立案查处。",
+  "abstained": false,
+  "provider_response": {
+    "text": "接到农民投拆后，何仁芽迅速到省主管部门了解情况，并专程赶赴桃江县调查，在查清全部情况后，责成该县迅速整改，强调任何试点必须在政策范围内，不得侵犯农民的自主权，好事要办好，让老百姓真正高兴和受益。通过反复做工作，桃江县采取断然措施，对强行扣款的乡镇粮补资金被抵扣的问题，何仁芽四进岳阳县摸清情况后，提请纪检监察机关立案查处。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-Ef8PhqXEJI0Q3YCTCcavMMUUJdmPs",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "接到农民投拆后，何仁芽迅速到省主管部门了解情况，并专程赶赴桃江县调查，在查清全部情况后，责成该县迅速整改，强调任何试点必须在政策范围内，不得侵犯农民的自主权，好事要办好，让老百姓真正高兴和受益。通过反复做工作，桃江县采取断然措施，对强行扣款的乡镇粮补资金被抵扣的问题，何仁芽四进岳阳县摸清情况后，提请纪检监察机关立案查处。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793472497,
+      "model": "gpt-4o-2024-11-20",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": "fp_b2dbe7165f",
+      "usage": {
+        "completion_tokens": 126,
+        "prompt_tokens": 1780,
+        "total_tokens": 1906,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      }
+    }
+  }
+}
