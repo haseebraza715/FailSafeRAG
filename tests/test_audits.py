@@ -829,6 +829,13 @@ def with_provider(**fields: Any) -> dict[str, Any]:
     return {"identity": identity}
 
 
+def test_verifier_checks_params_against_the_expected_params(tmp_path: Path) -> None:
+    terra = {"temperature": 0, "reasoning_effort": "none"}
+    run = make_run(tmp_path, config_extra=with_provider(params=terra))
+    assert statuses(verify(run))["params equal the expected params"] == "FAIL"
+    assert statuses(verify(run, expect_params=terra))["params equal the expected params"] == "PASS"
+
+
 def test_verifier_requires_the_standard_tier_and_disabled_storage_when_the_run_records_them(tmp_path: Path) -> None:
     policy = {"service_tier": "default", "storage": "disabled"}
     good = verify(make_run(tmp_path / "good", event_extra={"returned_service_tier": "default"}, config_extra=with_provider(**policy)))

@@ -10,7 +10,7 @@ otherwise. An absent field is INFO, not a failure. A field that is present with 
 
 The rows follow the criteria of the readiness report (section 5):
 
-    1  run_config.json records mode live, the model, the endpoint and the parameters {"temperature": 0}
+    1  run_config.json records mode live, the model, the endpoint and the parameters ({"temperature": 0} unless --expect-params says otherwise)
     2  each sent question has exactly one dispatch and one saved response; skipped questions have none
     3  every saved response has integer token counts, and measured_cost equals usage times the configured rates
     4  every returned model equals the requested model exactly, and no input bound is exceeded
@@ -78,6 +78,7 @@ def verify(
     *,
     allow_fake: bool = False,
     expect_model: str = "gpt-4o-2024-11-20",
+    expect_params: dict[str, Any] | None = None,
     expect_base_url: str = "https://api.openai.com/v1/",
     expect_sends: int = 6,
     expect_skips: int = 2,
@@ -108,7 +109,8 @@ def verify(
     base = provider.get("adapter", {}).get("base_url")
     check("client base_url recorded and exact", allow_fake or base == expect_base_url, str(base))
     check("endpoint in config", provider["endpoint"] == "https://api.openai.com/v1", provider["endpoint"])
-    check("params are only temperature=0", provider["params"] == {"temperature": 0}, json.dumps(provider["params"]))
+    params = {"temperature": 0} if expect_params is None else expect_params
+    check("params equal the expected params", provider["params"] == params, json.dumps(provider["params"]))
 
     # fields that newer runner code records
     run_kind = find_field("run_kind", config, summary, identity)
@@ -299,6 +301,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("run_dir", help="live-check run directory, for example results/development/<run_id>")
     parser.add_argument("--allow-fake", action="store_true", help="accept a fake run (to test this script)")
     parser.add_argument("--expect-model", default="gpt-4o-2024-11-20")
+    parser.add_argument("--expect-params", type=json.loads, help='request params as JSON (default {"temperature": 0})')
     parser.add_argument("--expect-base-url", default="https://api.openai.com/v1/")
     parser.add_argument("--expect-sends", type=int, default=6)
     parser.add_argument("--expect-skips", type=int, default=2)
@@ -312,6 +315,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             run_dir,
             allow_fake=args.allow_fake,
             expect_model=args.expect_model,
+            expect_params=args.expect_params,
             expect_base_url=args.expect_base_url,
             expect_sends=args.expect_sends,
             expect_skips=args.expect_skips,
