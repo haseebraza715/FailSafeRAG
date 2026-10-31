@@ -18,15 +18,18 @@ gold_page_image    The baseline's own retrieved MinerU text (the exact baseline 
 gold_page_image_only
                    The gold evidence page image(s) and no OCR text. Shows what the page alone gives the model.
 
-The prompt is the baseline template ``faar-answer-draft-v1``. Text conditions use ``build_prompt`` unchanged.
-Image conditions append one paragraph to the system message (IMAGE_NOTE) and, where no text block exists, use
-NO_TEXT_USER_TEMPLATE; that is the input-format difference the brief allows (section 5).
+The prompt is the baseline's template: ``faar-answer-draft-v1`` by default, or ``faar-answer-v2`` with
+``--template faar-answer-v2``. Each template has its own run ids and its own baseline run, whose user messages
+the ``gold_page_image`` condition reuses. Text conditions use ``build_prompt`` unchanged. Image conditions append
+one paragraph to the system message (IMAGE_NOTE) and, where no text block exists, use NO_TEXT_USER_PREFIX and the
+template's closing line; that is the input-format difference the brief allows (section 5).
 
 Commands (one output directory per condition under results/development/<run_id>/)::
 
-    python headroom.py prepare --condition clean_text
+    python headroom.py prepare --condition clean_text [--template faar-answer-v2]
     FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY python headroom.py run --condition clean_text --cap 0.30
     python headroom.py export --condition clean_text
+    FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY python headroom.py run-all --total-cap 1.00 [--spent 0.10]
 
 ``prepare`` sends nothing. ``run`` resumes: a question with a saved response is never sent again, and an attempt
 whose outcome is unknown blocks its question until a person looks at it. Before each request the runner checks
@@ -43,11 +46,13 @@ import os
 import sys
 import time
 import uuid
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from common import BASELINE_DIR, OUT_DIR, PILOT_DIR, ROOT, read_json, read_jsonl
-from faar.answer_prompt import ABSTENTION_TOKEN, SYSTEM_TEMPLATE, TEMPLATE_ID, TEMPLATE_SHA256, build_prompt, parse_reply
+
+from faar.answer_prompt import ABSTENTION_TOKEN, TEMPLATE_V1, TEMPLATE_V2, PromptTemplate, build_prompt, parse_reply
 from faar.live_contract import EvidenceBlock, ProviderError, ProviderRequest
 from faar.live_runner import build_live_provider, load_provider_config, refuse_redirecting_environment
 from faar.ohr_scoring import exact_match_score, f1_score
@@ -63,7 +68,25 @@ from faar.pilot_runner import (
 from faar.request_budget import input_token_upper_bound, measured_cost, request_cost_upper_bound
 
 CONDITIONS = ("clean_text", "gold_page_text", "gold_page_image", "gold_page_image_only")
-RUN_IDS = {c: f"2026-10-31-ohr-dev-v1-headroom-{c.replace('_', '-')}-terra-r1" for c in CONDITIONS}
+
+
+@dataclass(frozen=True)
+class Variant:
+    """One prompt template with its own baseline run and its own headroom run ids."""
+
+    template: PromptTemplate
+    baseline_dir: Path
+    run_ids: dict[str, str]
+
+
+V1 = Variant(TEMPLATE_V1, BASELINE_DIR, {c: f"2026-10-31-ohr-dev-v1-headroom-{c.replace('_', '-')}-terra-r1" for c in CONDITIONS})
+V2 = Variant(
+    TEMPLATE_V2,
+    ROOT / "results" / "development" / "2026-10-31-ohr-dev-v1-baseline-answer-v2-terra-r1",
+    {c: f"2026-10-31-ohr-dev-v1-headroom-{c.replace('_', '-')}-answer-v2-terra-r1" for c in CONDITIONS},
+)
+VARIANTS = {v.template.template_id: v for v in (V1, V2)}
+RUN_IDS = V1.run_ids
 PROVIDER_CONFIG = ROOT / ".local" / "work" / "provider-config.gpt-6.1-terra.json"
 LIVE_ENV_NAME, LIVE_ENV_VALUE = "FAAR_ALLOW_LIVE_REQUESTS", "I_UNDERSTAND_THIS_SPENDS_MONEY"
 
@@ -76,10 +99,16 @@ IMAGE_NOTE = (
     "\n\nThe user message also contains images of document pages. The images are evidence too. Read them together "
     "with any text blocks, and answer from what the page shows."
 )
-NO_TEXT_USER_TEMPLATE = (
-    "Question:\n{question}\n\nNo text evidence is available. The evidence is the page image(s) below.\n\n"
-    f"Answer the question using only the evidence. If the evidence lacks the answer, reply {ABSTENTION_TOKEN}."
-)
+NO_TEXT_USER_PREFIX = "Question:\n{question}\n\nNo text evidence is available. The evidence is the page image(s) below.\n\n"
+
+
+def no_text_user_template(template: PromptTemplate) -> str:
+    """The user message of an image-only request: the prefix and the template's own closing line."""
+    return NO_TEXT_USER_PREFIX + template.closing_line
+
+
+if ABSTENTION_TOKEN not in TEMPLATE_V1.closing_line:
+    raise AssertionError("the closing line must name the abstention token")
 
 MAX_CONSECUTIVE_FAILURES = 3
 
@@ -92,8 +121,8 @@ def _canonical(value: Any) -> str:
     return _sha(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8"))
 
 
-def run_dir(condition: str) -> Path:
-    return ROOT / "results" / "development" / RUN_IDS[condition]
+def run_dir(condition: str, variant: Variant = V1) -> Path:
+    return ROOT / "results" / "development" / variant.run_ids[condition]
 
 
 # --------------------------------------------------------------------------- evidence per condition
@@ -163,11 +192,14 @@ def _blocks(hits_or_chunks: list[Any], doc_id: str) -> list[EvidenceBlock]:
     return blocks
 
 
-def prepare(condition: str) -> list[dict[str, Any]]:
+def prepare(condition: str, variant: Variant = V1) -> list[dict[str, Any]]:
     """Build one request record per question in runtime-manifest order. Reads evaluation files by design (diagnostic)."""
+    template = variant.template
     runtime = read_json(PILOT_DIR / "runtime_manifest.json")
     evaluation = read_json(PILOT_DIR / "evaluation_manifest.json")["questions"]
-    baseline = {r["question_id"]: r for r in read_jsonl(BASELINE_DIR / "requests.jsonl")}
+    if condition == "gold_page_image" and not (variant.baseline_dir / "requests.jsonl").exists():
+        raise SystemExit(f"{variant.baseline_dir.name} has no requests.jsonl; run that baseline first")
+    baseline = {r["question_id"]: r for r in read_jsonl(variant.baseline_dir / "requests.jsonl")} if condition == "gold_page_image" else {}
     config = load_provider_config(PROVIDER_CONFIG)
     clean = _clean_text_retrieval() if condition == "clean_text" else None
     gold_chunks = _gold_page_chunks() if condition == "gold_page_text" else None
@@ -177,7 +209,7 @@ def prepare(condition: str) -> list[dict[str, Any]]:
         ev = evaluation[qid]
         record: dict[str, Any] = {"question_id": qid, "doc_id": doc_id, "condition": condition, "action": "skip", "skip_reason": None,
                                   "evidence": [], "images": [], "system": None, "user": None}
-        system, user_text, blocks, images = SYSTEM_TEMPLATE, None, [], []
+        system, user_text, blocks, images = template.system, None, [], []
         if condition == "clean_text":
             outcome = clean[qid]
             if outcome.failure is not None or not outcome.hits:
@@ -191,16 +223,18 @@ def prepare(condition: str) -> list[dict[str, Any]]:
                 record["skip_reason"] = "no_text_chunks_on_gold_pages"
         else:
             images = _page_images(doc_id, ev["evidence_pages"])
-            system = SYSTEM_TEMPLATE + IMAGE_NOTE
-            base = baseline[qid]
+            system = template.system + IMAGE_NOTE
+            base = baseline.get(qid)
             if condition == "gold_page_image" and base["action"] == "send":
+                if base["template_id"] != template.template_id:
+                    raise SystemExit(f"{variant.baseline_dir.name} used {base['template_id']}, not {template.template_id}")
                 user_text = base["user"]
                 record["evidence"] = [{k: e[k] for k in ("rank", "chunk_id", "page_idx", "text_sha256")} for e in base["evidence"]]
             else:
-                user_text = NO_TEXT_USER_TEMPLATE.format(question=question)
+                user_text = no_text_user_template(template).format(question=question)
         if blocks:
-            payload = build_prompt(question, blocks)
-            if payload.template_id != TEMPLATE_ID or payload.template_sha256 != TEMPLATE_SHA256:
+            payload = build_prompt(question, blocks, template)
+            if payload.template_id != template.template_id or payload.template_sha256 != template.sha256:
                 raise SystemExit("prompt template changed")
             system, user_text = payload.system, payload.user
             record["evidence"] = [{"rank": b.rank, "chunk_id": b.chunk_id, "page_idx": b.page_idx, "chars": len(b.text),
@@ -238,19 +272,19 @@ def _messages(record: dict[str, Any]) -> tuple[dict[str, Any], ...]:
 # --------------------------------------------------------------------------- run, with a hard cost cap
 
 
-def _identity(condition: str, records: list[dict[str, Any]]) -> dict[str, Any]:
+def _identity(condition: str, records: list[dict[str, Any]], variant: Variant = V1) -> dict[str, Any]:
     config_bytes = PROVIDER_CONFIG.read_bytes()
     here = Path(__file__).parent
     code = {str((here / n).relative_to(ROOT)): _sha((here / n).read_bytes()) for n in ("common.py", "headroom.py", "render_pages.py")}
     return {
-        "run_id": RUN_IDS[condition], "condition": condition, "kind": "development_pilot",
+        "run_id": variant.run_ids[condition], "condition": condition, "kind": "development_pilot",
         "diagnostic_reference": True,
-        "baseline_run": BASELINE_DIR.name,
+        "baseline_run": variant.baseline_dir.name,
         "runtime_manifest_sha256": _sha((PILOT_DIR / "runtime_manifest.json").read_bytes()),
         "evaluation_manifest_sha256": _sha((PILOT_DIR / "evaluation_manifest.json").read_bytes()),
         "provider_config_sha256": _sha(config_bytes),
-        "template_id": TEMPLATE_ID, "template_sha256": TEMPLATE_SHA256,
-        "image_note": IMAGE_NOTE, "no_text_user_template": NO_TEXT_USER_TEMPLATE,
+        "template_id": variant.template.template_id, "template_sha256": variant.template.sha256,
+        "image_note": IMAGE_NOTE, "no_text_user_template": no_text_user_template(variant.template),
         "image_detail": IMAGE_DETAIL, "image_token_bound": IMAGE_TOKEN_BOUND,
         "render_record_sha256": _sha((OUT_DIR / "render_record.json").read_bytes()),
         "requests_sha256": _canonical(records),
@@ -258,10 +292,10 @@ def _identity(condition: str, records: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _write_requests(condition: str) -> tuple[Path, list[dict[str, Any]], dict[str, Any]]:
-    records = prepare(condition)
-    identity = _identity(condition, records)
-    rdir = run_dir(condition)
+def _write_requests(condition: str, variant: Variant = V1) -> tuple[Path, list[dict[str, Any]], dict[str, Any]]:
+    records = prepare(condition, variant)
+    identity = _identity(condition, records, variant)
+    rdir = run_dir(condition, variant)
     rdir.mkdir(parents=True, exist_ok=True)
     config_path = rdir / "run_config.json"
     if config_path.exists():
@@ -310,11 +344,11 @@ def _ledger(events: list[dict[str, Any]]) -> tuple[float, float, set[str], set[s
     return measured, reserved, saved, blocked
 
 
-def run(condition: str, cap: float) -> None:
+def run(condition: str, cap: float, variant: Variant = V1) -> None:
     if os.environ.get(LIVE_ENV_NAME) != LIVE_ENV_VALUE:
         raise SystemExit(f"live requests need {LIVE_ENV_NAME}={LIVE_ENV_VALUE}; nothing was sent")
     refuse_redirecting_environment(os.environ)
-    rdir, records, identity = _write_requests(condition)
+    rdir, records, identity = _write_requests(condition, variant)
     config = load_provider_config(PROVIDER_CONFIG)
     provider = build_live_provider(config, os.environ)
     invocation = uuid.uuid4().hex
@@ -375,8 +409,8 @@ def run(condition: str, cap: float) -> None:
 # --------------------------------------------------------------------------- export and score
 
 
-def export(condition: str) -> dict[str, Any]:
-    rdir = run_dir(condition)
+def export(condition: str, variant: Variant = V1) -> dict[str, Any]:
+    rdir = run_dir(condition, variant)
     records = read_jsonl(rdir / "requests.jsonl")
     evaluation = read_json(PILOT_DIR / "evaluation_manifest.json")["questions"]
     events = _events(rdir)
@@ -399,7 +433,7 @@ def export(condition: str) -> dict[str, Any]:
     (rdir / "scores.jsonl").write_text("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in rows), encoding="utf-8")
     n = len(rows)
     summary = {
-        "run_id": RUN_IDS[condition], "condition": condition, "questions": n,
+        "run_id": variant.run_ids[condition], "condition": condition, "questions": n,
         "answered": sum(x["status"] == "answered" for x in rows), "no_evidence": sum(x["status"] == "no_evidence" for x in rows),
         "execution_failed": unserved, "abstained": sum(x["abstained"] for x in rows),
         "em": sum(x["em"] for x in rows) / n, "f1": sum(x["f1"] for x in rows) / n,
@@ -415,18 +449,19 @@ def export(condition: str) -> dict[str, Any]:
 RUN_ORDER = ("gold_page_image", "clean_text", "gold_page_text", "gold_page_image_only")
 
 
-def run_all(total_cap: float) -> None:
-    """Run every condition in RUN_ORDER; each run's cap is what the earlier runs left of ``total_cap``."""
+def run_all(total_cap: float, variant: Variant = V1, spent_elsewhere: float = 0.0) -> None:
+    """Run every condition in RUN_ORDER; each run's cap is what the earlier runs (and ``spent_elsewhere``, cost
+    already spent under the same ceiling outside these runs) left of ``total_cap``."""
     for condition in RUN_ORDER:
-        spent = 0.0
+        spent = spent_elsewhere
         for other in CONDITIONS:
-            if (run_dir(other) / "attempts.jsonl").exists():
-                measured, reserved, _, _ = _ledger(_events(run_dir(other)))
+            if (run_dir(other, variant) / "attempts.jsonl").exists():
+                measured, reserved, _, _ = _ledger(_events(run_dir(other, variant)))
                 spent += measured + reserved if other != condition else 0.0
-        own = _ledger(_events(run_dir(condition)))[:2] if (run_dir(condition) / "attempts.jsonl").exists() else (0.0, 0.0)
+        own = _ledger(_events(run_dir(condition, variant)))[:2] if (run_dir(condition, variant) / "attempts.jsonl").exists() else (0.0, 0.0)
         cap = total_cap - spent
-        print(f"{condition}: other runs spent {spent:.6f} USD, this run has {sum(own):.6f}, cap {cap:.6f}")
-        run(condition, cap)
+        print(f"{condition}: spent elsewhere {spent:.6f} USD, this run has {sum(own):.6f}, cap {cap:.6f}")
+        run(condition, cap, variant)
 
 
 def main() -> None:
@@ -434,24 +469,30 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
     p_all = sub.add_parser("run-all")
     p_all.add_argument("--total-cap", type=float, required=True, help="ceiling in USD over all four runs together")
+    p_all.add_argument("--spent", type=float, default=0.0, help="USD already spent under the same ceiling by other runs")
+    parsers = [p_all]
     for name in ("prepare", "run", "export"):
         p = sub.add_parser(name)
+        parsers.append(p)
         p.add_argument("--condition", choices=CONDITIONS, required=True)
         if name == "run":
             p.add_argument("--cap", type=float, required=True, help="hard ceiling in USD for this run, counting reserved cost")
+    for p in parsers:
+        p.add_argument("--template", choices=sorted(VARIANTS), default=V1.template.template_id, help="prompt template (default: v1)")
     args = parser.parse_args()
+    variant = VARIANTS[args.template]
     if args.command == "run-all":
-        run_all(args.total_cap)
+        run_all(args.total_cap, variant, args.spent)
     elif args.command == "prepare":
-        rdir, records, identity = _write_requests(args.condition)
+        rdir, records, identity = _write_requests(args.condition, variant)
         sent = [r for r in records if r["action"] == "send"]
         print(json.dumps({"run_dir": str(rdir.relative_to(ROOT)), "send": len(sent), "skip": len(records) - len(sent),
                           "cost_upper_bound_usd": round(sum(r["cost_upper_bound"] for r in sent), 4),
                           "skip_reasons": sorted({r["skip_reason"] for r in records if r["skip_reason"]})}, indent=2))
     elif args.command == "run":
-        run(args.condition, args.cap)
+        run(args.condition, args.cap, variant)
     else:
-        export(args.condition)
+        export(args.condition, variant)
 
 
 if __name__ == "__main__":
