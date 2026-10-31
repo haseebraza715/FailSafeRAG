@@ -55,4 +55,7 @@ rows = [
     describe("F train questions on documents with no test question (train-only or train+val)", [q for q in train_q if "test" not in sbd[q["doc_id"]] and q["doc_id"] not in used]),
     describe("D train-only documents, all (for reference)", [q for q in train_q if sbd[q["doc_id"]] == {"train"}]),
 ]
+option_f_docs = {q["doc_id"] for q in train_q if "test" not in sbd[q["doc_id"]] and q["doc_id"] not in used and pages[q["doc_id"]] > 1}
+rows.append(describe("G validation questions on multi-page documents outside option F (confirmation pool)",
+                     [q for q in qflags if split_of.get(q["question_id"]) == "val" and pages[q["doc_id"]] > 1 and q["doc_id"] not in option_f_docs]))
 print(json.dumps({"eligible_docs_all_splits": len(all_docs), "split_names": sorted(set(split_of.values())), "rows": rows}, indent=1))

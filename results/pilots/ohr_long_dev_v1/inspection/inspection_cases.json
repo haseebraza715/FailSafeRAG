@@ -1,0 +1,503 @@
+{
+ "algorithm": "purposive-quota-hash-rank-v1",
+ "cases": [
+  {
+   "categories": [
+    "ocr_gap",
+    "multi_page_evidence",
+    "text"
+   ],
+   "doc_id": "news/DUDE_52ea6e5debbe9cf07126dbdc345ce350",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b7bc62c4-8b89-4b1f-bfc5-0a2205f4818e",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "law/OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "3144088a-adf8-4bc8-9735-4c9fcac9f43a",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "text"
+   ],
+   "doc_id": "law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    2
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b509ce4b-2ea1-4b3e-811f-534260653d0b",
+   "question_scripts": [],
+   "selected_for": "multi_page_evidence"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "multi_evidence_source"
+   ],
+   "doc_id": "finance/DUDE_fd3457ca7b6abd9158ad58656359cb67",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1,
+    2
+   ],
+   "evidence_source": "multi",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b718bc9f-8132-47a5-9510-b12d6c11994b",
+   "question_scripts": [],
+   "selected_for": "multi_evidence_source"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "multi_evidence_source"
+   ],
+   "doc_id": "news/DUDE_f596b1f18a67617cff6c4035b4b72b55",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    2
+   ],
+   "evidence_source": "multi",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b829c1ca-591f-4719-a203-4fa9b44fc263",
+   "question_scripts": [],
+   "selected_for": "multi_evidence_source"
+  },
+  {
+   "categories": [
+    "han_script",
+    "formula"
+   ],
+   "doc_id": "manual/DUDE_0302d10b91a0ad03522b5889d1c453c7",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "formula",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "7ff9cbbd-631b-4360-a204-137bfe355690",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "han_script"
+  },
+  {
+   "categories": [
+    "han_script",
+    "table"
+   ],
+   "doc_id": "manual/DUDE_0302d10b91a0ad03522b5889d1c453c7",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "7ff5afe8-47c8-486d-bcc9-4ce3f8f285cc",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "han_script"
+  },
+  {
+   "categories": [
+    "table"
+   ],
+   "doc_id": "manual/DUDE_688a7afb81806a05870d7c9b87f36778",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    6
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "97ecd355-63e6-4f62-9845-110032a285d6",
+   "question_scripts": [],
+   "selected_for": "table"
+  },
+  {
+   "categories": [
+    "formula"
+   ],
+   "doc_id": "finance/DUDE_30b1dce70ce062216649fb2be170693f",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    2
+   ],
+   "evidence_source": "formula",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "a87b648f-8cdc-49c5-82f4-000f3cc7bcc3",
+   "question_scripts": [],
+   "selected_for": "formula"
+  },
+  {
+   "categories": [
+    "chart"
+   ],
+   "doc_id": "finance/DUDE_6ce088baadf80dedef254f3a10fd1ae1",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "chart",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "acbd6b3b-a72e-44f8-ab4c-fc50fd089698",
+   "question_scripts": [],
+   "selected_for": "chart"
+  },
+  {
+   "categories": [
+    "chart"
+   ],
+   "doc_id": "finance/DUDE_2611a49ead93bb5a4f05450730e25058",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "chart",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "cdb2ec4f-eb16-43f7-854e-d8019e3affd2",
+   "question_scripts": [],
+   "selected_for": "chart"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "textbook/DUDE_1336a75489216265c7c450faa3c3fac6",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    13
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "948317da-3afe-4665-bf5e-7e29cb02c651",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "administration/DUDE_8e10249a0a2808d0adf6dbce379d5d6d",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "95bc8021-ef27-46be-8af1-07f8bb93f9f4",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "manual/t480_ug_en",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    120
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "41492e40-0769-4ed9-81cb-27c775fe9424",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "table"
+   ],
+   "doc_id": "finance/DUDE_747c6792875022c83dbce7927ceff57e",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    10
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "858a133b-025c-422e-9c3f-0480a7629386",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "text"
+   ],
+   "doc_id": "finance/DUDE_2611a49ead93bb5a4f05450730e25058",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "04658b84-dd55-42c2-9168-923d610006ee",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "table"
+   ],
+   "doc_id": "administration/DUDE_f6214a28700c524cdacfa0b4548e69d2",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "84875d6a-3cde-4399-901f-704e2fd37507",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "administration/DUDE_1b9552b7f5cb4a8552bf30498cf06d11",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    3
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "94ebb818-a86c-4b38-8425-444f9e2715e8",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "administration/DUDE_61c8c8330f3895123e136140bda9991e",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "a0191a61-e192-45b0-b0c0-31e7a49b66c8",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "administration/DUDE_d50e2c3070389a3429101e8b34462e5a",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    2
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "a3ef802e-df86-43ce-8534-32cdffeb5d5f",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  }
+ ],
+ "category_report": [
+  {
+   "available_in_pilot": 2,
+   "cases_covering": 2,
+   "category": "ocr_gap",
+   "quota": 3
+  },
+  {
+   "available_in_pilot": 83,
+   "cases_covering": 2,
+   "category": "multi_page_evidence",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 6,
+   "cases_covering": 2,
+   "category": "multi_evidence_source",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 4,
+   "cases_covering": 2,
+   "category": "han_script",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 97,
+   "cases_covering": 2,
+   "category": "table",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 26,
+   "cases_covering": 2,
+   "category": "formula",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 22,
+   "cases_covering": 2,
+   "category": "chart",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 0,
+   "cases_covering": 0,
+   "category": "reading_order",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 272,
+   "cases_covering": 3,
+   "category": "text",
+   "quota": 3
+  }
+ ],
+ "inspection_digest": "43402ff5f9d73158f0093a0110e5d8915d0b6e06847ca8521f8445c9567cc1ad",
+ "pilot_id": "ohr_long_dev_v1",
+ "procedure": "questions ranked by sha256(seed, 'inspect', question_id); category quotas filled in the configured order (a case counts toward every category it has); remaining slots topped up in rank order; a case whose new evidence pages exceed the page budget is skipped for the next-ranked one",
+ "schema_version": 1,
+ "selection_digest": "a07fb3d5497fcf2817f261b0348519ab0184cd83fd7d325e1c7cbf37b4595e66",
+ "skipped_for_page_budget": [],
+ "unavailable_categories": [
+  "reading_order"
+ ],
+ "unique_pages": [
+  [
+   "administration/DUDE_1b9552b7f5cb4a8552bf30498cf06d11",
+   3
+  ],
+  [
+   "administration/DUDE_61c8c8330f3895123e136140bda9991e",
+   1
+  ],
+  [
+   "administration/DUDE_8e10249a0a2808d0adf6dbce379d5d6d",
+   1
+  ],
+  [
+   "administration/DUDE_d50e2c3070389a3429101e8b34462e5a",
+   2
+  ],
+  [
+   "administration/DUDE_f6214a28700c524cdacfa0b4548e69d2",
+   0
+  ],
+  [
+   "finance/DUDE_2611a49ead93bb5a4f05450730e25058",
+   0
+  ],
+  [
+   "finance/DUDE_2611a49ead93bb5a4f05450730e25058",
+   1
+  ],
+  [
+   "finance/DUDE_30b1dce70ce062216649fb2be170693f",
+   2
+  ],
+  [
+   "finance/DUDE_6ce088baadf80dedef254f3a10fd1ae1",
+   1
+  ],
+  [
+   "finance/DUDE_747c6792875022c83dbce7927ceff57e",
+   10
+  ],
+  [
+   "finance/DUDE_fd3457ca7b6abd9158ad58656359cb67",
+   1
+  ],
+  [
+   "finance/DUDE_fd3457ca7b6abd9158ad58656359cb67",
+   2
+  ],
+  [
+   "law/OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2",
+   1
+  ],
+  [
+   "law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement",
+   0
+  ],
+  [
+   "law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement",
+   2
+  ],
+  [
+   "manual/DUDE_0302d10b91a0ad03522b5889d1c453c7",
+   1
+  ],
+  [
+   "manual/DUDE_688a7afb81806a05870d7c9b87f36778",
+   6
+  ],
+  [
+   "manual/t480_ug_en",
+   120
+  ],
+  [
+   "news/DUDE_52ea6e5debbe9cf07126dbdc345ce350",
+   0
+  ],
+  [
+   "news/DUDE_52ea6e5debbe9cf07126dbdc345ce350",
+   1
+  ],
+  [
+   "news/DUDE_f596b1f18a67617cff6c4035b4b72b55",
+   0
+  ],
+  [
+   "news/DUDE_f596b1f18a67617cff6c4035b4b72b55",
+   2
+  ],
+  [
+   "textbook/DUDE_1336a75489216265c7c450faa3c3fac6",
+   13
+  ]
+ ],
+ "warning": "purposive inspection sample; its category proportions are not prevalence estimates"
+}

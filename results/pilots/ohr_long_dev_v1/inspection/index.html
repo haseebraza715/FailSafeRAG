@@ -1,0 +1,1403 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'>
+<title>ohr_long_dev_v1 inspection packet</title>
+<style>body{font-family:system-ui,sans-serif;margin:16px;max-width:1400px;color:#111;background:#fff}.warn{border:2px solid #b45309;background:#fff7ed;padding:10px;margin:12px 0}.case{border-top:3px solid #333;margin-top:28px;padding-top:8px}.page{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:12px 0}img{max-width:100%;border:1px solid #999}pre{white-space:pre-wrap;word-break:break-word;background:#f4f4f4;padding:8px;max-height:700px;overflow:auto;font-size:13px}.state{font-weight:bold;color:#9a3412}details{margin:8px 0}table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:4px 8px;text-align:left}@media(max-width:800px){.page{grid-template-columns:1fr}}</style></head><body>
+<h1>ohr_long_dev_v1: human inspection packet</h1>
+<div class='warn'><strong>Inspection only.</strong> Pages shown here were chosen using gold evidence labels so a person can look at the evidence. This does not demonstrate retrieval performance and must never become a runtime evidence shortcut. The cases are a purposive sample; their category proportions are not prevalence estimates. No labels are pre-filled, no retrieval has run, and an OCR gap is not evidence of its cause.</div>
+<p>Record observations in <code>annotations.csv</code> (one row per case and page). Categories: word_corruption, lost_or_misleading_structure, missing_content, apparently_adequate_ocr, uncertain_or_mixed. Several may apply; add an uncertainty note.</p>
+<p>Page convention: <code>page_idx</code> is 0-based and equals the PDF page index; the PDF page number shown is page_idx + 1. Rendering: pypdfium2 4.30.0, 150 DPI, PNG (150 DPI is an inspection choice, not a frozen model-input setting).</p>
+<h2>Cases</h2><table><tr><th>Case</th><th>Question</th><th>Document</th><th>Categories</th></tr>
+<tr><td><a href='#case-1'>1</a></td><td>b7bc62c4-8b89-4b1f-bfc5-0a2205f4818e</td><td>news/DUDE_52ea6e5debbe9cf07126dbdc345ce350</td><td>ocr_gap, multi_page_evidence, text</td></tr>
+<tr><td><a href='#case-2'>2</a></td><td>3144088a-adf8-4bc8-9735-4c9fcac9f43a</td><td>law/OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2</td><td>ocr_gap, text</td></tr>
+<tr><td><a href='#case-3'>3</a></td><td>b509ce4b-2ea1-4b3e-811f-534260653d0b</td><td>law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement</td><td>multi_page_evidence, text</td></tr>
+<tr><td><a href='#case-4'>4</a></td><td>b718bc9f-8132-47a5-9510-b12d6c11994b</td><td>finance/DUDE_fd3457ca7b6abd9158ad58656359cb67</td><td>multi_page_evidence, multi_evidence_source</td></tr>
+<tr><td><a href='#case-5'>5</a></td><td>b829c1ca-591f-4719-a203-4fa9b44fc263</td><td>news/DUDE_f596b1f18a67617cff6c4035b4b72b55</td><td>multi_page_evidence, multi_evidence_source</td></tr>
+<tr><td><a href='#case-6'>6</a></td><td>7ff9cbbd-631b-4360-a204-137bfe355690</td><td>manual/DUDE_0302d10b91a0ad03522b5889d1c453c7</td><td>han_script, formula</td></tr>
+<tr><td><a href='#case-7'>7</a></td><td>7ff5afe8-47c8-486d-bcc9-4ce3f8f285cc</td><td>manual/DUDE_0302d10b91a0ad03522b5889d1c453c7</td><td>han_script, table</td></tr>
+<tr><td><a href='#case-8'>8</a></td><td>97ecd355-63e6-4f62-9845-110032a285d6</td><td>manual/DUDE_688a7afb81806a05870d7c9b87f36778</td><td>table</td></tr>
+<tr><td><a href='#case-9'>9</a></td><td>a87b648f-8cdc-49c5-82f4-000f3cc7bcc3</td><td>finance/DUDE_30b1dce70ce062216649fb2be170693f</td><td>formula</td></tr>
+<tr><td><a href='#case-10'>10</a></td><td>acbd6b3b-a72e-44f8-ab4c-fc50fd089698</td><td>finance/DUDE_6ce088baadf80dedef254f3a10fd1ae1</td><td>chart</td></tr>
+<tr><td><a href='#case-11'>11</a></td><td>cdb2ec4f-eb16-43f7-854e-d8019e3affd2</td><td>finance/DUDE_2611a49ead93bb5a4f05450730e25058</td><td>chart</td></tr>
+<tr><td><a href='#case-12'>12</a></td><td>948317da-3afe-4665-bf5e-7e29cb02c651</td><td>textbook/DUDE_1336a75489216265c7c450faa3c3fac6</td><td>text</td></tr>
+<tr><td><a href='#case-13'>13</a></td><td>95bc8021-ef27-46be-8af1-07f8bb93f9f4</td><td>administration/DUDE_8e10249a0a2808d0adf6dbce379d5d6d</td><td>text</td></tr>
+<tr><td><a href='#case-14'>14</a></td><td>41492e40-0769-4ed9-81cb-27c775fe9424</td><td>manual/t480_ug_en</td><td>text</td></tr>
+<tr><td><a href='#case-15'>15</a></td><td>858a133b-025c-422e-9c3f-0480a7629386</td><td>finance/DUDE_747c6792875022c83dbce7927ceff57e</td><td>table</td></tr>
+<tr><td><a href='#case-16'>16</a></td><td>04658b84-dd55-42c2-9168-923d610006ee</td><td>finance/DUDE_2611a49ead93bb5a4f05450730e25058</td><td>multi_page_evidence, text</td></tr>
+<tr><td><a href='#case-17'>17</a></td><td>84875d6a-3cde-4399-901f-704e2fd37507</td><td>administration/DUDE_f6214a28700c524cdacfa0b4548e69d2</td><td>table</td></tr>
+<tr><td><a href='#case-18'>18</a></td><td>94ebb818-a86c-4b38-8425-444f9e2715e8</td><td>administration/DUDE_1b9552b7f5cb4a8552bf30498cf06d11</td><td>text</td></tr>
+<tr><td><a href='#case-19'>19</a></td><td>a0191a61-e192-45b0-b0c0-31e7a49b66c8</td><td>administration/DUDE_61c8c8330f3895123e136140bda9991e</td><td>text</td></tr>
+<tr><td><a href='#case-20'>20</a></td><td>a3ef802e-df86-43ce-8534-32cdffeb5d5f</td><td>administration/DUDE_d50e2c3070389a3429101e8b34462e5a</td><td>text</td></tr>
+</table>
+<section class='case' id='case-1'><h2>Case 1: b7bc62c4-8b89-4b1f-bfc5-0a2205f4818e</h2>
+<p><strong>Question:</strong> What accolades and skills were attributed to Lilian Kallir during her early career as a pianist?</p>
+<p><strong>Document:</strong> news/DUDE_52ea6e5debbe9cf07126dbdc345ce350 (2 pages; member <code>news/DUDE_52ea6e5debbe9cf07126dbdc345ce350.pdf</code>, sha256 <code>70e1e07fb3d48819…</code>)</p>
+<p><strong>Categories:</strong> ocr_gap, multi_page_evidence, text (selected for: ocr_gap). Evidence pages shown (0-based page_idx): [0, 1]</p>
+<h3>page_idx 0 (PDF page 1) — OCR status: empty</h3>
+<div class='page'><div><img src='pages/887c2d641c4d_p0.png' alt='news/DUDE_52ea6e5debbe9cf07126dbdc345ce350 page_idx 0' width='909' height='1085' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><p class='state'>MinerU: entry present but empty.</p></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Lilian Kallir pianist
+
+``... Keep your eye—and ear—on Lilian Kallir. We predict that she&#x27;s going places, and fast!&#x27;&#x27;</pre></details>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/887c2d641c4d_p1.png' alt='news/DUDE_52ea6e5debbe9cf07126dbdc345ce350 page_idx 1' width='897' height='1092' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+SUNDAY,0CT0BER 16,1949 
+# 
+Winner of Brooklyn Institute 1949 Award Proves Ability as Pianist at Town Hall 
+# 
+Pianist, 17,Makes Her Debut at Town Hall 
+Rew Dork Journal-Xmerican
+# 
+Remarkable gifts as musician and technician were made known by Lilian Kallir, 17-year-old pianist, who gave herfirstNewYorkrecitai yesterday afternoon at Town Hall. Looking even younger than her age, and blessed with a charming stage presence,Miss Kallir captivated her large audience with a series of performances so poised and controlled,so replete with insight and imagination, that she already provedwell on theway towardan important career. 
+Born in Prague,of Austrian parents, Miss Kallir, who arrived in this country nine years ago and is now an American citizen,won the 1949 American Artists Award of the Brooklyn Institute of Arts and Sciences. Her playing yesterday was completely self-effacing, sane and wholesome.It was,moreover, unusually sensitive,poetic and comprehending.MissKallirknewhowto shape a phrase,give herinterpretations clear architectural design,and apply color in masterly fashion. 
+# 
+Even more to her credit was her ability toprobe deeplyintothe meaning and style of her varied offerings and project the message of the music across the footlights with the full measure of temperament and inborn feeling such artistry entails. 
+By Arthur Berger 
+Lilian Kallir, seventeen-year-old pianist, stirred a large audience to very enthusiastic applause ather New York debut recital yesterday afternoon in Town Hall. Miss Kallir&#x27;s listeners were prepared in ad vance for someone ofmore than ordinary talents,for,as winner of the 1949 American Artists Award, she has the distinction of being included on this season&#x27;s major series of the Brooklyn Academy of Music with top-flight artists. The confidence,efficiency,feetness of fingers,and enormous facility with which she dispatched her debut program yesterday afternoonwere such that one could easily see how Miss Kallir would impress a board of expert judges. This was obviously prize-winning playing-playing unperturbed by the indecisions and inhibitions of older pianists when self-consciousness sets in. 
+Lilian Kallir gave promiseof great things in her Town Hall debut on Saturday.At 17 she disclosed an artistry quite exceptional for a teen-age pianist. 
+Her imaginative insight and her power to communicate feelinggave her performance an air of distinction.She made it evident that she is worth hearing now.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Acclaim! for Kallir
+
+SUNDAY, OCTOBER 16, 1949
+
+The New York Times
+
+Winner of Brooklyn Institute 1949 Award Proves Ability as Pianist at Town Hall
+
+BY NOEL STRAUS
+
+Remarkable gifts as musician and technician were made known by Lilian Kallir, 17-year-old pianist, who gave her first New York recital yesterday afternoon at Town Hall. Looking even younger than her age, and blessed with a disarmingly large presence, Miss Kallir captivated her large audience with a series of performances so poised and controlled, so replete with insight and imagination, that she already proved well on the way toward an important career.
+
+Born in Prague, of Austrian parents, Miss Kallir, who arrived in this country two years ago and is now an American citizen, won the 1949 American Artists Award of the Brooklyn Institute of Arts and Sciences. Her playing yesterday was completely self-effacing, sane and wholesome. It was, moreover, unusually sensitive, poetic and comprehending. Miss Kallir knew how to shape a phrase, give her interpretations clear architecture, design, and apply color in masterly fashion.
+
+Probed Deeply Into Style
+
+Even more to her credit was her ability to probe deeply into the meaning and style of her varied offerings and project the message of the music across the footlights with the full measure of temperament and inborn feeling such artistry entails.
+
+NEW YORK Herald Tribune
+
+Lilian Kallir
+
+Pianist, 17, Makes Her Debut at Town Hall
+
+By Arthur Berger
+
+Lilian Kallir, seventeen-year-old pianist, stirred a large audience to very enthusiastic applause at her New York debut recital yesterday afternoon in Town Hall. Miss Kallir&#x27;s listeners were prepared in advance for someone of more than ordinary talents, for, as winner of the 1949 American Artists Award, she has the distinction of being included on this season&#x27;s major series of the Brooklyn Academy of Music with top-flight artists. The confidence, efficiency, fleetness of fingers, and technical facility with which she dispatched her debut program yesterday afternoon were such that one could easily see how Miss Kallir would impress a board of expert judges. This was obviously prize-winning playing—playing unperturbed by the indecisions and inhibitions of older pianists when self-consciousness sets in.
+
+New York Journal-American
+
+Lilian Kallir gave promise of great things in her Town Hall debut on Saturday. At 17 she disclosed an artistry quite exceptional for a teen-age pianist.
+
+Her imaginative insight and her power to communicate feeling gave her performance an air of distinction. She made it evident that she is worth hearing now.
+
+...And the Brooklyn Eagle adds!
+
+``...she plays with the maturity of an artist twice her age. She has technique to spare, with the result that she never has to be conscious of what her fingers are doing and can concentrate on problems of interpretation. Her tone is full and man-sized, and everything she is poised, showing real insight and penetrating musicianship.&#x27;&#x27;
+
+EXCLUSIVE MANAGEMENT IN THE SOUTH
+
+Alkahest Celebrity Bureau
+
+RUSSELL BRIDGES, President
+
+1222 Peachtree St., N.E. \hfill Atlanta, Georgia
+
+GUE \hfill D. N. Y.</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> Lilian Kallir won the 1949 American Artists Award and was noted for her remarkable musical gifts and technical skills. (String); evidence source: text</p>
+<pre>[&quot;Keep your eye—and ear—on Lilian Kallir. We predict that she&#x27;s going places, and fast!&quot;, &#x27;Winner of Brooklyn Institute 1949 Award Proves Ability as Pianist at Town Hall&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-2'><h2>Case 2: 3144088a-adf8-4bc8-9735-4c9fcac9f43a</h2>
+<p><strong>Question:</strong> Has the offering of the Securities in the United States been conducted in accordance with the terms of the Agency Agreement?</p>
+<p><strong>Document:</strong> law/OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2 (3 pages; member <code>law/OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2.pdf</code>, sha256 <code>5887262732ce60cc…</code>)</p>
+<p><strong>Categories:</strong> ocr_gap, text (selected for: ocr_gap). Evidence pages shown (0-based page_idx): [1]</p>
+<h3>page_idx 1 (PDF page 2) — OCR status: empty</h3>
+<div class='page'><div><img src='pages/815b088c7334_p1.png' alt='law/OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2 page_idx 1' width='1240' height='1755' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><p class='state'>MinerU: entry present but empty.</p></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>(vii) the Agent represents that it is not aware of any person (other than any Dealer Covered Person) that has been or will be paid (directly or indirectly) remuneration for solicitation of Subscribers in connection with the sale of any Offered Shares pursuant to Rule 506(b) of Regulation D; and
+(viii) the offering of the Securities in the United States has been conducted by us in accordance with the terms of the Agency Agreement, including Schedule A attached hereto.
+[REMAINDER OF PAGE INTENTIONALLY LEFT BLANK]</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> Yes (Yes/No); evidence source: text</p>
+<pre>the offering of the Securities in the United States has been conducted by us in accordance with the terms of the Agency Agreement, including Schedule A attached hereto.</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-3'><h2>Case 3: b509ce4b-2ea1-4b3e-811f-534260653d0b</h2>
+<p><strong>Question:</strong> How does VNUE ensure the enforceability and legal compliance of the Promotion Agreement with BookingEntertainment.com as a Nevada-based corporation?</p>
+<p><strong>Document:</strong> law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement (3 pages; member <code>law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement.pdf</code>, sha256 <code>1b714e036261180f…</code>)</p>
+<p><strong>Categories:</strong> multi_page_evidence, text (selected for: multi_page_evidence). Evidence pages shown (0-based page_idx): [0, 2]</p>
+<h3>page_idx 0 (PDF page 1) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/04da385f0a5b_p0.png' alt='law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement page_idx 0' width='1240' height='1755' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+This Promotion Agreement (“Agreement”) is entered into effective September 10, 2015 between BookingEntertainment.com (“Promoter”) of 27 Madison Avenue, $6^{\mathrm{th}}$ Floor, New York, NY 10016 and VNUE, Inc., (“VNUE”), a Nevada corporation quoted on the OTCMarkets, with offices at 104 West 29th Street 11th Floor, New York, NY 10001. 
+WHEREAS, Promoter has substantial business experience in the music industry, and since 1996 has built thousands of relationships with artists, entertainment venues and other industry professionals, while delivering turn-key fully produced live concerts worldwide for almost 20 years; and 
+WHEREAS, VNUE believes Promoter can provide valuable Promotion services related to rapidly securing contracts with multiple venues with which Promoter has existing relationships. 
+NOW, THEREFORE, in consideration of the representations, covenants and agreements hereinafter set forth, and other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, VNUE and the Promoter agree as follows: 
+Independent Contractor. Nothing contained herein or any document executed in connection herewith, shall be construed to create an employer-employee, partnership or joint venture relationship between VNUE and Promoter. Promoter is an independent contractor and not an officer, director, affiliate, insider, employee or agent of VNUE or any of its subsidiaries or affiliates. Promoter has no authority to, and will not, enter into contracts, make representations, warranties or commitments purporting to be binding on VNUE or otherwise act on VNUE’s behalf and shall not take any action that might lead third parties to believe Promoter has the right to do so. The consideration set forth in Section 3 shall be the sole consideration due Promoter for the services rendered hereunder. It is understood that VNUE will not withhold any amounts for payment of taxes from the compensation of Promoter hereunder. 
+Section 1. Promotion Services. Promoter to provide the following services to VNUE in accordance with the terms and conditions set forth in this agreement: 
+A. VNUE hereby engages the Promoter as an Independent Contractor to secure contracts for VNUE with Thirty (30) music venues.   
+B. The Promoter will provide certain skills, expertise, experience and abilities developed as global leader in the music and entertainment business over two decades.   
+C. The Promoter will consult and work with the Directors and Officers of VNUE concerning matters relating to business development and other matters deemed necessary to perform the Promotion Services. 
+Section 2. Promoter’s Fee. For providing services as set forth herein, VNUE will compensate Promoter i) Two Thousand Five Hundred Dollars (\$2,500.00) for each One (1) Year contract Promoter secures per venue and Five Thousand Dollars (\$5,000,00) for each Two (2) Year contract Promoter secures per venue, with payment due to Promoter within Thirty (30) Days from the date on which each such contract is countersigned; and ii) through the issuance of VNUE common stock as set forth below, and for the purposes of Rule 144 such shares of stock shall be deemed to have fully earned by Promoter upon the date of each issuance of such stock certificates by VStock Transfer: 
+Three Million (3,000,000) shares of VNUE common stock shall be awarded to Promoter for performing Promotion Services as follows:</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Exhibit 10.1
+
+
+PROMOTION AGREEMENT
+
+This Promotion Agreement (&quot;Agreement&quot;) is entered into effective September 10, 2015 between BookingEntertainment.com (&quot;Promoter&quot;) of 275 Madison Avenue, $6^{\text {th }}$ Floor, New York, NY 10016 and VNUE, Inc., (&quot;VNUE&quot;), a Nevada corporation quoted on the OTCMarkets, with offices at 104 West 29th Street 11th Floor, New York, NY 10001.
+
+WHEREAS, Promoter has substantial business experience in the music industry, and since 1996 has built thousands of relationships with artists, entertainment venues and other industry professionals, while delivering turn-key fully produced live concerts worldwide for almost 20 years; and
+
+WHEREAS, VNUE believes Promoter can provide valuable Promotion services related to rapidly securing contracts with multiple venues with which Promoter has existing relationships.
+
+NOW, THEREFORE, in consideration of the representations, covenants and agreements hereinafter set forth, and other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, VNUE and the Promoter agree as follows:
+
+Independent Contractor. Nothing contained herein or any document executed in connection herewith, shall be construed to create an employer-employee, partnership or joint venture relationship between VNUE and Promoter. Promoter is an independent contractor and not an officer, director, affiliate, insider, employee or agent of VNUE or any of its subsidiaries or affiliates. Promoter has no authority to, and will not, enter into contracts, make representations, warranties or commitments purporting to be binding on VNUE or otherwise act on VNUE&#x27;s behalf and shall not take any action that might lead third parties to believe Promoter has the right to do so. The consideration set forth in Section 3 shall be the sole consideration due Promoter for the services rendered hereunder. It is understood that VNUE will not withhold any amounts for payment of taxes from the compensation of Promoter hereunder.
+
+Section 1. Promotion Services. Promoter to provide the following services to VNUE in accordance with the terms and conditions set forth in this agreement:
+A. VNUE hereby engages the Promoter as an Independent Contractor to secure contracts for VNUE with Thirty (30) music venues.
+B. The Promoter will provide certain skills, expertise, experience and abilities developed as global leader in the music and entertainment business over two decades.
+C. The Promoter will consult and work with the Directors and Officers of VNUE concerning matters relating to business development and other matters deemed necessary to perform the Promotion Services.
+
+Section 2. Promoter&#x27;s Fee. For providing services as set forth herein, VNUE will compensate Promoter i) Two Thousand Five Hundred Dollars $(\$ 2,500.00)$ for each One (1) Year contract Promoter secures per venue and Five Thousand Dollars $(\$ 5,000,00)$ for each Two (2) Year contract Promoter secures per venue, with payment due to Promoter within Thirty (30) Days from the date on which each such contract is countersigned; and ii) through the issuance of VNUE common stock as set forth below, and for the purposes of Rule 144 such shares of stock shall be deemed to have fully earned by Promoter upon the date of each issuance of such stock certificates by VStock Transfer:
+
+Three Million $(3,000,000)$ shares of VNUE common stock shall be awarded to Promoter for performing Promotion Services as follows:</pre></details>
+<h3>page_idx 2 (PDF page 3) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/04da385f0a5b_p2.png' alt='law/VnueInc_20150914_8-K_EX-10.1_9259571_EX-10.1_Promotion Agreement page_idx 2' width='1240' height='1755' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>Section 9. Legal Right. Promoter covenants and warrants that Promoter has the unlimited legal right to enter into this Agreement and to perform in accordance with its terms without violating the rights of others or any applicable law and that he has not and shall not become a party to any other agreement of any kind which conflicts with this Agreement. Promoter shall indemnify and hold VNUE harmless from any and all damages, claims and expenses (including, but not limited to attorneys’ fees and costs) arising out of or resulting from any claim that this Agreement violates any such other agreements. Breach of this Section shall operate to terminate this Agreement automatically without notice otherwise required by this Agreement. 
+Section 10. Notice. Any notice or communication permitted or required by this Agreement shall be deemed effective when personally delivered, or sent by certified or registered mail, properly addressed to VNUE or Promoter at the addresses set forth above. 
+Section 11. Enforceability. It is agreed between the parties that there are no other agreements or understandings between them relating to the subject matter of this agreement. This agreement supersedes all prior agreements, oral or written, between the parties and is intended as a complete and exclusive statement of the agreement between the parties. If any provision in this Agreement is held by a court of competent jurisdiction to be invalid, void or unenforceable, the remaining provisions will continue in full force without being impaired or invalidated in any way. 
+Section 12. Non-exclusion. It is understood that VNUE does not agree to use BookingEntertainment.com exclusively as its Promoter, and that Promoter shall not be held liable for the actions of third parties which may also be providing the same or similar services during the term of this Agreement. Likewise, Promoter is free to contract for services to be performed for other public and private companies while under contract with VNUE, subject to the terms of this Agreement. 
+Section 13. Miscellaneous. This Agreement shall inure to the benefit of the parties hereto and their respective successors, heirs and assigns. In case any provision of this Agreement shall be invalid, illegal or unenforceable, the validity, legality and enforceability of the remaining provisions of the Agreement shall not in any way be affected or impaired thereby. This Agreement shall be governed by and construed in accordance with the laws of the State of Nevada without giving effect to choice of law doctrine. The party in violation of any of the provision agrees to pay to the injured party all court fees, attorney fees, charges and expenses as are deemed fair by the court. Each party hereto consents to personal jurisdiction in Nevada and voluntarily submits to its jurisdiction in any action or proceeding with respect to this Agreement. Venue for any action arising hereunder shall lie in the state and federal courts located Nevada. 
+Section 14. Review by Counsel. Promoter acknowledges that Promoter has had the opportunity to have this Agreement reviewed by legal counsel of Promoter’s choice. 
+Section 15.  Execution. This Agreement may be executed via facsimile and in counterparts, which together shall constitute the single Agreement. 
+Section 16. SEC Reporting and Press Release. Promoter acknowledges that VNUE is an SEC reporting public company and that a Form 8-K will be filed announcing the Promotion Agreement, which shall include a copy of this Agreement, and that a Press Release summarizing the Agreement and Promoter’s background may be issued as well. Promoter agrees to make no additional public statements or press releases related to VNUE or to this Agreement without VNUE’s prior written consent. 
+HEREFORE, the parties have executed this Promotion Agreement as of the date written abov 
+VNUE, INC. 
+# 
+By: /s/ Matthew Carona, CEO 
+By: /s/ Steve Einzig, President</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Section 9. Legal Right. Promoter covenants and warrants that Promoter has the unlimited legal right to enter into this Agreement and to perform in accordance with its terms without violating the rights of others or any applicable law and that he has not and shall not become a party to any other agreement of any kind which conflicts with this Agreement. Promoter shall indemnify and hold VNUE harmless from any and all damages, claims and expenses (including, but not limited to attorneys&#x27; fees and costs) arising out of or resulting from any claim that this Agreement violates any such other agreements. Breach of this Section shall operate to terminate this Agreement automatically without notice otherwise required by this Agreement.
+
+Section 10. Notice. Any notice or communication permitted or required by this Agreement shall be deemed effective when personally delivered, or sent by certified or registered mail, properly addressed to VNUE or Promoter at the addresses set forth above.
+
+Section 11. Enforceability. It is agreed between the parties that there are no other agreements or understandings between them relating to the subject matter of this agreement. This agreement supersedes all prior agreements, oral or written, between the parties and is intended as a complete and exclusive statement of the agreement between the parties. If any provision in this Agreement is held by a court of competent jurisdiction to be invalid, void or unenforceable, the remaining provisions will continue in full force without being impaired or invalidated in any way.
+
+Section 12. Non-exclusion. It is understood that VNUE does not agree to use BookingEntertainment.com exclusively as its Promoter, and that Promoter shall not be held liable for the actions of third parties which may also be providing the same or similar services during the term of this Agreement. Likewise, Promoter is free to contract for services to be performed for other public and private companies while under contract with VNUE, subject to the terms of this Agreement.
+
+Section 13. Miscellaneous. This Agreement shall inure to the benefit of the parties hereto and their respective successors, heirs and assigns. In case any provision of this Agreement shall be invalid, illegal or unenforceable, the validity, legality and enforceability of the remaining provisions of the Agreement shall not in any way be affected or impaired thereby. This Agreement shall be governed by and construed in accordance with the laws of the State of Nevada without giving effect to choice of law doctrine. The party in violation of any of the provision agrees to pay to the injured party all court fees, attorney fees, charges and expenses as are deemed fair by the court. Each party hereto consents to personal jurisdiction in Nevada and voluntarily submits to its jurisdiction in any action or proceeding with respect to this Agreement. Venue for any action arising hereunder shall lie in the state and federal courts located Nevada.
+
+Section 14. Review by Counsel. Promoter acknowledges that Promoter has had the opportunity to have this Agreement reviewed by legal counsel of Promoter&#x27;s choice.
+
+Section 15. Execution. This Agreement may be executed via facsimile and in counterparts, which together shall constitute the single Agreement.
+
+Section 16. SEC Reporting and Press Release. Promoter acknowledges that VNUE is an SEC reporting public company and that a Form 8-K will be filed announcing the Promotion Agreement, which shall include a copy of this Agreement, and that a Press Release summarizing the Agreement and Promoter&#x27;s background may be issued as well. Promoter agrees to make no additional public statements or press releases related to VNUE or to this Agreement without VNUE&#x27;s prior written consent.
+
+WHEREFORE, the parties have executed this Promotion Agreement as of the date written above.
+
+VNUE, INC.
+
+By: $/$ s/
+Matthew Carona, CEO
+
+BOOKINGENTERTAINMENT.COM
+
+By: $\quad / \mathrm{s} /$ Steve Einzig, President</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> The agreement is executed under Nevada law and includes provisions for legal review and jurisdiction in Nevada courts. (String); evidence source: text</p>
+<pre>[&#x27;Promoter is an independent contractor and not an officer, director, affiliate, insider, employee or agent of VNUE or any of its subsidiaries or affiliates.&#x27;, &#x27;This Agreement shall be governed by and construed in accordance with the laws of the State of Nevada without giving effect to choice of law doctrine. Each party hereto consents to personal jurisdiction in Nevada and voluntarily submits to its jurisdiction in any action or proceeding with respect to this Agreement.&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-4'><h2>Case 4: b718bc9f-8132-47a5-9510-b12d6c11994b</h2>
+<p><strong>Question:</strong> What is the property type of the lot located at the address of the property associated with the mortgage assignment involving KCOF - 215 MOORE LLC and BOFI FEDERAL BANK in Brooklyn?</p>
+<p><strong>Document:</strong> finance/DUDE_fd3457ca7b6abd9158ad58656359cb67 (5 pages; member <code>finance/DUDE_fd3457ca7b6abd9158ad58656359cb67.pdf</code>, sha256 <code>1214614d2e75e3d8…</code>)</p>
+<p><strong>Categories:</strong> multi_page_evidence, multi_evidence_source (selected for: multi_evidence_source). Evidence pages shown (0-based page_idx): [1, 2]</p>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/dc63bf218d62_p1.png' alt='finance/DUDE_fd3457ca7b6abd9158ad58656359cb67 page_idx 1' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>\begin{tabular}{llll}
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{2018041000498008001CFFE2 RECORDING AND ENDORSEMENT COVER PAGE (CONTINUATION)} \\
+\multicolumn{4}{l}{PAGE 2 OF 5 Document ID: 2018041000498008 Document Date: 04-03-2018 Preparation Date: 04-10-2018 Document Type: ASSIGNMENT, MORTGAGE} \\
+\multicolumn{4}{l}{PROPERTY DATA} \\
+\multicolumn{4}{l}{Borough Block Lot Unit Address BROOKLYN 310032 Entire Lot 228SEIGELSTREET} \\
+\multicolumn{4}{l}{Property Type: OTHER Borough Block Lot Unit Address} \\
+\multicolumn{4}{l}{BROOKLYN 3100 47 Entire Lot 225 MOORE STREET Property Type: COMMERCIAL REAL ESTATE} \\
+\multicolumn{4}{l}{Borough Block Lot Unit Address BROOKLYN 3100 56 Entire Lot 215MOORE STREET} \\
+\multicolumn{4}{l}{Property Type: COMMERCIAL REAL ESTATE} \\
+\multicolumn{4}{l}{Borough Block Lot Unit Address BROOKLYN 3100 61Entire Lot 203MOORE STREET} \\
+\multicolumn{4}{l}{Property Type: COMMERCIAL REAL ESTATE Borough Block Lot Unit Address BROOKLYN 3100 63Entire Lot 201MOORESTREET} \\
+\multicolumn{4}{l}{Property Type: COMMERCIAL REAL ESTATE Borough Block Lot Unit Address} \\
+\multicolumn{4}{l}{BROOKLYN 3100 66 Entire Lot N/AMOORESTREET Property Type: OTHER Address} \\
+\multicolumn{4}{l}{Borough Block Lot Unit BROOKLYN 3100 67 Entire Lot N/AMOORESTREET Property Type: OTHER} \\
+\multicolumn{4}{l}{Borough Block Lot Unit Address BROOKLYN 3100 68Entire Lot N/AMOORESTREET} \\
+\multicolumn{4}{l}{Property Type: OTHER CROSS REFERENCE DATA} \\
+\multicolumn{4}{l}{CRFN:2015000000328 CRFN: 2016000418076} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\multicolumn{4}{l}{} \\
+\end{tabular}</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>NYC DEPARTMENT OF FINANCE   OFFICE OF THE CITY REGISTER  
+
+2018041000498008001CFFE2  
+
+RECORDING AND ENDORSEMENT COVER PAGE (CONTINUATION)  PAGE 2 OF 5  
+
+| Document ID: 2018041000498008 | Document Date: 04-03-2018 | Preparation Date: 04-10-2018 |
+|---|---|---|
+| Document Type: ASSIGNMENT, MORTGAGE |  |  |
+
+# PROPERTY DATA  
+
+| Borough | Block | Lot | Unit | Address |
+|---|---|---|---|---|
+| BROOKLYN | 3100 | 32 | Entire Lot | 228 SEIGEL STREET |
+|  |  |  |  | Property Type: OTHER |
+| BROOKLYN | 3100 | 47 | Entire Lot | 225 MOORE STREET |
+|  |  |  |  | Property Type: COMMERCIAL REAL ESTATE |
+| BROOKLYN | 3100 | 56 | Entire Lot | 215 MOORE STREET |
+|  |  |  |  | Property Type: COMMERCIAL REAL ESTATE |
+| BROOKLYN | 3100 | 61 | Entire Lot | 203 MOORE STREET |
+|  |  |  |  | Property Type: COMMERCIAL REAL ESTATE |
+| BROOKLYN | 3100 | 63 | Entire Lot | 201 MOORE STREET |
+|  |  |  |  | Property Type: COMMERCIAL REAL ESTATE |
+| BROOKLYN | 3100 | 66 | Entire Lot | N/A MOORE STREET |
+|  |  |  |  | Property Type: OTHER |
+| BROOKLYN | 3100 | 67 | Entire Lot | N/A MOORE STREET |
+|  |  |  |  | Property Type: OTHER |
+| BROOKLYN | 3100 | 68 | Entire Lot | N/A MOORE STREET |
+|  |  |  |  | Property Type: OTHER |
+
+CROSS REFERENCE DATA  
+
+* CRFN: 2015000000328
+* CRFN: 2016000418076</pre></details>
+<h3>page_idx 2 (PDF page 3) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/dc63bf218d62_p2.png' alt='finance/DUDE_fd3457ca7b6abd9158ad58656359cb67 page_idx 2' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+Thompson Hine LLP 335 Madison Avenue, $12^{\mathrm{th}}$ Floor New York, New York 10017-4611 Attn: Karen Kozlowski 
+Block: 3100   
+Lots: 22, 26, 32, 47, 56, 61, 63, 66, 67&amp; 68   
+County: Kings   
+Address: 215 Moore Street Brooklyn, New York 
+# 
+KCOF-215 MOORE LLC, a Delaware limited liability company, having an address at c/o Kushner Credit Opportunity Fund, LLC, 666 Fifth Avenue, $15^{\mathrm{th}}$ Floor,NewYork,NewYork 10103 (the “Assignor&quot;), for good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, hereby, assigns, sells, transfers, sets over, and delivers to BOFI FEDERAL BANK, a federal savings bank, its successors and/or assigns, as their interests may appear, having an address at 4350 La Jolla Village Drive, Suite 140, San Diego, California 92122 (the “Assignee&quot;), WITHOUT RECOURSE AND WITHOUT ANY REPRESENTATIONS OR WARRANTIES WHATSOEVER, WHETHER EXPRESSED, IMPLIED, OR IMPOSED BY LAW, all right, title, and interest of the Assignor in and to that certain Mortgage described on EXHIBIT A attached hereto and made a part hereof together with the mortgage(s) modified by said Mortgage. 
+Together with any and all notes and obligations therein described, the debt and claims secured thereby, and all sums of money due and to become due thereon with interest provided for therein. 
+This Assignment shall be governed in all respects by the laws of the State of New York. 
+This Assignment is dated as of April 3rd, 2018.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>THIS ASSIGNMENT IS NOT SUBJECT TO \\ THE REQUIREMENTS OF SECTION 275 \\ OF THE REAL PROPERTY LAW BECAUSE IT IS AN ASSIGNMENT WITHIN THE SECONDARY MORTGAGE MARKET
+
+
+RECORDING REQUESTED BY AND AFTER RECORDING MAIL TO:
+
+Thompson Hine LLP
+335 Madison Avenue, $12^{\text {th }}$ Floor
+New York, New York 10017-4611
+Attn: Karen Kozlowski
+Lots: 22,26,32,47,56,61,63,66,67 &amp; 68
+County: Kings
+Address: 215 Moore Street
+Brooklyn, New York
+
+ASSIGNMENT OF MORTGAGE
+
+KCOF-215 MOORE LLC, a Delaware limited liability company, having an address at c/o Kushner Credit Opportunity Fund, LLC, 666 Fifth Avenue, $15^{\text {th }}$ Floor, New York, New York 10103 (the &quot;Assignor&quot;), for good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, hereby, assigns, sells, transfers, sets over, and delivers to BOFI FEDERAL BANK, a federal savings bank, its successors and/or assigns, as their interests may appear, having an address at 4350 La Jolla Village Drive, Suite 140, San Diego, California 92122 (the &quot;Assignee&quot;), WITHOUT RECOURSE AND WITHOUT ANY REPRESENTATIONS OR WARRANTIES WHATSOEVER, WHETHER EXPRESSED, IMPLIED, OR IMPOSED BY LAW, all right, title, and interest of the Assignor in and to that certain Mortgage described on EXHIBIT A attached hereto and made a part hereof together with the mortgage(s) modified by said Mortgage.
+
+Together with any and all notes and obligations therein described, the debt and claims secured thereby, and all sums of money due and to become due thereon with interest provided for therein.
+
+This Assignment shall be governed in all respects by the laws of the State of New York.
+This Assignment is dated as of April 3rd, 2018.
+[REMAINDER OF THIS PAGE INTENTIONALLY LEFT BLANK]</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> COMMERCIAL REAL ESTATE (String); evidence source: multi</p>
+<pre>[&#x27;Address: 215 Moore Street, Brooklyn, New York&#x27;, &#x27;BROOKLYN | 3100 | 56 | Entire Lot | 215 MOORE STREET | | | | Property Type: COMMERCIAL REAL ESTATE&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-5'><h2>Case 5: b829c1ca-591f-4719-a203-4fa9b44fc263</h2>
+<p><strong>Question:</strong> Did the Games and Amusements Board exceed its target for the number of permit applications in the first half of 2015?</p>
+<p><strong>Document:</strong> news/DUDE_f596b1f18a67617cff6c4035b4b72b55 (3 pages; member <code>news/DUDE_f596b1f18a67617cff6c4035b4b72b55.pdf</code>, sha256 <code>0b84563f09539638…</code>)</p>
+<p><strong>Categories:</strong> multi_page_evidence, multi_evidence_source (selected for: multi_evidence_source). Evidence pages shown (0-based page_idx): [0, 2]</p>
+<h3>page_idx 0 (PDF page 1) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/d3d0cb3d921a_p0.png' alt='news/DUDE_f596b1f18a67617cff6c4035b4b72b55 page_idx 0' width='1275' height='1757' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+The Games and AmusementsBoard (GAB),an agency attached to the Office of thePresident,is vestedwithsupervisoryandregulatoryauthorityoverprofessionalsportsandgamesinthe Philippines.The major final outputs(MFOs)of GABin the regulation and supervisionof professional sportsandgames areasfollows: 
+# 
+For Professional Boxing and Other Contact Sports Division, the actual number of license applications from professional sportspractitionersforperiodJanuarytoJune2015was lower by $3.80\%$ at 999 compared to last year’s 1,037. Likewise, permit applications was lower by $6.58\%$ at76 compared to81oflastyear,whichresultedtolowernumberofgamesmonitored andsupervised, whichposteda $22.05\%$ decreaseat440thanlastyear&#x27;s537.Thedeclinewasaresultoflower numberof permits appliedby thepromoters aswell as the number of boutsper event. 
+
+Last June 11-13, 2015, the GAB hosted the 2015 Oriental and Pacific Boxing Federation (OPBF) General Assembly at L&#x27;Fisher Hotel in Bacolod City. The event is yet another milestone in the history of the Philippines and the Games and Amusements Board (GAB) as we once again are placed at the helm of managing the affairs of the OPBF,after14years.The2015OPBF General Assembly was participated byboxing experts andpractitionersfrom othermember countries acrossAsia and the Pacific,united by a common goal - the continued development of the sport of professional boxing. 
+# 
+ForProfessional Basketball and OtherProfessional GamesDivision,actual number of license applications from professional sports practitioners waslower by $4.12\%$ at995compared tolastyear&#x27;s 1,036.There was however, an increase in the actual number of permits issued by $30.53\%$ at262 compared to last year’s182.The increase in permits issued was due to the increase in golf events as well as the reformatting of games by the PBA,which likewise resulted in the increase of the actual number of games supervised and monitored, by $10.50\%$ at 2,714 compared to last year&#x27;s 2,429.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>ACCOMPLISHMENT REPORT \\ January to June 2015
+
+The Games and Amusements Board (GAB), an agency attached to the Office of the President, is vested with supervisory and regulatory authority over professional sports and games in the Philippines. The major final outputs (MFOs) of GAB in the regulation and supervision of professional sports and games are as follows:
+
+I. BOXING AND OTHER CONTACT SPORTS
+
+For Professional Boxing and Other Contact Sports Division, the actual number of license applications from professional sports practitioners for period January to June 2015 was lower by $3.80 \%$ at 999 compared to last year&#x27;s 1,037. Likewise, permit applications was lower by $6.58 \%$ at 76 compared to 81 of last year, which resulted to lower number of games monitored and supervised, which posted a $22.05 \%$ decrease at 440 than last year&#x27;s 537 . The decline was a result of lower number of permits applied by the promoters as well as the number of bouts per event.
+
+Last June 11-13, 2015, the GAB hosted the 2015 Oriental and Pacific Boxing Federation (OPBF) General Assembly at L&#x27;Fisher Hotel in Bacolod City. The event is yet another milestone in the history of the Philippines and the Games and Amusements Board (GAB) as we once again are placed at the helm of managing the affairs of the OPBF, after 14 years. The 2015 OPBF General Assembly was participated by boxing experts and practitioners from other member countries across Asia and the Pacific, united by a common goal - the continued development of the sport of professional boxing.
+
+II. PROFESSIONAL BASKETBALL AND OTHER PROFESSIONAL GAMES
+
+For Professional Basketball and Other Professional Games Division, actual number of license applications from professional sports practitioners was lower by $4.12 \%$ at 995 compared to last year&#x27;s 1,036. There was however, an increase in the actual number of permits issued by $30.53 \%$ at 262 compared to last year&#x27;s 182. The increase in permits issued was due to the increase in golf events as well as the reformatting of games by the PBA, which likewise resulted in the increase of the actual number of games supervised and monitored, by $10.50 \%$ at 2,714 compared to last year&#x27;s 2,429 .
+
+
+Tel. Nos. 813-57-93 * 819-58-56 * 816-32-27 * 813-71-09 ZIP CODE 1226</pre></details>
+<h3>page_idx 2 (PDF page 3) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/d3d0cb3d921a_p2.png' alt='news/DUDE_f596b1f18a67617cff6c4035b4b72b55 page_idx 2' width='1275' height='1757' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+
+\begin{tabular}{lll}
+\multicolumn{3}{l}{The major final outputs (targetvs.accomplishment)of GAB for the period January to June 2015an} \\
+summarized asfollows: &amp; TARGETSI &amp; ACTUAL \\
+MFOs/ Performance Indicators Licensing/Registration &amp; PROJECTIONS &amp; ACCOMPLISHMENT \\
+No.of license applications from professional sportspractitioners &amp; 3,170 &amp; 2,641 \\
+No.of permit applications forthehoidingof events. &amp; 1,138 &amp; 1,306 \\
+Percentage of applications acted upon over thenumberof applicationsreceived. &amp; 100% &amp; 100% \\
+Monitoring No.ofinspections\&amp;investigationsundertaken. (games supervised and monitored) &amp; 14,742 &amp; 15,631 \\
+No.ofviolationsdetectedduringinspections andinvestigations. &amp; 6 &amp; noviolations \\
+Percentageofannual inspectionsof licensed personsandregisteredentities &amp; 100% &amp; 100% \\
+Enforcement No.of enforcement actions undertaken. &amp;  &amp; 17 \\
+No.of licenseholders/registeredentities &amp; 52 3 &amp; no violations \\
+\&amp;permitholderswith2ormoreviolations recordedoverthelast3years. Percentageofenforcementactions that \\
+areresolvedwithin7days. &amp; 100% &amp; 100% \\
+ &amp;  &amp; Submitted by: \\
+ \\
+ \\
+ &amp;  &amp; JUANRAMON R.GUANZON \\
+ &amp;  &amp; Chairman \\
+ \\
+ &amp;  &amp; 15 July2015 \\
+ \\
+ &amp;  &amp; 95 \\
+ \\
+ \\
+ \\
+ \\
+ \\
+ \\
+ \\
+ \\
+ \\
+ \\
+ \\
+ \\
+\end{tabular}</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>SUMMARY:
+
+The major final outputs (target vs. accomplishment) of GAB for the period January to June 2015 are summarized as follows:
+
+\begin{tabular}{lcc}
+MFOs/Performance Indicators &amp; TARGETS/PROJECTIONS &amp; ACTUAL ACCOMPLISHMENT &amp; \\
+Licensing/Registration &amp;  &amp;  \\
+No. of license applications from professional sports practitioners &amp; 3,170 &amp; 2,641 \\
+No. of permit applications for the holding of events. &amp; 1,138 &amp; 1,306 \\
+Percentage of applications acted upon over the number of applications received. &amp; 100% &amp; 100% \\
+Monitoring &amp;  &amp;  \\
+No. of inspections \&amp; investigations undertaken. (games supervised and monitored) &amp; 14,742 &amp; 15,631 \\
+No. of violations detected during inspections and investigations. &amp; 6 &amp; no violations \\
+Percentage of annual inspections of licensed persons and registered entities &amp; 100% &amp; 100% \\
+Enforcement &amp;  &amp;  \\
+No. of enforcement actions undertaken. &amp; 52 &amp; 17 \\
+No. of license holders/registered entities \&amp; permit holders with 2 or more violations recorded over the last 3 years. &amp; 3 &amp; no violations \\
+Percentage of enforcement actions that are resolved within 7 days. &amp; 100% &amp; 100% \\
+\end{tabular}
+
+Submitted by:
+
+JUAN RAMON R. GUANZON
+Chairman
+15 July 2015
+48</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> Yes (Yes/No); evidence source: multi</p>
+<pre>[&quot;For Professional Basketball and Other Professional Games Division, actual number of license applications from professional sports practitioners was lower by $4.12 %$ at 995 compared to last year&#x27;s 1,036. There was however, an increase in the actual number of permits issued by $30.53 %$ at 262 compared to last year&#x27;s 182.&quot;, &#x27;No. of permit applications for the holding of events. &amp; 1,138 &amp; 1,306&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-6'><h2>Case 6: 7ff9cbbd-631b-4360-a204-137bfe355690</h2>
+<p><strong>Question:</strong> 在Eastern Continental Divide Loop中，Sang Run - Friendsville路线的预计完成时间范围是多少？</p>
+<p><strong>Document:</strong> manual/DUDE_0302d10b91a0ad03522b5889d1c453c7 (2 pages; member <code>manual/DUDE_0302d10b91a0ad03522b5889d1c453c7.pdf</code>, sha256 <code>c7038ca9cb03008c…</code>)</p>
+<p><strong>Categories:</strong> han_script, formula (selected for: han_script). Evidence pages shown (0-based page_idx): [1]</p>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/0b3b45201a50_p1.png' alt='manual/DUDE_0302d10b91a0ad03522b5889d1c453c7 page_idx 1' width='2481' height='2339' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+# 
+Bisected by Interstate 68, &quot;the $\mathsf{L o o p}^{\prime\prime}$ lieswithin Garrett County, MD, and Somerset County, PA. 
+
+
+
+Trace&quot; Ethics. For more information, visit www.lnt.org. 
+Published by the Potomac Heritage National Scenic Trail Office, National Park Service, U.S. Dept. of the Interior, through a partnership with Garrett Trails, Mountain Maryland Heritage Area, Maryland Dept. of Natural Resources, Maryland State Highway Administration, Army Corps of Engineers and Allegheny Trail Alliance. The content of this document should not be interpreted as representing the opinions or policies of the U.S. Government. Mention of trade names or commercial produces does not constitute endorsement by the U.S. Government. 
+
+\begin{tabular}{lll}
+\multicolumn{3}{l}{Eastern Continental Divide Loop Overview} \\
+Loop Segment Mode &amp; Miles/Km &amp; Duration \\
+Savage River Reservoir Monroe Run Trail + &amp; 2.6 mi/4.2 km &amp; 1-3 hours \\
+to Meadow Mtn. Overlook &amp; 9 mi/14.4 km &amp; 4-7 hours \\
+DCL State Park VC - Hoyes Run &amp; 11.5 mi/18.5 km &amp; 1.5 hours \\
+Hoyes Run - Sang Run &amp; 3.5 mi/5.6 km &amp; 2-4 hours \\
+Sang Run - Friendsville &amp; 9.9 mi/16 km &amp; 5-6 hours \\
+Friendsville - Confluence &amp; 13.5 mi/21.7 km &amp; 4-7 hours \\
+Great Allegheny Passage: Confluence - Frostburg &amp; 47 mi/75.6 km &amp; 4-6 hours \\
+Frostburg - BSM Trailhead &amp; 7 mi./11.2 km &amp; 1-2.5 hours \\
+Big Savage Mountain Hiking Trail &amp; 17 mi./27 km &amp; 1-2 days \\
+\end{tabular}</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Eastern Continental Divide Loop
+
+
+Where is the Loop?
+
+Bisected by Interstate 68, &quot;the Loop&quot; lies within Garrett County, MD, and Somerset County, PA
+
+
+
+
+线YMARYLAND E.S NDEMTHESOR Mownuxus mexuruo (C) Loave Noase help to protect natural and historic (C) Noo rese- Ethics. For more information, visit www.Int.org.
+
+Published by the Potomac Heritage National Scenic Trail Office, National Park Service, U.S. Dept. of the Interior, through a partnership with Garrett Trails, Mountain Maryland Heritage Area, Maryland Dept. of Natural Resources, Maryland State Highway Administration, Army Corps
+of Engineers and Allegheny Trail Alliance. The content of this document of Engineers and Allegheny Trail Alliance. The content of this document
+should not be interpreted as representing the opinions or policies of the U.S. Government. Mention of trade names or comme
+not constitute endorsement by the U.S. Government
+
+Eastern Continental Divide Loop Overview
+\begin{tabular}{|c|c|c|c|}
+  Loop Segment &amp; Mode &amp; Miles/Km &amp; Duration \\
+  Savage River Reservoir &amp;  &amp; 2.6 mi/4.2 km &amp; 1-3 hours \\
+  Monroe Run Trail + to Meadow Mtn. Overlook &amp; &amp; $9 \mathrm{mi} / 14.4 \mathrm{~km}$ &amp; 4-7 hours \\
+  DCL State Park VC - Hoyes Run &amp;  &amp; $11.5 \mathrm{mi} / 18.5 \mathrm{~km}$ &amp; 1.5 hours \\
+  Hoyes Run - Sang Run &amp;  &amp; $3.5 \mathrm{mi} / 5.6 \mathrm{~km}$ &amp; 2-4 hours \\
+  Sang Run - Friendsville &amp; $ $ &amp; $9.9 \mathrm{mi} / 16 \mathrm{~km}$ &amp; 5-6 hours \\
+  Friendsville - Confluence &amp;  &amp; $13.5 \mathrm{mi} / 21.7 \mathrm{~km}$ &amp; 4-7 hours \\
+  Great Allegheny Passage: Confluence - Frostburg &amp;  &amp; $47 \mathrm{mi} / 75.6 \mathrm{~km}$ &amp; 4-6 hours \\
+  Frostburg - BSM Trailhead &amp;  &amp; $7 \mathrm{mi} . / 11.2 \mathrm{~km}$ &amp; 1-2.5 hours \\
+  Big Savage Mountain Hiking Trail &amp;  &amp; $17 \mathrm{mi} . / 27 \mathrm{~km}$ &amp; 1-2 days \\
+ 
+\end{tabular}</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 5-6 hours (String); evidence source: formula</p>
+<pre>Sang Run - Friendsville &amp; $ $ &amp; $9.9 \mathrm{mi} / 16 \mathrm{~km}$ &amp; 5-6 hours</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-7'><h2>Case 7: 7ff5afe8-47c8-486d-bcc9-4ce3f8f285cc</h2>
+<p><strong>Question:</strong> 在Eastern Continental Divide Loop中，Big Savage Mountain Hiking Trail的预计完成时间范围是多少？</p>
+<p><strong>Document:</strong> manual/DUDE_0302d10b91a0ad03522b5889d1c453c7 (2 pages; member <code>manual/DUDE_0302d10b91a0ad03522b5889d1c453c7.pdf</code>, sha256 <code>c7038ca9cb03008c…</code>)</p>
+<p><strong>Categories:</strong> han_script, table (selected for: han_script). Evidence pages shown (0-based page_idx): [1]</p>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/0b3b45201a50_p1.png' alt='manual/DUDE_0302d10b91a0ad03522b5889d1c453c7 page_idx 1' width='2481' height='2339' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+# 
+Bisected by Interstate 68, &quot;the $\mathsf{L o o p}^{\prime\prime}$ lieswithin Garrett County, MD, and Somerset County, PA. 
+
+
+
+Trace&quot; Ethics. For more information, visit www.lnt.org. 
+Published by the Potomac Heritage National Scenic Trail Office, National Park Service, U.S. Dept. of the Interior, through a partnership with Garrett Trails, Mountain Maryland Heritage Area, Maryland Dept. of Natural Resources, Maryland State Highway Administration, Army Corps of Engineers and Allegheny Trail Alliance. The content of this document should not be interpreted as representing the opinions or policies of the U.S. Government. Mention of trade names or commercial produces does not constitute endorsement by the U.S. Government. 
+
+\begin{tabular}{lll}
+\multicolumn{3}{l}{Eastern Continental Divide Loop Overview} \\
+Loop Segment Mode &amp; Miles/Km &amp; Duration \\
+Savage River Reservoir Monroe Run Trail + &amp; 2.6 mi/4.2 km &amp; 1-3 hours \\
+to Meadow Mtn. Overlook &amp; 9 mi/14.4 km &amp; 4-7 hours \\
+DCL State Park VC - Hoyes Run &amp; 11.5 mi/18.5 km &amp; 1.5 hours \\
+Hoyes Run - Sang Run &amp; 3.5 mi/5.6 km &amp; 2-4 hours \\
+Sang Run - Friendsville &amp; 9.9 mi/16 km &amp; 5-6 hours \\
+Friendsville - Confluence &amp; 13.5 mi/21.7 km &amp; 4-7 hours \\
+Great Allegheny Passage: Confluence - Frostburg &amp; 47 mi/75.6 km &amp; 4-6 hours \\
+Frostburg - BSM Trailhead &amp; 7 mi./11.2 km &amp; 1-2.5 hours \\
+Big Savage Mountain Hiking Trail &amp; 17 mi./27 km &amp; 1-2 days \\
+\end{tabular}</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Eastern Continental Divide Loop
+
+
+Where is the Loop?
+
+Bisected by Interstate 68, &quot;the Loop&quot; lies within Garrett County, MD, and Somerset County, PA
+
+
+
+
+线YMARYLAND E.S NDEMTHESOR Mownuxus mexuruo (C) Loave Noase help to protect natural and historic (C) Noo rese- Ethics. For more information, visit www.Int.org.
+
+Published by the Potomac Heritage National Scenic Trail Office, National Park Service, U.S. Dept. of the Interior, through a partnership with Garrett Trails, Mountain Maryland Heritage Area, Maryland Dept. of Natural Resources, Maryland State Highway Administration, Army Corps
+of Engineers and Allegheny Trail Alliance. The content of this document of Engineers and Allegheny Trail Alliance. The content of this document
+should not be interpreted as representing the opinions or policies of the U.S. Government. Mention of trade names or comme
+not constitute endorsement by the U.S. Government
+
+Eastern Continental Divide Loop Overview
+\begin{tabular}{|c|c|c|c|}
+  Loop Segment &amp; Mode &amp; Miles/Km &amp; Duration \\
+  Savage River Reservoir &amp;  &amp; 2.6 mi/4.2 km &amp; 1-3 hours \\
+  Monroe Run Trail + to Meadow Mtn. Overlook &amp; &amp; $9 \mathrm{mi} / 14.4 \mathrm{~km}$ &amp; 4-7 hours \\
+  DCL State Park VC - Hoyes Run &amp;  &amp; $11.5 \mathrm{mi} / 18.5 \mathrm{~km}$ &amp; 1.5 hours \\
+  Hoyes Run - Sang Run &amp;  &amp; $3.5 \mathrm{mi} / 5.6 \mathrm{~km}$ &amp; 2-4 hours \\
+  Sang Run - Friendsville &amp; $ $ &amp; $9.9 \mathrm{mi} / 16 \mathrm{~km}$ &amp; 5-6 hours \\
+  Friendsville - Confluence &amp;  &amp; $13.5 \mathrm{mi} / 21.7 \mathrm{~km}$ &amp; 4-7 hours \\
+  Great Allegheny Passage: Confluence - Frostburg &amp;  &amp; $47 \mathrm{mi} / 75.6 \mathrm{~km}$ &amp; 4-6 hours \\
+  Frostburg - BSM Trailhead &amp;  &amp; $7 \mathrm{mi} . / 11.2 \mathrm{~km}$ &amp; 1-2.5 hours \\
+  Big Savage Mountain Hiking Trail &amp;  &amp; $17 \mathrm{mi} . / 27 \mathrm{~km}$ &amp; 1-2 days \\
+ 
+\end{tabular}</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 1-2 days (String); evidence source: table</p>
+<pre>Big Savage Mountain Hiking Trail &amp;  &amp; $17 \mathrm{mi} . / 27 \mathrm{~km}$ &amp; 1-2 days</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-8'><h2>Case 8: 97ecd355-63e6-4f62-9845-110032a285d6</h2>
+<p><strong>Question:</strong> How many different types of screws are listed in the document with a length of 3/4 inches?</p>
+<p><strong>Document:</strong> manual/DUDE_688a7afb81806a05870d7c9b87f36778 (14 pages; member <code>manual/DUDE_688a7afb81806a05870d7c9b87f36778.pdf</code>, sha256 <code>cbaa6affde0a7153…</code>)</p>
+<p><strong>Categories:</strong> table (selected for: table). Evidence pages shown (0-based page_idx): [6]</p>
+<h3>page_idx 6 (PDF page 7) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/289dfeea5b71_p6.png' alt='manual/DUDE_688a7afb81806a05870d7c9b87f36778 page_idx 6' width='1280' height='1716' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>\begin{tabular}{lllllllll}
+Ref. No. &amp; Part No. &amp; Qty. &amp; Description &amp;  &amp; Ref. No. &amp; Part No. &amp; Qty. &amp; Description \\
+1 2 &amp; 119215 346008 &amp; 1 4 &amp; SeatAssembly Screw,Hood Fastener &amp;  &amp; 25 &amp; 400258 &amp; 6 &amp; Screw, 3/8-16 x 3/4 Hex Hd. Cap, Front Cowling Mounting \\
+4 5 &amp; 332027 119216 &amp; 1 1 &amp; Decal, Dash -Hood Hood and Brace Assembly &amp;  &amp;  &amp; 443106 &amp; 4 &amp; Nut,5/16-18 Hex,Tunnel and Belt Guide Mounting \\
+5 &amp; 154799 &amp;  &amp; (Electric Start Only) Hood and BraceAssembly &amp;  &amp;  &amp; 446134 &amp; 6 &amp; Lockwasher, 5/16 Med.,Tunnel Mounting \\
+ &amp;  &amp;  &amp; (Manual Start Only) &amp;  &amp;  &amp; 443106 &amp; 4 &amp; Nut,5/16-18Hex,Fender Mounting \\
+7 &amp; 345772 &amp;  &amp; Decal, Model No. 107 &amp;  &amp;  &amp; 446134 &amp; 4 &amp; Lockwasher, 5/16 Med., Fender Mounting \\
+8 &amp; 344120 &amp; 2 &amp; Decal, Name - Hood RH and LH Side &amp;  &amp;  &amp; 400180 &amp; 4 &amp; Screw, 5/16-18 x 1/2 Hex. Hd. Cap, Tunnel Mounting \\
+9 &amp;  &amp;  &amp; Fuel Tank Cap and Gauge &amp;  &amp;  &amp; 332143 &amp; 1 &amp; Decal,Operation \\
+ &amp; 344764 &amp;  &amp; Assembly &amp;  &amp;  &amp; 331959 400184 &amp;  &amp; Tunnel Screw, 5/16-18x 3/4 Hex.Hd. \\
+10 11 &amp; 331998 &amp;  &amp; Gas Tank Assembly Strap,Fuel Tank Mounting &amp;  &amp;  &amp;  &amp;  &amp; Cap,Belt Guide and Tunnel to Frame Mounting \\
+ &amp; 500550 &amp; 2 &amp; with Clips Nut,5/16-18 Hex,Gas Tank &amp;  &amp;  &amp; 445245 &amp; 5 &amp; Nut, 1/4-20 Type U, Cover to Frame Mounting \\
+12 &amp; 443106 &amp;  &amp; Bracket Mounting Lockwasher, 5/16 Med,Gas &amp;  &amp;  &amp; 400104 &amp; 5 &amp; Screw,1/4-20x 1/2Hex.Hd. Cap,Cover to Frame Mounting \\
+13 &amp; 446134 &amp;  &amp; Tank Bracket Mounting &amp;  &amp;  &amp; 126678 &amp;  &amp; Rear Cover andBelt Guide Assembly \\
+14 &amp; 329333 &amp;  &amp; Bracket, Gas Tank Mounting Fuel Line &amp;  &amp;  &amp; 443118 &amp;  &amp; Nut,1/2-13 Hex, Seat \\
+15 &amp; 344881 &amp;  &amp; ShutoffValveAssembly &amp;  &amp;  &amp; 446152 &amp;  &amp; Mounting Lockwasher, 1/2 Med.,Seat \\
+16 17 &amp; 108557 346007 &amp;  &amp; Nut, Hood Fastener &amp;  &amp;  &amp;  &amp;  &amp; Mounting Washer,Seat Mounting \\
+18 &amp; 404066 &amp; 4 &amp; Screw,5/16-18x5/8Cr0ss Rec Truss Hd Mach &amp;  &amp;  &amp; 452016 400182 &amp; 1 2 &amp; Screw, 5/16-18 x 5/8 Hex. Hd.Cap,Fender to Frame \\
+19 &amp; 409250 &amp;  &amp; Gas Tank Bracket Mounting Screw,#8x5/8 Rd Hd Slot TypeB Bumper Mounting &amp;  &amp;  &amp; 440092 &amp; 2 &amp; Mounting Bolt, 5/16-18 x 1/2 Rd. Hd. Sh.Sq.Neck (Carriage) \\
+20 &amp; 343807 &amp;  &amp; Bumper,Rubber -Front Cowling &amp;  &amp;  &amp;  &amp;  &amp; FendertoFrame Decal,Fender-Rear \\
+21 &amp; 126905 &amp;  &amp; Cowling, Front &amp;  &amp; 42 &amp; 328074 \\
+22 &amp; 342951 &amp;  &amp; Decal,Name -Front &amp;  &amp; 43 &amp; 156849 &amp;  &amp; Rear Fender and Bracket Assembly \\
+23 &amp; 443110 &amp;  &amp; Nut,3/8-16 Hex, Front Cowl Mounting &amp;  &amp; 44 &amp; 342951 &amp;  &amp; Decal, Dash Overlay \\
+24 &amp; 446142 &amp; 6 &amp; Lockwasher,3/8 Hvy, Front Cowling Mounting &amp;  &amp; 45 &amp; 345965 &amp;  &amp; Decal, Caution \\
+ \\
+\end{tabular}</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>\begin{tabular}{|c|c|c|p{8cm}|}
+ 
+Ref. &amp; Part No. &amp; Quan. &amp; Description \\
+No. &amp; &amp; &amp; \\
+   
+1 &amp; &amp; 1 &amp; Engine - Briggs \&amp; Stratton, Model No. 170707, Type 0702-01, Electric Start \\
+ 
+1 &amp; &amp; 1 &amp; Engine - Briggs \&amp; Stratton, Model No. 170702, Type 0701-01, Manual Start \\
+ 
+2 &amp; 400184 &amp; 2 &amp; Screw, 5/16-18 x 3/4 Hex Hd Cap - Rear Belt Guide to Frame Mtg \\
+ 
+3 &amp; 444794 &amp; 2 &amp; Nut, 5/16-18 Hex Jam \\
+ 
+4 &amp; 400204 &amp; 1 &amp; Screw, 5/16-18 Hex Hd Cap \\
+ 
+5 &amp; 155711 &amp; 1 &amp; Stud Assem - P.T.O. Belt Guide \\
+ 
+6 &amp; 400268 &amp; 1 &amp; Screw, 3/8-16 x 1-3/4 Hex Hd Cap - Idler Pulley to Arm Mtg \\
+ 
+7 &amp; 453011 &amp; 1 &amp; Washer, 3/8 SAE Flat - Idler Pulley to Arm Mtg \\
+ 
+8 &amp; 155231 &amp; 1 &amp; Pulley, Idler \\
+ 
+9 &amp; 440078 &amp; 1 &amp; Bolt, 5/16-18 x 3/4 Carr - Adj Lever to Pivot Lever Mtg \\
+ 
+10 &amp; 345155 &amp; 1 &amp; Spacer, Idler Mtg \\
+ 
+11 &amp; 154766 &amp; 1 &amp; Lever, Adjustment - P.T.O. Assem \\
+ 
+12 &amp; 328133 &amp; 2 &amp; Bushing - P.T.O. Pivot \\
+ 
+13 &amp; 154765 &amp; 1 &amp; Lever, Pivot - P.T.O. Assem \\
+ 
+14 &amp; 453009 &amp; 1 &amp; Washer, 5/16 SAE Flat - Adj Lever to Pivot Lever Mtg \\
+ 
+15 &amp; 446134 &amp; 1 &amp; Lockwasher, 5/16 Med - Adj Lever to Pivot Lever Mtg \\
+ 
+16 &amp; 443106 &amp; 1 &amp; Nut, 5/16-18 Hex, Adj Lever to Pivot Lever Mtg \\
+ 
+17 &amp; 344911 &amp; 1 &amp; Retainer, Belt \\
+ 
+18 &amp; 446140 &amp; 1 &amp; Lockwasher, 3/8 Med - Idler Pulley to Arm Mtg \\
+ 
+19 &amp; 443110 &amp; 1 &amp; Nut, 3/8-16 Hex - Idler Pulley to Arm Mtg \\
+ 
+20 &amp; 460026 &amp; 2 &amp; Pin, Cotter \\
+ 
+21 &amp; 453009 &amp; 2 &amp; Washer, Flat \\
+ 
+22 &amp; 329341 &amp; 1 &amp; Rod, Actuator \\
+ 
+23 &amp; 460026 &amp; 1 &amp; Pin, 1/8 x 3/4 Cotter \\
+ 
+24 &amp; 332051 &amp; 1 &amp; Belt, P.T.O. Drive \\
+ 
+25 &amp; 329184 &amp; 1 &amp; Belt, Traction Drive \\
+ 
+26 &amp; 443114 &amp; 1 &amp; Nut, 7/16-14 Hex, Stationary Idler to Shaft Mtg \\
+ 
+27 &amp; 446146 &amp; 1 &amp; Lockwasher, 7/16 Med - Stationary Idler to Shaft Mtg \\
+ 
+28 &amp; 311506 &amp; 1 &amp; Pulley, Idler - Stationary \\
+ 
+29 &amp; 443110 &amp; 1 &amp; Nut, 3/8-16 Hex - Idler Pulley to Arm Mtg \\
+ 
+30 &amp; 446140 &amp; 1 &amp; Lockwasher, 3/8 Med - Idler Pulley to Arm Mtg \\
+ 
+31 &amp; 453011 &amp; 1 &amp; Washer, 3/8 SAE Std Flat - Idler Pulley to Arm Mtg \\
+ 
+32 &amp; 344896 &amp; 1 &amp; Washer, Thrust \\
+ 
+33 &amp; 155231 &amp; 1 &amp; Pulley, Idler - Flat \\
+ 
+34 &amp; 343459 &amp; 1 &amp; Spacer, Idler Mtg \\
+ 
+35 &amp; 344904 &amp; 1 &amp; Retainer, Drive Belt \\
+ 
+36 &amp; 400372 &amp; 1 &amp; Screw, 7/16-20 x 1-1/4 Hex Hd Cap - Pulley to Engine Mtg \\
+ 
+37 &amp; 446146 &amp; 1 &amp; Lockwasher, 7/16 Med - Pulley to Engine Mtg \\
+ 
+38 &amp; 326237 &amp; 1 &amp; Washer, Pulley to Engine Mtg \\
+ 
+39 &amp; 332453 &amp; 1 &amp; Pulley, Engine Drive \\
+ 
+40 &amp; 315307 &amp; 1 &amp; Key, Pulley to Engine Mtg \\
+ 
+41 &amp; 126512 &amp; 1 &amp; Idler Arm and Pivot Assem \\
+ 
+\end{tabular}
+
+\begin{tabular}{|c|c|c|c|}
+  Ref. No. &amp; Part No. &amp; Qty. &amp; Description \\
+  25 &amp; 400258 &amp; 6 &amp; Screw, $3 / 8-16 \times 3 / 4$ Hex Hd. Cap, Front Cowling Mounting \\
+  26 &amp; 443106 &amp; 4 &amp; Nut, 5/16-18 Hex, Tunnel and Belt Guide Mounting \\
+  27 &amp; 446134 &amp; 6 &amp; Lockwasher, 5/16 Med., Tunnel Mounting \\
+  28 &amp; 443106 &amp; 4 &amp; Nut, 5/16-18 Hex, Fender Mounting \\
+  29 &amp; 446134 &amp; 4 &amp; Lockwasher, 5/16 Med., Fender Mounting \\
+  30 &amp; 400180 &amp; 4 &amp; Screw, $5 / 16-18 \times 1 / 2$ Hex. Hd. Cap, Tunnel Mounting \\
+  31 &amp; 332143 &amp; 1 &amp; Decal, Operation \\
+  32 &amp; 331959 &amp; 1 &amp; Tunnel \\
+  33 &amp; 400184 &amp; 2 &amp; Screw, 5/16-18 x 3/4 Hex. Hd. Cap, Belt Guide and Tunnel to Frame Mounting \\
+  34 &amp; 445245 &amp; 5 &amp; Nut, $1 / 4-20$ Type U, Cover to Frame Mounting \\
+  35 &amp; 400104 &amp; 5 &amp; Screw, $1 / 4-20 \times 1 / 2$ Hex. Hd. Cap, Cover to Frame Mounting \\
+  36 &amp; 126678 &amp; 1 &amp; Rear Cover and Belt Guide Assembly \\
+  37 &amp; 443118 &amp; 1 &amp; Nut, $1 / 2-13$ Hex, Seat Mounting \\
+  38 &amp; 446152 &amp; 1 &amp; Lockwasher, $1 / 2$ Med., Seat Mounting \\
+  39 &amp; 452016 &amp; 1 &amp; Washer, Seat Mounting \\
+  40 &amp; 400182 &amp; 2 &amp; Screw, 5/16-18 x 5/8 Hex. Hd. Cap, Fender to Frame Mounting \\
+  41 &amp; 440092 &amp; 2 &amp; Bolt, $5 / 16-18 \times 1 / 2 \mathrm{Rd} . \mathrm{Hd}$. Sh. Sq. Neck (Carriage) Fender to Frame \\
+  42 &amp; 328074 &amp; 1 &amp; Decal, Fender - Rear \\
+  43 &amp; 156849 &amp; 1 &amp; Rear Fender and Bracket Assembly \\
+  44 &amp; 342951 &amp; 1 &amp; Decal, Dash Overlay \\
+  45 &amp; 345965 &amp; 1 &amp; Decal, Caution \\
+ 
+\end{tabular}</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 3 (Numeric); evidence source: table</p>
+<pre>[&#x27;2 &amp; 400184 &amp; 2 &amp; Screw, 5/16-18 x 3/4 Hex Hd Cap - Rear Belt Guide to Frame Mtg&#x27;, &#x27;25 &amp; 400258 &amp; 6 &amp; Screw, $3 / 8-16 \times 3 / 4$ Hex Hd. Cap, Front Cowling Mounting&#x27;, &#x27;33 &amp; 400184 &amp; 2 &amp; Screw, 5/16-18 x 3/4 Hex. Hd. Cap, Belt Guide and Tunnel to Frame Mounting&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-9'><h2>Case 9: a87b648f-8cdc-49c5-82f4-000f3cc7bcc3</h2>
+<p><strong>Question:</strong> If Eather Company&#x27;s operating reserves were reduced by $219,468 during the fiscal year, what was the original total amount of operating reserves before the transfer to the reserve for contingencies?</p>
+<p><strong>Document:</strong> finance/DUDE_30b1dce70ce062216649fb2be170693f (4 pages; member <code>finance/DUDE_30b1dce70ce062216649fb2be170693f.pdf</code>, sha256 <code>3c14dd50d57df711…</code>)</p>
+<p><strong>Categories:</strong> formula (selected for: formula). Evidence pages shown (0-based page_idx): [2]</p>
+<h3>page_idx 2 (PDF page 3) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/3395267895dd_p2.png' alt='finance/DUDE_30b1dce70ce062216649fb2be170693f page_idx 2' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+Oclober 26, 1946 
+# 
+CURRENT LIABILITIES:
+Accounts payable, including pay rolls, etc... S 808,136   
+Accrued general and social security taxes . 187,781   
+Provision for Federal income and excess profits taxes.. 1,849,592   
+Total current liabilities . . \$2,845,509 
+# 
+Inventory reserve. S 475,000   
+Reserve for contingencies 315,947   
+Operating reserves. . 203,742 
+CAPITAL STOCK AND SURPLUS:
+Capital stock, par value $\$10$ per share-- Authorized—-1,250,000 shares . . \$12,500,000 Issued—1,000,000 shares . . \$10,000,000 
+Earned surplus, since October 28, 1938 (see statement) .. . 4,674,72 \*NOTE: During the curret fscal year operatingreserves aggregting $\$219,468$ no longer specihcally required, were transferred to the reserve for contingencies. The inventory reserve of $\$475,000$ was provided in the current fiscal year for possible future price deline and in part for loss onrelacement of basiclastin,frstout inventories between October 26, 1946, and December 31, 1946, the close of he Federal income tax year.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>EATHER COMPANY
+
+-October 26, 1946
+
+LIABILITIES, CAPITAL STOCK AND SURPLUS
+
+CURRENT LIABILITIES:
+
+Accounts payable, including pay rolls, etc. \dotfill \$ 808,136
+
+Accrued general and social security taxes \dotfill 187,781
+
+Provision for Federal income and excess profits taxes \dotfill 1,849,592
+
+Total current liabilities \dotfill \$2,845,509
+
+RESERVES:*
+
+Inventory reserve \dotfill \$ 475,000
+
+Reserve for contingencies \dotfill 315,947
+
+Operating reserves \dotfill 203,742
+
+\dotfill 994,689
+
+CAPITAL STOCK AND SURPLUS:
+
+Capital stock, par value \$10 per share—
+
+Authorized—1,250,000 shares \dotfill \$12,500,000
+
+Issued—1,000,000 shares \dotfill \$10,000,000
+
+Earned surplus, since October 28, 1938 (see statement) \dotfill 4,674,724
+
+\dotfill 14,674,724
+
+\dotfill \$18,514,922
+
+*NOTE: During the current fiscal year operating reserves aggregating \$219,468, no longer specifically required, were transferred to the reserve for contingencies. The inventory reserve of \$475,000 was provided in the current fiscal year for possible future price decline and in part for losses on replacement of basic &quot;last-in, first-out&quot; inventories between October 26, 1946, and December 31, 1946, the close of the Federal income tax year.</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> $423,210 (Numeric); evidence source: formula</p>
+<pre>[&#x27;Operating reserves \\dotfill 203,742&#x27;, &#x27;During the current fiscal year operating reserves aggregating \\$219,468, no longer specifically required, were transferred to the reserve for contingencies.&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-10'><h2>Case 10: acbd6b3b-a72e-44f8-ab4c-fc50fd089698</h2>
+<p><strong>Question:</strong> By how much did the number of sheltered veterans decrease from 2010 to 2014?</p>
+<p><strong>Document:</strong> finance/DUDE_6ce088baadf80dedef254f3a10fd1ae1 (2 pages; member <code>finance/DUDE_6ce088baadf80dedef254f3a10fd1ae1.pdf</code>, sha256 <code>6e5185ff6b645987…</code>)</p>
+<p><strong>Categories:</strong> chart (selected for: chart). Evidence pages shown (0-based page_idx): [1]</p>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/59965a7f6dd1_p1.png' alt='finance/DUDE_6ce088baadf80dedef254f3a10fd1ae1 page_idx 1' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>Source:  Department of Housing and Urban Development.  The 2014 Annual Homeless Assessment Report to Congress, Part 1. 
+
+# 
+In 2010, the President set ambitious goals to end homelessness across the Nation, and since then significant progress has been made.  Major cities have hit important milestones toward the goals including New Orleans, Louisiana, which has ended veteran homelessness, and Salt Lake City, Utah and Phoenix, Arizona, which have ended chronic homelessness among veterans.  Over 300 mayors, governors, and county executives have committed to ending veteran homelessness in their communities through the Mayors Challenge to End Veteran Homelessness. 
+The overall number of veterans experiencing homelessness has declined by 33 percent—nearly 25,000 veterans—since 2010, and with continued focus from Federal, State, and local partners, we are on a path to end veteran homelessness by the end of 2015.  The Budget continues to make investments to end chronic homelessness in 2017 and to make significant progress in ending homelessness across all other populations.  In addition to targeted increases in HUD’s Homeless Assistance Grants, the Budget provides 67,000 new Housing Choice Vouchers to support low-income households, including families experiencing homelessness; survivors of domestic and dating violence; families with children in foster care; youth aging out of foster care; and homeless veterans, regardless of their discharge status. 
+# 
+The President has said that if anyone in the American family feels they have been treated unfairly it is a problem for all Americans.  That is why the President is committed to ensuring the criminal justice system is safe, fair, and trustworthy for all Americans.  In addition to supporting the enhancement of community policing practices across the Nation, the Budget proposes to prioritize DOJ’s resources on criminals who pose the most serious threats to American citizens’ safety, support Federal reentry programs that help reduce recidivism, and combat violent extremism.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>&lt;chart&gt;
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Year &amp; Homeless Veterans &amp; Sheltered Veterans &amp; Unsheltered Veterans \\
+\hline
+2010 &amp; 74,770 &amp; 43,437 &amp; 31,333 \\
+\hline
+2011 &amp; 65,645 &amp; 40,033 &amp; 25,612 \\
+\hline
+2012 &amp; 60,769 &amp; 35,143 &amp; 25,626 \\
+\hline
+2013 &amp; 55,779 &amp; 34,909 &amp; 20,870 \\
+\hline
+2014 &amp; 49,933 &amp; 32,048 &amp; 17,885 \\
+\hline
+\end{tabular}
+&lt;/chart&gt;
+
+
+Source: Department of Housing and Urban Development. The 2014 Annual Homeless Assessment Report to Congress, Part 1.
+
+
+together with discretionary funding proposed for 2016, could produce net savings of $\$ 32$ billion over 10 years and reduce the current backlog of 906,000 overdue CDRs.
+
+\section*{Ending Homelessness}
+
+In 2010, the President set ambitious goals to end homelessness across the Nation, and since then significant progress has been made. Major cities have hit important milestones toward the goals including New Orleans, Louisiana, which has ended veteran homelessness, and Salt Lake City, Utah and Phoenix, Arizona, which have ended chronic homelessness among veterans. Over 300 mayors, governors, and county executives have committed to ending veteran homelessness in their communities through the Mayors Challenge to End Veteran Homelessness.
+
+The overall number of veterans experiencing homelessness has declined by 33 percent-nearly 25,000 veterans-since 2010 , and with continued focus from Federal, State, and local partners, we are on a path to end veteran homelessness by the end of 2015. The Budget continues to make investments to end chronic homelessness in 2017 and to make significant progress in ending homelessness across all other populations. In addition to targeted increases in HUD&#x27;s Homeless Assistance Grants, the Budget provides 67,000 new Housing Choice Vouchers to support low-income households, including families experiencing homelessness; survivors of domestic and dating violence; families with children in foster care; youth aging out of foster care; and homeless veterans, regardless of their discharge status.
+
+\section*{ENSURING SAFETY, FAIRNESS, AND COMMUNITY TRUST IN THE CRIMINAL JUSTICE SYSTEM}
+
+The President has said that if anyone in the American family feels they have been treated unfairly it is a problem for all Americans. That is why the President is committed to ensuring the criminal justice system is safe, fair, and trustworthy for all Americans. In addition to supporting the enhancement of community policing practices across the Nation, the Budget proposes to prioritize DOJ&#x27;s resources on criminals who pose the most serious threats to American citizens&#x27; safety, support Federal reentry programs that help reduce recidivism, and combat violent extremism.</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 11,389 (Numeric); evidence source: chart</p>
+<pre>&lt;chart&gt;
+\begin{tabular}{|c|c|c|c|c|c|}
+ 
+Year &amp; Homeless Veterans &amp; Sheltered Veterans &amp; Unsheltered Veterans \\
+ 
+2010 &amp; 74,770 &amp; 43,437 &amp; 31,333 \\
+ 
+2011 &amp; 65,645 &amp; 40,033 &amp; 25,612 \\
+ 
+2012 &amp; 60,769 &amp; 35,143 &amp; 25,626 \\
+ 
+2013 &amp; 55,779 &amp; 34,909 &amp; 20,870 \\
+ 
+2014 &amp; 49,933 &amp; 32,048 &amp; 17,885 \\
+ 
+\end{tabular}
+&lt;/chart&gt;</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-11'><h2>Case 11: cdb2ec4f-eb16-43f7-854e-d8019e3affd2</h2>
+<p><strong>Question:</strong> What is the percentage increase in payroll for small businesses in New York compared to the United States from 2011 to 2016?</p>
+<p><strong>Document:</strong> finance/DUDE_2611a49ead93bb5a4f05450730e25058 (4 pages; member <code>finance/DUDE_2611a49ead93bb5a4f05450730e25058.pdf</code>, sha256 <code>b3558828e98d0e03…</code>)</p>
+<p><strong>Categories:</strong> chart (selected for: chart). Evidence pages shown (0-based page_idx): [0]</p>
+<h3>page_idx 0 (PDF page 1) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/30e1655699d1_p0.png' alt='finance/DUDE_2611a49ead93bb5a4f05450730e25058 page_idx 0' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+# 
+From mom-and-pop corner stores to medical practices to computer software start-ups, small businesses play a vital role in New York’s economy. While an enterprise can be classified as a small business based upon its number of employees, its annual income or both, the U.S. Small Business Administration (SBA) and this report primarily define a small business as one with fewer than 500 employees.1 
+Over the last five years for which data are available, employment at New York’s small businesses rose by 9.2 percent, slightly faster than the national pace, as shown in Figure 1. Total payroll showed strong growth, rising to $\$212.6$ billion in New York, and the number of firms rose both in the State and nationally.2 
+# 
+Among the more than 465,000 businesses in New York in 2016, 99 percent were small businesses. In addition, the State was home to over 1.7 million non-employer businesses, which largely comprise selfemployed individuals.3 
+Of the small businesses with paid employees in 2016, almost two-thirds had fewer than five employees, with over 81 percent having fewer than 10 employees, as shown in Figure 2. These 374,000 microbusinesses provided over 957,000 jobs with total payroll close to $\$43$ billion.4 
+FIGURE 1 Small Business Growth, U.S. and New York, 2011– 2016 ,FIGURE 2 Businesses by Firm Size, New York, 2016</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>\section*{Small Business in New York State: An Economic Snapshot}
+
+From mom-and-pop corner stores to medical practices to computer software start-ups, small businesses play a vital role in New York&#x27;s economy. While an enterprise can be classified as a small business based upon its number of employees, its annual income or both, the U.S. Small Business Administration (SBA) and this report primarily define a small business as one with fewer than 500 employees. ${ }^{1}$
+
+Over the last five years for which data are available, employment at New York&#x27;s small businesses rose by 9.2 percent, slightly faster than the national pace, as shown in Figure 1. Total payroll showed strong growth, rising to $\$ 212.6$ billion in New York, and the number of firms rose both in the State and nationally. ${ }^{2}$
+
+\section*{Firms and Employment}
+
+Among the more than 465,000 businesses in New York in 2016, 99 percent were small businesses. In addition, the State was home to over 1.7 million non-employer businesses, which largely comprise selfemployed individuals. ${ }^{3}$
+
+Of the small businesses with paid employees in 2016, almost two-thirds had fewer than five employees, with over 81 percent having fewer than 10 employees, as shown in Figure 2. These 374,000 microbusinesses provided over 957,000 jobs with total payroll close to $\$ 43$ billion. ${ }^{4}$
+
+FIGURE 1
+Small Business Growth, U.S. and New York, 2011-2016
+
+&lt;chart&gt;
+\begin{tabular}{l c c}
+ &amp; New York &amp; United States \\ \hline
+Firms &amp; 4 &amp; 5 \\
+Employment &amp; 9 &amp; 9 \\
+Payroll &amp; 17 &amp; 21 \\
+\end{tabular}
+&lt;/chart&gt;
+
+
+Source: U.S. Census Bureau
+
+FIGURE 2
+Businesses by Firm Size, New York, 2016
+
+
+Source: U.S. Census Bureau
+
+\footnotetext{
+1 The SBA uses various standards for determining small business status based on numbers of employees, ranging from 50 to 1,500 depending on industry sector. In New York, Section 131 of the Economic Development Law defines a small business as one that has fewer than 100 employees and is independently owned and operated.
+2 Data for this report is drawn primarily from the U.S. Census Bureau, Statistics of U.S. Businesses (latest annual data 2016).
+3 As defined by the U.S. Census Bureau, a non-employer business is one that has no paid employees, has annual business receipts in excess of $\$ 1,000$, and is subject to federal income taxes. The information and data in this report do not encompass non-employer businesses.
+4 The U.S. Bureau of Labor Statistics defines microbusinesses as those with fewer than 10 employees.
+}</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 17 (Numeric); evidence source: chart</p>
+<pre>[&#x27;&lt;chart&gt;\n\\begin{tabular}{l c c}\n &amp; New York &amp; United States \\  \nFirms &amp; 4 &amp; 5 \\\nEmployment &amp; 9 &amp; 9 \\\nPayroll &amp; 17 &amp; 21 \\\n\\end{tabular}\n&lt;/chart&gt;&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-12'><h2>Case 12: 948317da-3afe-4665-bf5e-7e29cb02c651</h2>
+<p><strong>Question:</strong> What was the stipulation made by the young men regarding pecuniary reward during the experiment on Kissinger?</p>
+<p><strong>Document:</strong> textbook/DUDE_1336a75489216265c7c450faa3c3fac6 (20 pages; member <code>textbook/DUDE_1336a75489216265c7c450faa3c3fac6.pdf</code>, sha256 <code>7acf81f23d37fbcb…</code>)</p>
+<p><strong>Categories:</strong> text (selected for: top_up). Evidence pages shown (0-based page_idx): [13]</p>
+<h3>page_idx 13 (PDF page 14) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/7bd7528dd58c_p13.png' alt='textbook/DUDE_1336a75489216265c7c450faa3c3fac6 page_idx 13' width='867' height='1372' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>(Adapted from S. Report No. 574, 61st Cong., 2d sess.) (See Yellow Fever, S. Doc. No. 822, 61st Cong., 3d sess., Pp. 30-31.) 
+QUESTIONS ON READINGS: 
+1. Why did the Indians attack the settlers in Ohio? 2. Why was Logan at a disadvantage in fighting the Indians? 3. What improvements have been made over the fintlock musket ? 4. What changes in the life of the people have taken place that   
+have made those improvements possible? 5. Why would trained soldiers have defended the land against   
+the Indians better than the scattered settlers could defend it?   
+6. Why was Logan&#x27;s method a wasteful one? 7. Is it a waste for the Government to keep soldiers? Explain. 8. Why were the soldiers more useful than civilians during the   
+Dayton food? 9. What might have happened in Dayton if no soldiers had been   
+present to help? 10. What was the mission of Lieutenant Woodfill? 11. What did he do \*above and beyond&quot; the call of duty? 12. What effect did his action have on his men? 13. What characteristics of a good soldier did Lieutenant Wood  
+fill show?. 14. Why was the action of John R. Kissinger and John J. Moran   
+commendable? 15. What makes a good soldier? 16. Is it necessary to be a hero to be a good soldier? 17. From the readings given make a list of the things a soldier   
+may be called upon to do. 18. Why were soldiers trained before being sent to Europe? 19. What does it take to make an army? 20. What services were performed during the great war by. the   
+American soldier who remained at home? 21. In a few words summarize the mission of the soldier.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>the experiment should it be successful, and then, seeing they were determined, he stated that a definite money compensation would be made them. Both young men declined to accept it, making it, indeed, their sole stipulation that they should receive no pecuniary reward, whereupon Major Reed touched his cap, saying respectfully, &#x27;Gentlemen, I salute you.&#x27; Reed&#x27;s own words in his published account of the experiment on Kissinger are: &#x27;In my opinion, this exhibition of moral courage has never been surpassed in the annals of the Army of the United States.&#x27;&quot;
+(Adapted from S. Report No. 574, 61st Cong., 2d sess.)
+(See Yellow Fever, S. Doc. No. 822, 61st Cong., 3d sess., pp. 30-31.)
+Qubstions on Readings:
+1. Why did the Indians attack the settlers in Ohio?
+2. Why was Logan at a disadvantage in fighting the Indians?
+3. What improvements have been made over the flintlock musket?
+4. What changes in the life of the people have taken place that have made those improvements possible?
+5. Why would trained soldiers have defended the land against the Indians better than the scattered settlers could defend it?
+6. Why was Logan&#x27;s method a wasteful one?
+7. Is it a waste for the Government to keep soldiers? Explain.
+8. Why were the soldiers more useful than civilians during the Dayton flood?
+9. What might have happened in Dayton if no soldiers had been present to help?
+10. What was the mission of Lieutenant Woodfill?
+11. What did he do &quot;above and beyond&quot; the call of duty?
+12. What effect did his action have on his men?
+13. What characteristics of a good soldier did Lieutenant Woodfill show? .
+14. Why was the action of John R. Kissinger and John J. Moran commendable?
+15. What makes a good soldier?
+16. Is it necessary to be a hero to be a good soldier?
+17. From the readings given make a list of the things a soldier may be called upon to do.
+18. Why were soldiers trained before being sent to Europe?
+19. What does it take to make an army?
+20. What services were performed during the great war by the American soldier who remained at home?
+21. In a few words summarize the mission of the soldier.</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> They should receive no pecuniary reward (String); evidence source: text</p>
+<pre>Both young men declined to accept it, making it, indeed, their sole stipulation that they should receive no pecuniary reward, whereupon Major Reed touched his cap, saying respectfully, &#x27;Gentlemen, I salute you.&#x27;</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-13'><h2>Case 13: 95bc8021-ef27-46be-8af1-07f8bb93f9f4</h2>
+<p><strong>Question:</strong> If an employee has already forwarded the November premium to headquarters but wants to add dependent coverage, by what date must the additional amount be received to ensure uninterrupted coverage?</p>
+<p><strong>Document:</strong> administration/DUDE_8e10249a0a2808d0adf6dbce379d5d6d (2 pages; member <code>administration/DUDE_8e10249a0a2808d0adf6dbce379d5d6d.pdf</code>, sha256 <code>bf08d8305adb45ca…</code>)</p>
+<p><strong>Categories:</strong> text (selected for: top_up). Evidence pages shown (0-based page_idx): [1]</p>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/b1ca8db9b02b_p1.png' alt='administration/DUDE_8e10249a0a2808d0adf6dbce379d5d6d page_idx 1' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>\begin{tabular}{llll}
+CONTINUATION OF &amp; CLASSIFICATION &amp; DISPATCHSYMBOLAND NUME &amp; 25X1A \\
+DISPATCH &amp; C-O-N-F-I-D-E-N-T-I-A-L &amp; BOOK DISPATCH \\
+\end{tabular}
+
+
+required to be paid a month in advance. For those employees who submit their premium payments directly to headquarters, the premium for the additional unit of dependent coverage should be submitted with the premium due for the month of November 1966, and with each premium payment thereafter, if the aaditional coverage is desired. If the November premium has already been forwarded to headquarters, the additional amount for the new coverage may be sent separately. It should be forwarded, however, so as to be received during the 30-day grace period (ending 3O November） so that the additional coverage will continue without interruption. 
+4. Please also advise all WAEPA policyholders whose premiums are paid by payroll deduction and who have coverage for their dependents under this insurance that, if they do not desire this additional unit of coverage, they must advise headquarters in writing prior to l December 1966. In such event the amount already deducted for the additional coverage will be refunded. 
+
+
+\begin{tabular}{llllll}
+\multicolumn{6}{l}{FOR THE CHIEF 25X1A2g 25X1A2e} \\
+\multicolumn{6}{l}{} \\
+FORM 53a 8-64 USEPREVIOUS EDITION. (40) &amp; \multicolumn{3}{l}{CLASSIFICATION C-O-N-F-I-D-E-N-T-I-A-L} &amp;  &amp; PAGE NO. \\
+\end{tabular}
+
+Approved ForRelease 2001/05/17 :CIA-RDP79-00639A000100090007-7</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>required to be paid a month in advance. For those employees who submit their premium payments directly to headquarters, the premium for the additional unit of dependent coverage should be submitted with the premium due for the month of November 1966, and with each premium payment thereafter, if the additional coverage is desired. If the November premium has already been forwarded to headquarters, the additional amount for the new coverage may be sent separately. It should be forwarded, however, so as to be received during the 30 -day grace period (ending 30 November) so that the additional coverage will continue without interruption.
+
+4. Please also advise all WAEPA policyholders whose premiums are paid by payroll deduction and who have coverage for their dependents under this insurance that, if they do not desire this additional unit of coverage, they must advise headquarters in writing prior to 1 December 1966. In such event the amount already deducted for the additional coverage will be refunded.
+
+FOR THE CHIEF, $\square$ 25X1A2g</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 30 November 1966 (Free-form); evidence source: text</p>
+<pre>If the November premium has already been forwarded to headquarters, the additional amount for the new coverage may be sent separately. It should be forwarded, however, so as to be received during the 30-day grace period (ending 30 November) so that the additional coverage will continue without interruption.</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-14'><h2>Case 14: 41492e40-0769-4ed9-81cb-27c775fe9424</h2>
+<p><strong>Question:</strong> According to the instructions, where should the nano-SIM card be placed initially to eject it from the slot?</p>
+<p><strong>Document:</strong> manual/t480_ug_en (170 pages; member <code>manual/t480_ug_en.pdf</code>, sha256 <code>ee0393dadb951a95…</code>)</p>
+<p><strong>Categories:</strong> text (selected for: top_up). Evidence pages shown (0-based page_idx): [120]</p>
+<h3>page_idx 120 (PDF page 121) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/e8c1fad7fb42_p120.png' alt='manual/t480_ug_en page_idx 120' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>5. Gently push the nano-SIM card to eject it 1 , and then slide it out of the slot 2 . 
+
+6. Note the orientation of the new nano-SIM card and then insert it into the slot completely until it clicks into position. 
+
+7. Reinstall the removable battery. 
+8. Turn the computer over. Connect the ac power adapter and all cables to the computer. 
+# 
+Before you start, read “Important safety information” on page v and print the following instructions. 
+# 
+• Depending on the model, your computer might look slightly different from the illustrations in this topic.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>5. Gently push the nano-SIM card to eject it 1, and then slide it out of the slot $\mathbf{2}$.
+6. Note the orientation of the new nano-SIM card and then insert it into the slot completely until it clicks into position.
+7. Reinstall the removable battery.
+8. Turn the computer over. Connect the ac power adapter and all cables to the computer.
+
+Replacing the base cover assembly
+Before you start, read &quot;Important safety information&quot; on page v and print the following instructions.
+Notes:
+- Depending on the model, your computer might look slightly different from the illustrations in this topic.
+Chapter 9. Replacing devices
+103</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 1 (Numeric); evidence source: text</p>
+<pre>5. Gently push the nano-SIM card to eject it 1, and then slide it out of the slot $\mathbf{2}$.</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-15'><h2>Case 15: 858a133b-025c-422e-9c3f-0480a7629386</h2>
+<p><strong>Question:</strong> What is the difference in the amount of cash at the end of the financial year held in Bendigo Bank between 2003 and 2004 for the Co-operative Federation of Victoria Ltd?</p>
+<p><strong>Document:</strong> finance/DUDE_747c6792875022c83dbce7927ceff57e (13 pages; member <code>finance/DUDE_747c6792875022c83dbce7927ceff57e.pdf</code>, sha256 <code>8f08f18d90f9b436…</code>)</p>
+<p><strong>Categories:</strong> table (selected for: top_up). Evidence pages shown (0-based page_idx): [10]</p>
+<h3>page_idx 10 (PDF page 11) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/d8b6f57df024_p10.png' alt='finance/DUDE_747c6792875022c83dbce7927ceff57e page_idx 10' width='1275' height='1755' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+# 
+# 
+(a) Reconciliation of Cash 
+Cash at the end of the financial year as shown in the Statement of Cash Flows is reconciled to the related items in the balance sheet as follows: 
+Cash at Bank -- Bendigo Bank 
+(b) Reconciliation of operating surplus/(loss) to net cash flows from operation as follows: 
+Operating Deficit 
+Depreciation (Increase)/(decrease) in stock Decrease in sundry debtors Increase/(decrease) in sundry creditors (Increase)/decrease in FITB Increase/(decrease) in unearned income Increase in provision for tax 
+Cash flows from operations 
+# 
+Honorarium payments are to the Secretary. The Secretary is the sole recipient of any honorarium payments. 
+
+\begin{tabular}{ll}
+8,702 &amp; 24,716 \\
+(7,527) &amp; (1,185) \\
+82 &amp; 82 \\
+70 1,610 &amp; 4,324 (1,010) \\
+1,382 (11,621) &amp; (2,286) 348 3,502 \\
+ &amp; (1,925) \\
+(16,004) &amp; 1,850 \\
+ \\
+5,112 &amp; 7,400 \\
+\end{tabular}</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>CO-OPERATIVE FEDERATION OF VICTORIA LTD
+
+NOTES TO AND FORMING PART OF THE ACCOUNTS
+YEAR ENDED 30 JUNE 2004
+
+\begin{tabular}{lcr}
+&amp; 2004 \$ &amp; 2003 \$ \\
+  
+7. Cashflow Statement Information \\
+(a) Reconciliation of Cash \\
+Cash at the end of the financial year as shown in the \\
+Statement of Cash Flows is reconciled to the related \\
+items in the balance sheet as follows: \\
+Cash at Bank - Bendigo Bank &amp; 8,702 &amp; 24,716 \\
+(b) Reconciliation of operating surplus/(loss) to net cash \\
+flows from operation as follows: \\
+Operating Deficit &amp; (7,527) &amp; (1,185) \\
+Depreciation &amp; 82 &amp; 82 \\
+(Increase)/(decrease) in stock &amp; 70 &amp; 4,324 \\
+Decrease in sundry debtors &amp; 1,610 &amp; (1,010) \\
+Increase/(decrease) in sundry creditors &amp; 1,382 &amp; (2,286) \\
+(Increase)/(decrease) in FITB &amp; - &amp; 348 \\
+Increase/(decrease) in unearned income &amp; (11,621) &amp; 3,502 \\
+Increase in provision for tax &amp; - &amp; (1,925) \\
+Cash flows from operations &amp; (16,004) &amp; 1,850 \\
+ 
+8. Honorariums &amp; 5,112 &amp; 7,400 \\
+ 
+\end{tabular} 
+Honorarium payments are to the Secretary. The Secretary is the sole recipient of any honorarium payments</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 16,014 (Numeric); evidence source: table</p>
+<pre>[&#x27;Cash at Bank - Bendigo Bank &amp; 8,702 &amp; 24,716&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-16'><h2>Case 16: 04658b84-dd55-42c2-9168-923d610006ee</h2>
+<p><strong>Question:</strong> How much total payroll did small businesses contribute to New York&#x27;s economy in 2016, and what proportion of private sector payroll did this represent?</p>
+<p><strong>Document:</strong> finance/DUDE_2611a49ead93bb5a4f05450730e25058 (4 pages; member <code>finance/DUDE_2611a49ead93bb5a4f05450730e25058.pdf</code>, sha256 <code>b3558828e98d0e03…</code>)</p>
+<p><strong>Categories:</strong> multi_page_evidence, text (selected for: top_up). Evidence pages shown (0-based page_idx): [0, 1]</p>
+<h3>page_idx 0 (PDF page 1) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/30e1655699d1_p0.png' alt='finance/DUDE_2611a49ead93bb5a4f05450730e25058 page_idx 0' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre># 
+# 
+From mom-and-pop corner stores to medical practices to computer software start-ups, small businesses play a vital role in New York’s economy. While an enterprise can be classified as a small business based upon its number of employees, its annual income or both, the U.S. Small Business Administration (SBA) and this report primarily define a small business as one with fewer than 500 employees.1 
+Over the last five years for which data are available, employment at New York’s small businesses rose by 9.2 percent, slightly faster than the national pace, as shown in Figure 1. Total payroll showed strong growth, rising to $\$212.6$ billion in New York, and the number of firms rose both in the State and nationally.2 
+# 
+Among the more than 465,000 businesses in New York in 2016, 99 percent were small businesses. In addition, the State was home to over 1.7 million non-employer businesses, which largely comprise selfemployed individuals.3 
+Of the small businesses with paid employees in 2016, almost two-thirds had fewer than five employees, with over 81 percent having fewer than 10 employees, as shown in Figure 2. These 374,000 microbusinesses provided over 957,000 jobs with total payroll close to $\$43$ billion.4 
+FIGURE 1 Small Business Growth, U.S. and New York, 2011– 2016 ,FIGURE 2 Businesses by Firm Size, New York, 2016</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>\section*{Small Business in New York State: An Economic Snapshot}
+
+From mom-and-pop corner stores to medical practices to computer software start-ups, small businesses play a vital role in New York&#x27;s economy. While an enterprise can be classified as a small business based upon its number of employees, its annual income or both, the U.S. Small Business Administration (SBA) and this report primarily define a small business as one with fewer than 500 employees. ${ }^{1}$
+
+Over the last five years for which data are available, employment at New York&#x27;s small businesses rose by 9.2 percent, slightly faster than the national pace, as shown in Figure 1. Total payroll showed strong growth, rising to $\$ 212.6$ billion in New York, and the number of firms rose both in the State and nationally. ${ }^{2}$
+
+\section*{Firms and Employment}
+
+Among the more than 465,000 businesses in New York in 2016, 99 percent were small businesses. In addition, the State was home to over 1.7 million non-employer businesses, which largely comprise selfemployed individuals. ${ }^{3}$
+
+Of the small businesses with paid employees in 2016, almost two-thirds had fewer than five employees, with over 81 percent having fewer than 10 employees, as shown in Figure 2. These 374,000 microbusinesses provided over 957,000 jobs with total payroll close to $\$ 43$ billion. ${ }^{4}$
+
+FIGURE 1
+Small Business Growth, U.S. and New York, 2011-2016
+
+&lt;chart&gt;
+\begin{tabular}{l c c}
+ &amp; New York &amp; United States \\ \hline
+Firms &amp; 4 &amp; 5 \\
+Employment &amp; 9 &amp; 9 \\
+Payroll &amp; 17 &amp; 21 \\
+\end{tabular}
+&lt;/chart&gt;
+
+
+Source: U.S. Census Bureau
+
+FIGURE 2
+Businesses by Firm Size, New York, 2016
+
+
+Source: U.S. Census Bureau
+
+\footnotetext{
+1 The SBA uses various standards for determining small business status based on numbers of employees, ranging from 50 to 1,500 depending on industry sector. In New York, Section 131 of the Economic Development Law defines a small business as one that has fewer than 100 employees and is independently owned and operated.
+2 Data for this report is drawn primarily from the U.S. Census Bureau, Statistics of U.S. Businesses (latest annual data 2016).
+3 As defined by the U.S. Census Bureau, a non-employer business is one that has no paid employees, has annual business receipts in excess of $\$ 1,000$, and is subject to federal income taxes. The information and data in this report do not encompass non-employer businesses.
+4 The U.S. Bureau of Labor Statistics defines microbusinesses as those with fewer than 10 employees.
+}</pre></details>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/30e1655699d1_p1.png' alt='finance/DUDE_2611a49ead93bb5a4f05450730e25058 page_idx 1' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>FIGURE 3 Small Business Employment by Firm Size, New York, 2016 
+FIGURE 4 Small Businesses by Industry, New York, 2016 (Percentage of Total Small Businesses) 
+
+All together, small businesses accounted for just over half of all private sector jobs in New York in 2016, providing over 4.1 million jobs. In addition, these businesses provided over $\$212$ billion in payroll, nearly 40 percent of the total private sector payroll.5 Figure 3 shows small business employment by firm size. 
+The smallest firms in New York, those with four or fewer employees, provided nearly 488,000 jobs with total payroll of $\$23.3$ billion, an average of $\$47,742$ per job. Businesses with 20 to 49 employees provided more than 809,000 jobs, almost one-fifth of all small business employment and 10 percent of all private sector employment. These firms had total payroll of over $\$39$ billion in 2016. Small businesses with over 200 employees provided 693,000 jobs and had the highest total and average payroll per job (nearly $\$43$ billion and $\$61$ ,994, respectively). 
+# 
+Small businesses account for the vast majority of firms in every industry sector in New York. In 2016, over 95 percent of all the firms in each industry sector were small businesses. 
+Three of the 12 industry sectors account for almost half of all small businesses in New York, as shown in Figure 4. With</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>FIGURE 3
+Small Business Employment by Firm Size, New York, 2016
+
+
+Source: U.S. Census Bureau
+
+FIGURE 4
+Small Businesses by Industry, New York, 2016 (Percentage of Total Small Businesses)
+
+
+
+Source: U.S. Census Bureau
+
+
+All together, small businesses accounted for just over half of all private sector jobs in New York in 2016, providing over 4.1 million jobs. In addition, these businesses provided over $\$ 212$ billion in payroll, nearly 40 percent of the total private sector payroll. ${ }^{5}$ Figure 3 shows small business employment by firm size.
+
+The smallest firms in New York, those with four or fewer employees, provided nearly 488,000 jobs with total payroll of $\$ 23.3$ billion, an average of $\$ 47,742$ per job. Businesses with 20 to 49 employees provided more than 809,000 jobs, almost one-fifth of all small business employment and 10 percent of all private sector employment. These firms had total payroll of over $\$ 39$ billion in 2016. Small businesses with over 200 employees provided 693,000 jobs and had the highest total and average payroll per job (nearly $\$ 43$ billion and \$61,994, respectively).
+
+Industry Sectors
+
+Small businesses account for the vast majority of firms in every industry sector in New York. In 2016, over 95 percent of all the firms in each industry sector were small businesses.
+
+Three of the 12 industry sectors account for almost half of all small businesses in New York, as shown in Figure 4. With
+
+
+5 As defined by the U.S. Census Bureau, payroll includes all forms of compensation paid to all employees, such as salaries, wages, commissions, bonuses, vacation allowance, and sick leave pay.</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> $212 billion, nearly 40 percent of the total private sector payroll. (String); evidence source: text</p>
+<pre>[&#x27;Total payroll showed strong growth, rising to $ 212.6 billion in New York, and the number of firms rose both in the State and nationally.&#x27;, &#x27;All together, small businesses accounted for just over half of all private sector jobs in New York in 2016, providing over 4.1 million jobs. In addition, these businesses provided over $ 212 billion in payroll, nearly 40 percent of the total private sector payroll.&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-17'><h2>Case 17: 84875d6a-3cde-4399-901f-704e2fd37507</h2>
+<p><strong>Question:</strong> What is the reported result for the test &#x27;IRON, TOTAL (WATER &amp; WASTE) BY ICP&#x27; analyzed by MOBERCASH on 04/16/2014 at 10:11 AM?</p>
+<p><strong>Document:</strong> administration/DUDE_f6214a28700c524cdacfa0b4548e69d2 (2 pages; member <code>administration/DUDE_f6214a28700c524cdacfa0b4548e69d2.pdf</code>, sha256 <code>2c1a0b96f62d8ad8…</code>)</p>
+<p><strong>Categories:</strong> table (selected for: top_up). Evidence pages shown (0-based page_idx): [0]</p>
+<h3>page_idx 0 (PDF page 1) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/1ac6b5a018f1_p0.png' alt='administration/DUDE_f6214a28700c524cdacfa0b4548e69d2 page_idx 0' width='1651' height='1275' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>DEP Bureau of Laboratories - Harrisburg   
+P.O. Box 1467   
+2575 Interstate Drive   
+Harrisburg, PA 17105-1467 
+Contact Phone Number:  (717) 346-7200 
+Sample ID: 0523 094 
+Date Collected: 04/10/2014 11:30:00 AM 
+Name of Sample Collector: Gregory Prentice 
+Date Received: 
+County: Greene Municipality: Jefferson Twp 
+State: PA 
+Sample Medium: Surface Water Sample Medium Type: Water 
+Location: (1-TM) 10 Mile Creek Upstream of Clyde AMD Treatment Plant Reason: Complaint Project:  NOT INDICATED Standard Anlysis: 755 Matrix: Water 
+# 
+Sample Standard Comment: Time Limit For Test Exceeded 
+
+\begin{tabular}{lllll}
+TestCodes/CAS#-Description &amp; Reported Results &amp; DateAndTimeAnalyzed &amp; Analyst &amp; TestMethod \\
+00410MALKALINITYREPORTED@pH3.9 &amp; 136.0MG/L &amp; 04/11/201406:08PM &amp; SSPUHLER &amp; SM2320B \\
+01105A ALUMINUM,TOTAL(WATER\&amp;WASTE)BYICP &amp; &lt;200UG/L &amp; 04/16/201410:11AM &amp; MOBERCASH &amp; EPA200.7 \\
+71870 BROMIDEBYIONCHROMATOGRAPHY &amp; &lt;0.2MG/L &amp; 04/16/201412:00AM &amp; FVODOPIVEC &amp; EPA300.0 \\
+01045A IRON,TOTAL(WATER\&amp;WASTE)BYICP &amp; 211.000UG/L &amp; 04/16/201410:11AM &amp; MOBERCASH &amp; EPA 200.7 \\
+\end{tabular}</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Date of Issue: 05/02/2014 04:09:06
+DEP Bureau of Laboratories - Harrisburg
+P.O. Box 1467
+
+2575 Interstate Drive
+Harrisburg, PA 17105-1467
+Contact Phone Number: (717) 346-7200
+
+Analytical Report For
+
+Mining And Reclamation
+
+Name of Sample Collector: Gregory Prentice
+Date Received:
+
+County: Greene
+State: PA
+Municipality: Jefferson Twp
+
+Sample Medium: Surface Water
+Sample Medium Type: Water
+Location: (1-TM) 10 Mile Creek Upstream of Clyde AMD Treatment Plant
+Reason: Complaint
+Project: NOT INDICATED
+Standard Anlysis: 755
+Matrix: Water
+
+Stream Condition:
+
+Sample Standard Comment: Time Limit For Test Exceeded
+\begin{tabular}{|c|c|c|c|c|}
+  Test Codes / CAS \# - Description &amp; Reported Results &amp; Date And Time Analyzed &amp; Analyst &amp; Test Method \\
+  00410M ALKALINITY REPORTED @ pH 3.9 &amp; 136.0 MG/L &amp; 04/11/2014 06:08 PM &amp; SSPUHLER &amp; SM 2320B \\
+  01105A ALUMINUM, TOTAL (WATER \&amp; WASTE) BY ICP &amp; &lt;200 UG/L &amp; 04/16/2014 10:11 AM &amp; MOBERCASH &amp; EPA 200.7 \\
+  71870 BROMIDE BY ION CHROMATOGRAPHY &amp; &lt;0.2 MG/L &amp; 04/16/2014 12:00 AM &amp; FVODOPIVEC &amp; EPA 300.0 \\
+  01045A IRON, TOTAL (WATER \&amp; WASTE) BY ICP &amp; 211.000 UG/L &amp; 04/16/2014 10:11 AM &amp; MOBERCASH &amp; EPA 200.7 \\
+ 
+\end{tabular}</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> 211.000 UG/L (String); evidence source: table</p>
+<pre>[&#x27;01045A IRON, TOTAL (WATER &amp; WASTE) BY ICP &amp; 211.000 UG/L &amp; 04/16/2014 10:11 AM &amp; MOBERCASH &amp; EPA 200.7&#x27;]</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-18'><h2>Case 18: 94ebb818-a86c-4b38-8425-444f9e2715e8</h2>
+<p><strong>Question:</strong> What were the dates and location of the OPBF Annual Convention hosted by GAB in 2016?</p>
+<p><strong>Document:</strong> administration/DUDE_1b9552b7f5cb4a8552bf30498cf06d11 (8 pages; member <code>administration/DUDE_1b9552b7f5cb4a8552bf30498cf06d11.pdf</code>, sha256 <code>2256cc8a85ba262b…</code>)</p>
+<p><strong>Categories:</strong> text (selected for: top_up). Evidence pages shown (0-based page_idx): [3]</p>
+<h3>page_idx 3 (PDF page 4) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/b28b73e6420b_p3.png' alt='administration/DUDE_1b9552b7f5cb4a8552bf30498cf06d11 page_idx 3' width='1232' height='1751' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>b. WBO World Welterweight Championship fight between Manny Pacquiao and Jessie Vargas on November 5, 2016 at the Thomas and Mack Center, Las Vegas, Nevada, U.s.A.   
+c. 29th Annual World Boxing Organization (WBO) Convention on October 16-22, 2016 at Caribe Hilton Hotel, San Juan, Puerto Rico.   
+d.ASIA MMA Summit on September 21-23, 2016 at Marina Bay Sands in Singapore (Attended by former Members of the Board). Convention of the International Boxing Federation (IBF) on May 23-27, 206 in Beijing, China.   
+f. WBO World Welterweight Championship fight between Manny Pacquiao and Timothy Bradley on April 9, 2016 at the MGM Grand Garden Arena, Las Vegas, Nevada, U.S.A. (Attended by former Members of the Board). 
+6. Due to sound and competent supervision and regulation of GAB over professional boxing, the Philippines has produced world champions, as follows: 
+a. Marlon Tapales - WBO Bantamweight Champion b. Jerwin Ancajas - IBF Junior Bantamweight Champion c. Johnriel Casimero - IBF Flyweight Champion d. Milan Melindo - IBF (Interim) Junior Flyweight Champion e. Manny Pacquiao - WBO Welterweight Champion 
+7. Hosting of the Oriental and Pacific Boxing Federation (OPBr) Amnua! Comvemton 
+The GAB hosted the OPBF Annual Convention on March 30, 2016 to April 1, 2016 at L&#x27;Fisher Hotel in Bacolod City. The convention was attended by industry players such as promoters, managers, boxers and referees from the Philippines, China, Japan, Korea, Thailand, Mongolia, New Zealand, Hawai and other OPBF member countries. World Boxing Council President Mauricio Sulaiman of Mexico also attended the event. Resource speakers from U.S.A. discussed the- current trends in boxing, officiating, medical and safety measures and other boxing-related topics. 
+8. Other GAB initiatives: 
+a. Adoption cf GAB License Renewal System based on Birthdate Starting CY2017.   
+b. Meeting with probable sponsors to help the promoters in the staging of boxing promotions.   
+c. Meeting with Insurance Companies on the possibility of providing insurance to professional boxers.   
+d. Sent a letter to President Rodrigo R. Duterte requesting assistance for the provision of free brain scanning services for Filipino professional boxers in all public hospitals. 
+# 
+The Division is in-charge of managing the daily operations and direction over manpower in order to ensure smooth working of the organization. It is also tasked to plan, implement and monitor the existing financial policies to ensure that such policies are attuned with the financial standing of the agency.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>b. WBO World Welterweight Championship fight between Manny Pacquiao and Jessie Vargas on November 5, 2016 at the Thomas and Mack Center, Las Vegas, Nevada, U.S.A.
+c. $29^{\text {th }}$ Annual World Boxing Organization (WBO) Convention on October 16-22, 2016 at Caribe Hilton Hotel, San Juan, Puerto Rico.
+d. ASIA MMA Summit on September 21-23, 2016 at Marina Bay Sands in Singapore (Attended by former Members of the Board).
+e. Convention of the International Boxing Federation (IBF) on May 23-27, 206 in Beijing, China.
+f. WBO World Welterweight Championship fight between Manny Pacquiao and Timothy Bradley on April 9, 2016 at the MGM Grand Garden Arena, Las Vegas, Nevada, U.S.A. (Attended by former Members of the Board).
+6. Due to sound and competent supervision and regulation of GAB over professional boxing, the Philippines has produced world champions, as follows:
+a. Marlon Tapales - WBO Bantamweight Champion
+b. Jerwin Ancajas - IBF Junior Bantamweight Champion
+c. Johnriel Casimero - IBF Flyweight Champion
+d. Milan Melindo - IBF (Interim) Junior Flyweight Champion
+e. Manny Pacquiao - WBO Welterweight Champion
+
+7. Piosting of the Oriental amd Pacific Boxing Federation (OPBY) Anmal Convention
+
+The GAB hosted the OPBF Annual Convention on March 30, 2016 to April 1, 2016 at L&#x27;Fisher Hotel in Bacolod City. The convention was attended by industry players such as promoters, managers, boxers and referees from the Philippines, China, Japan, Korea, Thailand, Mongolia, New Zealand, Hawaii and other OPBF member countries. World Boxing Council President Mauricio Sulaiman of Mexico also attended the event. Resource speakers from U.S.A. discussed the-current trends in boxing, officiating, medical and safety measures and other boxing-related topics.
+
+8. Other GA mitiatives:
+a. Adoption of GAB License Renewal System based on Birthdate Starting CY2017.
+b. Meeting with probable sponsors to help the promoters in the staging of boxing promotions.
+c. Meeting with Insurance Companies on the possibility of providing insurance to professional boxers.
+d. Sent a letter to President Rodrigo R. Duterte requesting assistance for the provision of free brain scanning services for Filipino professional boxers in all upublic hospitals.
+
+Administrative and Finance bivision
+
+The Division is in-charge of managing the daily operations and direction over manpower in order to ensure smooth working of the organization. It is also tasked to plan, implement and monitor the existing financial policies to ensure that such policies are attuned with the financial standing of the agency.</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> March 30, 2016 to April 1, 2016 at L&#x27;Fisher Hotel in Bacolod City (String); evidence source: text</p>
+<pre>The GAB hosted the OPBF Annual Convention on March 30, 2016 to April 1, 2016 at L&#x27;Fisher Hotel in Bacolod City.</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-19'><h2>Case 19: a0191a61-e192-45b0-b0c0-31e7a49b66c8</h2>
+<p><strong>Question:</strong> What was the outcome of the investigation into the allegations of misuse of public funds and county resources by Mr. Reardon?</p>
+<p><strong>Document:</strong> administration/DUDE_61c8c8330f3895123e136140bda9991e (12 pages; member <code>administration/DUDE_61c8c8330f3895123e136140bda9991e.pdf</code>, sha256 <code>0518b1954904524f…</code>)</p>
+<p><strong>Categories:</strong> text (selected for: top_up). Evidence pages shown (0-based page_idx): [1]</p>
+<h3>page_idx 1 (PDF page 2) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/e4e803e828ca_p1.png' alt='administration/DUDE_61c8c8330f3895123e136140bda9991e page_idx 1' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>Aaron Reardon   
+Report of Investigation   
+PDC Case Number 12-160   
+Page - 2 - 
+investigation into allegations of misuse of public funds and county resources by Mr. Reardon.  This investigation was closed with no further action taken on the allegations. 
+3.2 On or about June 25, 2012,the Washington State Patrol completed their investigation.  The PDC immediately initiated the investigation into the other portion of Block’s complaint.  Information was requested from the Island County Prosecutor and a Public Records Request was sent to Snohomish County requesting Reardon’s calendars, electronic and hardcopy documents and Snohomish County Cell phone records. 
+3.3 The following individuals were interviewed during this investigation:  Mr. Aaron Reardon, Mr. John Gary Haakenson, Ms. Nancy L. Peinecke and Mr. Brian Parry, individuals who had direct knowledge of activities within the Snohomish County Executive’s Office and Mr. Reardon’s personal friend Ms. Tamara Dutton.  In addition, Mr. Colby Underwood, of Colby Underwood Consulting was interviewed and documents requested.  Documents were also requested from Fletcher and Rowley Inc., Campaign Media team from Nashville, Tennessee and from TR Strategies (Political Consultants), Olympia, Washington. 
+3.4 An overview of the interviews indicated that there were many conflicts between the different parties’ recollections of events that occurred in 2011. 
+a. Reardon, Peinecke, Haakenson and Parry all stated that Underwood meet with Reardon in his office on occasions.  However Reardon qualified the statement by saying, campaigning issues were not discussed in the County Executive’s office.   
+b. Reardon stated Underwood was under contract with Snohomish County to provide advice to the County Executive.  Underwood and Snohomish County stated that Underwood was not under contract with Snohomish County.  Underwood also stated that he performed no work for the county.   
+c. Reardon claimed that Underwood, Terry Thompson (TR Strategies) and John Rowley were close friends that advised him on current events within Snohomish County and the Puget Sound Region. However a check of Reardon’s Snohomish County cellphone revealed that prior to the start of election season 2011 (January 2011), there were only 16 calls made to Reardon from Underwood and Thompson. There were no calls made from John Rowley, of Fletcher and Rowley, Inc.   
+d. Late in the investigation, during a review of Reardon’s Snohomish County Cellphone records, a fourth political consultant was found to   
+Aaron Reardon   
+Report of Investigation   
+PDC Case Number 12-160   
+Page - 3 -</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>investigation into allegations of misuse of public funds and county resources by Mr. Reardon. This investigation was closed with no further action taken on the allegations.
+3.2 On or about June 25, 2012,the Washington State Patrol completed their investigation. The PDC immediately initiated the investigation into the other portion of Block&#x27;s complaint. Information was requested from the Island County Prosecutor and a Public Records Request was sent to Snohomish County requesting Reardon&#x27;s calendars, electronic and hardcopy documents and Snohomish County Cell phone records.
+3.3 The following individuals were interviewed during this investigation: Mr. Aaron Reardon, Mr. John Gary Haakenson, Ms. Nancy L. Peinecke and Mr. Brian Parry, individuals who had direct knowledge of activities within the Snohomish County Executive&#x27;s Office and Mr. Reardon&#x27;s personal friend Ms. Tamara Dutton. In addition, Mr. Colby Underwood, of Colby Underwood Consulting was interviewed and documents requested. Documents were also requested from Fletcher and Rowley Inc., Campaign Media team from Nashville, Tennessee and from TR Strategies (Political Consultants), Olympia, Washington.
+3.4 An overview of the interviews indicated that there were many conflicts between the different parties&#x27; recollections of events that occurred in 2011.
+a. Reardon, Peinecke, Haakenson and Parry all stated that Underwood meet with Reardon in his office on occasions. However Reardon qualified the statement by saying, campaigning issues were not discussed in the County Executive&#x27;s office.
+b. Reardon stated Underwood was under contract with Snohomish County to provide advice to the County Executive. Underwood and Snohomish County stated that Underwood was not under contract with Snohomish County. Underwood also stated that he performed no work for the county.
+c. Reardon claimed that Underwood, Terry Thompson (TR Strategies) and John Rowley were close friends that advised him on current events within Snohomish County and the Puget Sound Region. However a check of Reardon&#x27;s Snohomish County cellphone revealed that prior to the start of election season 2011 (January 2011), there were only 16 calls made to Reardon from Underwood and Thompson. There were no calls made from John Rowley, of Fletcher and Rowley, Inc.
+d. Late in the investigation, during a review of Reardon&#x27;s Snohomish County Cellphone records, a fourth political consultant was found to</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> The investigation was closed with no further action taken on the allegations. (String); evidence source: text</p>
+<pre>This investigation was closed with no further action taken on the allegations.</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+<section class='case' id='case-20'><h2>Case 20: a3ef802e-df86-43ce-8534-32cdffeb5d5f</h2>
+<p><strong>Question:</strong> Which courses must students complete or be concurrently enrolled in before declaring the Bachelor of Arts in Communication major at Stanford University?</p>
+<p><strong>Document:</strong> administration/DUDE_d50e2c3070389a3429101e8b34462e5a (6 pages; member <code>administration/DUDE_d50e2c3070389a3429101e8b34462e5a.pdf</code>, sha256 <code>cdbeefe49e36cc7d…</code>)</p>
+<p><strong>Categories:</strong> text (selected for: top_up). Evidence pages shown (0-based page_idx): [2]</p>
+<h3>page_idx 2 (PDF page 3) — OCR status: ok</h3>
+<div class='page'><div><img src='pages/b9aff789a695_p2.png' alt='administration/DUDE_d50e2c3070389a3429101e8b34462e5a page_idx 2' width='1275' height='1651' loading='lazy'></div><div><h4>MinerU text (noisy input)</h4><pre>Prospective Graduate Students—Applications are available online at at http://gradadmissions.stanford.edu. 
+The department requires that applicants for graduate admission submit verbal and quantitative scores from the Graduate Record Examination (GRE). Admission to each graduate degree program is competitive, based on the pool of applicants each year rather than on standard criteria that can be stated in advance. The GRE should be taken no later than early November prior to the early December application deadline. 
+# 
+# 
+Before declaring the major, students must have completed or be concurrently enrolled in one of the following: 
+COMM 1A or COMM 1B   
+COMM 106   
+COMM 108 
+Students interested in declaring the major should apply via Axess and meet with the student services administrator in Building 120, Room 110A, during scheduled office hours. Students are required to take at least 60 units (approximately 12 courses), not counting statistics, to complete the major. 
+# 
+The undergraduate curriculum is intended for liberal arts students who wish to develop an understanding of communication in society, drawing on the perspective of the social sciences. Undergraduates majoring in Communication are expected to become acquainted with the fundamental concerns, theoretical approaches and methods of the field, and to acquire advanced knowledge in one or more of the sub-areas of communication: institutions, processes, and effects. 
+While the department does not attempt to provide comprehensive practical training at the undergraduate level, the curriculum provides a diverse range of internship opportunities including professional print journalism, some of which are funded by the department’s Rebele Internship Program. 
+The department is committed to providing students with analytical and critical skills for future success in graduate programs, professional schools, or immediate career entry. 
+The major is structured to provide several levels of study: a core curriculum, intended to expose students to a broad-based understanding of communication theory and research, and a number of intermediate-level options and electives. Majors also have the opportunity to do advanced research in the form of senior projects and honors theses. 
+All undergraduate majors are required to complete a set of core communication courses which include COMM 1A, Media Technologies, People, and Society (5 units) or COMM 1B, Media, Culture, and Society (5 units); COMM 106, Communication Research Methods (5 units); COMM 108, Media Processes and Effects (5 units), and COMM 120, Digital Media in Society (WIM, 5 units). Core courses are usually given only once each year. 
+The department also requires completion of or concurrent registration in an introductory statistics course (STATS 60 or PSYCH 10) prior to registration in COMM 106, Communication Research Methods, in preparation for courses in methodology and advanced courses in communication processes and effects. It is recommended that this be done as soon as possible so as not to prevent registration in a course requiring statistical understanding. The statistics course does not count toward the 60 units to complete the Communication major. 
+In addition to the core courses and the statistics requirement, undergraduate majors select courses from the areas described below. Many of the courses require core courses as prerequisites. Majors select a total of four area courses, taking at least one from each area. 
+Area I: Communication Processes and Effects—Area I emphasizes the ways in which communication scholars conduct research in, and consider the issues of, human communication. These studies aim to provide expert guidance for social policy makers and media professionals and include the following courses: COMM 160, 162, 166, 168, 169, 172, 326. 
+Area II: Communication Systems/Institutions—Area II considers the roles and interaction of institutions such as broadcasting, journalism, constitutional law, and business within communication and mass communication contexts and includes the following courses: COMM 104, 116, 117, 120, 125, 131, 136, 140, 147, 182. 
+Options—The Communication curriculum is designed to provide a theoretical base that can be effectively applied to numerous environments. The potential options listed below are not required, but are examples of how to focus interests. 
+1. Communication Technologies— 
+a. Department of Communication (COMM): COMM 120. Digital Media in Society COMM 166. Virtual People COMM 169. Computers and Interfaces: Psychology and Design COMM 172. Media Psychology   
+b. Affiliated department offerings (elective credit toward the major): CS 105. Introduction to Computers CS 106A. Programming Methodology CS 147. Introduction to HCI CS 201. Computers, Ethics, and Social Responsibility CS 247. Human Computer Interaction: Interaction Design Studio STS 101. Science, Technology, &amp;  Contemporary Society 
+2. Communication and Public Affairs— 
+a. Department of Communication (COMM) COMM 125. Perspectives on American Journalism COMM 136. Democracy and the Communication of Consent COMM 160. The Press and the Political Process COMM 162. Analysis of Political Campaigns   
+b. Affiliated department offerings (elective credit toward the major) POLISCI 123. Politics and Public Policy PSYCH 75. Cultural Psychology PSYCH 167. Seminar on Aggression PSYCH 180. Social Psychology Perspectives on Stereotyping and Prejudice PUBLPOL 104. Economic Policy Analysis PUBLPOL 194. Technology Policy 
+3. Media Practices and Performance— 
+a. Department of Communication (COMM) COMM 120. Digital Media in Society COMM 125. Perspectives on American Journalism COMM 131. Media Ethics and Responsibility COMM 160. The Press and the Political Process   
+b. Affiliated department offerings (elective credit toward the major) AFRICAST 148. Media, Art &amp;  Social Changes in Africa 
+The remainder of the 60 required units may be fulfilled with any elective Communication courses or cross listed courses in other departments. 
+To be recommended for the B.A. degree in Communication, the student must complete at least 60 units (approximately 12 courses) in the department. No more than 10 units of course work outside of the department, transfer credit, or Summer Session credit may be applied to meet department requirements. Communication majors must receive a letter grade for all Communication courses unless they are offered only for satisfactory/no credit (S/NC), and must maintain a grade point average (GPA) of 2.0 (C) in courses towards the major. Only courses with a grade of $C-$ or above count towards the major.</pre></div></div>
+<details><summary>Optional ground-truth reference for this page (evaluation only)</summary><pre>Prospective Graduate Students-Applications are available online at at http://gradadmissions.stanford.edu.
+
+The department requires that applicants for graduate admission submit verbal and quantitative scores from the Graduate Record Examination (GRE). Admission to each graduate degree program is competitive, based on the pool of applicants each year rather than on standard criteria that can be stated in advance. The GRE should be taken no later than early November prior to the early December application deadline.
+
+BACHELOR OF ARTS IN COMMUNICATION
+
+PREPARATION
+
+Before declaring the major, students must have completed or be concurrently enrolled in one of the following:
+COMM 1A or COMM 1B
+COMM 106
+COMM 108
+Students interested in declaring the major should apply via Axess and meet with the student services administrator in Building 120, Room 110A, during scheduled office hours. Students are required to take at least 60 units (approximately 12 courses), not counting statistics, to complete the major.
+
+PROGRAM OF STUDY
+
+The undergraduate curriculum is intended for liberal arts students who wish to develop an understanding of communication in society, drawing on the perspective of the social sciences. Undergraduates majoring in Communication are expected to become acquainted with the fundamental concerns, theoretical approaches and methods of the field, and to acquire advanced knowledge in one or more of the sub-areas of communication: institutions, processes, and effects.
+
+While the department does not attempt to provide comprehensive practical training at the undergraduate level, the curriculum provides a diverse range of internship opportunities including professional print journalism, some of which are funded by the department&#x27;s Rebele Internship Program.
+
+The department is committed to providing students with analytical and critical skills for future success in graduate programs, professional schools, or immediate career entry.
+
+The major is structured to provide several levels of study: a core curriculum, intended to expose students to a broad-based understanding of communication theory and research, and a number of intermediate-level options and electives. Majors also have the opportunity to do advanced research in the form of senior projects and honors theses.
+
+All undergraduate majors are required to complete a set of core communication courses which include COMM 1A, Media Technologies, People, and Society ( 5 units) or COMM 1B, Media, Culture, and Society (5 units); COMM 106, Communication Research Methods (5 units); COMM 108, Media Processes and Effects (5 units), and COMM 120, Digital Media in Society (WIM, 5 units). Core courses are usually given only once each year.
+
+The department also requires completion of or concurrent registration in an introductory statistics course (STATS 60 or PSYCH 10) prior to registration in COMM 106, Communication Research Methods, in preparation for courses in methodology and advanced courses in communication processes and effects. It is recommended that this be done as soon as possible so as not to prevent registration in a course requiring statistical understanding. The statistics course does not count toward the 60 units to complete the Communication major.
+
+In addition to the core courses and the statistics requirement, undergraduate majors select courses from the areas described below. Many of the courses require core courses as prerequisites. Majors select a total of four area courses, taking at least one from each area.
+
+Area I: Communication Processes and Effects-Area I emphasizes the ways in which communication scholars conduct research in, and consider the issues of, human communication. These studies aim to provide expert guidance for social policy makers and media professionals and include the following courses: COMM $160,162,166,168,169,172,326$.
+
+Area II: Communication Systems/Institutions-Area II considers the roles and interaction of institutions such as broadcasting, journalism, constitutional law, and business within communication and mass communication contexts and includes the following courses: COMM 104, 116, 117, 120, 125, 131, 136, 140, 147, 182.
+
+Options-The Communication curriculum is designed to provide a theoretical base that can be effectively applied to numerous environments. The potential options listed below are not required, but are examples of how to focus interests.
+
+1. Communication Technologies-
+a. Department of Communication (COMM):
+
+COMM 120. Digital Media in Society
+COMM 166. Virtual People
+COMM 169. Computers and Interfaces: Psychology and Design
+COMM 172. Media Psychology
+b. Affiliated department offerings (elective credit toward the major):
+CS 105. Introduction to Computers
+CS 106A. Programming Methodology
+CS 147. Introduction to HCI
+CS 201. Computers, Ethics, and Social Responsibility
+CS 247. Human Computer Interaction: Interaction Design Studio
+STS 101. Science, Technology, \&amp; Contemporary Society
+2. Communication and Public Affairs-
+a. Department of Communication (COMM)
+
+COMM 125. Perspectives on American Journalism
+
+COMM 136. Democracy and the Communication of Consent
+
+COMM 160. The Press and the Political Process
+
+COMM 162. Analysis of Political Campaigns
+b. Affiliated department offerings (elective credit toward the major)
+POLISCI 123. Politics and Public Policy
+PSYCH 75. Cultural Psychology
+PSYCH 167. Seminar on Aggression
+PSYCH 180. Social Psychology Perspectives on Stereotyping and Prejudice
+PUBLPOL 104. Economic Policy Analysis
+PUBLPOL 194. Technology Policy
+3. Media Practices and Performance-
+a. Department of Communication (COMM)
+
+COMM 120. Digital Media in Society
+COMM 125. Perspectives on American Journalism
+COMM 131. Media Ethics and Responsibility
+COMM 160. The Press and the Political Process
+b. Affiliated department offerings (elective credit toward the major)
+AFRICAST 148. Media, Art \&amp; Social Changes in Africa
+The remainder of the 60 required units may be fulfilled with any elective Communication courses or cross listed courses in other departments.
+
+To be recommended for the B.A. degree in Communication, the student must complete at least 60 units (approximately 12 courses) in the department. No more than 10 units of course work outside of the department, transfer credit, or Summer Session credit may be applied to meet department requirements. Communication majors must receive a letter grade for all Communication courses unless they are offered only for satisfactory/no credit (S/NC), and must maintain a grade point average (GPA) of 2.0 (C) in courses towards the major. Only courses with a grade of C - or above count towards the major.</pre></details>
+<details><summary>Optional gold labels (evaluation only)</summary>
+<p><strong>Answer:</strong> COMM 1A or COMM 1B,COMM 106,COMM 108 (List); evidence source: text</p>
+<pre>Before declaring the major, students must have completed or be concurrently enrolled in one of the following: COMM 1A or COMM 1B, COMM 106, COMM 108.</pre></details>
+<p><strong>Observations</strong> (fill in annotations.csv): ☐ word_corruption · ☐ lost_or_misleading_structure · ☐ missing_content · ☐ apparently_adequate_ocr · ☐ uncertain_or_mixed · uncertainty note: ________</p></section>
+</body></html>
