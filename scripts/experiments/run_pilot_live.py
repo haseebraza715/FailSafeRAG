@@ -32,7 +32,7 @@ SRC = REPO_ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from faar import live_runner
+from faar import answer_prompt, live_runner
 from faar.answer_providers import SimulatedCrash
 from faar.live_contract import (
     ALLOWED_OPENAI_PARAMS,
@@ -183,6 +183,14 @@ def build_parser() -> argparse.ArgumentParser:
             "--runtime-manifest", type=Path, help="runtime manifest path (default: results/pilots/<pilot-id>/runtime_manifest.json)"
         )
 
+    def prompt_template(p: argparse.ArgumentParser) -> None:
+        p.add_argument(
+            "--prompt-template",
+            choices=sorted(answer_prompt.TEMPLATES),
+            default=answer_prompt.TEMPLATE_ID,
+            help=f"answer prompt template (default: {answer_prompt.TEMPLATE_ID}); part of the run identity, so a resume must name the same one",
+        )
+
     dry = command(
         "dry-run",
         "prepare all requests and write the prompt preview; call no provider",
@@ -191,6 +199,7 @@ def build_parser() -> argparse.ArgumentParser:
         "directory under results/pilots/.",
     )
     inputs(dry)
+    prompt_template(dry)
     dry.add_argument("--out", type=Path, required=True, help="output directory for the three dry-run files")
     dry.add_argument(
         "--provider-config",
@@ -205,6 +214,7 @@ def build_parser() -> argparse.ArgumentParser:
         "Run the same command again to resume.",
     )
     inputs(run)
+    prompt_template(run)
     run.add_argument("--run-dir", type=Path, required=True, help="run directory, for example results/engineering/<run_id>")
     run.add_argument("--run-id", help="run id, lowercase [a-z0-9._-] (default: the run directory name)")
     run.add_argument("--mode", choices=("fake", "live"), default="fake", help="fake (default) or live")
@@ -309,6 +319,7 @@ def main(argv: list[str] | None = None) -> int:
                 runtime_manifest_path=args.runtime_manifest,
                 config=config,
                 config_source=f"provider config file {args.provider_config}" if args.provider_config else None,
+                services=live_runner.Services.default(args.prompt_template),
             )
         elif args.command == "run":
             live_runner.check_live_enablement(
@@ -342,22 +353,40 @@ def main(argv: list[str] | None = None) -> int:
                 run_kind=args.run_kind,
             )
             factory, descriptor = live_runner.wire_provider(options, fake_script=args.fake_script, environ=os.environ)
-            result = live_runner.execute_run(options, provider_factory=factory, descriptor=descriptor, environ=os.environ)
+            result = live_runner.execute_run(
+                options,
+                services=live_runner.Services.default(args.prompt_template),
+                provider_factory=factory,
+                descriptor=descriptor,
+                environ=os.environ,
+            )
         elif args.command == "status":
-            status = live_runner.run_status(args.run_dir)
+            status = live_runner.run_status(args.run_dir, live_runner.Services.for_run_dir(args.run_dir))
             print(json.dumps(status, indent=2) if args.json else live_runner.format_status(status))
             return EXIT_OK
         elif args.command == "export":
-            result = live_runner.export_run(args.run_dir)
+            result = live_runner.export_run(args.run_dir, live_runner.Services.for_run_dir(args.run_dir))
         elif args.command == "reconcile":
             result = live_runner.reconcile_attempt(
-                run_dir=args.run_dir, attempt_id=args.attempt_id, resolution=args.resolution, note=args.note
+                run_dir=args.run_dir,
+                attempt_id=args.attempt_id,
+                resolution=args.resolution,
+                note=args.note,
+                services=live_runner.Services.for_run_dir(args.run_dir),
             )
         elif args.command == "reopen":
-            result = live_runner.reopen_question(run_dir=args.run_dir, question_id=args.question_id, note=args.note)
+            result = live_runner.reopen_question(
+                run_dir=args.run_dir,
+                question_id=args.question_id,
+                note=args.note,
+                services=live_runner.Services.for_run_dir(args.run_dir),
+            )
         else:
             result = live_runner.score_run_live(
-                project_root=args.project_root, run_dir=args.run_dir, evaluation_manifest_path=args.evaluation_manifest
+                project_root=args.project_root,
+                run_dir=args.run_dir,
+                evaluation_manifest_path=args.evaluation_manifest,
+                services=live_runner.Services.for_run_dir(args.run_dir),
             )
     except RunnerRefusal as exc:
         print(f"refused: {exc}", file=sys.stderr)

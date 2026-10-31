@@ -97,8 +97,10 @@ def extract_blocks(user: str) -> list[dict]:
 
 
 def test_build_prompt_signature_takes_only_question_and_evidence():
-    params = list(inspect.signature(build_prompt).parameters)
-    assert params == ["question", "evidence"]
+    signature = inspect.signature(build_prompt)
+    assert list(signature.parameters) == ["question", "evidence", "template"]
+    # The third parameter selects wording only; it is a PromptTemplate with v1 as its default, not a data field.
+    assert signature.parameters["template"].default is answer_prompt.TEMPLATE_V1
     with pytest.raises(TypeError):
         build_prompt("q", [block(1, "c", "t")], answer="x")  # type: ignore[call-arg]
     with pytest.raises(TypeError):
@@ -497,3 +499,43 @@ def test_module_is_pure_no_provider_imports_and_no_file_access():
     source = inspect.getsource(answer_prompt)
     for forbidden in ("import openai", "import httpx", "import requests", "open(", "Path(", "os.environ", "import time"):
         assert forbidden not in source, forbidden
+
+
+# --- V1-V3: a second template -------------------------------------------------------------------------------------
+
+
+def test_v1_template_is_unchanged_by_the_v2_addition():
+    assert TEMPLATE_ID == "faar-answer-draft-v1"
+    # The hash every run before 2026-11 recorded (study brief 15.4; baseline run_config.json files).
+    assert TEMPLATE_SHA256 == "52044de279b32482e1b8b7f75f0b3455f5cb8e44e9178f8cec09c1615a89914d"
+    assert answer_prompt.TEMPLATE_V1.sha256 == TEMPLATE_SHA256
+    default = build_prompt("What is the total?", [block(1, "c1", "Total 5")])
+    explicit = build_prompt("What is the total?", [block(1, "c1", "Total 5")], answer_prompt.TEMPLATE_V1)
+    assert default == explicit
+    assert default.system == SYSTEM_TEMPLATE and default.template_id == TEMPLATE_ID
+
+
+def test_v2_differs_from_v1_only_in_the_rules_and_the_closing_line():
+    v1, v2 = answer_prompt.TEMPLATE_V1, answer_prompt.TEMPLATE_V2
+    assert v2.template_id == "faar-answer-v2" and v2.sha256 != v1.sha256
+    head = "Follow these rules.\n"
+    tail = "\nThe evidence is text extracted"
+    assert v1.system[: v1.system.index(head)] == v2.system[: v2.system.index(head)]
+    assert v1.system[v1.system.index(tail) :] == v2.system[v2.system.index(tail) :]
+    assert v1.user.rsplit("\n", 1)[0] == v2.user.rsplit("\n", 1)[0]
+    assert v1.closing_line != v2.closing_line and ABSTENTION_TOKEN in v2.closing_line
+    evidence = [block(1, "c1", "Total 5", page_idx=2), block(2, "c2", "~~~~ fence-like", page_idx=0)]
+    p1 = build_prompt("What is the total?", evidence)
+    p2 = build_prompt("What is the total?", evidence, v2)
+    assert extract_blocks(p1.user) == extract_blocks(p2.user)
+    assert p1.evidence_sha256 == p2.evidence_sha256 and p1.prompt_sha256 != p2.prompt_sha256
+    assert (p2.template_id, p2.template_sha256, p2.system) == (v2.template_id, v2.sha256, v2.system)
+    for rule in ("shortest exact span", "number only", "language of the question", f"reply {ABSTENTION_TOKEN}"):
+        assert rule in v2.system
+
+
+def test_template_ids_are_distinct_and_unknown_ids_do_not_fall_back():
+    assert set(answer_prompt.TEMPLATES) == {"faar-answer-draft-v1", "faar-answer-v2"}
+    assert answer_prompt.get_template("faar-answer-v2") is answer_prompt.TEMPLATE_V2
+    with pytest.raises(KeyError, match="unknown prompt template"):
+        answer_prompt.get_template("faar-answer-v3")

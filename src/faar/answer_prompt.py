@@ -6,6 +6,16 @@ leaves the exact text as a Lead decision. A change to any template constant
 changes ``TEMPLATE_SHA256`` and therefore the run identity, so an edited prompt
 is always a new run.
 
+Two templates exist. ``faar-answer-draft-v1`` (the module-level constants) is
+the template of every run before 2026-11. ``faar-answer-v2`` (``TEMPLATE_V2``)
+is its development successor: the same message layout, fences and blocks, with
+answer-format rules that ask for the shortest exact span in the question's
+language, without units, measure words, a restated question or a closing full
+stop. It was written after the failure analysis of the v1 gpt-6.1-terra
+baseline on ``ohr_dev_v1``, where about half of the non-exact answers were
+correct facts in a form that official EM scores 0. v1 stays byte-identical.
+``build_prompt`` uses v1 unless it is given another ``PromptTemplate``.
+
 What the module does
 --------------------
 ``build_prompt`` turns one question and its ranked evidence into two messages.
@@ -81,6 +91,12 @@ Hashes
   H1. The same input gives a different hash on a second call.
   H2. Changing the wording or a fence setting does not change the template hash.
   H3. Two different evidence lists give the same evidence hash.
+Templates
+  V1. Adding a template changes the v1 messages or the v1 hash.
+  V2. A v2 prompt differs from the v1 prompt anywhere but the rule text and the
+      closing line, so the two runs differ in more than the answer format.
+  V3. Two templates share an id, or a lookup by an unknown id silently falls
+      back to v1.
 Reply parsing
   R1. The label, whitespace or exact-match rules differ from the brief: a
       near-miss such as ``NO_ANSWER.`` becomes an abstention, or a label in the
@@ -100,6 +116,7 @@ import hashlib
 import json
 import re
 from collections.abc import Sequence
+from dataclasses import dataclass
 from typing import Any
 
 from faar.live_contract import (
@@ -203,6 +220,78 @@ TEMPLATE_SHA256 = compute_template_sha256(
 )
 
 
+TEMPLATE_ID_V2 = "faar-answer-v2"
+
+# Only the numbered rules differ from SYSTEM_TEMPLATE; the OCR and fence paragraph is the same text.
+SYSTEM_TEMPLATE_V2 = (
+    "You answer one question about a document. The user message gives the question and numbered evidence blocks "
+    "taken from the document.\n"
+    "\n"
+    "Follow these rules.\n"
+    "1. Use only the evidence. Do not use outside knowledge.\n"
+    "2. Reply with the shortest exact span that answers the question. Copy it word for word from the evidence where "
+    "possible. Do not restate the question, and do not add words that the question does not ask for.\n"
+    "3. If the answer is a number, a count or an amount, reply with the number only. Leave out its unit, measure word "
+    "or counting word (for example 7, not 7 years or 7年) unless the question asks for it.\n"
+    "4. If the question is a yes/no question, reply Yes or No.\n"
+    "5. If the question asks for a list, reply with the items separated by commas.\n"
+    "6. Write the answer in the language of the question.\n"
+    f"7. If the evidence does not contain the answer, reply {ABSTENTION_TOKEN} and nothing else.\n"
+    "8. Reply with the answer only. Do not explain, and do not end the answer with a full stop.\n"
+    + SYSTEM_TEMPLATE[SYSTEM_TEMPLATE.index("\nThe evidence is text extracted") :]
+)
+
+# USER_TEMPLATE with a different closing line.
+USER_TEMPLATE_V2 = (
+    USER_TEMPLATE[: USER_TEMPLATE.rindex("\n") + 1]
+    + f"Reply with the shortest exact answer only. If the evidence lacks the answer, reply {ABSTENTION_TOKEN}."
+)
+
+
+@dataclass(frozen=True)
+class PromptTemplate:
+    """One template: its id, the two message templates and the hash over every input that changes the messages.
+
+    Blocks, fences and separators are shared by every template, so two templates differ only in their messages.
+    """
+
+    template_id: str
+    system: str
+    user: str
+
+    @property
+    def sha256(self) -> str:
+        return compute_template_sha256(
+            template_id=self.template_id,
+            system=self.system,
+            user=self.user,
+            block=BLOCK_TEMPLATE,
+            fence_char=FENCE_CHAR,
+            min_fence_length=MIN_FENCE_LENGTH,
+            block_separator=BLOCK_SEPARATOR,
+        )
+
+    @property
+    def closing_line(self) -> str:
+        """The last line of the user message, which tells the model how to reply."""
+        return self.user.rsplit("\n", 1)[-1]
+
+
+TEMPLATE_V1 = PromptTemplate(TEMPLATE_ID, SYSTEM_TEMPLATE, USER_TEMPLATE)
+TEMPLATE_V2 = PromptTemplate(TEMPLATE_ID_V2, SYSTEM_TEMPLATE_V2, USER_TEMPLATE_V2)
+TEMPLATES = {template.template_id: template for template in (TEMPLATE_V1, TEMPLATE_V2)}
+if len(TEMPLATES) != 2 or TEMPLATE_V1.sha256 != TEMPLATE_SHA256:
+    raise AssertionError("template ids must be distinct and TEMPLATE_V1 must hash to TEMPLATE_SHA256")
+
+
+def get_template(template_id: str) -> PromptTemplate:
+    """Return the template with this id. An unknown id raises ``KeyError``; nothing falls back to v1."""
+    try:
+        return TEMPLATES[template_id]
+    except KeyError:
+        raise KeyError(f"unknown prompt template {template_id!r}; known: {', '.join(sorted(TEMPLATES))}") from None
+
+
 def fence_for(text: str) -> str:
     """Return the fence for one block: at least four tildes and longer than any tilde run in ``text``."""
     longest = max((len(run) for run in re.findall(re.escape(FENCE_CHAR) + "+", text)), default=0)
@@ -254,8 +343,8 @@ def _check_evidence(evidence: Sequence[EvidenceBlock]) -> None:
             raise ValueError(f"evidence text of chunk {block.chunk_id!r} is not valid Unicode: {exc}") from exc
 
 
-def build_prompt(question: str, evidence: Sequence[EvidenceBlock]) -> PromptPayload:
-    """Build the two messages and their hashes for one question.
+def build_prompt(question: str, evidence: Sequence[EvidenceBlock], template: PromptTemplate = TEMPLATE_V1) -> PromptPayload:
+    """Build the two messages and their hashes for one question, with ``template`` (v1 by default).
 
     The function takes the question text and the evidence blocks and nothing
     else, so no gold field can enter. It raises ``ValueError`` for empty
@@ -282,16 +371,16 @@ def build_prompt(question: str, evidence: Sequence[EvidenceBlock]) -> PromptPayl
         )
         for number, block in enumerate(evidence, start=1)
     ]
-    user = USER_TEMPLATE.format(
+    user = template.user.format(
         question=question,
         count=len(evidence),
         blocks=BLOCK_SEPARATOR.join(rendered_blocks),
     )
-    messages = [{"role": "system", "content": SYSTEM_TEMPLATE}, {"role": "user", "content": user}]
+    messages = [{"role": "system", "content": template.system}, {"role": "user", "content": user}]
     return PromptPayload(
-        template_id=TEMPLATE_ID,
-        template_sha256=TEMPLATE_SHA256,
-        system=SYSTEM_TEMPLATE,
+        template_id=template.template_id,
+        template_sha256=template.sha256,
+        system=template.system,
         user=user,
         prompt_sha256=_sha256_of(messages),
         evidence_sha256=_sha256_of([[block.rank, block.chunk_id, block.text] for block in evidence]),

@@ -603,8 +603,14 @@ class Services:
         return dict(vars(policy))
 
     @classmethod
-    def default(cls) -> Services:
+    def default(cls, template_id: str | None = None) -> Services:
+        """Wire the real modules with the named prompt template (``faar-answer-draft-v1`` when None)."""
         from . import answer_prompt, prompt_preview, request_budget, retry_policy
+
+        try:
+            template = answer_prompt.TEMPLATE_V1 if template_id is None else answer_prompt.get_template(template_id)
+        except KeyError as exc:
+            raise RunnerRefusal(str(exc.args[0])) from exc
 
         def ledger_from_events(events: Sequence[Mapping[str, Any]], prices: PriceTable) -> Any:
             # The ledger treats question_reopened as costless: the attempts it follows are already counted.
@@ -613,10 +619,13 @@ class Services:
             except request_budget.BudgetError as exc:
                 raise RunnerRefusal(f"the safety ledger refused the run's records: {exc}") from exc
 
+        def build_prompt(question: str, evidence: Sequence[EvidenceBlock]) -> PromptPayload:
+            return answer_prompt.build_prompt(question, evidence, template)
+
         return cls(
-            template_id=answer_prompt.TEMPLATE_ID,
-            template_sha256=answer_prompt.TEMPLATE_SHA256,
-            build_prompt=answer_prompt.build_prompt,
+            template_id=template.template_id,
+            template_sha256=template.sha256,
+            build_prompt=build_prompt,
             parse_reply=answer_prompt.parse_reply,
             estimate_tokens=answer_prompt.estimate_tokens,
             render_preview=prompt_preview.render_preview,
@@ -626,6 +635,20 @@ class Services:
             ledger_from_events=ledger_from_events,
             retry_policy=retry_policy.RetryPolicy(),
         )
+
+    @classmethod
+    def for_run_dir(cls, run_dir: Path) -> Services:
+        """Services for an existing run: the prompt template its ``run_config.json`` names.
+
+        A missing or unreadable config, or one written before the template could vary, gives the default
+        template. The run's own identity checks then decide whether the run can be used.
+        """
+        try:
+            identity = json.loads((Path(run_dir) / RUN_CONFIG_NAME).read_text(encoding="utf-8"))["identity"]
+            template_id = identity["prompt"]["template_id"]
+        except (OSError, ValueError, KeyError, TypeError):
+            return cls.default()
+        return cls.default(template_id if isinstance(template_id, str) else None)
 
 
 # ---------------------------------------------------------------------------

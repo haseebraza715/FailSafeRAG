@@ -3340,3 +3340,30 @@ def test_score_after_a_crash_before_the_last_event_advises_run_not_reconcile(pro
     go(project, fresh)
     assert fresh.sent(run_dir) == [], "recording the recovered response sends nothing"
     assert lr.score_run_live(project_root=project.root, run_dir=run_dir).exit_code == lr.EXIT_OK
+
+
+def test_a_v2_run_records_its_template_and_later_commands_find_it(project: Project) -> None:
+    """V2: a run started with faar-answer-v2 records that template, Services.for_run_dir picks it up for later
+    commands, and a resume with the default (v1) template is refused before any dispatch."""
+    from faar import answer_prompt
+
+    v2 = lr.Services.default("faar-answer-v2")
+    rig = Rig()
+    with pytest.raises(SimulatedCrash):
+        go(project, rig, services=v2, crash_hook=crash_at(lr.CRASH_BEFORE_DISPATCH, "q3"))
+    run_dir = project.run_dir("run-a")
+    config = json.loads((run_dir / "run_config.json").read_text(encoding="utf-8"))
+    assert config["identity"]["prompt"] == {"template_id": "faar-answer-v2", "template_sha256": answer_prompt.TEMPLATE_V2.sha256}
+    sent = [r for r in requests_of(run_dir) if r["action"] == "send"]
+    assert rig.sent(run_dir) and sent
+    assert all(r["system"] == answer_prompt.SYSTEM_TEMPLATE_V2 and r["template_id"] == "faar-answer-v2" for r in sent)
+    found = lr.Services.for_run_dir(run_dir)
+    assert (found.template_id, found.template_sha256) == ("faar-answer-v2", answer_prompt.TEMPLATE_V2.sha256)
+    assert lr.Services.for_run_dir(project.run_dir("never-started")).template_id == answer_prompt.TEMPLATE_ID
+    rig2 = Rig()
+    with pytest.raises(RunnerRefusal, match="different identity"):
+        go(project, rig2)
+    assert rig2.factory_calls == 0
+    go(project, Rig(), services=found)
+    with pytest.raises(RunnerRefusal, match="unknown prompt template"):
+        lr.Services.default("faar-answer-v3")
