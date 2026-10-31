@@ -99,21 +99,8 @@ def _rel(path: Path, root: Path) -> str:
 # --------------------------------------------------------------------------- prepare
 
 
-def prepare(
-    *,
-    root: Path,
-    pilot_id: str,
-    baseline_run_dir: Path,
-    run_dir: Path,
-    run_id: str,
-    budget: int,
-    resend_rule: str,
-    provider_config: Path,
-    archive: Path,
-) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Write ``run_config.json`` and ``requests.jsonl``. Sends nothing. Refuses a changed identity in an existing run."""
-    if resend_rule not in RESEND_RULES:
-        raise RepairError(f"unknown resend rule {resend_rule!r}")
+def load_baseline(root: Path, pilot_id: str, baseline_run_dir: Path) -> dict[str, Any]:
+    """The frozen runtime manifest and a valid no-recovery run on it, checked against each other."""
     runtime_path = root / "results" / "pilots" / pilot_id / "runtime_manifest.json"
     runtime_bytes = _read_bytes(runtime_path)
     runtime = json.loads(runtime_bytes)
@@ -129,12 +116,53 @@ def prepare(
         raise RepairError(f"{baseline_run_dir.name} does not record the runtime manifest of {pilot_id} ({manifest_sha[:12]})")
     if baseline_summary.get("valid_baseline") is not True:
         raise RepairError(f"{baseline_run_dir.name} is not a valid no-recovery run (valid_baseline is not true)")
-    baseline_requests_bytes = _read_bytes(baseline_run_dir / "requests.jsonl")
-    baseline = {r["question_id"]: r for r in (json.loads(line) for line in baseline_requests_bytes.decode("utf-8").splitlines() if line.strip())}
-    template_ids = {r["template_id"] for r in baseline.values()}
+    requests_bytes = _read_bytes(baseline_run_dir / "requests.jsonl")
+    requests = {r["question_id"]: r for r in (json.loads(line) for line in requests_bytes.decode("utf-8").splitlines() if line.strip())}
+    template_ids = {r["template_id"] for r in requests.values()}
     if len(template_ids) != 1:
         raise RepairError(f"{baseline_run_dir.name} mixes templates {sorted(template_ids)}")
-    template = get_template(template_ids.pop())
+    for q in runtime["questions"]:
+        base = requests.get(q["question_id"])
+        if base is None:
+            raise RepairError(f"{baseline_run_dir.name} has no request for question {q['question_id']}")
+        if base["question"] != q["question"] or base["doc_id"] != q["doc_id"]:
+            raise RepairError(f"{q['question_id']}: the no-recovery request differs from the runtime manifest")
+    return {"runtime": runtime, "runtime_sha256": manifest_sha, "requests": requests, "requests_sha256": _sha(requests_bytes),
+            "template": get_template(template_ids.pop())}
+
+
+def write_identity(run_dir: Path, identity: dict[str, Any], records: list[dict[str, Any]] | None) -> None:
+    """Write ``run_config.json`` once and, unless ``records`` is None, ``requests.jsonl``; refuse a changed identity."""
+    run_dir.mkdir(parents=True, exist_ok=True)
+    config_path = run_dir / "run_config.json"
+    if config_path.exists():
+        old = json.loads(config_path.read_text(encoding="utf-8"))
+        if old != identity:
+            diff = sorted(k for k in set(old) | set(identity) if old.get(k) != identity.get(k))
+            raise RepairError(f"{config_path} exists with a different identity ({', '.join(diff)}); a changed run needs a new run_id")
+    else:
+        config_path.write_text(json.dumps(identity, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    if records is not None:
+        (run_dir / "requests.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records), encoding="utf-8")
+
+
+def prepare(
+    *,
+    root: Path,
+    pilot_id: str,
+    baseline_run_dir: Path,
+    run_dir: Path,
+    run_id: str,
+    budget: int,
+    resend_rule: str,
+    provider_config: Path,
+    archive: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Write ``run_config.json`` and ``requests.jsonl``. Sends nothing. Refuses a changed identity in an existing run."""
+    if resend_rule not in RESEND_RULES:
+        raise RepairError(f"unknown resend rule {resend_rule!r}")
+    loaded = load_baseline(root, pilot_id, baseline_run_dir)
+    runtime, manifest_sha, baseline, template = loaded["runtime"], loaded["runtime_sha256"], loaded["requests"], loaded["template"]
     config = load_provider_config(provider_config)
     documents = {d["doc_id"]: d for d in runtime["documents"]}
     renderer = PageRenderer(archive, documents)
@@ -142,11 +170,7 @@ def prepare(
     records = []
     for q in runtime["questions"]:
         qid = q["question_id"]
-        if qid not in baseline:
-            raise RepairError(f"{baseline_run_dir.name} has no request for question {qid}")
         base = baseline[qid]
-        if base["question"] != q["question"] or base["doc_id"] != q["doc_id"]:
-            raise RepairError(f"{qid}: the no-recovery request differs from the runtime manifest")
         doc = documents[q["doc_id"]]
         system, user, retrieved = repair_text(base, template)
         pages = select_pages(doc["pages"], retrieved, budget)
@@ -169,7 +193,7 @@ def prepare(
     identity = {
         "run_id": run_id, "kind": "development_pilot", "repair": "invoke_vlm", "pilot_id": pilot_id,
         "runtime_manifest_sha256": manifest_sha,
-        "baseline_run": baseline_run_dir.name, "baseline_requests_sha256": _sha(baseline_requests_bytes),
+        "baseline_run": baseline_run_dir.name, "baseline_requests_sha256": loaded["requests_sha256"],
         "template_id": template.template_id, "template_sha256": template.sha256,
         "image_note": IMAGE_NOTE, "no_text_user_template": NO_TEXT_USER_PREFIX + template.closing_line,
         "page_policy": POLICY_ID, "image_budget": budget, "gate": GATE_ID,
@@ -182,16 +206,7 @@ def prepare(
         "requests_sha256": _canonical(records),
         "code": {_rel(p, ROOT): _sha(p.read_bytes()) for p in code_files},
     }
-    run_dir.mkdir(parents=True, exist_ok=True)
-    config_path = run_dir / "run_config.json"
-    if config_path.exists():
-        old = json.loads(config_path.read_text(encoding="utf-8"))
-        if old != identity:
-            diff = sorted(k for k in set(old) | set(identity) if old.get(k) != identity.get(k))
-            raise RepairError(f"{config_path} exists with a different identity ({', '.join(diff)}); a changed run needs a new run_id")
-    else:
-        config_path.write_text(json.dumps(identity, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (run_dir / "requests.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records), encoding="utf-8")
+    write_identity(run_dir, identity, records)
     return records, identity
 
 
@@ -271,13 +286,16 @@ def run(
     for record in records:
         state = ledger(_events(run_dir), identity["resend_rule"])
         qid = record["question_id"]
-        if qid in state["saved"] or qid in state["blocked"]:
+        if record.get("action", "send") != "send" or qid in state["saved"] or qid in state["blocked"]:
             continue
         if state["measured"] + state["reserved"] + record["cost_upper_bound"] > cap:
             end_reason = "cap_reached"
             break
-        images = [renderer.page(record["doc_id"], p) for p in record["selected_pages"]]
-        messages = repair_messages(record, images)
+        if "selected_pages" in record:
+            images = [renderer.page(record["doc_id"], p) for p in record["selected_pages"]]
+            messages = repair_messages(record, images)
+        else:  # a text-only repair: the prepared system and user messages, unchanged
+            messages = ({"role": "system", "content": record["system"]}, {"role": "user", "content": record["user"]})
         attempt_id = f"{qid[:8]}-{uuid.uuid4().hex[:8]}"
         resend_of = state["unknown"].get(qid)
         request = ProviderRequest(qid, attempt_id, messages, dict(config.params), config.max_output_tokens, config.timeout_seconds)
@@ -334,9 +352,11 @@ def export(run_dir: Path) -> list[dict[str, Any]]:
     for r in records:
         qid = r["question_id"]
         attempts = [e["attempt_id"] for e in events if e["event"] == "dispatch" and e["question_id"] == qid]
-        row = {"question_id": qid, "doc_id": r["doc_id"], "attempt_ids": attempts, "images": len(r["selected_pages"]),
+        row = {"question_id": qid, "doc_id": r["doc_id"], "attempt_ids": attempts, "images": len(r.get("selected_pages", [])),
                "unknown_outcomes": len(state["unknown"].get(qid, []))}
-        if qid in saved:
+        if r.get("action", "send") != "send":
+            row.update(status="skipped", skip_reason=r.get("skip_reason"), answer="", abstained=False, measured_cost=0.0, usage=None)
+        elif qid in saved:
             resp = _read_json(run_dir / "responses" / f"{saved[qid]['attempt_id']}.json")
             row.update(status="answered", answer=resp["answer"], abstained=resp["abstained"],
                        measured_cost=resp["measured_cost"], usage=resp["usage"])
@@ -357,7 +377,8 @@ def export(run_dir: Path) -> list[dict[str, Any]]:
         "measured_cost_usd": round(state["measured"], 6), "reserved_cost_usd": round(state["reserved"], 6),
         "returned_models": sorted({e.get("returned_model") for e in events if e["event"] == "saved"}),
         "returned_service_tiers": sorted({e.get("returned_service_tier") for e in events if e["event"] == "saved"}),
-        "complete": all(x["status"] == "answered" for x in rows),
+        "skipped": sum(x["status"] == "skipped" for x in rows),
+        "complete": all(x["status"] in ("answered", "skipped") for x in rows),
     }
     (run_dir / "run_summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     return rows
