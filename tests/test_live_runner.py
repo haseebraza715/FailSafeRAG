@@ -2217,9 +2217,36 @@ def test_the_provider_config_refuses_request_parameters_outside_the_allowlist(pa
 def test_every_allowlisted_parameter_is_accepted() -> None:
     from faar.live_contract import ALLOWED_OPENAI_PARAMS
 
-    values = {"temperature": 0, "top_p": 1, "seed": 7, "stop": ["END"], "presence_penalty": 0, "frequency_penalty": 0}
+    values = {
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 7,
+        "stop": ["END"],
+        "presence_penalty": 0,
+        "frequency_penalty": 0,
+        "reasoning_effort": "none",
+    }
     assert set(values) == set(ALLOWED_OPENAI_PARAMS)
-    assert dict(live_config(params=values).params) == values
+    assert dict(live_config(params=values, token_limit_param="max_completion_tokens").params) == values
+
+
+@pytest.mark.parametrize("effort", ["low", "high", None])
+def test_the_provider_config_refuses_a_reasoning_effort_other_than_none(effort: Any) -> None:
+    """O16: any effort but "none" spends reasoning tokens inside the output limit and can leave the answer empty."""
+    with pytest.raises(RunnerRefusal, match="reasoning_effort"):
+        live_config(params={"reasoning_effort": effort}, token_limit_param="max_completion_tokens")
+
+
+def test_the_provider_config_refuses_reasoning_effort_with_max_tokens() -> None:
+    """O16: reasoning models reject max_tokens, so the run would fail on its first request."""
+    with pytest.raises(RunnerRefusal, match="max_completion_tokens"):
+        live_config(params={"temperature": 0, "reasoning_effort": "none"})
+
+
+def test_a_reasoning_model_config_keeps_its_settings_in_the_identity() -> None:
+    params = {"temperature": 0, "reasoning_effort": "none"}
+    block = live_config(model="gpt-6.1-terra", params=params, token_limit_param="max_completion_tokens").identity_block()
+    assert (block["model"], block["params"], block["token_limit_param"]) == ("gpt-6.1-terra", params, "max_completion_tokens")
 
 
 # ---------------------------------------------------------------------------

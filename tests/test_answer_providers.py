@@ -756,6 +756,38 @@ def test_request_params_must_match_the_configured_params_and_nothing_is_sent_oth
     assert len(seen) == 1
 
 
+# --------------------------------------------------------------------------- reasoning effort (O16)
+# gpt-6.1-terra accepts temperature 0 only with reasoning off. Any other effort spends reasoning tokens inside the
+# output limit and can leave the answer empty, so only "none" passes, and only with max_completion_tokens.
+
+
+@pytest.mark.parametrize("effort", ["low", "medium", "high", "None", None, 0])
+def test_reasoning_effort_other_than_none_is_refused_before_any_dispatch(effort: Any) -> None:
+    client, seen = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
+    with pytest.raises(ValueError, match="reasoning_effort"):
+        OpenAIChatProvider("gpt-test", {"reasoning_effort": effort}, client=client, token_limit_param="max_completion_tokens")
+    assert seen == []
+
+
+def test_reasoning_effort_with_max_tokens_is_refused_before_any_dispatch() -> None:
+    client, seen = mock_client(lambda request: httpx.Response(200, json=completion_payload()))
+    with pytest.raises(ValueError, match="max_completion_tokens"):
+        OpenAIChatProvider("gpt-test", {"reasoning_effort": "none"}, client=client)
+    assert seen == []
+
+
+def test_reasoning_effort_none_is_sent_with_max_completion_tokens() -> None:
+    params = {"temperature": 0, "reasoning_effort": "none"}
+    provider, seen = adapter(
+        lambda request: httpx.Response(200, json=completion_payload()), params, token_limit_param="max_completion_tokens"
+    )
+    provider.send(make_request(params=params, max_output_tokens=128))
+    body = json.loads(seen[0].content)
+    assert (body["reasoning_effort"], body["temperature"], body["max_completion_tokens"]) == ("none", 0, 128)
+    assert "max_tokens" not in body
+    assert provider.identity()["params"] == params
+
+
 def test_identity_reports_the_configuration_without_touching_credentials() -> None:
     provider, seen = adapter(lambda request: httpx.Response(200, json=completion_payload()), {"temperature": 0})
     identity = provider.identity()

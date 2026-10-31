@@ -50,6 +50,7 @@ def test_adapter_accepts_exactly_the_contract_parameter_allowlist() -> None:
         max_retries=0,
     )
     for key in live_contract.ALLOWED_OPENAI_PARAMS:
-        answer_providers.OpenAIChatProvider("gpt-test", {key: 0}, client=client)
+        value = "none" if key == "reasoning_effort" else 0
+        answer_providers.OpenAIChatProvider("gpt-test", {key: value}, client=client, token_limit_param="max_completion_tokens")
     with pytest.raises(ValueError):
         answer_providers.OpenAIChatProvider("gpt-test", {"service_tier": "flex"}, client=client)

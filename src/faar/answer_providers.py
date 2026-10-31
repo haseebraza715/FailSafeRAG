@@ -82,8 +82,10 @@ OpenAI adapter
       else unless the caller configured it, apart from the two fields the adapter fixes itself: `store` (the
       storage policy, O14) and `service_tier` (O15). `params` and `request.params` may hold only the keys
       in `faar.live_contract.ALLOWED_OPENAI_PARAMS`. Any other key (`service_tier`, `store`, `tools`,
-      `modalities`, `reasoning_effort`, a key the adapter sets itself) is refused before dispatch,
+      `modalities`, a key the adapter sets itself) is refused before dispatch,
       because an unknown parameter can change billing outside the cost bound.
+  O16. `reasoning_effort` may only be "none", and only with `token_limit_param="max_completion_tokens"`
+       (`faar.live_contract.reasoning_effort_problem`). Anything else is refused before dispatch.
   O10. A test cannot reach the network: the mock handler must see the request, and the conftest
        blocks non-loopback sockets.
   O11. Importing the module builds no client and imports neither `openai` nor `httpx`.
@@ -139,6 +141,7 @@ from faar.live_contract import (
     ProviderRequest,
     ProviderResponse,
     ProviderUsage,
+    reasoning_effort_problem,
 )
 
 # Kept equal to `faar.answer_prompt.ABSTENTION_TOKEN`. The fake must not import the prompt module.
@@ -568,6 +571,9 @@ class OpenAIChatProvider:
         if token_limit_param not in _TOKEN_LIMIT_PARAMS:
             raise ValueError(f"token_limit_param must be one of {_TOKEN_LIMIT_PARAMS}")
         _check_allowed_params(params, "params")
+        problem = reasoning_effort_problem(params, token_limit_param)
+        if problem:
+            raise ValueError(problem)
         if not isinstance(storage, str) or storage not in STORAGE_POLICIES:
             raise ValueError(f"storage must be one of {list(STORAGE_POLICIES)}, found {storage!r}")
         retries = getattr(client, "max_retries", None)

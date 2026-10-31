@@ -8,6 +8,7 @@ provider SDK and opens no connection.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
@@ -44,7 +45,32 @@ EVENTS = (
 # Request parameters a provider config may set. Everything else is refused, because an
 # unknown parameter can change billing (service tiers, tools, extra modalities) outside
 # the cost bound.
-ALLOWED_OPENAI_PARAMS = ("temperature", "top_p", "seed", "stop", "presence_penalty", "frequency_penalty")
+ALLOWED_OPENAI_PARAMS = (
+    "temperature",
+    "top_p",
+    "seed",
+    "stop",
+    "presence_penalty",
+    "frequency_penalty",
+    "reasoning_effort",
+)
+
+# Reasoning models such as gpt-6.1-terra accept temperature 0 only with reasoning off, and reject max_tokens.
+# Any effort but "none" spends reasoning tokens inside the output limit and can leave the answer empty.
+# The cost bound still holds either way: max_completion_tokens caps reasoning and answer tokens together.
+REASONING_EFFORT_VALUES = ("none",)
+
+
+def reasoning_effort_problem(params: Mapping[str, Any], token_limit_param: str) -> str | None:
+    """Say why `params` may not carry this reasoning_effort, or return None when it may."""
+    if "reasoning_effort" not in params:
+        return None
+    effort = params["reasoning_effort"]
+    if not isinstance(effort, str) or effort not in REASONING_EFFORT_VALUES:
+        return f"reasoning_effort must be one of {list(REASONING_EFFORT_VALUES)}, got {effort!r}"
+    if token_limit_param != "max_completion_tokens":
+        return f"reasoning_effort needs token_limit_param 'max_completion_tokens', got {token_limit_param!r}"
+    return None
 
 # Provider-side storage policy. The ordinary live baseline sends `store=false` on every request and does not
 # rely on the account default (OpenAI documents Chat Completions as stored by default for new accounts).

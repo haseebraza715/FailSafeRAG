@@ -95,6 +95,7 @@ from .live_contract import (
     ProviderError,
     ProviderRequest,
     ProviderResponse,
+    reasoning_effort_problem,
 )
 from .pilot_runner import (
     DEFAULT_TEXT_POLICY,
@@ -529,6 +530,9 @@ def parse_provider_config(payload: Any, *, simulated: bool = False) -> ProviderC
     token_limit_param = payload.get("token_limit_param", "max_tokens")
     if token_limit_param not in TOKEN_LIMIT_PARAMS:
         raise RunnerRefusal(f"provider config: token_limit_param must be one of {TOKEN_LIMIT_PARAMS}, got {token_limit_param!r}")
+    problem = reasoning_effort_problem(payload["params"], token_limit_param)
+    if problem:
+        raise RunnerRefusal(f"provider config: {problem}")
     price_table = PriceTable(
         provider=payload["provider"],
         model=payload["model"],
