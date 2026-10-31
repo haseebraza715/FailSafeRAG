@@ -291,3 +291,44 @@ def test_sources_unchanged_and_stale_audit_rejected(project: Path) -> None:
     mineru = project / "OHR-Bench/data/retrieval_base/MinerU/news/n2.json"
     mineru.write_text(json.dumps([{"page_idx": 0, "text": "changed"}]))
     assert build(project, write_config(project, name="after_change")) == pilot.EXIT_INVALID
+
+
+# A successor pilot that excludes an earlier pilot's documents. Failure list written before the code:
+# E1 an excluded document is still selected; E2 a modified earlier record is used silently; E3 the option changes
+# the record of a pilot that does not use it; E4 the exclusion is not recorded; E5 a named pilot without a frozen
+# record silently excludes nothing.
+
+
+def test_successor_pilot_excludes_the_earlier_pilots_documents(project: Path) -> None:
+    first = write_config(project, documents=2, name="first")
+    assert build(project, first, "--no-render") == 0
+    before = (project / "results/pilots/first/selection_record.json").read_text()
+    first_docs = {d["doc_id"] for d in load(project, "first")[0]["selected_documents"]}
+
+    config = json.loads(write_config(project, documents=3, name="second").read_text())
+    config["selection"]["exclude_documents_of_pilots"] = ["first"]
+    second = project / "config/pilots/second.json"
+    _write(second, config)
+    assert build(project, second, "--no-render") == 0
+    record, runtime, _ = load(project, "second")
+    chosen = {d["doc_id"] for d in record["selected_documents"]}
+    assert chosen and not chosen & first_docs  # E1
+    assert {q["doc_id"] for q in runtime["questions"]} <= chosen
+    assert record["pool"]["excluded_pilots"][0]["pilot_id"] == "first"  # E4
+    assert record["pool"]["eligible_documents"] == 5 - len(first_docs) and "exclusion_rule" in record["algorithm"]
+    assert build(project, first, "--no-render") == 0  # E3: the earlier pilot still reproduces
+    assert (project / "results/pilots/first/selection_record.json").read_text() == before
+    assert "excluded_pilots" not in load(project, "first")[0]["pool"]
+
+    config["pilot_id"], config["output_dir"] = "third", "results/pilots/third"
+    config["selection"]["exclude_documents_of_pilots"] = ["missing"]
+    _write(project / "config/pilots/third.json", config)
+    assert build(project, project / "config/pilots/third.json", "--no-render") == pilot.EXIT_INVALID  # E5
+
+    record_path = project / "results/pilots/first/selection_record.json"
+    tampered = json.loads(before)
+    tampered["selected_documents"] = tampered["selected_documents"][:1]
+    record_path.write_text(json.dumps(tampered))
+    config["selection"]["exclude_documents_of_pilots"] = ["first"]
+    _write(project / "config/pilots/third.json", config)
+    assert build(project, project / "config/pilots/third.json", "--no-render") == pilot.EXIT_INVALID  # E2

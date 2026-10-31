@@ -196,6 +196,24 @@ def build_pool(inputs: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def excluded_pilot_documents(project_root: Path, config: dict[str, Any]) -> tuple[set[str], list[dict[str, Any]]]:
+    """Documents of the frozen pilots named in ``selection.exclude_documents_of_pilots``, so a successor pilot is
+    document-disjoint from them. Each named pilot must have a selection record whose digest still matches."""
+    documents: set[str] = set()
+    records = []
+    for pilot_id in config["selection"].get("exclude_documents_of_pilots", []):
+        path = project_root / "results" / "pilots" / pilot_id / "selection_record.json"
+        if not path.is_file():
+            raise PilotError(f"pilot {pilot_id} named in exclude_documents_of_pilots has no frozen selection record at {path}")
+        record = json.loads(path.read_text(encoding="utf-8"))
+        if digest({k: v for k, v in record.items() if k not in ("volatile", "selection_digest")}) != record.get("selection_digest"):
+            raise PilotError(f"{path} no longer matches its selection_digest; refusing to exclude from a modified record")
+        docs = [d["doc_id"] for d in record["selected_documents"]]
+        documents.update(docs)
+        records.append({"pilot_id": pilot_id, "selection_digest": record["selection_digest"], "documents": len(docs)})
+    return documents, records
+
+
 def doc_type(doc_id: str) -> str:
     return doc_id.split("/", 1)[0]
 
@@ -682,6 +700,9 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
     out = project_root / config["output_dir"]
     inputs = load_inputs(project_root, config)
     pool = build_pool(inputs)
+    excluded, excluded_records = excluded_pilot_documents(project_root, config)
+    if excluded_records:
+        pool = {**pool, "eligible": [d for d in pool["eligible"] if d not in excluded]}
     selected, allocation, ranks = select_documents(pool["eligible"], config)
     docs = build_documents(project_root, inputs, pool, selected, config)
     runtime, evaluation, qflags = build_manifests(project_root, inputs, pool, docs, config)
@@ -733,6 +754,9 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
         },
         "manifest_digests": {"runtime": digest(runtime), "evaluation": digest(evaluation)},
     }
+    if excluded_records:  # only for configs that exclude, so an earlier pilot's record reproduces unchanged
+        selection["algorithm"]["exclusion_rule"] = "documents selected by the named frozen pilots are removed from the eligible pool before allocation"
+        selection["pool"]["excluded_pilots"] = excluded_records
     selection["selection_digest"] = digest(selection)
     record_path = out / "selection_record.json"
     status = "created"
