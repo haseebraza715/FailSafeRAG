@@ -30,7 +30,8 @@ CAUSE_TEXT = {
     "gold_or_question": "Gold answer or question questionable; reply defensible",
     "ocr_lost": "OCR lost the evidence (empty, partial or invented text)",
     "ocr_damaged": "OCR damaged the evidence (garbled fraction or name)",
-    "retrieval_miss": "Evidence intact but not retrieved",
+    "retrieval_miss_page": "Evidence intact; its page not retrieved",
+    "retrieval_miss_passage": "Evidence intact; page retrieved, passage not",
     "model_error": "Evidence in the prompt and intact; model wrong, partial or abstained",
 }
 
@@ -71,7 +72,7 @@ def write(results: dict[str, Any], rows: list[dict[str, Any]]) -> None:
     a("")
     a("- **Measured** (from run records and fixed formulas): official EM and F1, ANLS, page recall@k, retrieval LCS, "
       "edit distance between MinerU and the clean reference text, and every headroom score, interval and test below.")
-    a("- **Interpretation** (one coder's judgement): every code in `coding_agent_v1.csv`, so the failure breakdown, the "
+    a("- **Interpretation** (one coder's judgement): every code in `coding_agent_v2.csv` (codebook v2), so the failure breakdown, the "
       "evidence-impact counts and the repair a case points to. The coder is an AI agent, not a person. No second "
       "labeller has coded the cases yet, so agreement is unknown.")
     a("- **Unverified**: whether the codes agree with a human labeller; whether results hold beyond these 70 questions; "
@@ -88,7 +89,7 @@ def write(results: dict[str, Any], rows: list[dict[str, Any]]) -> None:
     a("")
     a("## 2. Failure breakdown")
     a("")
-    a("Each case has one primary cause, chosen in the order of `codebook.md` section 5 (answer and gold checks first, "
+    a("Each case has one primary cause, chosen in the order of `codebook_v2.md` section 5 (answer and gold checks first, "
       "then the pipeline from OCR to retrieval to the model).")
     a("")
     a("| Primary cause | Cases | of 55 | F1 > 0 | F1 = 0 | Mean baseline F1 | Mean ANLS |")
@@ -104,7 +105,8 @@ def write(results: dict[str, Any], rows: list[dict[str, Any]]) -> None:
     a(f"Read with the coding caveat above: {sa} of {fails} failures are correct answers that EM scores 0, and {gq} more "
       f"rest on a questionable gold answer or question. OCR is the primary cause in {ocr} cases "
       f"({results['primary_cause']['ocr_lost']} lost, {results['primary_cause']['ocr_damaged']} damaged), retrieval in "
-      f"{results['primary_cause']['retrieval_miss']}, and the model in {results['primary_cause']['model_error']}. "
+      f"{results['primary_cause']['retrieval_miss_page'] + results['primary_cause']['retrieval_miss_passage']} "
+      f"({results['primary_cause']['retrieval_miss_page']} page-level, {results['primary_cause']['retrieval_miss_passage']} passage-level), and the model in {results['primary_cause']['model_error']}. "
       f"If the coder's correctness judgements hold, {part['exact'] + sa} of {n} questions "
       f"({pct((part['exact'] + sa) / n, 0)}%) were answered correctly, against an official EM of {pct(base['em'], 1)}%.")
     a("")
@@ -273,8 +275,9 @@ def write(results: dict[str, Any], rows: list[dict[str, Any]]) -> None:
     a("")
     a("## Files")
     a("")
-    a("- `codebook.md`: the frozen codebook (v1).")
-    a("- `coding_agent_v1.csv`: the agent's codes for the 55 failures.")
+    a("- `codebook_v2.md`: the codebook these codes use. It lists its two changes from v1.")
+    a("- `coding_agent_v2.csv`: the agent's codes for the 55 failures under v2.")
+    a("- `codebook.md` and `coding_agent_v1.csv`: v1 and its codes, kept unchanged as the record.")
     a("- `failure_table.csv`: codes next to measurements, gold answer and reply, one row per failure.")
     a("- `case_measures.csv`: all 70 questions with retrieval, OCR and score measurements per condition.")
     a("- `results.json`: every aggregate in this report.")

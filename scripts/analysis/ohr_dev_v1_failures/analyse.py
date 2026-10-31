@@ -2,7 +2,8 @@
 
     .local/venv-prebaseline/bin/python scripts/analysis/ohr_dev_v1_failures/analyse.py
 
-Reads the frozen pilot manifests, the baseline run, the agent coding file and any completed headroom runs.
+Reads the frozen pilot manifests, the baseline run, the agent coding file (codebook v2) and any completed headroom
+runs. Per-case values keep full precision; CSV files round them to 4 decimals for display only.
 Sends nothing. Writes, under results/analysis/2026-10-31-ohr-dev-v1-terra-failures/:
 
     case_measures.csv     all 70 questions: retrieval, CER, scores per condition
@@ -31,8 +32,10 @@ from headroom import CONDITIONS, RUN_IDS, run_dir
 from measures import anls, page_cer, page_ned, page_recall_at_k, retrieval_lcs, retrieval_lcs_chars
 from stats import cluster_bootstrap_diff, icc_oneway, mcnemar_exact, mcnemar_sample_size
 
-CODING = OUT_DIR / "coding_agent_v1.csv"
-CAUSES = ("scoring_artifact", "gold_or_question", "ocr_lost", "ocr_damaged", "retrieval_miss", "model_error")
+CODING = OUT_DIR / "coding_agent_v2.csv"
+CAUSES = ("scoring_artifact", "gold_or_question", "ocr_lost", "ocr_damaged", "retrieval_miss_page", "retrieval_miss_passage",
+          "model_error")
+CSV_DECIMALS = 4
 LCS_PASSAGE_THRESHOLD = 0.95  # OHR-Bench uses LCS > 0.95 to call evidence "included" (paper section 4.3)
 
 
@@ -96,19 +99,19 @@ def build_case_rows(cases: list[dict[str, Any]], coding: dict[str, dict[str, str
             "page_recall_at_3": page_recall_at_k(ret_pages, ev_pages, 3) if ret_pages else 0.0,
             "page_recall_at_5": page_recall_at_k(ret_pages, ev_pages, 5) if ret_pages else 0.0,
             "single_page_document": c["page_count"] == 1,
-            "retrieval_lcs_top5": round(lcs, 4), "retrieval_lcs_top2": round(lcs_top2, 4),
-            "retrieval_lcs_chars_top5": round(sum(lcs_chars) / len(lcs_chars), 4) if lcs_chars else None,
+            "retrieval_lcs_top5": lcs, "retrieval_lcs_top2": lcs_top2,
+            "retrieval_lcs_chars_top5": sum(lcs_chars) / len(lcs_chars) if lcs_chars else None,
             "passage_included_chars_lcs95": bool(lcs_chars) and sum(lcs_chars) / len(lcs_chars) > LCS_PASSAGE_THRESHOLD,
-            "evidence_page_cer": round(sum(cers) / len(cers), 4) if all(v is not None for v in cers) else None,
-            "evidence_page_ned": round(sum(neds) / len(neds), 4) if all(v is not None for v in neds) else None,
+            "evidence_page_cer": sum(cers) / len(cers) if all(v is not None for v in cers) else None,
+            "evidence_page_ned": sum(neds) / len(neds) if all(v is not None for v in neds) else None,
             "gold": c["gold"], "baseline_answer": c["answer"], "baseline_abstained": c["abstained"],
         }
         for name, table in scores.items():
             r = table[qid]
             answer = c["answer"] if name == "baseline" else r["answer"]
             row[f"{name}_em"] = r["em"]
-            row[f"{name}_f1"] = round(r["f1"], 4)
-            row[f"{name}_anls"] = round(anls(answer, c["gold"]), 4)
+            row[f"{name}_f1"] = r["f1"]
+            row[f"{name}_anls"] = anls(answer, c["gold"])
             if name != "baseline":
                 row[f"{name}_answer"] = answer
         code = coding.get(qid)
@@ -118,7 +121,7 @@ def build_case_rows(cases: list[dict[str, Any]], coding: dict[str, dict[str, str
     if set(coding) - {r["question_id"] for r in rows if r["baseline_em"] == 0}:
         raise SystemExit("coding file holds a question that is not a baseline EM-0 case")
     if {r["question_id"] for r in rows if r["baseline_em"] == 0} - set(coding):
-        raise SystemExit("an EM-0 case has no code in coding_agent_v1.csv")
+        raise SystemExit("an EM-0 case has no code in coding_agent_v2.csv")
     return rows
 
 
@@ -127,7 +130,8 @@ def write_csv(path: Path, rows: list[dict[str, Any]], columns: list[str] | None 
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=columns, extrasaction="ignore")
         writer.writeheader()
-        writer.writerows(rows)
+        for row in rows:  # round for display only; every aggregate uses the unrounded values
+            writer.writerow({k: round(v, CSV_DECIMALS) if isinstance(v, float) else v for k, v in row.items()})
 
 
 def mean(values: list[float]) -> float | None:

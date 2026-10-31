@@ -8,16 +8,17 @@
     "exact": 15
   },
   "primary_cause": {
-    "scoring_artifact": 28,
+    "scoring_artifact": 27,
     "gold_or_question": 7,
     "ocr_lost": 10,
     "ocr_damaged": 3,
-    "retrieval_miss": 2,
-    "model_error": 5
+    "retrieval_miss_page": 1,
+    "retrieval_miss_passage": 1,
+    "model_error": 6
   },
   "primary_cause_by_f1": {
     "scoring_artifact": {
-      "partial": 23,
+      "partial": 22,
       "zero": 5
     },
     "gold_or_question": {
@@ -32,12 +33,16 @@
       "partial": 1,
       "zero": 2
     },
-    "retrieval_miss": {
+    "retrieval_miss_page": {
       "partial": 0,
-      "zero": 2
+      "zero": 1
+    },
+    "retrieval_miss_passage": {
+      "partial": 0,
+      "zero": 1
     },
     "model_error": {
-      "partial": 2,
+      "partial": 3,
       "zero": 3
     }
   },
@@ -58,24 +63,26 @@
     "gt_transcription_error": 2
   },
   "anls_by_cause": {
-    "scoring_artifact": 0.41294642857142855,
-    "gold_or_question": 0.10158571428571428,
+    "scoring_artifact": 0.42823900981835405,
+    "gold_or_question": 0.10158730158730159,
     "ocr_lost": 0.0,
     "ocr_damaged": 0.0,
-    "retrieval_miss": 0.0,
+    "retrieval_miss_page": 0.0,
+    "retrieval_miss_passage": 0.0,
     "model_error": 0.0
   },
   "f1_by_cause": {
-    "scoring_artifact": 0.5380428571428572,
-    "gold_or_question": 0.21835714285714286,
+    "scoring_artifact": 0.5446649496443632,
+    "gold_or_question": 0.21835352026989657,
     "ocr_lost": 0.0,
-    "ocr_damaged": 0.17543333333333333,
-    "retrieval_miss": 0.0,
-    "model_error": 0.13112
+    "ocr_damaged": 0.17543859649122806,
+    "retrieval_miss_page": 0.0,
+    "retrieval_miss_passage": 0.0,
+    "model_error": 0.16908705846758942
   },
   "cause_by_impact": {
     "scoring_artifact": {
-      "survives": 28
+      "survives": 27
     },
     "gold_or_question": {
       "survives": 7
@@ -86,11 +93,14 @@
     "ocr_damaged": {
       "damaged": 3
     },
-    "retrieval_miss": {
-      "survives": 2
+    "retrieval_miss_page": {
+      "survives": 1
+    },
+    "retrieval_miss_passage": {
+      "survives": 1
     },
     "model_error": {
-      "survives": 5
+      "survives": 6
     }
   },
   "retrieval": {
@@ -105,11 +115,11 @@
       "5": 0.9210526315789473
     },
     "multipage_questions": 19,
-    "retrieval_lcs_top5_sent": 0.5397984126984127,
-    "retrieval_lcs_top2_sent": 0.4893079365079365,
-    "retrieval_lcs_top5_all": 0.48581857142857143,
-    "retrieval_lcs_top2_all": 0.44037714285714286,
-    "retrieval_lcs_chars_top5_sent": 0.9396777777777777,
+    "retrieval_lcs_top5_sent": 0.539797587373857,
+    "retrieval_lcs_top2_sent": 0.4893080988174917,
+    "retrieval_lcs_top5_all": 0.4858178286364713,
+    "retrieval_lcs_top2_all": 0.4403772889357425,
+    "retrieval_lcs_chars_top5_sent": 0.9396811452542717,
     "passage_included_chars_lcs95": 53,
     "sent": 63
   },
@@ -132,21 +142,21 @@
       "textbook": 0.7019835122311567
     },
     "cer_by_impact": {
-      "survives": 0.2202666666666667,
-      "damaged": 0.9387,
-      "lost": 1.56836
+      "survives": 0.22027389690825824,
+      "damaged": 0.9387149646749738,
+      "lost": 1.5683614795501604
     }
   },
   "conditions": {
     "baseline": {
       "em": 0.21428571428571427,
-      "f1": 0.4682228571428571,
-      "anls": 0.38049571428571427
+      "f1": 0.4682180917509472,
+      "anls": 0.38049536410453977
     },
     "clean_text": {
       "em": 0.2714285714285714,
-      "f1": 0.5441285714285714,
-      "anls": 0.43305285714285713,
+      "f1": 0.5441258920091941,
+      "anls": 0.4330527411457103,
       "paired": {
         "em": {
           "by_document": {
@@ -162,26 +172,26 @@
         },
         "f1": {
           "by_document": {
-            "diff": 0.0759057142857143,
-            "ci_low": -0.0023580224690945557,
-            "ci_high": 0.17397781566937118
+            "diff": 0.07590780025824698,
+            "ci_low": -0.002354047672018486,
+            "ci_high": 0.17397588678501544
           },
           "by_question": {
-            "diff": 0.0759057142857143,
-            "ci_low": -0.002415000000000001,
-            "ci_high": 0.15521089285714285
+            "diff": 0.07590780025824698,
+            "ci_low": -0.0024103370491769514,
+            "ci_high": 0.15521466230983158
           }
         },
         "anls": {
           "by_document": {
-            "diff": 0.05255714285714286,
-            "ci_low": -0.021705770063270062,
-            "ci_high": 0.15182634920634916
+            "diff": 0.05255737704117056,
+            "ci_low": -0.02170678039510188,
+            "ci_high": 0.15182930639017236
           },
           "by_question": {
-            "diff": 0.05255714285714286,
-            "ci_low": -0.025316214285714286,
-            "ci_high": 0.13119728571428574
+            "diff": 0.05255737704117056,
+            "ci_low": -0.02531633898980838,
+            "ci_high": 0.1311963288978595
           }
         }
       },
@@ -196,7 +206,8 @@
         "gold_or_question": 0,
         "ocr_lost": 3,
         "ocr_damaged": 1,
-        "retrieval_miss": 0,
+        "retrieval_miss_page": 0,
+        "retrieval_miss_passage": 0,
         "model_error": 0
       },
       "broke_baseline_exact": 2,
@@ -211,8 +222,8 @@
     },
     "gold_page_text": {
       "em": 0.22857142857142856,
-      "f1": 0.5084057142857142,
-      "anls": 0.4314557142857143,
+      "f1": 0.5084020468258376,
+      "anls": 0.43145453327970773,
       "paired": {
         "em": {
           "by_document": {
@@ -228,26 +239,26 @@
         },
         "f1": {
           "by_document": {
-            "diff": 0.04018285714285714,
-            "ci_low": -0.0026054416473937046,
-            "ci_high": 0.09405998897811367
+            "diff": 0.04018395507489035,
+            "ci_low": -0.002603874526496585,
+            "ci_high": 0.09406282827057136
           },
           "by_question": {
-            "diff": 0.04018285714285714,
-            "ci_low": 0.002147142857142859,
-            "ci_high": 0.08550614285714286
+            "diff": 0.04018395507489035,
+            "ci_low": 0.002151323666129344,
+            "ci_high": 0.08550923667738085
           }
         },
         "anls": {
           "by_document": {
-            "diff": 0.050960000000000005,
-            "ci_low": -0.01103199909543193,
-            "ci_high": 0.11353260156249995
+            "diff": 0.05095916917516801,
+            "ci_low": -0.01103344472163972,
+            "ci_high": 0.11353312754698817
           },
           "by_question": {
-            "diff": 0.050960000000000005,
-            "ci_low": -0.004209857142857141,
-            "ci_high": 0.1099503214285714
+            "diff": 0.05095916917516801,
+            "ci_low": -0.004209146536227833,
+            "ci_high": 0.10994666905615666
           }
         }
       },
@@ -262,7 +273,8 @@
         "gold_or_question": 0,
         "ocr_lost": 0,
         "ocr_damaged": 0,
-        "retrieval_miss": 0,
+        "retrieval_miss_page": 0,
+        "retrieval_miss_passage": 0,
         "model_error": 1
       },
       "broke_baseline_exact": 0,

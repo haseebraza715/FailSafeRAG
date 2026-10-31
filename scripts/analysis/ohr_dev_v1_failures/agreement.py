@@ -34,7 +34,7 @@ def labels(value: str) -> set[str]:
 
 def main() -> None:
     form_path = Path(sys.argv[1]) if len(sys.argv) > 1 else OUT_DIR / "packet" / "labeller_form.csv"
-    agent, human = read(OUT_DIR / "coding_agent_v1.csv"), read(form_path)
+    agent, human = read(OUT_DIR / "coding_agent_v2.csv"), read(form_path)
     if set(agent) != set(human):
         raise SystemExit("the form and the agent coding cover different questions")
     out: dict[str, object] = {"form": str(form_path), "annotators": sorted({r.get("annotator", "") for r in human.values()})}
