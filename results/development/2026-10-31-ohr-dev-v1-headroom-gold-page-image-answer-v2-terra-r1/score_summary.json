@@ -1,0 +1,17 @@
+{
+  "run_id": "2026-10-31-ohr-dev-v1-headroom-gold-page-image-answer-v2-terra-r1",
+  "condition": "gold_page_image",
+  "questions": 70,
+  "answered": 67,
+  "no_evidence": 0,
+  "execution_failed": 3,
+  "abstained": 1,
+  "em": 0.38571428571428573,
+  "f1": 0.6359638116207382,
+  "measured_cost_usd": 0.265665,
+  "reserved_cost_usd": 0.048297,
+  "returned_models": [
+    "gpt-6.1-terra"
+  ],
+  "complete": false
+}

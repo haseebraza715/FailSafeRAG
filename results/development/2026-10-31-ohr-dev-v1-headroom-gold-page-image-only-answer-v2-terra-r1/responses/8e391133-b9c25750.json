@@ -1,0 +1,59 @@
+{
+  "question_id": "8e391133-8339-4035-8252-5a3694211554",
+  "attempt_id": "8e391133-b9c25750",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfALZlHPzeO8QAC1qIuIR9DwLHQNH",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2914,
+    "cached_input_tokens": 0,
+    "output_tokens": 21,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003019,
+  "latency_ms": 1466,
+  "answer": "Peak Clipping, Valley Filling, Load Shifting, Strategic Load Growth, Flexible Load Shape",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfALZlHPzeO8QAC1qIuIR9DwLHQNH",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Peak Clipping, Valley Filling, Load Shifting, Strategic Load Growth, Flexible Load Shape",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479929,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 21,
+      "prompt_tokens": 2914,
+      "total_tokens": 2935,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

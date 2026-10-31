@@ -1,0 +1,59 @@
+{
+  "question_id": "c13a5633-1414-4d65-b83f-514c1dc5e898",
+  "attempt_id": "c13a5633-b5e7ce3c",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAM7vgDfKyK0VqZ0E1zbFnhvZ4lS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3324,
+    "cached_input_tokens": 0,
+    "output_tokens": 108,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003864,
+  "latency_ms": 4614,
+  "answer": "多次向县委、县政府提出整改要求，向省政府建议将安乡县列为农民负担监督卡制度县，重点监控，派出专班赴县调查，责成该县迅速整改，强行扣款的10.9万户农民的资金进行全面清理和清退，农民负担监督卡制度落实情况进行多次抽查，并责成相关部门进行认真整改，还将检查的情况报告了省委、省政府",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAM7vgDfKyK0VqZ0E1zbFnhvZ4lS",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "多次向县委、县政府提出整改要求，向省政府建议将安乡县列为农民负担监督卡制度县，重点监控，派出专班赴县调查，责成该县迅速整改，强行扣款的10.9万户农民的资金进行全面清理和清退，农民负担监督卡制度落实情况进行多次抽查，并责成相关部门进行认真整改，还将检查的情况报告了省委、省政府",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479963,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 108,
+      "prompt_tokens": 3324,
+      "total_tokens": 3432,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

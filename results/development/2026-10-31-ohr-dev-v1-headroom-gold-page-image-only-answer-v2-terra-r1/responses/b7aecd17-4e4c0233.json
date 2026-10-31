@@ -1,0 +1,59 @@
+{
+  "question_id": "b7aecd17-359b-4b98-adff-49878e2e9fde",
+  "attempt_id": "b7aecd17-4e4c0233",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfALv4nbukTt80td4l4pE3zqAdKgU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5415,
+    "cached_input_tokens": 0,
+    "output_tokens": 49,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00566,
+  "latency_ms": 2011,
+  "answer": "Imaging in axial, panoramic and cross-sectional planes, clear visualization of cortical bone margins and the incisive and inferior alveolar canals, direct measurements and assessment of bone volume and density, simulation of implant placement or bone grafting procedures",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfALv4nbukTt80td4l4pE3zqAdKgU",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Imaging in axial, panoramic and cross-sectional planes, clear visualization of cortical bone margins and the incisive and inferior alveolar canals, direct measurements and assessment of bone volume and density, simulation of implant placement or bone grafting procedures",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479951,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 49,
+      "prompt_tokens": 5415,
+      "total_tokens": 5464,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

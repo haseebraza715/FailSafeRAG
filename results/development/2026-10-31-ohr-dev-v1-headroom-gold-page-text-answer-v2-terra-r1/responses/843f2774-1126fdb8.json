@@ -1,0 +1,60 @@
+{
+  "question_id": "843f2774-85f0-4f5e-ab99-017191bb94d6",
+  "attempt_id": "843f2774-1126fdb8",
+  "condition": "gold_page_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAKBYdYAXzWruv1OabSozpNl3u9u",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1315,
+    "cached_input_tokens": 1312,
+    "output_tokens": 41,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.000274,
+  "latency_ms": 1269,
+  "answer": "对弗吉尼亚的植物进行了深入调查，将以正规植物学方式记录的考察笔记和亲手绘制的植物图鉴交给约翰·雷",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAKBYdYAXzWruv1OabSozpNl3u9u",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "对弗吉尼亚的植物进行了深入调查，将以正规植物学方式记录的考察笔记和亲手绘制的植物图鉴交给约翰·雷",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479843,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 41,
+      "prompt_tokens": 1315,
+      "total_tokens": 1356,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 1312,
+        "cache_write_tokens": 0
+      }
+    }
+  }
+}

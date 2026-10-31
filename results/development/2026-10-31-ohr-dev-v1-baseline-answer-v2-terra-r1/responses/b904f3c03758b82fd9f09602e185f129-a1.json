@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b89d6523-85c6-40cd-9d60-db0fd596f619",
+  "request_id": "b904f3c03758b82fd9f09602e185f129",
+  "attempt": 1,
+  "attempt_id": "b904f3c03758b82fd9f09602e185f129-a1",
+  "saved_by_invocation": "4487497d295347eea4210c38d1a13630",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAHehqcXDZAPQ4V56fUNIaiwBRI7",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1533,
+    "cached_input_tokens": 0,
+    "output_tokens": 43,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001748,
+  "input_bound_exceeded": false,
+  "latency_ms": 1815,
+  "output_status": "ok",
+  "answer": "The oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals",
+  "abstained": false,
+  "provider_response": {
+    "text": "The oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfAHehqcXDZAPQ4V56fUNIaiwBRI7",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "The oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793479686,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 43,
+        "prompt_tokens": 1533,
+        "total_tokens": 1576,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1530
+        }
+      }
+    }
+  }
+}

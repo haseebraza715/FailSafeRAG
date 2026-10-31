@@ -1,0 +1,59 @@
+{
+  "question_id": "4f1728e0-a481-4fc5-95d8-3d89694241b7",
+  "attempt_id": "4f1728e0-b07efc68",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAL6adWZI2pbWWXJWJUlE5v7uM6J",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3180,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00324,
+  "latency_ms": 1692,
+  "answer": "Laura Loomer, Tucker Carlson, Lil Pump",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAL6adWZI2pbWWXJWJUlE5v7uM6J",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Laura Loomer, Tucker Carlson, Lil Pump",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479900,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 12,
+      "prompt_tokens": 3180,
+      "total_tokens": 3192,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

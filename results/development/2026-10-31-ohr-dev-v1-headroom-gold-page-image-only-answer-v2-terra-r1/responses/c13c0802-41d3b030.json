@@ -1,0 +1,59 @@
+{
+  "question_id": "c13c0802-fe54-4c5c-bdb6-0b91133e156f",
+  "attempt_id": "c13c0802-41d3b030",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAMC3gmi8sI1wXyIJomsQMiydnoY",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3319,
+    "cached_input_tokens": 0,
+    "output_tokens": 86,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003749,
+  "latency_ms": 4765,
+  "answer": "四进岳阳县摸清情况后，提请纪检监察机关立案查处，在政府领导根据何仁芽所提意见作出重要批示、岳阳市纪委立案查处后，当年清退截留、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行了问责和纪律追究，最终使问题得到彻底解决",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAMC3gmi8sI1wXyIJomsQMiydnoY",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "四进岳阳县摸清情况后，提请纪检监察机关立案查处，在政府领导根据何仁芽所提意见作出重要批示、岳阳市纪委立案查处后，当年清退截留、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行了问责和纪律追究，最终使问题得到彻底解决",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479968,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 86,
+      "prompt_tokens": 3319,
+      "total_tokens": 3405,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

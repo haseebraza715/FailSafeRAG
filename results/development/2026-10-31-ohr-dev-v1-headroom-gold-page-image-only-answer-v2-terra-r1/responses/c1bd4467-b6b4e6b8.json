@@ -1,0 +1,59 @@
+{
+  "question_id": "c1bd4467-7db1-4e3f-9c91-7bc9fc625b02",
+  "attempt_id": "c1bd4467-b6b4e6b8",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAMO8VnKoVyt1Mdv43vynvYbI3IV",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3316,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003396,
+  "latency_ms": 1710,
+  "answer": "提供建设规划图纸、规模养殖技术指导和服务",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAMO8VnKoVyt1Mdv43vynvYbI3IV",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "提供建设规划图纸、规模养殖技术指导和服务",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479980,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 3316,
+      "total_tokens": 3332,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

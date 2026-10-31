@@ -1,0 +1,60 @@
+{
+  "question_id": "b7ad5f22-7e21-476c-9933-ea8fb579e050",
+  "attempt_id": "b7ad5f22-7916cd0c",
+  "condition": "gold_page_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAKVJDqEMXXLg0Ypxt95soZ46eGU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1771,
+    "cached_input_tokens": 0,
+    "output_tokens": 43,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001986,
+  "latency_ms": 1264,
+  "answer": "the oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAKVJDqEMXXLg0Ypxt95soZ46eGU",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "the oblique saggital view permits the evaluation of distinctly buccal and lingual cortical bone margins, as well as clear visualization of the internal structure such as incisive and inferior alveolar canals",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479863,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 43,
+      "prompt_tokens": 1771,
+      "total_tokens": 1814,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1768
+      }
+    }
+  }
+}

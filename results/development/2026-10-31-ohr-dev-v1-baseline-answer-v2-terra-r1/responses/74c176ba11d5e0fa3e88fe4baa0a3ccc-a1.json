@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "6ac85f42-a9c0-4dec-ac25-aad69dcc668f",
+  "request_id": "74c176ba11d5e0fa3e88fe4baa0a3ccc",
+  "attempt": 1,
+  "attempt_id": "74c176ba11d5e0fa3e88fe4baa0a3ccc-a1",
+  "saved_by_invocation": "4487497d295347eea4210c38d1a13630",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAH2r8KVFTTTMm3d05Exs3UuwQVV",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1370,
+    "cached_input_tokens": 0,
+    "output_tokens": 14,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00144,
+  "input_bound_exceeded": false,
+  "latency_ms": 1094,
+  "output_status": "ok",
+  "answer": "\\(x^{q^{k}}-x\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(x^{q^{k}}-x\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfAH2r8KVFTTTMm3d05Exs3UuwQVV",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(x^{q^{k}}-x\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793479648,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 14,
+        "prompt_tokens": 1370,
+        "total_tokens": 1384,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1367
+        }
+      }
+    }
+  }
+}

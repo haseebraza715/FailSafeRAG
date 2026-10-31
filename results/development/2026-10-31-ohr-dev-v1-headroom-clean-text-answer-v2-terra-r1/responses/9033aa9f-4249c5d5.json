@@ -1,0 +1,60 @@
+{
+  "question_id": "9033aa9f-c4c3-46a3-85e9-601ca9f4eec6",
+  "attempt_id": "9033aa9f-4249c5d5",
+  "condition": "clean_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAJ3LH2BaehwzXBs56mEi94wLRbE",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1210,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001295,
+  "latency_ms": 1054,
+  "answer": "5½\" × ¾\" Whit. Hex. Bolt and Nut",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAJ3LH2BaehwzXBs56mEi94wLRbE",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "5½\" × ¾\" Whit. Hex. Bolt and Nut",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479773,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 1210,
+      "total_tokens": 1227,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1207
+      }
+    }
+  }
+}

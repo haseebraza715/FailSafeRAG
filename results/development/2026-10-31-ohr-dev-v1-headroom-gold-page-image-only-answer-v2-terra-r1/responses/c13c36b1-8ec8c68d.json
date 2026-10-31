@@ -1,0 +1,59 @@
+{
+  "question_id": "c13c36b1-9a26-4370-a351-c31601ffcd2c",
+  "attempt_id": "c13c36b1-8ec8c68d",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAMGtDC1J1PF4v0qa4qqdvtgtBUq",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3328,
+    "cached_input_tokens": 0,
+    "output_tokens": 45,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003553,
+  "latency_ms": 2133,
+  "answer": "责成岳阳县纪委查处，追回被抵扣的粮补资金130多万元，对33名责任人和责任领导进行了问责和纪律追究，最终向群众退赔到位",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAMGtDC1J1PF4v0qa4qqdvtgtBUq",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "责成岳阳县纪委查处，追回被抵扣的粮补资金130多万元，对33名责任人和责任领导进行了问责和纪律追究，最终向群众退赔到位",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479972,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 45,
+      "prompt_tokens": 3328,
+      "total_tokens": 3373,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

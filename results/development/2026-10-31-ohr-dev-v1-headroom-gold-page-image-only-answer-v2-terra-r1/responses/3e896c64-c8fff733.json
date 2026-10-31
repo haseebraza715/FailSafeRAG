@@ -1,0 +1,59 @@
+{
+  "question_id": "3e896c64-e117-4ac3-919c-4ea3e1805081",
+  "attempt_id": "3e896c64-c8fff733",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAL00pOdIu2ZV9lXb1TwCRIFe7nt",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 3320,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00396,
+  "latency_ms": 3481,
+  "answer": "病猪和带菌猪是本病的主要传染源，从粪便、尿液、乳汁以及流产的胎儿、胎衣及羊水等排出大量的病菌。本病主要经消化道感染，还可以通过交配或人工授精等途径发生感染。仔猪发病初期多为急性，体温升至41℃以上，食欲不振、精神萎靡，初便秘，后腹泻，但也有不腹泻的。在鼻端、耳、颈、腹部及四",
+  "abstained": false,
+  "output_status": "truncated",
+  "raw": {
+    "id": "chatcmpl-EfAL00pOdIu2ZV9lXb1TwCRIFe7nt",
+    "choices": [
+      {
+        "finish_reason": "length",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "病猪和带菌猪是本病的主要传染源，从粪便、尿液、乳汁以及流产的胎儿、胎衣及羊水等排出大量的病菌。本病主要经消化道感染，还可以通过交配或人工授精等途径发生感染。仔猪发病初期多为急性，体温升至41℃以上，食欲不振、精神萎靡，初便秘，后腹泻，但也有不腹泻的。在鼻端、耳、颈、腹部及四",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479894,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 128,
+      "prompt_tokens": 3320,
+      "total_tokens": 3448,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

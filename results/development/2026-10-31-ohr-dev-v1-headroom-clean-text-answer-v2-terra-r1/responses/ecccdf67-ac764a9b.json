@@ -1,0 +1,60 @@
+{
+  "question_id": "ecccdf67-bc03-447c-a990-d5989185f21a",
+  "attempt_id": "ecccdf67-ac764a9b",
+  "condition": "clean_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAJli0nTVktEfFNtIM53amYgLU1O",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1107,
+    "cached_input_tokens": 0,
+    "output_tokens": 61,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001412,
+  "latency_ms": 1581,
+  "answer": "先将要作的题目全部从头到尾阅读一遍，本着先易后难先简后繁的原则，确定先答哪些，后答哪些，在具体解答某题之前，再将该题仔细阅读一遍，弄清题目的要求",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAJli0nTVktEfFNtIM53amYgLU1O",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "先将要作的题目全部从头到尾阅读一遍，本着先易后难先简后繁的原则，确定先答哪些，后答哪些，在具体解答某题之前，再将该题仔细阅读一遍，弄清题目的要求",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479817,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 61,
+      "prompt_tokens": 1107,
+      "total_tokens": 1168,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1104
+      }
+    }
+  }
+}

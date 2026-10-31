@@ -1,0 +1,60 @@
+{
+  "question_id": "b89d6523-85c6-40cd-9d60-db0fd596f619",
+  "attempt_id": "b89d6523-05c4a070",
+  "condition": "gold_page_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAKeJ5AMdJFdjEd8uq1z7nX50Up4",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2712,
+    "cached_input_tokens": 0,
+    "output_tokens": 35,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002887,
+  "latency_ms": 1471,
+  "answer": "It allows assessment in all three dimensions, providing axial, panoramic, paraxial and 3D volume rendering to define ambiguous findings and guide diagnosis and surgical treatment",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAKeJ5AMdJFdjEd8uq1z7nX50Up4",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "It allows assessment in all three dimensions, providing axial, panoramic, paraxial and 3D volume rendering to define ambiguous findings and guide diagnosis and surgical treatment",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479872,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 35,
+      "prompt_tokens": 2712,
+      "total_tokens": 2747,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 2709
+      }
+    }
+  }
+}

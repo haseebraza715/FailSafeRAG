@@ -1,0 +1,17 @@
+{
+  "run_id": "2026-10-31-ohr-dev-v1-headroom-clean-text-answer-v2-terra-r1",
+  "condition": "clean_text",
+  "questions": 70,
+  "answered": 70,
+  "no_evidence": 0,
+  "execution_failed": 0,
+  "abstained": 5,
+  "em": 0.32857142857142857,
+  "f1": 0.5881779088619641,
+  "measured_cost_usd": 0.104115,
+  "reserved_cost_usd": 0.0,
+  "returned_models": [
+    "gpt-6.1-terra"
+  ],
+  "complete": true
+}

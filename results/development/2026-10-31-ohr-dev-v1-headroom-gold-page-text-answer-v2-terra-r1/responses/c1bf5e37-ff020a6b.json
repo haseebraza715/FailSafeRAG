@@ -1,0 +1,60 @@
+{
+  "question_id": "c1bf5e37-8462-46db-bdd3-cb3c704b2b61",
+  "attempt_id": "c1bf5e37-ff020a6b",
+  "condition": "gold_page_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfAKri7tIaWkazRO25sImd3gtt1Jj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 7693,
+    "cached_input_tokens": 0,
+    "output_tokens": 24,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.007813,
+  "latency_ms": 1110,
+  "answer": "抑制能量饲料投放量，一般不超过总食量的85%",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfAKri7tIaWkazRO25sImd3gtt1Jj",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "抑制能量饲料投放量，一般不超过总食量的85%",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793479885,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 24,
+      "prompt_tokens": 7693,
+      "total_tokens": 7717,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 7690
+      }
+    }
+  }
+}
