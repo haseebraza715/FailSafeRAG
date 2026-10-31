@@ -1,0 +1,60 @@
+{
+  "question_id": "b89d6523-85c6-40cd-9d60-db0fd596f619",
+  "attempt_id": "b89d6523-8639da58",
+  "condition": "gold_page_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9pUES9LhJZFmMOBVE55qoCRBduE",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2633,
+    "cached_input_tokens": 0,
+    "output_tokens": 55,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002908,
+  "latency_ms": 1688,
+  "answer": "Dentascan provides axial, panoramic, paraxial and 3D views, revealing structures such as extra root canals that can be superimposed on conventional radiographs. It defines ambiguous findings and provides precise topographical evaluation to guide diagnosis and surgical treatment.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9pUES9LhJZFmMOBVE55qoCRBduE",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Dentascan provides axial, panoramic, paraxial and 3D views, revealing structures such as extra root canals that can be superimposed on conventional radiographs. It defines ambiguous findings and provides precise topographical evaluation to guide diagnosis and surgical treatment.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477940,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 55,
+      "prompt_tokens": 2633,
+      "total_tokens": 2688,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 2630
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "b7ad5f22-7e21-476c-9933-ea8fb579e050",
+  "attempt_id": "b7ad5f22-7472f0f4",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9qrBFVEEpTXyXKkgkLNI7ZzuTyN",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5332,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005417,
+  "latency_ms": 1846,
+  "answer": "Its cross-sectional view shows subtle focal cortical thinning in mandibular erosion.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9qrBFVEEpTXyXKkgkLNI7ZzuTyN",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Its cross-sectional view shows subtle focal cortical thinning in mandibular erosion.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793478025,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 5332,
+      "total_tokens": 5349,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

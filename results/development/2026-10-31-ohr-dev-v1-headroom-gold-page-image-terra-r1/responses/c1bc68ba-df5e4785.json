@@ -1,0 +1,59 @@
+{
+  "question_id": "c1bc68ba-2417-4739-9382-26867037b0ab",
+  "attempt_id": "c1bc68ba-df5e4785",
+  "condition": "gold_page_image",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9n4bsf0yNjaS0eL7rbvMZF5H9t4",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4773,
+    "cached_input_tokens": 0,
+    "output_tokens": 33,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004938,
+  "latency_ms": 1953,
+  "answer": "外三元杂交肉猪、PIC优质配套系肉猪、黑山羊、南江黄羊、波尔山羊",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9n4bsf0yNjaS0eL7rbvMZF5H9t4",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "外三元杂交肉猪、PIC优质配套系肉猪、黑山羊、南江黄羊、波尔山羊",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477790,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 33,
+      "prompt_tokens": 4773,
+      "total_tokens": 4806,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "b8cb2ea3-f2a6-4007-b0b1-cd3118fc45be",
+  "attempt_id": "b8cb2ea3-764f59ec",
+  "condition": "gold_page_image",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9mpg34oxzeZwwnnK27bppNoRhBB",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6569,
+    "cached_input_tokens": 0,
+    "output_tokens": 61,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006874,
+  "latency_ms": 2265,
+  "answer": "State-level research includes all direct and indirect costs of EEI or member company responses to state inquiries, proposed rulemaking or proceedings, including filing comments. Federal-level research also includes agency discussions, background studies and analysis, responses to inquiries about potential impacts or implementation, and monitoring existing federal programs.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9mpg34oxzeZwwnnK27bppNoRhBB",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "State-level research includes all direct and indirect costs of EEI or member company responses to state inquiries, proposed rulemaking or proceedings, including filing comments. Federal-level research also includes agency discussions, background studies and analysis, responses to inquiries about potential impacts or implementation, and monitoring existing federal programs.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477775,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 61,
+      "prompt_tokens": 6569,
+      "total_tokens": 6630,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "69199a8a-aea6-4315-88ef-444a6e63ffa4",
+  "attempt_id": "69199a8a-7b1fbff7",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9qDOmB9RObU2QQdRTsZP0zcFMQ5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3242,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003372,
+  "latency_ms": 1939,
+  "answer": "It increased from 15.4% in 2005 to 16.7% in 2014.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9qDOmB9RObU2QQdRTsZP0zcFMQ5",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "It increased from 15.4% in 2005 to 16.7% in 2014.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477985,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 26,
+      "prompt_tokens": 3242,
+      "total_tokens": 3268,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

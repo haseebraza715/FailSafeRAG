@@ -1,0 +1,59 @@
+{
+  "question_id": "b8cb2ea3-f2a6-4007-b0b1-cd3118fc45be",
+  "attempt_id": "b8cb2ea3-cd3453e3",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9r5x7jXzj2tk7DMgxlibzU4H5n9",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5352,
+    "cached_input_tokens": 0,
+    "output_tokens": 68,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005692,
+  "latency_ms": 2213,
+  "answer": "State-level research includes all direct and indirect costs incurred for an EEI or member company response to a State notice of inquiry or proposed State rulemaking or administrative or regulatory proceeding, including filing comments. Federal-level research also includes agency discussions, background information, studies and analysis, responses to inquiries, and monitoring existing federal government programs.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9r5x7jXzj2tk7DMgxlibzU4H5n9",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "State-level research includes all direct and indirect costs incurred for an EEI or member company response to a State notice of inquiry or proposed State rulemaking or administrative or regulatory proceeding, including filing comments. Federal-level research also includes agency discussions, background information, studies and analysis, responses to inquiries, and monitoring existing federal government programs.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793478039,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 68,
+      "prompt_tokens": 5352,
+      "total_tokens": 5420,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

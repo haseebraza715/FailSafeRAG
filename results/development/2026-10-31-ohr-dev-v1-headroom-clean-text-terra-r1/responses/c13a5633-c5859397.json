@@ -1,0 +1,60 @@
+{
+  "question_id": "c13a5633-1414-4d65-b83f-514c1dc5e898",
+  "attempt_id": "c13a5633-c5859397",
+  "condition": "clean_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9oL28kkm4vmwGQUBWHR4SaHX5dI",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1786,
+    "cached_input_tokens": 0,
+    "output_tokens": 66,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002116,
+  "latency_ms": 1656,
+  "answer": "几次带队到安乡县暗访，掌握第一手资料后，多次向县委、县政府提出整改要求；建议对农民负担过重地方实行重点监控，并多次到有关县市调查研究，帮助制定治理方案，逐项落实治理措施。",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9oL28kkm4vmwGQUBWHR4SaHX5dI",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "几次带队到安乡县暗访，掌握第一手资料后，多次向县委、县政府提出整改要求；建议对农民负担过重地方实行重点监控，并多次到有关县市调查研究，帮助制定治理方案，逐项落实治理措施。",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477869,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 66,
+      "prompt_tokens": 1786,
+      "total_tokens": 1852,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1783
+      }
+    }
+  }
+}

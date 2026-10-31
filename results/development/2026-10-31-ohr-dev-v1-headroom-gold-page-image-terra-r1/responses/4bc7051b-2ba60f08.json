@@ -1,0 +1,59 @@
+{
+  "question_id": "4bc7051b-9711-4924-80d5-59d4628d87fd",
+  "attempt_id": "4bc7051b-2ba60f08",
+  "condition": "gold_page_image",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9lgCPh7Kaz2kQGZPAGf8B6QiltM",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4346,
+    "cached_input_tokens": 0,
+    "output_tokens": 10,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004396,
+  "latency_ms": 1900,
+  "answer": "He was barred from leaving France.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9lgCPh7Kaz2kQGZPAGf8B6QiltM",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "He was barred from leaving France.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477704,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 10,
+      "prompt_tokens": 4346,
+      "total_tokens": 4356,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "c13c36b1-9a26-4370-a351-c31601ffcd2c",
+  "attempt_id": "c13c36b1-3a199a71",
+  "condition": "gold_page_image",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9myCdKUHezuz6HS1m3gy2T6sSIn",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4675,
+    "cached_input_tokens": 0,
+    "output_tokens": 40,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004875,
+  "latency_ms": 2340,
+  "answer": "立案查处，当年清退截留、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行了问责和纪律追究。",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9myCdKUHezuz6HS1m3gy2T6sSIn",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "立案查处，当年清退截留、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行了问责和纪律追究。",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477784,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 40,
+      "prompt_tokens": 4675,
+      "total_tokens": 4715,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

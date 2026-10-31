@@ -1,0 +1,60 @@
+{
+  "question_id": "b7b6de06-f264-4539-bed9-373b5285b1a8",
+  "attempt_id": "b7b6de06-f07b6623",
+  "condition": "gold_page_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9pO8zMl8umpdE5Z7afdkKIIfApe",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1536,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001691,
+  "latency_ms": 1579,
+  "answer": "The specific reason was not disclosed. Rodriguez believed it was retaliation for speaking out against the college. Vice President Ricky Serna communicated the decision.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9pO8zMl8umpdE5Z7afdkKIIfApe",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The specific reason was not disclosed. Rodriguez believed it was retaliation for speaking out against the college. Vice President Ricky Serna communicated the decision.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477934,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 31,
+      "prompt_tokens": 1536,
+      "total_tokens": 1567,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1533
+      }
+    }
+  }
+}

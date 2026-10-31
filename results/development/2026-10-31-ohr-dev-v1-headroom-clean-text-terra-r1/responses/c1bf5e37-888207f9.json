@@ -1,0 +1,60 @@
+{
+  "question_id": "c1bf5e37-8462-46db-bdd3-cb3c704b2b61",
+  "attempt_id": "c1bf5e37-888207f9",
+  "condition": "clean_text",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9oUbOvhay1wuv4V3kFlt0llb41w",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1902,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002042,
+  "latency_ms": 1081,
+  "answer": "生长后期抑制能量饲料投放量，一般不超过总食量的85%。",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9oUbOvhay1wuv4V3kFlt0llb41w",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "生长后期抑制能量饲料投放量，一般不超过总食量的85%。",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477878,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 1902,
+      "total_tokens": 1930,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1899
+      }
+    }
+  }
+}

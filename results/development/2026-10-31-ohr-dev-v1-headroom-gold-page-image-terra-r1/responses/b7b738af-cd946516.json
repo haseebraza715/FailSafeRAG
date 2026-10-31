@@ -1,0 +1,59 @@
+{
+  "question_id": "b7b738af-ad4c-4e38-aafe-76c5733ccb9e",
+  "attempt_id": "b7b738af-cd946516",
+  "condition": "gold_page_image",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9mh2CBDrFvnirxvwhCjIKREiltS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6581,
+    "cached_input_tokens": 0,
+    "output_tokens": 40,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006781,
+  "latency_ms": 2162,
+  "answer": "Serna, the vice president of institutional advancement, informed Rodriguez she was no longer approved to teach. Rodriguez believed academic hiring decisions should be made by full-time faculty, not Serna.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9mh2CBDrFvnirxvwhCjIKREiltS",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Serna, the vice president of institutional advancement, informed Rodriguez she was no longer approved to teach. Rodriguez believed academic hiring decisions should be made by full-time faculty, not Serna.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477767,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 40,
+      "prompt_tokens": 6581,
+      "total_tokens": 6621,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

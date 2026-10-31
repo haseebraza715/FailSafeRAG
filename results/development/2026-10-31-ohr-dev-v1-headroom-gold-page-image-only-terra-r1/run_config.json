@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-10-31-ohr-dev-v1-headroom-gold-page-image-only-terra-r1",
+  "condition": "gold_page_image_only",
+  "kind": "development_pilot",
+  "diagnostic_reference": true,
+  "baseline_run": "2026-10-31-ohr-dev-v1-baseline-terra-r1",
+  "runtime_manifest_sha256": "08be57192da5b74423b9028d0c5ab8ca0f1807250a6754c9cdb3320ff970f3e1",
+  "evaluation_manifest_sha256": "7237cc2ca965f999a09606a6cdc9af4be8c17342d6d3319c4cfc40da19de2d28",
+  "provider_config_sha256": "35ea0799e1931fe0167224b5b05483f8881c91b3d1d0f3055c72910906b3ae6e",
+  "template_id": "faar-answer-draft-v1",
+  "template_sha256": "52044de279b32482e1b8b7f75f0b3455f5cb8e44e9178f8cec09c1615a89914d",
+  "image_note": "\n\nThe user message also contains images of document pages. The images are evidence too. Read them together with any text blocks, and answer from what the page shows.",
+  "no_text_user_template": "Question:\n{question}\n\nNo text evidence is available. The evidence is the page image(s) below.\n\nAnswer the question using only the evidence. If the evidence lacks the answer, reply NO_ANSWER.",
+  "image_detail": "high",
+  "image_token_bound": 8000,
+  "render_record_sha256": "c6d6a9bbc00675c631622ec25b4223397b6c6b02e9e317d97e85d06c123b5551",
+  "requests_sha256": "edab1f6b1504274ce65e2151adb9f3e4a7a2be9274a117f7ada2441b3280cbc1",
+  "code": {
+    "scripts/analysis/ohr_dev_v1_failures/common.py": "ffcaa273fab19b265b318036201846e922e96f5fa798c86431cef3a65a31d66f",
+    "scripts/analysis/ohr_dev_v1_failures/headroom.py": "3df899c05c9ca4c60d92f479a0da917203beeb93cec1343f186c80f0266ef5ba",
+    "scripts/analysis/ohr_dev_v1_failures/render_pages.py": "184a402dd0edb6ad4b94f5fc45f89fbbf539f1625c3d1bb504b861ae4607c768"
+  }
+}

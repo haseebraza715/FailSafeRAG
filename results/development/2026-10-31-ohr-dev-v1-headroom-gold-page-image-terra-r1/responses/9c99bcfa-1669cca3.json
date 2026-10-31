@@ -1,0 +1,59 @@
+{
+  "question_id": "9c99bcfa-8c11-4c38-9280-dd7c8bf5d605",
+  "attempt_id": "9c99bcfa-1669cca3",
+  "condition": "gold_page_image",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9mM52W5lb3axcY64j33YnqLPpVL",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2909,
+    "cached_input_tokens": 0,
+    "output_tokens": 43,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003124,
+  "latency_ms": 1778,
+  "answer": "他以正规植物学方式记录考察笔记，亲手绘制植物图鉴，交给约翰·雷编入《植物通史》第二卷（1680）。",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9mM52W5lb3axcY64j33YnqLPpVL",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "他以正规植物学方式记录考察笔记，亲手绘制植物图鉴，交给约翰·雷编入《植物通史》第二卷（1680）。",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477746,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 43,
+      "prompt_tokens": 2909,
+      "total_tokens": 2952,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

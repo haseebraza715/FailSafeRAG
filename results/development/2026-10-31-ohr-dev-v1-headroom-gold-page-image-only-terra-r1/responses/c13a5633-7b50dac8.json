@@ -1,0 +1,59 @@
+{
+  "question_id": "c13a5633-1414-4d65-b83f-514c1dc5e898",
+  "attempt_id": "c13a5633-7b50dac8",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9r9CEm37blqU9GSvXVpfr0YeCFs",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3245,
+    "cached_input_tokens": 0,
+    "output_tokens": 52,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003505,
+  "latency_ms": 2731,
+  "answer": "多次向县委、县政府提出整改要求，向省委、省政府反映，推动将安乡县列为重点监控对象，制定治理方案、逐项落实治理措施，并进行重点督查和检查验收",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9r9CEm37blqU9GSvXVpfr0YeCFs",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "多次向县委、县政府提出整改要求，向省委、省政府反映，推动将安乡县列为重点监控对象，制定治理方案、逐项落实治理措施，并进行重点督查和检查验收",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793478043,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 52,
+      "prompt_tokens": 3245,
+      "total_tokens": 3297,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

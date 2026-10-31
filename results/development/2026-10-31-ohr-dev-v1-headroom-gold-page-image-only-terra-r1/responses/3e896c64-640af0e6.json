@@ -1,0 +1,59 @@
+{
+  "question_id": "3e896c64-e117-4ac3-919c-4ea3e1805081",
+  "attempt_id": "3e896c64-640af0e6",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9psGw3LRnG803zufJ4wJscwNNMM",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3241,
+    "cached_input_tokens": 0,
+    "output_tokens": 116,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003821,
+  "latency_ms": 3055,
+  "answer": "病猪和带菌猪通过粪便、尿液、乳汁及流产的胎儿、胎衣和羊水排菌，污染饲料和饮水，也可通过交配或人工授精传播。仔猪急性发病时体温升至41℃以上，食欲不振、精神萎靡、初便秘后腹泻，耳、颈、腹部及四肢内侧皮肤出现紫斑，病程3～5天死亡居多。",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9psGw3LRnG803zufJ4wJscwNNMM",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "病猪和带菌猪通过粪便、尿液、乳汁及流产的胎儿、胎衣和羊水排菌，污染饲料和饮水，也可通过交配或人工授精传播。仔猪急性发病时体温升至41℃以上，食欲不振、精神萎靡、初便秘后腹泻，耳、颈、腹部及四肢内侧皮肤出现紫斑，病程3～5天死亡居多。",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477964,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 116,
+      "prompt_tokens": 3241,
+      "total_tokens": 3357,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "b7aecd17-359b-4b98-adff-49878e2e9fde",
+  "attempt_id": "b7aecd17-41b7339b",
+  "condition": "gold_page_image",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9mcp7041Hh4VhjxhumGRh4KL8GA",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6623,
+    "cached_input_tokens": 0,
+    "output_tokens": 48,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006863,
+  "latency_ms": 2036,
+  "answer": "Dentascan provides axial, panoramic and cross-sectional views without superimposition, clearly showing cortical margins and canals. It enables bone measurements and implant placement planning, and locates teeth and the mandibular canal to guide surgery.",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9mcp7041Hh4VhjxhumGRh4KL8GA",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Dentascan provides axial, panoramic and cross-sectional views without superimposition, clearly showing cortical margins and canals. It enables bone measurements and implant placement planning, and locates teeth and the mandibular canal to guide surgery.",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793477762,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 48,
+      "prompt_tokens": 6623,
+      "total_tokens": 6671,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "c13c36b1-9a26-4370-a351-c31601ffcd2c",
+  "attempt_id": "c13c36b1-d59bbb49",
+  "condition": "gold_page_image_only",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-Ef9rEsFQmUGmhHYdMDFe4oWGBsjO1",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3249,
+    "cached_input_tokens": 0,
+    "output_tokens": 52,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003509,
+  "latency_ms": 2554,
+  "answer": "责成岳阳市纪委立案查处，清退被截、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行问责和纪律追究，最终彻底得到彻底解决。",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-Ef9rEsFQmUGmhHYdMDFe4oWGBsjO1",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "责成岳阳市纪委立案查处，清退被截、抵扣的粮补资金1300多万元，对33名责任人和责任领导进行问责和纪律追究，最终彻底得到彻底解决。",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793478048,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 52,
+      "prompt_tokens": 3249,
+      "total_tokens": 3301,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}
