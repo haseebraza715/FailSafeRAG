@@ -1,9 +1,9 @@
 # Design: the first repair experiment, visual repair with a runtime page policy
 
-**Status: proposal for the research lead, written 2026-10-31. Nothing here is built or run.** The experiment runs
-only after the lead approves this design, the analysis plan
-([repair-analysis-plan.md](repair-analysis-plan.md)) and the sample
-([ohr-dev-v2-proposal.md](ohr-dev-v2-proposal.md)).
+**Status: approved by the research lead on 2026-10-31, with the changes of amendment 1 in
+[repair-analysis-plan.md](repair-analysis-plan.md) (section 12): `ohr_dev_v2` has 414 questions, and a written
+resend rule handles the TLS drops.** The runner is `scripts/experiments/run_visual_repair.py`, with the page policy
+and gate in `src/faar/visual_repair.py` and tests in `tests/test_visual_repair.py`.
 
 ## Why the visual repair comes first
 
@@ -99,8 +99,8 @@ needs the other repairs and the diagnosis, and it is not part of this first expe
 
 The full analysis rules are in [repair-analysis-plan.md](repair-analysis-plan.md), section 10. In short:
 
-- **Sample.** `ohr_dev_v2` (285 questions, if approved), all questions, as a confirmation sample: nobody inspects its
-  outputs before the comparison is computed.
+- **Sample.** `ohr_dev_v2` (414 questions on 201 documents), all questions, as the confirmation sample: nobody
+  inspects its outputs before the comparison is computed.
 - **Shared initial answer.** A no-recovery run on `ohr_dev_v2` with `faar-answer-v2`, run first and frozen. The
   repair reuses its retrieval and user messages.
 - **Primary outcome and contrast.** Official EM, visual repair on every question minus no recovery, paired by
@@ -113,10 +113,10 @@ The full analysis rules are in [repair-analysis-plan.md](repair-analysis-plan.md
 - **Subgroups, descriptive only.** Questions whose evidence page has empty MinerU text, Han-script questions,
   questions on multi-page documents, and document type.
 
-**Power.** With 285 questions and a discordant rate near the 12.9% seen with the gold image on `ohr_dev_v1`, the test
-detects a paired EM gain of about 6 points (7 with a design effect of 1.45). The headroom bound was 7 to 9 points with
-perfect page choice. A real gain below 6 points will probably not reach significance, and the report says so in
-advance.
+**Power.** With 414 questions and a discordant rate near the 12.9% seen with the gold image on `ohr_dev_v1`, the test
+detects a paired EM gain of about 5 points without clustering and about 6 with a design effect of 1.42. The headroom
+bound was 7 to 9 points with perfect page choice. A real gain below 5 points will probably not reach significance,
+and the report says so in advance.
 
 ## Fixed before the run
 
@@ -128,33 +128,45 @@ change after the run starts makes a new run, and the earlier one stays in the re
 
 Image requests dropped with `SSLV3_ALERT_BAD_RECORD_MAC` in all four image runs on 2026-10-31: 5, 2, 3 and 1 of 70
 requests ended with an unknown outcome, 11 of 280 in all. None of the 394 text-only requests in the six text runs
-dropped. The cause is not known. It could be the network path or the request size. An unknown outcome is never
-resent (study brief section 15.7), so each drop becomes an `execution_failed` question that scores 0. At the
-observed rate, about 4% of the repair requests would fail. Before the repair run, a small engineering check should find the cause or show that the rate stays
-low. The maximum execution-failure rate is a lead decision (study brief section 15.7). The primary analysis counts
-failures as 0. A second view on the questions both runs answered is reported next to it.
+dropped. An engineering check (`results/engineering/2026-10-31-tls-bad-record-mac-check/report.md`) reproduced the
+drops without any billed request. Large uploads dropped 2.3% of the time and small ones never, on fresh and reused
+connections and with two different TLS libraries. The upload is corrupted on the local network path. The runner
+cannot fix that.
 
-## What has to be built
+The run therefore uses the resend rule `one-resend-connection-lost-v1` (analysis plan, amendment 1): a
+`connection_lost` attempt with an unknown outcome may be sent once more, its first attempt stays counted at its upper
+bound, and a second unknown outcome blocks the question. The rule is part of the run identity. At a 2.3% drop rate
+per attempt, about 1 question in 2,000 would stay blocked. Each run reports unknown outcomes, resends and blocked
+questions. The primary analysis counts blocked questions as 0. A second view on the questions both runs answered is
+reported next to it. The maximum execution-failure rate is still a lead decision (study brief section 15.7).
 
-1. A repair runner that reads only the inputs listed above, renders the selected pages, and sends requests through
-   `faar.live_runner`'s provider with the same ledger, cost cap, retry rules and unknown-outcome handling as the
-   no-recovery run. `headroom.py` shows the request shape. It reads evaluation files by design, so it cannot be reused
-   as is.
-2. Tests written from a failure list first: a gold field or the evaluation manifest reaches the repair; the policy
-   order or budget differs from this page; a page is rendered from a PDF whose hash differs from the manifest; an
-   unknown outcome is resent.
-3. A comparison script in the style of `compare_v2.py`, fixed before the run.
+## What was built
+
+1. `scripts/experiments/run_visual_repair.py`: `prepare`, `run`, `export` and `score`. It sends through the provider
+   that `faar.live_runner.build_live_provider` builds, with the headroom runs' ledger: every attempt is logged before
+   it is sent, measured plus reserved cost plus the next request's bound must stay within `--cap`, and three
+   failures in a row stop the invocation. It reads every runtime file through a check that refuses evaluation-only
+   paths. `prepare` and `run` never open the evaluation manifest; `score` does, after the run.
+2. `tests/test_visual_repair.py`, written from a failure list: a gold field or the evaluation manifest reaches the
+   repair; the policy order or budget differs from this page; a page is rendered from a PDF whose hash differs from
+   the manifest; the request differs from the design; an unknown outcome is resent outside the rule; the cap is
+   crossed; a changed run reuses a directory or the baseline is invalid; the gate differs.
+3. `scripts/analysis/ohr_dev_v2_confirmation/compare.py`, committed before the first run on `ohr_dev_v2`.
 
 ## Cost
 
 | Step | Requests | Expected cost (USD) | Basis |
 | --- | ---: | ---: | --- |
-| No-recovery run on `ohr_dev_v2` | about 245 | about 0.40 | 0.0015 per request on `ohr_dev_v1` |
-| Visual repair on `ohr_dev_v2` | 285 | about 1.40 | 0.0041 per request with 1.3 images on `ohr_dev_v1`, scaled to about 1.6 images |
-| Debug run of the repair on `ohr_dev_v1` | 70 | about 0.30 | as above |
+| No-recovery run on `ohr_dev_v2`, `faar-answer-v2` | 343 (71 questions have no text evidence) | about 0.52 | 0.0015 per request on `ohr_dev_v1` |
+| No-recovery run on `ohr_dev_v2`, `faar-answer-draft-v1` | 343 | about 0.52 | as above |
+| Debug run of the repair on `ohr_dev_v1` (development data) | 70 | about 0.35 | 0.0041 per request with 1.3 images on `ohr_dev_v1`, scaled to the images `prepare` selects |
+| Visual repair on `ohr_dev_v2` | 414 | about 2.10 | as above |
 
 Image tokens were priced at the recorded text rates, because the image price of `gpt-6.1-terra` was not checked in
-documentation. The total is about 2.10 USD. The upper bound that the cost cap reserves per request is several times
+documentation. The total is about 3.50 USD under the stage cap of 6.00 USD. The debug run checks the real path end to
+end (rendering from the archive, the provider, export and scoring) on development data before the confirmation run.
+Its result is development evidence: it shows how much of the gold-page headroom the runtime page choice keeps on
+`ohr_dev_v1`, and nothing about `ohr_dev_v2`. The upper bound that the cost cap reserves per request is several times
 higher, so the cap for each run is set from the expected cost plus one request's bound.
 
 ## Decisions for the lead

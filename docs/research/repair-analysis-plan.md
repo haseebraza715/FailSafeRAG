@@ -1,7 +1,8 @@
 # Analysis plan for the repair experiments
 
-**Status: second draft for the research lead's approval, revised 2026-10-31 after the answer-format runs. No repair
-run exists, and this plan authorises none.** Section 11 lists what changed from the first draft.
+**Status: approved by the research lead on 2026-10-31 for the first experiment (section 10), with the changes in
+amendment 1 (section 12), made before any run on `ohr_dev_v2`.** Section 11 lists what changed from the first draft.
+The rest of the plan (the FAAR comparison, sections 1 to 9) still needs the decisions listed in section 9.
 Once approved, the plan is frozen. A later change is a numbered amendment with its date and reason, made before the
 run it affects. Results already produced stay in the record. Approval of this plan does not settle any open
 "Lead decision" in the [study brief](study-brief.md); section 9 lists the ones it depends on.
@@ -41,14 +42,13 @@ the diagnosis and the policy that uses it proves neither.
 | Stage | Data | Purpose | May inform method changes |
 | --- | --- | --- | --- |
 | Development | `ohr_dev_v1` (70 questions) and, if the lead approves one, a longer-document development sample | Build and debug the repairs, the gate and the diagnosis; run the all-repairs diagnostic (brief section 6) | Yes, with each change logged as a new registered run |
-| Confirmation | `ohr_dev_v2` if the lead approves it ([proposal](ohr-dev-v2-proposal.md)): 285 train-only questions, document-disjoint from `ohr_dev_v1`, frozen before any run | Test each pre-registered contrast once, starting with section 10 | No |
+| Confirmation | `ohr_dev_v2` ([proposal and freeze record](ohr-dev-v2-proposal.md)): 414 train-only questions on 201 documents, document-disjoint from `ohr_dev_v1`, frozen before any run | Test each pre-registered contrast once, starting with section 10 | No |
 | Test | OHR-Bench test split, only after the lead freezes the method | One final run | No |
 
 The confirmation sample is selected by a rule written down before selection and frozen with its own `pilot_id`.
 No question in it is inspected before the confirmation run. The train split limits its size: only 343 documents
 (692 questions) have no question in validation or test, and `ohr_dev_v1` uses 70 of those questions. After
-`ohr_dev_v2`, 337 train-only questions remain. If the lead prefers to keep `ohr_dev_v2` for development, the
-confirmation moves to the validation split, as brief section 15.11 proposes for the frozen method.
+`ohr_dev_v2`, 208 train-only questions remain, and no run uses them.
 
 ## 3. Fixed before any repair run
 
@@ -98,12 +98,12 @@ All of these go into one registered method record that every confirmation and te
 Detecting a 5-point paired EM gain with McNemar's test (alpha 0.05, power 0.80) needs about 190 questions if the
 two policies disagree on 6% of questions, about 310 at 10% and about 470 at 15%. Questions sharing a document inflate
 this by a design effect that is poorly known: the intraclass correlation of EM within documents was 0.40 on the v1
-baseline and 0.02 on the v2 baseline, from the same 30 documents, which gives design effects between about 1.0 and
-1.5. With the v2 prompt, the gold page image disagreed with no recovery on 12.9% of questions. At that rate, the
-285 questions of `ohr_dev_v2` detect a gain of about 6 points (7 with a design effect of 1.45), not 5. The train-only
-pool cannot give a sample large enough for 5 points at that rate. Each confirmation result is therefore reported
-with its interval, and a null result is reported as underpowered for gains below the detectable size, not as
-evidence of no effect.
+baseline and 0.02 on the v2 baseline, from the same 30 documents. `ohr_dev_v2` averages 2.06 questions per document,
+which gives design effects between 1.0 and 1.42. With the v2 prompt, the gold page image disagreed with no recovery
+on 12.9% of questions. At that rate a 5-point gain needs 403 questions without clustering and 584 with a design
+effect of 1.42, and a 6-point gain needs 279 and 405. The 414 questions of `ohr_dev_v2` therefore detect a gain of
+5 to 6 points. Each confirmation result is reported with its interval, and a null result is reported as underpowered
+for gains below that size, not as evidence of no effect.
 
 `ohr_dev_v1` (70 questions) cannot detect a 5-point difference at any plausible rate. Results on it are
 development evidence only.
@@ -145,7 +145,7 @@ The design is in [visual-repair-design.md](visual-repair-design.md). It runs bef
 because only the visual repair showed headroom (finding 3), and because it tests the repair link alone, without a
 diagnosis.
 
-- **Sample.** `ohr_dev_v2`, all questions, if approved as the confirmation sample.
+- **Sample.** `ohr_dev_v2`, all 414 questions, as the confirmation sample.
 - **Policies.** No recovery (the shared initial answer, `faar-answer-v2`). Visual repair on every question, with
   pages chosen by `retrieved-then-gaps-v1` and a budget of 3 images. Gated visual repair, computed from the same
   answers with the gate `abstain-or-ocr-gap-v1`.
@@ -172,3 +172,39 @@ Made on 2026-10-31, before any repair run, after the answer-format runs and the 
 - Section 6 uses the discordant rate observed with v2 and states the detectable gain at 285 questions.
 - Section 4 adds NFKC EM as a secondary score.
 - Section 9 adds decisions 6 to 8. Section 10 is new.
+
+## 12. Amendment 1 (2026-10-31, before any run on `ohr_dev_v2`)
+
+The lead approved `ohr_dev_v2` and the first experiment with these changes:
+
+1. **Sample size.** `ohr_dev_v2` was frozen at 201 documents and 414 questions instead of 138 and 285, because a
+   runtime page choice will probably gain 5 to 6 points and 285 questions detect that only about half the time.
+   Sections 2, 6 and 10 now give the frozen numbers.
+2. **The v2 prompt is tested on `ohr_dev_v2`.** v2 was written after reading the `ohr_dev_v1` failures, so its gain
+   there is optimistic. Before the repair, two no-recovery runs on `ohr_dev_v2` share retrieval and differ only in
+   the template: `faar-answer-draft-v1` and `faar-answer-v2`. Contrast: official EM, v2 minus v1, paired by
+   question, with the document-level bootstrap interval (10,000 resamples, seed 20261031) and McNemar's exact
+   two-sided test. Decision rule: "v2 raised EM on new questions" only if McNemar's p is below 0.05 and the interval
+   excludes 0. Secondary: F1, ANLS, NFKC EM. This contrast is separate from the repair contrast and is not
+   adjusted with it. The v2 run is the shared initial answer of the repair (section 10), whatever this test shows.
+3. **Resend rule `one-resend-connection-lost-v1`.** An engineering check
+   (`results/engineering/2026-10-31-tls-bad-record-mac-check/report.md`) found that the TLS "bad record MAC" drops
+   come from corruption of large uploads on the local network path, not from the runner, the TLS library,
+   connection reuse or HTTP/2, and cannot be fixed in code. Large bodies dropped 2.3% of the time and small ones
+   never. For every run on `ohr_dev_v2`:
+   - An attempt that ends with kind `connection_lost` and an unknown outcome may be sent once more. A question gets
+     at most one such resend. A second unknown outcome blocks it.
+   - No other unknown outcome (timeout, 5xx, redirect, a crash after dispatch) is resent.
+   - The first attempt stays counted at its upper bound in the cost ledger and under the cap, whether or not the
+     resend succeeds.
+   - The repair runner applies the rule itself (`scripts/experiments/run_visual_repair.py`, recorded in the run
+     identity). For the no-recovery runs, which use `run_pilot_live.py`, the same rule is applied by hand with
+     `reconcile --resolution allow_new_attempt`, citing this amendment in the note.
+   - Each run reports, per condition, the questions with an unknown outcome, the resends, and the questions still
+     blocked. Blocked questions are `execution_failed` and score 0 in the primary view. The view on questions both
+     runs answered is reported next to it.
+4. **Order of runs.** v2 no-recovery and v1 no-recovery on `ohr_dev_v2`, a debug run of the repair on `ohr_dev_v1`
+   (development data, against the existing v2 no-recovery run there), then the visual repair on `ohr_dev_v2`. The
+   comparison script for `ohr_dev_v2` is committed before the first of these runs. Nobody reads the `ohr_dev_v2`
+   answers before the script has computed the comparisons. The spending cap for the stage is 6.00 USD, counting reserved cost.
+
