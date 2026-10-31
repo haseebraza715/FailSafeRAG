@@ -1,0 +1,879 @@
+{
+  "renderer": {
+    "package": "pypdfium2",
+    "version": "4.30.0"
+  },
+  "inspection_dpi": 150,
+  "model_image": {
+    "long_side_max": 2048,
+    "format": "JPEG",
+    "quality": 90,
+    "source_dpi": 150
+  },
+  "pages": [
+    {
+      "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+      "page_idx": 0,
+      "png": "pages/40768cce5545_p0.png",
+      "png_sha256": "d7bed913c30dfd4a0d1b4d6175f33e8413192549fcd9741082ebd7e2a0efaf8a",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/40768cce5545_p0.model.jpg",
+      "model_jpg_sha256": "7fcf44225de766ffbbbfcbc32ddf116a70431e7544563ca7499619c5b001b8a6",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+      "page_idx": 1,
+      "png": "pages/40768cce5545_p1.png",
+      "png_sha256": "646edb293154b532bd0b28fbee1f909390107e96ef830a7078f679a5d91f7179",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/40768cce5545_p1.model.jpg",
+      "model_jpg_sha256": "1e176ad214a41c615baf0f856d15c1e265727202c37d03c27b4c17c9af323c17",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+      "page_idx": 2,
+      "png": "pages/40768cce5545_p2.png",
+      "png_sha256": "a686512f413834ff4f4bfe26bef45ee0f16348f60a0ee9329bc0b12010066172",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/40768cce5545_p2.model.jpg",
+      "model_jpg_sha256": "eebf9a3e29231fa1d2ec3dba70c3b2afbc923df66792efc3571e0df381214dec",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+      "page_idx": 3,
+      "png": "pages/40768cce5545_p3.png",
+      "png_sha256": "a5dfe475bd6cafc0193d658fdba8337ff0dc9eeffab6aa4553db1ede5b41cafb",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/40768cce5545_p3.model.jpg",
+      "model_jpg_sha256": "53eb7ab82a66b178a0357c0a15059ede8e4279c41000502f2f638649a610adf0",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "academic/DUDE_414cb4819451644c01b0a9db5b6f8cd6",
+      "page_idx": 4,
+      "png": "pages/40768cce5545_p4.png",
+      "png_sha256": "38eb533dbefc2867ed0faf5bf1878fe32041c768e143c6fb6d5bd1da76999470",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/40768cce5545_p4.model.jpg",
+      "model_jpg_sha256": "6aab1698f269d32f78ffa90e20c71635935dc81183fdb2dcac4fed9e4d9aabde",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+      "page_idx": 0,
+      "png": "pages/831ee938058c_p0.png",
+      "png_sha256": "2c3133b421e361460176b24b65333c4d6a3e306eafc8e912a0c31234b6683d22",
+      "png_size": [
+        1417,
+        1834
+      ],
+      "model_jpg": "pages/831ee938058c_p0.model.jpg",
+      "model_jpg_sha256": "7021f9b0fcd1f34f18dfb886de3f69e40f8b3358a83e4ea358aad733f725707b",
+      "model_jpg_size": [
+        1417,
+        1834
+      ]
+    },
+    {
+      "doc_id": "administration/DUDE_54c771a3fc5da43da9e53e6854ef8a77",
+      "page_idx": 1,
+      "png": "pages/831ee938058c_p1.png",
+      "png_sha256": "1b4f1d67d16a114d6933d52283db9b53125bbbabb50a4c76b7321c378bc5e51e",
+      "png_size": [
+        1417,
+        1834
+      ],
+      "model_jpg": "pages/831ee938058c_p1.model.jpg",
+      "model_jpg_sha256": "41b1112d1d426c8b7b6acd8abd3c109575558c4e8bce2054920adaf514f903d8",
+      "model_jpg_size": [
+        1417,
+        1834
+      ]
+    },
+    {
+      "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+      "page_idx": 0,
+      "png": "pages/f078ec9d688d_p0.png",
+      "png_sha256": "a01a645f25844c751afbf8ee7d6cf57ca50719028e06d563726c850812fe3af8",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/f078ec9d688d_p0.model.jpg",
+      "model_jpg_sha256": "35e809a32772848f03f5a169b6e342b3850a06358c4a41864f03e6f221a6f8c3",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "administration/DUDE_aae11c0a8c4869c113687f3413f47300",
+      "page_idx": 1,
+      "png": "pages/f078ec9d688d_p1.png",
+      "png_sha256": "ae955a9d3e3c6956612c7620a434be7e3b35a85257b6192e528e4e393f358afe",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/f078ec9d688d_p1.model.jpg",
+      "model_jpg_sha256": "700ae6cf2d30857ba7d427db1312f520dd09c0b4723a5264c581d05d2d50c274",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 0,
+      "png": "pages/da8a2654a83b_p0.png",
+      "png_sha256": "fc4481ae98c4f5a67fb3029686ec0ee8f8b0739e29d87959db2688b6a8e4af92",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p0.model.jpg",
+      "model_jpg_sha256": "0c896a52cea1ac26ceccc6303ca7e08e3b7ad89044091010cf2af8d2338ad72a",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 1,
+      "png": "pages/da8a2654a83b_p1.png",
+      "png_sha256": "9f5840fc1d6bc1504f304822e4627b6f1952cb0835eb9d232ba85069a67778f9",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p1.model.jpg",
+      "model_jpg_sha256": "f3d1d8c96e38388e38e0663d6c2dd43fdcadd86df657eb6fedef2e0825183af3",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 2,
+      "png": "pages/da8a2654a83b_p2.png",
+      "png_sha256": "5af56edb43d4d7bf37dab7739e61ce25c5ce51cc81592e0a36e074b7e407dc23",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p2.model.jpg",
+      "model_jpg_sha256": "662227a91220240f8aff534c970c73521d672384b482c8ac7952969c86553ae8",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 3,
+      "png": "pages/da8a2654a83b_p3.png",
+      "png_sha256": "c01277e2ec883973fcef47335e1608464f077980e7b4e48195ecf0dc9298d6dc",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p3.model.jpg",
+      "model_jpg_sha256": "3d52f821230b0fb8bbb2838388a22295a278cd03b6a0195096c9272808bcd571",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 4,
+      "png": "pages/da8a2654a83b_p4.png",
+      "png_sha256": "586f242c32e1ce9f18e3dace85b3cde7b4ce6f05d5a35764af516aadd7ef0e35",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p4.model.jpg",
+      "model_jpg_sha256": "9b84082c6febe373d3b219ec3edcb066d91f8b75916450e44fad5461f99cc6ef",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 5,
+      "png": "pages/da8a2654a83b_p5.png",
+      "png_sha256": "98e110d0c9efa5871be7a6b742e206fdb342d6157bfa665a0212e5671c6a0427",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p5.model.jpg",
+      "model_jpg_sha256": "c92ba79dc6d4c39922d401a8b1abc190808ad97ea2b6c4013dd7f1bd745d1de6",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 6,
+      "png": "pages/da8a2654a83b_p6.png",
+      "png_sha256": "339cb79178287b4f2e9ab5ac698e3813fd28d44a7cdb0594d10cc10221dde3f4",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p6.model.jpg",
+      "model_jpg_sha256": "c7e2a925321d063ff41da515a6e6f689918132b1f196b1789a6199e7e8443abf",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 7,
+      "png": "pages/da8a2654a83b_p7.png",
+      "png_sha256": "564047735c95f60ef077854c6506016511cdecac580d562f4b2d3bf06c3585f6",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p7.model.jpg",
+      "model_jpg_sha256": "0e9515d6504c8e0487f810924a26db813eafb1da0d0351474fc588964119d902",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "finance/DUDE_9b7a779d9329077be8a5346b722d6b34",
+      "page_idx": 8,
+      "png": "pages/da8a2654a83b_p8.png",
+      "png_sha256": "b1eb994d88afc4ef1f43f84e8c2d218b494f80f4e858437e36398ef297b28445",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/da8a2654a83b_p8.model.jpg",
+      "model_jpg_sha256": "e08ca04b0bef0b3e6919ff094a7ae3da88219d8a464c7599b973cdc7ad7d280f",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+      "page_idx": 0,
+      "png": "pages/f05d69fe37f7_p0.png",
+      "png_sha256": "851f71b04c818ef336772a910b6f29606615f9a3912959c312bee0c8fd721c8b",
+      "png_size": [
+        1240,
+        1755
+      ],
+      "model_jpg": "pages/f05d69fe37f7_p0.model.jpg",
+      "model_jpg_sha256": "9b3c3027a6f33e5e3b304e49c7a31bdf5f388085194f88f32e5ec6dba2a1035f",
+      "model_jpg_size": [
+        1240,
+        1755
+      ]
+    },
+    {
+      "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+      "page_idx": 1,
+      "png": "pages/f05d69fe37f7_p1.png",
+      "png_sha256": "ed694390b23bfc625244364cc6907c978b166264d225ceb317bf9285e63a13d9",
+      "png_size": [
+        1240,
+        1755
+      ],
+      "model_jpg": "pages/f05d69fe37f7_p1.model.jpg",
+      "model_jpg_sha256": "19b4d19b3039884b5eece820d3817140cc0f784735c3022bcccebe3a352b1f64",
+      "model_jpg_size": [
+        1240,
+        1755
+      ]
+    },
+    {
+      "doc_id": "law/KNOWLABS,INC_08_15_2005-EX-10-INTELLECTUAL PROPERTY AGREEMENT",
+      "page_idx": 2,
+      "png": "pages/f05d69fe37f7_p2.png",
+      "png_sha256": "0f217841abc9f56d78e834cadda803e31fe1b74a5aa5c795d00274695d89f23b",
+      "png_size": [
+        1240,
+        1755
+      ],
+      "model_jpg": "pages/f05d69fe37f7_p2.model.jpg",
+      "model_jpg_sha256": "f0150543d2afb76b2ae731bc02536fa9e4955e516972d6f55795efc29ffbbcec",
+      "model_jpg_size": [
+        1240,
+        1755
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 0,
+      "png": "pages/6d28b28facfa_p0.png",
+      "png_sha256": "393b1c0626be5df5c7dc6a562167a43b525124d6053c102692d6885b6f1769f5",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p0.model.jpg",
+      "model_jpg_sha256": "f6519fa11e985358838b9e240ff1cbd44b2130a345587b60bdc3f6a2bf093806",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 1,
+      "png": "pages/6d28b28facfa_p1.png",
+      "png_sha256": "0a1641b9e90a7c415dfebbf2c248c6e162b912b6bac550fc139e370f42191ad8",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p1.model.jpg",
+      "model_jpg_sha256": "7b8c9a4887f0f0d290f216b381c27050c0f350970de4e126bc815851dcc1ebd1",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 2,
+      "png": "pages/6d28b28facfa_p2.png",
+      "png_sha256": "2d88de50e89f11b4656bfb886e1b9d77d1136b7e91e4faf2dfb844a60cb2e1c1",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p2.model.jpg",
+      "model_jpg_sha256": "eb5310c0d7942d0548037739cc737595d49e24dd93c28d359144469e8e570a78",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 3,
+      "png": "pages/6d28b28facfa_p3.png",
+      "png_sha256": "7c8bfb69b12611179598d233b88dea3b0711da00466e009a9b46892d901a2c71",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p3.model.jpg",
+      "model_jpg_sha256": "46dd4677ff350dde55cfdd3064e252c5d3eec2eec7a17b05c2d7117d0da232f8",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 4,
+      "png": "pages/6d28b28facfa_p4.png",
+      "png_sha256": "cf4889bcb4fa120c8d6d8b3b8a48e79fd8b4e5a77dd8e453f6fc19c9ee2bdcbd",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p4.model.jpg",
+      "model_jpg_sha256": "52d487a0e3784ac950999fa1642507ad1962886cb27eebea3ff18b8bfdbd5c30",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 5,
+      "png": "pages/6d28b28facfa_p5.png",
+      "png_sha256": "66125a2f99a301fb4753b2ed5ac51bd914138400eff1d6843c7cd4fb31707261",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p5.model.jpg",
+      "model_jpg_sha256": "fc838da2d5824aedebc079697d9c9469d818fdc2eac52e62520b598d9afe3c9b",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 6,
+      "png": "pages/6d28b28facfa_p6.png",
+      "png_sha256": "ab5c9ad044de7e82868dcb2daeec0146b34db0d049fd6708cb70647f7d71cf04",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p6.model.jpg",
+      "model_jpg_sha256": "b76c1ffbaace004b3fd1a44b484b2f79f6527b0effea6e98b5bbdfd3a561f9f1",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "manual/DUDE_7c58b2a77575a7897197445460fc0285",
+      "page_idx": 7,
+      "png": "pages/6d28b28facfa_p7.png",
+      "png_sha256": "f1179434781d41235a51c0c1a755fb9ce49a298d8d91a2a29d9d7f6d33368e2e",
+      "png_size": [
+        805,
+        1263
+      ],
+      "model_jpg": "pages/6d28b28facfa_p7.model.jpg",
+      "model_jpg_sha256": "b8c82d449a74d9d1f7be18f55b1a8b6170182ff6ed3f7a9c029ff25323d9ad30",
+      "model_jpg_size": [
+        805,
+        1263
+      ]
+    },
+    {
+      "doc_id": "news/07_07",
+      "page_idx": 0,
+      "png": "pages/a257b91ff72c_p0.png",
+      "png_sha256": "76f659b000f3ad2f616c80f6c871002cf0ab8d13f855e0cb34dd55b456dfb314",
+      "png_size": [
+        1832,
+        3298
+      ],
+      "model_jpg": "pages/a257b91ff72c_p0.model.jpg",
+      "model_jpg_sha256": "e19cdbde777293125393bbeb5ca15b700bc2a6c87906f22be7c1c0111bf523a3",
+      "model_jpg_size": [
+        1138,
+        2048
+      ]
+    },
+    {
+      "doc_id": "news/07_10",
+      "page_idx": 0,
+      "png": "pages/00fa526e7b3f_p0.png",
+      "png_sha256": "dfd26febe2f1d7d418bdc24a32b28892b33a05a68e45c0592bfd08b3069a8803",
+      "png_size": [
+        1832,
+        3298
+      ],
+      "model_jpg": "pages/00fa526e7b3f_p0.model.jpg",
+      "model_jpg_sha256": "a5fef018669e91f7ac28aafb4835e8cbdb8cea762a1378b6cef3e24267dc3c74",
+      "model_jpg_size": [
+        1138,
+        2048
+      ]
+    },
+    {
+      "doc_id": "news/08_02",
+      "page_idx": 0,
+      "png": "pages/ced6f84f9f82_p0.png",
+      "png_sha256": "f99f93f4c05959234ad622347e371037a2799eaabcecdefaa8ef7e0f060ef55c",
+      "png_size": [
+        1832,
+        3298
+      ],
+      "model_jpg": "pages/ced6f84f9f82_p0.model.jpg",
+      "model_jpg_sha256": "3768139551cf3054f574fce431c8221bb770ffd6e8233f9e2cf8660ea2e977cf",
+      "model_jpg_size": [
+        1138,
+        2048
+      ]
+    },
+    {
+      "doc_id": "news/08_29",
+      "page_idx": 0,
+      "png": "pages/393e119ac614_p0.png",
+      "png_sha256": "ca730c7de0b172dd284f2b763bdfbb64be18558aa36e181075737256d54f678d",
+      "png_size": [
+        1832,
+        3298
+      ],
+      "model_jpg": "pages/393e119ac614_p0.model.jpg",
+      "model_jpg_sha256": "cf501d7a43361ae1b93e08d71fd6e1b2301a5fb3bd736c060e59efab6c020d76",
+      "model_jpg_size": [
+        1138,
+        2048
+      ]
+    },
+    {
+      "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+      "page_idx": 0,
+      "png": "pages/ed1ac6075b08_p0.png",
+      "png_sha256": "0a8234b53ed288b230cd03ce70725d31f6235d7019957f778d11a35054af974c",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/ed1ac6075b08_p0.model.jpg",
+      "model_jpg_sha256": "3721b7365820c4250dc7cf2bbae7dbc7f586d7dab6f28fb65fd70e532a324ba0",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "news/DUDE_4e51a6e4193828e37bfe5655919acbc8",
+      "page_idx": 1,
+      "png": "pages/ed1ac6075b08_p1.png",
+      "png_sha256": "1865f8f06eae443ab2bae8772a98d97aa52bd720bfe5a59e2c91e203040acded",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/ed1ac6075b08_p1.model.jpg",
+      "model_jpg_sha256": "4ffb44642485de9341ad5fa6888c122ff7b96986e1f8a0a982cbfe84f9c0c0f5",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_12",
+      "page_idx": 0,
+      "png": "pages/32ba658d97f9_p0.png",
+      "png_sha256": "30a94192dadd560270c8d4db50f2910f2ac3f45295cb9f053cb08d342e1d987f",
+      "png_size": [
+        1275,
+        1651
+      ],
+      "model_jpg": "pages/32ba658d97f9_p0.model.jpg",
+      "model_jpg_sha256": "5bcb88498d25f8633bcbaeb455ab3f4d9879815b3ca3d462e583c77fa04f487b",
+      "model_jpg_size": [
+        1275,
+        1651
+      ]
+    },
+    {
+      "doc_id": "news/omnidocbench_newspaper_2de954934f60ac538c5bd5dc40833a61_1",
+      "page_idx": 0,
+      "png": "pages/db8db059e940_p0.png",
+      "png_sha256": "2bcf58302648caa2394ae2e64086d9e7a09de4b2a80c93e3ea356c34eca7f578",
+      "png_size": [
+        2066,
+        2955
+      ],
+      "model_jpg": "pages/db8db059e940_p0.model.jpg",
+      "model_jpg_sha256": "cef8e8347f588bb994fe2931eb1b3bb7eb811676dfd348f7e8ae02f3a97668cd",
+      "model_jpg_size": [
+        1432,
+        2048
+      ]
+    },
+    {
+      "doc_id": "news/omnidocbench_newspaper_c3c88b76543e2caf044c9f7689f23ec9_1",
+      "page_idx": 0,
+      "png": "pages/3f1b02dcd914_p0.png",
+      "png_sha256": "b88c6b8883a5d9d034b7fc0696ed2e2bf35e4e614cc487b7eede5dd5d5d8abb7",
+      "png_size": [
+        2066,
+        2955
+      ],
+      "model_jpg": "pages/3f1b02dcd914_p0.model.jpg",
+      "model_jpg_sha256": "354bf0690edd7e15c8684ad8f903759b42efe2f07715502218e7576af200dc7b",
+      "model_jpg_size": [
+        1432,
+        2048
+      ]
+    },
+    {
+      "doc_id": "textbook/0aa598c735f77296910c9b61658e9411d38061dc817b9e35b5ea4867d83f7603.pdf_5",
+      "page_idx": 0,
+      "png": "pages/0239301b9450_p0.png",
+      "png_sha256": "a5e5e79a9369caf0c144c5a84e787b8768192bf2abe4ed39d7ffbed948e23e91",
+      "png_size": [
+        2619,
+        3244
+      ],
+      "model_jpg": "pages/0239301b9450_p0.model.jpg",
+      "model_jpg_sha256": "5aaa6bc0093d14850a8256c505fcd776f95524c61fc1eb00297c623614d88aa7",
+      "model_jpg_size": [
+        1653,
+        2048
+      ]
+    },
+    {
+      "doc_id": "textbook/GNHK_eng_AF_046",
+      "page_idx": 0,
+      "png": "pages/b1cd3da4f8fb_p0.png",
+      "png_sha256": "a08d895d53e5c270480f1a564657ff4ecc8664be2c57b29e7c0754fba009f49d",
+      "png_size": [
+        1920,
+        1928
+      ],
+      "model_jpg": "pages/b1cd3da4f8fb_p0.model.jpg",
+      "model_jpg_sha256": "1f2ec058a2e0a08223a41266d6932a38480ab4f90ac13df5c6fbaf80c3b60881",
+      "model_jpg_size": [
+        1920,
+        1928
+      ]
+    },
+    {
+      "doc_id": "textbook/GNHK_eng_AS_022",
+      "page_idx": 0,
+      "png": "pages/ece23208a272_p0.png",
+      "png_sha256": "3fb5e98f7daa632cb45bd34188e6aff6ef5b342049c15cb1e69b6ea9f6b87464",
+      "png_size": [
+        2305,
+        3073
+      ],
+      "model_jpg": "pages/ece23208a272_p0.model.jpg",
+      "model_jpg_sha256": "433a44a1a533f85d0ce1314ac14c90f4872598082dc5d1f1d25ed59853c2ca43",
+      "model_jpg_size": [
+        1536,
+        2048
+      ]
+    },
+    {
+      "doc_id": "textbook/GNHK_eng_EU_099",
+      "page_idx": 0,
+      "png": "pages/2f134ef0603c_p0.png",
+      "png_sha256": "f07472928d0308925a9a0e0b76c615425dda2e1e320f25dba54ad52d185450c9",
+      "png_size": [
+        6000,
+        4500
+      ],
+      "model_jpg": "pages/2f134ef0603c_p0.model.jpg",
+      "model_jpg_sha256": "2ad39c26655c0112bcc3bb8ec48d552ff062b83020dc81640e8500286ad06762",
+      "model_jpg_size": [
+        2048,
+        1536
+      ]
+    },
+    {
+      "doc_id": "textbook/GNHK_eng_EU_137",
+      "page_idx": 0,
+      "png": "pages/9d169f6d0e1b_p0.png",
+      "png_sha256": "879b147cd86d8ecdd902a60c714b675f65e828c69e85283eea922655c0e14313",
+      "png_size": [
+        4500,
+        6000
+      ],
+      "model_jpg": "pages/9d169f6d0e1b_p0.model.jpg",
+      "model_jpg_sha256": "3df59c0d3a1518d90aee5a845e47fc3347c180294eec5bae78a66ef1c92880d0",
+      "model_jpg_size": [
+        1536,
+        2048
+      ]
+    },
+    {
+      "doc_id": "textbook/GNHK_eng_EU_298",
+      "page_idx": 0,
+      "png": "pages/46966036c648_p0.png",
+      "png_sha256": "1456272611f516b415307a331a7e6f8f04ee8f5ef69ce345dab3b265435fb344",
+      "png_size": [
+        1985,
+        1620
+      ],
+      "model_jpg": "pages/46966036c648_p0.model.jpg",
+      "model_jpg_sha256": "d7fb81e5e5b76c1398f13f26bc839ffa1fd07b76a8280ac3d41fed838ece43eb",
+      "model_jpg_size": [
+        1985,
+        1620
+      ]
+    },
+    {
+      "doc_id": "textbook/GNHK_eng_EU_310",
+      "page_idx": 0,
+      "png": "pages/449aa037e4ac_p0.png",
+      "png_sha256": "f03d7e5f097ffeeefe4bb710836d7485bc044c200464f22100a2cdc71d7f35a7",
+      "png_size": [
+        1200,
+        698
+      ],
+      "model_jpg": "pages/449aa037e4ac_p0.model.jpg",
+      "model_jpg_sha256": "1cde9687eadedb9da9b1c43634903ddb6d4b098270fd33955b7a83b936d9973d",
+      "model_jpg_size": [
+        1200,
+        698
+      ]
+    },
+    {
+      "doc_id": "textbook/GNHK_eng_NA_023",
+      "page_idx": 0,
+      "png": "pages/cc7f2bdd04be_p0.png",
+      "png_sha256": "f9e9607e8dc048f67c6b47d80fe7b5af9085b9fb703f82333376d820d722a869",
+      "png_size": [
+        2161,
+        1620
+      ],
+      "model_jpg": "pages/cc7f2bdd04be_p0.model.jpg",
+      "model_jpg_sha256": "b282b446e70491a6fd70462219397632a44a9b6c82780fd0dd371f1a52d4a01f",
+      "model_jpg_size": [
+        2048,
+        1535
+      ]
+    },
+    {
+      "doc_id": "textbook/GTM84-A_Classical_Introduction_to_Modern_Number_Theory1990.pdf_174",
+      "page_idx": 0,
+      "png": "pages/6210fd7671a4_p0.png",
+      "png_sha256": "ecbc31ad6eb28fe81c03a66dcdd3d630d1f03162fe12eef3c8a08bcf22b67765",
+      "png_size": [
+        1872,
+        2818
+      ],
+      "model_jpg": "pages/6210fd7671a4_p0.model.jpg",
+      "model_jpg_sha256": "396abe5cc14cf645812159764be4dad484c6c6ef06cb2e8d5454aac120327cf8",
+      "model_jpg_size": [
+        1360,
+        2048
+      ]
+    },
+    {
+      "doc_id": "textbook/chem-323236.pdf_183",
+      "page_idx": 0,
+      "png": "pages/34bd89712a12_p0.png",
+      "png_sha256": "92e639f9a06447c795243141b51fe9c1ec26f23b10a5ed0ae57ed8c8ef410d05",
+      "png_size": [
+        2657,
+        3438
+      ],
+      "model_jpg": "pages/34bd89712a12_p0.model.jpg",
+      "model_jpg_sha256": "f5a6f47cc1e77b095e011371bf02d8b6e08b4f22ad54a6bedab37921e4121e62",
+      "model_jpg_size": [
+        1583,
+        2048
+      ]
+    },
+    {
+      "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61510621.pdf_161",
+      "page_idx": 0,
+      "png": "pages/cd495fcc3c77_p0.png",
+      "png_sha256": "c93ffe2f4a1fbf320f399527bb05cc68ab18784f3ba93635096c1f6df51e8807",
+      "png_size": [
+        992,
+        1400
+      ],
+      "model_jpg": "pages/cd495fcc3c77_p0.model.jpg",
+      "model_jpg_sha256": "67b1a4a7e658602acdebf6a980b5d3a702d798dc109b95148429998d6d37b7b4",
+      "model_jpg_size": [
+        992,
+        1400
+      ]
+    },
+    {
+      "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_121",
+      "page_idx": 0,
+      "png": "pages/86f4c184ee07_p0.png",
+      "png_sha256": "c3fc2a8c0fb26e548152ae611deb0a0b632539fc4d88bc2e19d94aba403a7e62",
+      "png_size": [
+        774,
+        1094
+      ],
+      "model_jpg": "pages/86f4c184ee07_p0.model.jpg",
+      "model_jpg_sha256": "c639528ae67dd4e6a82522afb280d9f0c22863d3d7d157edcb4a2e50c9aa074a",
+      "model_jpg_size": [
+        774,
+        1094
+      ]
+    },
+    {
+      "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_124",
+      "page_idx": 0,
+      "png": "pages/0df72b85856e_p0.png",
+      "png_sha256": "dc70069ee41332c291cac866e9fb2f5478692d3b4c7621c16f2d34e9fe9c7001",
+      "png_size": [
+        774,
+        1095
+      ],
+      "model_jpg": "pages/0df72b85856e_p0.model.jpg",
+      "model_jpg_sha256": "d0ba349baccbb8cc6b1615044305c3ff2aff801e05e07e6f7460c9b06277fe99",
+      "model_jpg_size": [
+        774,
+        1095
+      ]
+    },
+    {
+      "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_74",
+      "page_idx": 0,
+      "png": "pages/ebc1e9566400_p0.png",
+      "png_sha256": "57a8d8b0a1552367f890a70dcf5d1481ddac861d69f1a9d19f1ee57962dbd85e",
+      "png_size": [
+        774,
+        1095
+      ],
+      "model_jpg": "pages/ebc1e9566400_p0.model.jpg",
+      "model_jpg_sha256": "f8d0d0cb168102d1522330dfaf0308eefdc042936d5fa07e831cf03d44766c5c",
+      "model_jpg_size": [
+        774,
+        1095
+      ]
+    },
+    {
+      "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_46",
+      "page_idx": 0,
+      "png": "pages/c7c7581d90d8_p0.png",
+      "png_sha256": "46b2130499fa4ce61b49cf7b983cf086e39b640cd99e025d04778cddd4bb3995",
+      "png_size": [
+        774,
+        1095
+      ],
+      "model_jpg": "pages/c7c7581d90d8_p0.model.jpg",
+      "model_jpg_sha256": "c6cd0f6a5dbe3f04fa76fef9f7c7c31871844dba86b03c536ef88dda6754c19b",
+      "model_jpg_size": [
+        774,
+        1095
+      ]
+    },
+    {
+      "doc_id": "textbook/socialsci-177546.pdf_157",
+      "page_idx": 0,
+      "png": "pages/2ffbe98f36e8_p0.png",
+      "png_sha256": "a305a9d631d547d4e40061fbcdc8de13e9e39513db844d260493b629ec8f8676",
+      "png_size": [
+        2657,
+        3438
+      ],
+      "model_jpg": "pages/2ffbe98f36e8_p0.model.jpg",
+      "model_jpg_sha256": "0eb5d285dd18f014bbcc52a7f71630a5169dcfd8d4113028898662ae28ca6f38",
+      "model_jpg_size": [
+        1583,
+        2048
+      ]
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "questions": 70,
+  "documents": 30,
+  "failures": 55,
+  "baseline_partition": {
+    "partial": 32,
+    "zero": 23,
+    "exact": 15
+  },
+  "primary_cause": {
+    "scoring_artifact": 28,
+    "gold_or_question": 7,
+    "ocr_lost": 10,
+    "ocr_damaged": 3,
+    "retrieval_miss": 2,
+    "model_error": 5
+  },
+  "primary_cause_by_f1": {
+    "scoring_artifact": {
+      "partial": 23,
+      "zero": 5
+    },
+    "gold_or_question": {
+      "partial": 6,
+      "zero": 1
+    },
+    "ocr_lost": {
+      "partial": 0,
+      "zero": 10
+    },
+    "ocr_damaged": {
+      "partial": 1,
+      "zero": 2
+    },
+    "retrieval_miss": {
+      "partial": 0,
+      "zero": 2
+    },
+    "model_error": {
+      "partial": 2,
+      "zero": 3
+    }
+  },
+  "evidence_impact": {
+    "survives": 42,
+    "damaged": 3,
+    "lost": 10
+  },
+  "text_defect_labels": {
+    "adequate": 15,
+    "missing_content": 11,
+    "word_corruption": 27,
+    "lost_structure": 13
+  },
+  "gold_flags": {
+    "gold_questionable": 12,
+    "question_ambiguous": 6,
+    "gt_transcription_error": 2
+  },
+  "anls_by_cause": {
+    "scoring_artifact": 0.41294642857142855,
+    "gold_or_question": 0.10158571428571428,
+    "ocr_lost": 0.0,
+    "ocr_damaged": 0.0,
+    "retrieval_miss": 0.0,
+    "model_error": 0.0
+  },
+  "f1_by_cause": {
+    "scoring_artifact": 0.5380428571428572,
+    "gold_or_question": 0.21835714285714286,
+    "ocr_lost": 0.0,
+    "ocr_damaged": 0.17543333333333333,
+    "retrieval_miss": 0.0,
+    "model_error": 0.13112
+  },
+  "cause_by_impact": {
+    "scoring_artifact": {
+      "survives": 28
+    },
+    "gold_or_question": {
+      "survives": 7
+    },
+    "ocr_lost": {
+      "lost": 10
+    },
+    "ocr_damaged": {
+      "damaged": 3
+    },
+    "retrieval_miss": {
+      "survives": 2
+    },
+    "model_error": {
+      "survives": 5
+    }
+  },
+  "retrieval": {
+    "page_recall_at_k_all": {
+      "1": 0.7714285714285715,
+      "3": 0.8714285714285714,
+      "5": 0.8785714285714286
+    },
+    "page_recall_at_k_multipage_docs": {
+      "1": 0.5263157894736842,
+      "3": 0.8947368421052632,
+      "5": 0.9210526315789473
+    },
+    "multipage_questions": 19,
+    "retrieval_lcs_top5_sent": 0.5397984126984127,
+    "retrieval_lcs_top2_sent": 0.4893079365079365,
+    "retrieval_lcs_top5_all": 0.48581857142857143,
+    "retrieval_lcs_top2_all": 0.44037714285714286,
+    "retrieval_lcs_chars_top5_sent": 0.9396777777777777,
+    "passage_included_chars_lcs95": 53,
+    "sent": 63
+  },
+  "ocr": {
+    "evidence_pages": 39,
+    "mean_cer": 0.6355728351672161,
+    "mean_ned": 0.4278219743739825,
+    "mean_ned_nonempty": 0.3237896060783429,
+    "median_ned_nonempty": 0.16719745222929935,
+    "empty_pages": 6,
+    "mean_ned_han_pages": 0.6656882531817008,
+    "mean_ned_other_pages": 0.37578872588479406,
+    "ned_by_doc_type": {
+      "academic": 0.3025758241934432,
+      "administration": 0.09594642907974722,
+      "finance": 0.05334930457115448,
+      "law": 0.04174115194143051,
+      "manual": 0.1469613359013498,
+      "news": 0.37974725905275225,
+      "textbook": 0.7019835122311567
+    },
+    "cer_by_impact": {
+      "survives": 0.2202666666666667,
+      "damaged": 0.9387,
+      "lost": 1.56836
+    }
+  },
+  "conditions": {
+    "baseline": {
+      "em": 0.21428571428571427,
+      "f1": 0.4682228571428571,
+      "anls": 0.38049571428571427
+    },
+    "clean_text": {
+      "em": 0.2714285714285714,
+      "f1": 0.5441285714285714,
+      "anls": 0.43305285714285713,
+      "paired": {
+        "em": {
+          "by_document": {
+            "diff": 0.05714285714285714,
+            "ci_low": -0.014925373134328358,
+            "ci_high": 0.15
+          },
+          "by_question": {
+            "diff": 0.05714285714285714,
+            "ci_low": -0.014285714285714285,
+            "ci_high": 0.14285714285714285
+          }
+        },
+        "f1": {
+          "by_document": {
+            "diff": 0.0759057142857143,
+            "ci_low": -0.0023580224690945557,
+            "ci_high": 0.17397781566937118
+          },
+          "by_question": {
+            "diff": 0.0759057142857143,
+            "ci_low": -0.002415000000000001,
+            "ci_high": 0.15521089285714285
+          }
+        },
+        "anls": {
+          "by_document": {
+            "diff": 0.05255714285714286,
+            "ci_low": -0.021705770063270062,
+            "ci_high": 0.15182634920634916
+          },
+          "by_question": {
+            "diff": 0.05255714285714286,
+            "ci_low": -0.025316214285714286,
+            "ci_high": 0.13119728571428574
+          }
+        }
+      },
+      "mcnemar_em": {
+        "gained": 6,
+        "lost": 2,
+        "discordant": 8,
+        "p_value": 0.2890625
+      },
+      "fixed_by_cause": {
+        "scoring_artifact": 2,
+        "gold_or_question": 0,
+        "ocr_lost": 3,
+        "ocr_damaged": 1,
+        "retrieval_miss": 0,
+        "model_error": 0
+      },
+      "broke_baseline_exact": 2,
+      "run_id": "2026-10-31-ohr-dev-v1-headroom-clean-text-terra-r1",
+      "cost_usd": 0.09904,
+      "counts": {
+        "answered": 70,
+        "no_evidence": 0,
+        "execution_failed": 0,
+        "abstained": 5
+      }
+    },
+    "gold_page_text": {
+      "em": 0.22857142857142856,
+      "f1": 0.5084057142857142,
+      "anls": 0.4314557142857143,
+      "paired": {
+        "em": {
+          "by_document": {
+            "diff": 0.014285714285714285,
+            "ci_low": 0.0,
+            "ci_high": 0.046875
+          },
+          "by_question": {
+            "diff": 0.014285714285714285,
+            "ci_low": 0.0,
+            "ci_high": 0.04285714285714286
+          }
+        },
+        "f1": {
+          "by_document": {
+            "diff": 0.04018285714285714,
+            "ci_low": -0.0026054416473937046,
+            "ci_high": 0.09405998897811367
+          },
+          "by_question": {
+            "diff": 0.04018285714285714,
+            "ci_low": 0.002147142857142859,
+            "ci_high": 0.08550614285714286
+          }
+        },
+        "anls": {
+          "by_document": {
+            "diff": 0.050960000000000005,
+            "ci_low": -0.01103199909543193,
+            "ci_high": 0.11353260156249995
+          },
+          "by_question": {
+            "diff": 0.050960000000000005,
+            "ci_low": -0.004209857142857141,
+            "ci_high": 0.1099503214285714
+          }
+        }
+      },
+      "mcnemar_em": {
+        "gained": 1,
+        "lost": 0,
+        "discordant": 1,
+        "p_value": 1.0
+      },
+      "fixed_by_cause": {
+        "scoring_artifact": 0,
+        "gold_or_question": 0,
+        "ocr_lost": 0,
+        "ocr_damaged": 0,
+        "retrieval_miss": 0,
+        "model_error": 1
+      },
+      "broke_baseline_exact": 0,
+      "run_id": "2026-10-31-ohr-dev-v1-headroom-gold-page-text-terra-r1",
+      "cost_usd": 0.177278,
+      "counts": {
+        "answered": 64,
+        "no_evidence": 6,
+        "execution_failed": 0,
+        "abstained": 10
+      }
+    }
+  },
+  "best_in_hindsight_em": 0.3142857142857143,
+  "icc_baseline_em": {
+    "icc": 0.3964327561515427,
+    "mean_cluster_size": 2.3333333333333335,
+    "design_effect": 1.528577008202057
+  },
+  "power": {
+    "delta": 0.05,
+    "alpha": 0.05,
+    "power": 0.8,
+    "observed_discordant_rates": {
+      "clean_text": 0.11428571428571428,
+      "gold_page_text": 0.014285714285714285
+    },
+    "table": [
+      {
+        "discordant_rate": 0.014,
+        "questions": null,
+        "questions_with_design_effect": null
+      },
+      {
+        "discordant_rate": 0.06,
+        "questions": 186,
+        "questions_with_design_effect": 285
+      },
+      {
+        "discordant_rate": 0.1,
+        "questions": 312,
+        "questions_with_design_effect": 477
+      },
+      {
+        "discordant_rate": 0.114,
+        "questions": 356,
+        "questions_with_design_effect": 544
+      },
+      {
+        "discordant_rate": 0.15,
+        "questions": 469,
+        "questions_with_design_effect": 717
+      },
+      {
+        "discordant_rate": 0.2,
+        "questions": 626,
+        "questions_with_design_effect": 957
+      }
+    ]
+  }
+}
