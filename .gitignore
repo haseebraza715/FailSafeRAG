@@ -53,3 +53,8 @@ results/engineering/*/run.lock
 results/development/*/run.lock
 results/engineering/*/attempts.uncommitted.*
 results/development/*/attempts.uncommitted.*
+
+# Failure-analysis renders and the labelling packet hold full document text; regenerate with
+# scripts/analysis/ohr_dev_v1_failures/analyse.py.
+results/analysis/*/pages/
+results/analysis/*/packet/
