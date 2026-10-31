@@ -1,0 +1,2286 @@
+{
+ "algorithm": {
+  "allocation": "per-stratum minimum of 1 where feasible, then largest remainder against proportional quotas; ties -> larger pool, then stratum name",
+  "eligibility_rule": "one raw QA name, exactly one source PDF candidate with audit status verified_complete, and a gt reference; missing or empty OCR never excludes",
+  "exclusion_rule": "documents selected by the named frozen pilots are removed from the eligible pool before allocation",
+  "identity_rule": "canonical doc id = NFC of the gt inventory key the QA doc_name resolves to (exact, documented alias, or Unicode NFC), as recorded by the asset audit",
+  "inputs_used": "document identity, doc type and source status only; never answers, evidence strings, string-match results or model outputs",
+  "name": "stratified-hash-rank-v1",
+  "pool_rule": "documents all of whose questions are in the train split",
+  "within_stratum": "ascending sha256(seed, 'select', doc_id); independent of input order"
+ },
+ "allocation": [
+  {
+   "allocated": 6,
+   "doc_type": "academic",
+   "eligible_documents": 9,
+   "proportional_quota": 5.7796
+  },
+  {
+   "allocated": 13,
+   "doc_type": "administration",
+   "eligible_documents": 20,
+   "proportional_quota": 12.8435
+  },
+  {
+   "allocated": 2,
+   "doc_type": "finance",
+   "eligible_documents": 3,
+   "proportional_quota": 1.9265
+  },
+  {
+   "allocated": 7,
+   "doc_type": "law",
+   "eligible_documents": 11,
+   "proportional_quota": 7.0639
+  },
+  {
+   "allocated": 11,
+   "doc_type": "manual",
+   "eligible_documents": 17,
+   "proportional_quota": 10.9169
+  },
+  {
+   "allocated": 52,
+   "doc_type": "news",
+   "eligible_documents": 81,
+   "proportional_quota": 52.016
+  },
+  {
+   "allocated": 110,
+   "doc_type": "textbook",
+   "eligible_documents": 172,
+   "proportional_quota": 110.4537
+  }
+ ],
+ "composition": {
+  "eligible_pool": {
+   "doc_type": {
+    "academic": 9,
+    "administration": 20,
+    "finance": 3,
+    "law": 11,
+    "manual": 17,
+    "news": 81,
+    "textbook": 172
+   },
+   "documents": 313,
+   "documents_with_empty_ocr_pages": 99,
+   "documents_with_missing_ocr_pages": 2,
+   "evidence_page_ocr_status": {
+    "empty": 89,
+    "ok": 533
+   },
+   "evidence_source": {
+    "formula": 72,
+    "multi": 2,
+    "reading_order": 45,
+    "table": 62,
+    "text": 441
+   },
+   "list_valued_evidence": 37,
+   "multi_page_evidence": 37,
+   "ocr_pages": {
+    "empty": 125,
+    "missing": 2,
+    "ok": 534
+   },
+   "page_count_bins": {
+    "1": 254,
+    "2-5": 38,
+    "21-50": 1,
+    "6-20": 20
+   },
+   "pages": 661,
+   "question_scripts": {
+    "han": 87,
+    "none": 535
+   },
+   "questions": 622
+  },
+  "note": "sample descriptions, not accuracy results",
+  "pilot": {
+   "doc_type": {
+    "academic": 6,
+    "administration": 13,
+    "finance": 2,
+    "law": 7,
+    "manual": 11,
+    "news": 52,
+    "textbook": 110
+   },
+   "documents": 201,
+   "documents_with_empty_ocr_pages": 61,
+   "documents_with_missing_ocr_pages": 1,
+   "evidence_page_ocr_status": {
+    "empty": 56,
+    "ok": 358
+   },
+   "evidence_source": {
+    "formula": 49,
+    "multi": 2,
+    "reading_order": 36,
+    "table": 43,
+    "text": 284
+   },
+   "list_valued_evidence": 25,
+   "multi_page_evidence": 25,
+   "ocr_pages": {
+    "empty": 74,
+    "missing": 1,
+    "ok": 341
+   },
+   "page_count_bins": {
+    "1": 162,
+    "2-5": 27,
+    "21-50": 1,
+    "6-20": 11
+   },
+   "pages": 416,
+   "question_scripts": {
+    "han": 62,
+    "none": 352
+   },
+   "questions": 414
+  }
+ },
+ "config": {
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "dataset": "OHR-Bench",
+  "inspection": {
+   "algorithm": "purposive-quota-hash-rank-v1",
+   "cases": 20,
+   "category_quotas": [
+    [
+     "ocr_gap",
+     3
+    ],
+    [
+     "multi_page_evidence",
+     2
+    ],
+    [
+     "multi_evidence_source",
+     2
+    ],
+    [
+     "han_script",
+     2
+    ],
+    [
+     "table",
+     2
+    ],
+    [
+     "formula",
+     2
+    ],
+    [
+     "chart",
+     2
+    ],
+    [
+     "reading_order",
+     2
+    ],
+    [
+     "text",
+     3
+    ]
+   ],
+   "dpi": 150,
+   "image_format": "png",
+   "page_budget": 60
+  },
+  "noisy_text_source": "MinerU",
+  "output_dir": "results/pilots/ohr_dev_v2",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "pilot_id": "ohr_dev_v2",
+  "purpose": "confirmation sample for the pre-registered repair comparisons, sized to detect a 5-point paired EM difference at the discordant rate seen on ohr_dev_v1; train-only and document-disjoint from ohr_dev_v1; not a final benchmark and not an unseen-publication evaluation",
+  "qa_source": "OHR-Bench/data/qas_v2.json",
+  "reference_text_source": "gt",
+  "schema_version": 1,
+  "selection": {
+   "algorithm": "stratified-hash-rank-v1",
+   "documents": 201,
+   "exclude_documents_of_pilots": [
+    "ohr_dev_v1"
+   ],
+   "minimum_per_available_stratum": 1,
+   "pool": "train_exclusive",
+   "seed": 20261031,
+   "stratify_by": "doc_type"
+  },
+  "split": "config/datasets/ohr_split.json"
+ },
+ "config_sha256": "bb77fc1d5abe2f947268743f5ee4d484d7a91577cab4d276f3b711e3845ef14b",
+ "manifest_digests": {
+  "evaluation": "a1327bbb3bc236fcd09da621c826624f98d611d765983910dd3217d1cdd20300",
+  "runtime": "81aa1a649bf5a7f00197ecfc7b306b0212f02b1ccd0a66083055113f7f17bfca"
+ },
+ "pilot_id": "ohr_dev_v2",
+ "pool": {
+  "eligible_documents": 313,
+  "eligible_sha256": "1458a6b7e979e6d69cc2958f43a11c6d83ca83c48ffc557e44ed5134398ba07c",
+  "excluded_pilots": [
+   {
+    "documents": 30,
+    "pilot_id": "ohr_dev_v1",
+    "selection_digest": "2e2d5061debfb935eb5cdea27cea61273c8064b308e5af5f018d351f458cdd92"
+   }
+  ],
+  "source_exclusions": [],
+  "train_exclusive_documents": 343
+ },
+ "schema_version": 1,
+ "seed": 20261031,
+ "selected_documents": [
+  {
+   "doc_id": "academic/DUDE_0ffa27a1c754be7a565967ee736e46ce",
+   "doc_type": "academic",
+   "rank_key": "2b53dd375c93a44cf4898734f103d3974a5bbc8af5792753bfd12a83a7b4cbc9"
+  },
+  {
+   "doc_id": "academic/DUDE_312b4819aea13abc1a3c0218b5c68bff",
+   "doc_type": "academic",
+   "rank_key": "278be8387b6e4faddb7c9085e5fe43486899c530883a4d9e91063640441f43c1"
+  },
+  {
+   "doc_id": "academic/DUDE_3c4810cd3231673176c4c0d7531db7a2",
+   "doc_type": "academic",
+   "rank_key": "2fd5bcd0e7c63eb2d541c82867ff129d13f513f83f7628a9c9754911d07cb7d1"
+  },
+  {
+   "doc_id": "academic/DUDE_423bec13b660c77bff66faeda0c58e19",
+   "doc_type": "academic",
+   "rank_key": "3f2927342cb1a0db9ef6f3019000a554a5249c9fc5c7b01358487f87b74e95e6"
+  },
+  {
+   "doc_id": "academic/DUDE_d673da3a631d8566f594e765ac7edba5",
+   "doc_type": "academic",
+   "rank_key": "5266bd1e4c2af3d2e176f41cb36d0fe8f415c082150ffa64cce36114f8aaa2cc"
+  },
+  {
+   "doc_id": "academic/DUDE_f001facc6ca3e3e9bee2839de5e21078",
+   "doc_type": "academic",
+   "rank_key": "56c9c6039b966658861003faf25f099a9c7e0a8919da0aa7620c917c38583fd1"
+  },
+  {
+   "doc_id": "administration/DUDE_0875f9cd143bcf389bd1c48dce433857",
+   "doc_type": "administration",
+   "rank_key": "74ddbd5033c3b509e4888b63677f8234a5425986050a5869faf15b62761f5c5b"
+  },
+  {
+   "doc_id": "administration/DUDE_1991a329dc9557ff6aebf3a77354cc06",
+   "doc_type": "administration",
+   "rank_key": "1f113900210d766e2d4b63cf5140aabe3e6d558eec984302a20503e832d5b882"
+  },
+  {
+   "doc_id": "administration/DUDE_2b4e174de43ed5cb6ccf233d3cf2fd05",
+   "doc_type": "administration",
+   "rank_key": "0f2a93702b0be8c9eba82209ba4207b5030e4eb11707b4c643cd82ec665d7918"
+  },
+  {
+   "doc_id": "administration/DUDE_4b6c4462ca8652c7d758eb906fe5b1f6",
+   "doc_type": "administration",
+   "rank_key": "137a4614970cd6749c1668c433a3857ff529100daa0d0ff19aa86614fc7212a8"
+  },
+  {
+   "doc_id": "administration/DUDE_56618ea272c53d2cdd4c809dad39df8e",
+   "doc_type": "administration",
+   "rank_key": "69614533c5caff0a54524960b84feabd2b3541e0f3f94965fbeb5b941df5bc7e"
+  },
+  {
+   "doc_id": "administration/DUDE_60c907ab29fe748b1b5cd30aff56c628",
+   "doc_type": "administration",
+   "rank_key": "38a63113df14a7567ce02ff9a68411f141cf24453e2debb6d2aae47f46142fee"
+  },
+  {
+   "doc_id": "administration/DUDE_6771c875dbee702ca5c8f77e55eac056",
+   "doc_type": "administration",
+   "rank_key": "06a21f4d1eb33aafb1386e53728878a3c501730e32632cd978eca407d2b9768a"
+  },
+  {
+   "doc_id": "administration/DUDE_6a24b833b42049cd217aac01c37dd643",
+   "doc_type": "administration",
+   "rank_key": "acb1ac788d9d547a6aa77e3dbbad562f19d700c9926e646fdd7e97eeb1d07821"
+  },
+  {
+   "doc_id": "administration/DUDE_6d897bc6ce1530298a9a3e8d17ef4fc0",
+   "doc_type": "administration",
+   "rank_key": "331bc28a792bf0f12d2309a73d9f8afec4a0fba35f052a8c4110acf197b664f9"
+  },
+  {
+   "doc_id": "administration/DUDE_88a966d2bf227c5d366b9a50ca7c6e8e",
+   "doc_type": "administration",
+   "rank_key": "1728664ded6161c76ee122be7de55e0add003589f87abe5d4ce717de2a9f1140"
+  },
+  {
+   "doc_id": "administration/DUDE_966088b58980eac36b46a038d087375b",
+   "doc_type": "administration",
+   "rank_key": "3ab9a8da05eec574fa7b1172f5e7ec575749d0da3a337c82a0ab7d65b63dc0ae"
+  },
+  {
+   "doc_id": "administration/DUDE_e7e2ad0494eca77f132b0c4b772e8c2d",
+   "doc_type": "administration",
+   "rank_key": "1a17981e767588720ad0c55a1fa6c49bb85eae9b2ad3fdbe8514ff246f156593"
+  },
+  {
+   "doc_id": "administration/DUDE_f1dd5a4e91eb347fe625c1bac723cae5",
+   "doc_type": "administration",
+   "rank_key": "8e6d3a6be2dcdbb5b05a07c1e7e07dcc4eb01e40e678a4c5dd679cd99ae50992"
+  },
+  {
+   "doc_id": "finance/DUDE_219acc43859e61b1a16d9e52a42e7216",
+   "doc_type": "finance",
+   "rank_key": "1d9261e8d9bc2cc3c217ddf0493364f8b6fe794e7f4d9dc895c6a4d0a51e297b"
+  },
+  {
+   "doc_id": "finance/DUDE_fa2140aa1b11784d7c27314fccab5743",
+   "doc_type": "finance",
+   "rank_key": "5c8d16d05c0fbe4dca753327f795f868a689351abdd4a57a8cf22513e1b4aa3e"
+  },
+  {
+   "doc_id": "law/ACCELERATEDTECHNOLOGIESHOLDINGCORP_04_24_2003-EX-10.13-JOINT VENTURE AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "659a7e90d97509ebbec8b98cb4e0b39a163c091da2a1716230233ff32bd170ca"
+  },
+  {
+   "doc_id": "law/AMERICASSHOPPINGMALLINC_12_10_1999-EX-10.2-SITE DEVELOPMENT AND HOSTING AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "2c0882a0981b83c2ad81b1802b4bf4dca1ac744446ca9c9a30f036119fab74dd"
+  },
+  {
+   "doc_id": "law/DUDE_0df057296a2a8ad25780078b0b75d8df",
+   "doc_type": "law",
+   "rank_key": "3e7cfade6b04e6a87683e9ac4c38d6871265db0c6cc27b1fa3fd3062804929b8"
+  },
+  {
+   "doc_id": "law/DUDE_4bbae386431f60e15100691032a61886",
+   "doc_type": "law",
+   "rank_key": "17bb540df15f251ed5dea7c8a5899c413206675fec874eb36fd41398be95ce60"
+  },
+  {
+   "doc_id": "law/DUDE_9666ea671ff69db9b320d447959e2195",
+   "doc_type": "law",
+   "rank_key": "660222204dd7ab065446e11f9ac812ec63562257267ed059803affb21857e607"
+  },
+  {
+   "doc_id": "law/SEPARATEACCOUNTIIOFAGL_05_02_2011-EX-99.(J)(4)-UNCONDITIONAL CAPITAL MAINTENANCE AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "5f6a7e2aacba3821db4d975fcc95a405133957f22112bef209728f3d8d3d6931"
+  },
+  {
+   "doc_id": "law/VIVINT SOLAR, INC. - NON-COMPETITION AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "47a6dc7c8e85d24826314a46630eda75713b97de71523bcdac168fc2fcc02536"
+  },
+  {
+   "doc_id": "manual/DUDE_155bbd651cad3fd9de4b5d9accba32d7",
+   "doc_type": "manual",
+   "rank_key": "6e6b3eb289821b3199f0ec75c2ff3917dd38f1d56ce1190285db108e74b06086"
+  },
+  {
+   "doc_id": "manual/DUDE_1df504dcf28489d7e06da4823b09cc68",
+   "doc_type": "manual",
+   "rank_key": "2b5b542d993a6081694d5a940e2a060a579e8ac632c7adb3c2a4fcbb1fea94ae"
+  },
+  {
+   "doc_id": "manual/DUDE_304e4e26a7ec123ff5f7932aa271a75a",
+   "doc_type": "manual",
+   "rank_key": "2d676bd355529c41751cd7c272c052a97eb75c64952241e42037d3fd60df6868"
+  },
+  {
+   "doc_id": "manual/DUDE_32eeae7db9488f5df8481108ba3ade31",
+   "doc_type": "manual",
+   "rank_key": "7b5ef3b5dfa777d81b9296f62a8f8abf2445b014b2122bc8a89f377cc03d66cf"
+  },
+  {
+   "doc_id": "manual/DUDE_40e4f4bc20b12b93771596ad9f47b66c",
+   "doc_type": "manual",
+   "rank_key": "33571b27008454e3f47ee7929528e6698ce3f3d03f6291761ba0c7833bdb7b49"
+  },
+  {
+   "doc_id": "manual/DUDE_49be41c6316c4d65a0c5f9cbd64ebd35",
+   "doc_type": "manual",
+   "rank_key": "a47631a0c17150c096227f536c3f75c57ccff092c956d2bbcaaff742978b1fca"
+  },
+  {
+   "doc_id": "manual/DUDE_4ed0700e724416fc6b8be356a2ade6db",
+   "doc_type": "manual",
+   "rank_key": "649a699d12955520e3a8c2ac2b6d4218de46c482e3a46a435361a414dd4378de"
+  },
+  {
+   "doc_id": "manual/DUDE_5725c366fbb5e93b0df0a2b45319f1d9",
+   "doc_type": "manual",
+   "rank_key": "3effade520f9342912f2dbd956552a091138958af70ca82dda43804fef38d431"
+  },
+  {
+   "doc_id": "manual/DUDE_728fe6b2e7d741e3102101eef1c9464c",
+   "doc_type": "manual",
+   "rank_key": "7b8671a4a96566346d27b04813e552d8c16de29403b59602147eb39302ae70af"
+  },
+  {
+   "doc_id": "manual/DUDE_7a0762c63314c1755fa6f02a19da5587",
+   "doc_type": "manual",
+   "rank_key": "b8e231fe86a44ee70396d9359032ed1511384f33165d52c78ac0820578336ccb"
+  },
+  {
+   "doc_id": "manual/DUDE_c9c1d919023acc0fe4e48751df45cb5e",
+   "doc_type": "manual",
+   "rank_key": "bd425c6f9345cf39d89d70fe84a3f06f63222a9c3c8022fb0790a1f0222bebf9"
+  },
+  {
+   "doc_id": "news/05_01",
+   "doc_type": "news",
+   "rank_key": "67702e91fe46c7e4971e9e62d613442faf52ab8a2482e396657dccafb6a479a8"
+  },
+  {
+   "doc_id": "news/05_04",
+   "doc_type": "news",
+   "rank_key": "8feeda8eb951c95281c61eb1c9fa4271991df3611e82b49d0fac5909da63ed00"
+  },
+  {
+   "doc_id": "news/05_09",
+   "doc_type": "news",
+   "rank_key": "3a098ae416b2a347564436e95c43b81b534d822b53bf03ef3972220b82959eb7"
+  },
+  {
+   "doc_id": "news/05_11",
+   "doc_type": "news",
+   "rank_key": "72f762441de1aaba852bc30638962180067d8f3ffc42e653557d5be8cd2650cf"
+  },
+  {
+   "doc_id": "news/05_13",
+   "doc_type": "news",
+   "rank_key": "529135de66be94c242eb511ebf28a3916feb3371ead8bb00df590be6c3b46057"
+  },
+  {
+   "doc_id": "news/05_20",
+   "doc_type": "news",
+   "rank_key": "4f7fd9756015c9db82032723f622834423d225bb63772d91c884a925e89e7da2"
+  },
+  {
+   "doc_id": "news/05_28",
+   "doc_type": "news",
+   "rank_key": "02352dd1e2e6e2c1a5213d55bd0bc220c4440d95d8329d8b70cbcee01702229e"
+  },
+  {
+   "doc_id": "news/05_29",
+   "doc_type": "news",
+   "rank_key": "4435c12044980f0507172d07c3ece593d90194a9ff1632f09bd289d54ef1e5d6"
+  },
+  {
+   "doc_id": "news/06_01",
+   "doc_type": "news",
+   "rank_key": "a50dd8e094cb47fcf4b7c40f4c548d182ab4087ecdc107e4aa906597db036a2e"
+  },
+  {
+   "doc_id": "news/06_06",
+   "doc_type": "news",
+   "rank_key": "633c51b2bc4f5a6b9966a4e2f152b70ba562b327b77952c396172ae2f7bd5ada"
+  },
+  {
+   "doc_id": "news/06_07",
+   "doc_type": "news",
+   "rank_key": "7edd92ec2946f44c77af97ea6229bfd24be992cc6ea4dd7bfb0219dde7fbb78f"
+  },
+  {
+   "doc_id": "news/06_11",
+   "doc_type": "news",
+   "rank_key": "92436374469797f76c3a119ff3c9317e16cd8e679aeab4c47b5ce45532cb0d38"
+  },
+  {
+   "doc_id": "news/06_12",
+   "doc_type": "news",
+   "rank_key": "5b9d40c07ae211be4b56e4b8c6df1b45a5711c62ef830ab29462f22f4f8839d7"
+  },
+  {
+   "doc_id": "news/06_15",
+   "doc_type": "news",
+   "rank_key": "23bf9e3d06fb910426b56a0b258b4640cd375b4d6ff9de003d92f9a2a51e9626"
+  },
+  {
+   "doc_id": "news/06_19",
+   "doc_type": "news",
+   "rank_key": "0efce63251746b86213796b26fb3a0260ea01275317502d410f26180e1bd1949"
+  },
+  {
+   "doc_id": "news/06_21",
+   "doc_type": "news",
+   "rank_key": "61cd69adcdb1b2cf55765adc84e2908f5de6dfbe4fd4fdc72705ff33e1a2abbe"
+  },
+  {
+   "doc_id": "news/06_22",
+   "doc_type": "news",
+   "rank_key": "872e0d873b524e92f8f533581832b1c0c5f10dc9d96ab31d1b0d6f877975d9ee"
+  },
+  {
+   "doc_id": "news/06_28",
+   "doc_type": "news",
+   "rank_key": "6df30e6dab933f90dfff554fa1bf032b47ade1c524fa3e2bf3627cbf7e4ad3e9"
+  },
+  {
+   "doc_id": "news/06_29",
+   "doc_type": "news",
+   "rank_key": "8dc29699d2e9d8671cf8f9d511377a3f6ffd97ee95d89d1f31a4ed324f78ef6e"
+  },
+  {
+   "doc_id": "news/07_02",
+   "doc_type": "news",
+   "rank_key": "0f264469e52e10c186f2ba8734f765402121fcd065fd96949716ec3972814378"
+  },
+  {
+   "doc_id": "news/07_05",
+   "doc_type": "news",
+   "rank_key": "2c4c3c8e4a2f0ae34fd9a7322fc4fd90ef57da9eaa9418ee176171be2ac3fe8e"
+  },
+  {
+   "doc_id": "news/07_14",
+   "doc_type": "news",
+   "rank_key": "6784114969d15dbc4c7e94b85eca1df85d7cc87311c1f7b0171254e84d870666"
+  },
+  {
+   "doc_id": "news/07_18",
+   "doc_type": "news",
+   "rank_key": "543a73e326b081516d315692a32e0468b9c18aa5af3b7e7ca6a081d560088790"
+  },
+  {
+   "doc_id": "news/07_22",
+   "doc_type": "news",
+   "rank_key": "46f515038c805808010eeb7564c0d126d2bbd110da297c2756b5f0b6e416bb31"
+  },
+  {
+   "doc_id": "news/07_23",
+   "doc_type": "news",
+   "rank_key": "a017d83c0f538408fc2cfbb0597e4318a0f78e1e05dd996cd52e3ede09016d3e"
+  },
+  {
+   "doc_id": "news/08_04",
+   "doc_type": "news",
+   "rank_key": "10ca1c10599254cf62723e53e9d0765f1ca1d69367a717dd3534bda95250ed51"
+  },
+  {
+   "doc_id": "news/08_05",
+   "doc_type": "news",
+   "rank_key": "a8d129163ed3709495978b569aab4ee9e5e4170895e64af03afcd0fc2ec4137d"
+  },
+  {
+   "doc_id": "news/08_06",
+   "doc_type": "news",
+   "rank_key": "59b0cf33c84e5b291598daf4ae9492a1a222f1d6ef15d6da20646c12d369b458"
+  },
+  {
+   "doc_id": "news/08_12",
+   "doc_type": "news",
+   "rank_key": "2d474304f5ab55b6c431aecfddf81c73856ebed93b604db1f7e010468b027076"
+  },
+  {
+   "doc_id": "news/08_18",
+   "doc_type": "news",
+   "rank_key": "4a6870f5b36eae839dcd00c4bb1920f9ea7ebebafbfcf371eecc4fcf68b42389"
+  },
+  {
+   "doc_id": "news/08_19",
+   "doc_type": "news",
+   "rank_key": "68b7c81fd9861d8d877f52c95304e972d82f51eb17717d96cc354578664bd8cc"
+  },
+  {
+   "doc_id": "news/08_25",
+   "doc_type": "news",
+   "rank_key": "0c40b9c0ca6f9c09366b72fb442a087a28ad5bc2b5b9ddc0b5c5d6d7a9040cb1"
+  },
+  {
+   "doc_id": "news/DUDE_2611e2d93d7d4fcb90be3b3dfb433f82",
+   "doc_type": "news",
+   "rank_key": "6d7a4506624dc38e2f0bfa4175346165c52dbccc46712a94d9c48c4ab93f1946"
+  },
+  {
+   "doc_id": "news/DUDE_357ccbdafee7bf0c933d4080388e83f8",
+   "doc_type": "news",
+   "rank_key": "9b8b6f3b2cf196b02df8906cf5aee4c3a42c57c29f17284716bd276c554bf0e1"
+  },
+  {
+   "doc_id": "news/DUDE_39331a9c535d13822ee9532ef1c3ee12",
+   "doc_type": "news",
+   "rank_key": "5d8b3467aa2b62224f2f29ea13ea17f5b4a5219744f7f3f0a7c61a3d161abb11"
+  },
+  {
+   "doc_id": "news/DUDE_5e48df3eb7b1f7cb4d92dbb779262ecc",
+   "doc_type": "news",
+   "rank_key": "7fc9cf0a3f91295674250fb9ddefab41928e42cf04f3d1330c4fb18b55528a29"
+  },
+  {
+   "doc_id": "news/DUDE_6d6ac392453af8c6ed3289451de251e9",
+   "doc_type": "news",
+   "rank_key": "5b8947121ebbd66af262dc025de2c5ff9b9de5561f7569d728197dbeda1e644b"
+  },
+  {
+   "doc_id": "news/DUDE_757330138a99931375b8b132166f9573",
+   "doc_type": "news",
+   "rank_key": "2e0de0319f169a4b4934216d9827f186a09f149ac9f3cfc680071c019395b1e6"
+  },
+  {
+   "doc_id": "news/DUDE_883ac3cc657b69c978cd6afca0d16125",
+   "doc_type": "news",
+   "rank_key": "443f1c2288dfe71ef1adb20460f8b0ca735cdda7a244ca00dc9c7a2956f1fab7"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_0ce88e1e131aef7a59d0533be36870de_1",
+   "doc_type": "news",
+   "rank_key": "600b5e376de9dc908a013a2c24029983b8234b281a9b6ce1467a517ca96e61f2"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_13",
+   "doc_type": "news",
+   "rank_key": "88fb786e1451e3e24b6d423d8b95262e3940987673f240a0aa31797ec64c89f9"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_15",
+   "doc_type": "news",
+   "rank_key": "009d50b96332b404aac32b0e825d8b6042ee1c0810dd44dd2c87d4c6af4992b1"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_3",
+   "doc_type": "news",
+   "rank_key": "3b5bbee43e485ab349b3cbb70f95aab5525aff8f3cc2224e48771ca88abe72f1"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_6",
+   "doc_type": "news",
+   "rank_key": "951b37067cc01c2521dc7a140c1973ef5e8df50b9cb4c89cd9f570e65f8408de"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_571a946262006cd89199b67353c408b8_1",
+   "doc_type": "news",
+   "rank_key": "645610dffcdf2d8b58a136e1c550e095f85e70a9b76f95f60fae3dda89bc7bb2"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755_2",
+   "doc_type": "news",
+   "rank_key": "3de942a397c7a295174c5232c90759a8bcf26786c77ff5aeae644d28d6d4acb8"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_73fc8720a9b2798307ba43a8b8e47b5e_1",
+   "doc_type": "news",
+   "rank_key": "50cdf5619e25f5476fe62966a54742249f6c402b0f1215624dae933411a76e2b"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_74fc3b01b2cc4a7e6ca0f1af2b998187_1",
+   "doc_type": "news",
+   "rank_key": "796893e5ef15248bee85be3e600c765ca111cc6cec3a974c184f60bd692c2bdd"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_e3842a5681ef54c62a58804adec06c3f_1",
+   "doc_type": "news",
+   "rank_key": "2106ec5854c826334ff840a0b42763af4fb5eb150e2d1d895cf07fde781524dc"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_e6cb1ce916e0b7e120c84db53541a3d3_1",
+   "doc_type": "news",
+   "rank_key": "7f829916534f0711c4bc461e11b4f88d1d94e1e9901581d658225d3cbea70d61"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_ef5c785d9cc21ccf6b73d143f231b5c5_1",
+   "doc_type": "news",
+   "rank_key": "15bd584fd2837e36e2aafe10f10dcd2d0636b8585914070d5f646e7e0d307b10"
+  },
+  {
+   "doc_id": "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_1",
+   "doc_type": "news",
+   "rank_key": "a87cf474014dcc25c2567566835dcc4a4a1dc6bad560ba2643d2f52be2ddead9"
+  },
+  {
+   "doc_id": "textbook/06Numerical_Optimization2006.pdf_555",
+   "doc_type": "textbook",
+   "rank_key": "2c79924e7486133d491385423f0734b37c16ea382c8ee376f7497f926df18a2f"
+  },
+  {
+   "doc_id": "textbook/1c00e16c0db1f129d7b8b87fad27646fdfc393600d20182fa7eb94682601b913.pdf_9",
+   "doc_type": "textbook",
+   "rank_key": "585008787a1c1c5291982155892a5df7b0c97280d4015ef346ec2db07e5e0725"
+  },
+  {
+   "doc_id": "textbook/2021_NEC_Economic_Notes.pdf_23",
+   "doc_type": "textbook",
+   "rank_key": "2d50dde21221e9948c94ba740b2d5a4ca9097bb58c720126adc4cb3980f782f9"
+  },
+  {
+   "doc_id": "textbook/2_Intermediate_Counting_and_Probability_(the_essential_parts).pdf_187",
+   "doc_type": "textbook",
+   "rank_key": "2287644e780556cb3160b606cfcda0f7546d249921520330219432a2c6db2597"
+  },
+  {
+   "doc_id": "textbook/8b80f49ec2822cb3cdbe97d9405e39ae40ba418b084c06604b51e2a5af11a7f8.pdf_11",
+   "doc_type": "textbook",
+   "rank_key": "45619c035d070df13ef4fd124f250a0113bc6975b2032a844f574d9f6e3f4483"
+  },
+  {
+   "doc_id": "textbook/Derivatives_In_Financial_Markets_With_Stochas.pdf_14",
+   "doc_type": "textbook",
+   "rank_key": "2e7d8ab972ad6612adb306f9de96d188e7fb4dad37d60dea3c1712c5d91818e2"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_004",
+   "doc_type": "textbook",
+   "rank_key": "343f0e7891882bd7c46a0503fc3e29d91d6d7ae3e410c8343487200aadc8cc60"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_011",
+   "doc_type": "textbook",
+   "rank_key": "03b5a90d40d3eeccb3d5cb5c454c761fdd35d4f685542599d3d09e54b7a07212"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_022",
+   "doc_type": "textbook",
+   "rank_key": "0917ab617864c50853e5ef2b43df82791bf6e1e743a4a9066d2ea0b382b20d29"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_041",
+   "doc_type": "textbook",
+   "rank_key": "5506de2f891ee80251b55576d5d4d7fb5368bf2bf7c1d154e86e4aa9ce4c9c42"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_047",
+   "doc_type": "textbook",
+   "rank_key": "9290f34c9ec1f6686fcbd9931422cecb1b9f9adba4b3207396a6d6d306c436aa"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_065",
+   "doc_type": "textbook",
+   "rank_key": "3b5b54e8d9f4aa805d080392c9fbd3f148c47c84a8da7411af9f0ad204acee8f"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_067",
+   "doc_type": "textbook",
+   "rank_key": "85d878f055d2e16a761b78467a2d36c3d47fcc6aba550103edd4b477b6adfba6"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_069",
+   "doc_type": "textbook",
+   "rank_key": "809062e6076e44be1d8069248d7ab1f06d3c3eecfd3f4f2913fc13c2e2fb6e95"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_095",
+   "doc_type": "textbook",
+   "rank_key": "8b5fca36b173c722ee062cb45983ba92a08dc857839a7f93d8a95986e36852a5"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_115",
+   "doc_type": "textbook",
+   "rank_key": "6511a4e94e3cfff2616694b229c0ff3b113ce017b24d235c621bae6956754116"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AF_127",
+   "doc_type": "textbook",
+   "rank_key": "39366d5390d2fc39e8153f8553d998835a96a8605b646bcb5a1c6663a23362df"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AS_019",
+   "doc_type": "textbook",
+   "rank_key": "7bb3e8d8c2ada2fd8e5104762ef336cc6c17d877a54708bb0f9efd81bd54d584"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AS_045",
+   "doc_type": "textbook",
+   "rank_key": "3a7de4706ff2cc06c9266e13c4d0de102233313d73bd2715c5de7c5cf51b6e88"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AS_056",
+   "doc_type": "textbook",
+   "rank_key": "4594e704a8cfb25f826a2b191007ceff104890b0c2e00e9162d8efcb8dd86052"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_AS_059",
+   "doc_type": "textbook",
+   "rank_key": "0eff96bfda58f06e49f79af4416f125b7ab98242e7c2b2372ce1b28762ea559d"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_004",
+   "doc_type": "textbook",
+   "rank_key": "612e22db58c1c74501bf5352c27a8fd46f21685526985b042dada16b7d76b242"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_044",
+   "doc_type": "textbook",
+   "rank_key": "4cc30d4f19aec7d0b4a2e984762a6939ccc233c42f21e6c07981ff9ae96fdd83"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_048",
+   "doc_type": "textbook",
+   "rank_key": "32231644b1e8ad67835d481fbe5708a69f2ae2bf0c036d5a0b8da4d4aa4ad71b"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_059",
+   "doc_type": "textbook",
+   "rank_key": "92fdae638cbbfca2b4620ef193027a872ab8132a7b329d476dff9407574e49b2"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_068",
+   "doc_type": "textbook",
+   "rank_key": "60e10988abc312495c64f14b79f227101bd7fa0b1dfaa00515d772373be24c39"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_094",
+   "doc_type": "textbook",
+   "rank_key": "49582ead4abf5bacc37c0b5ba5b70b4742a4896d45b5bee0149f7ec0776d20a5"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_109",
+   "doc_type": "textbook",
+   "rank_key": "9d0736efcf6bceff6c8aaa5adf2d3de2f531a81adb8ec78778fb2f0b8764cbcc"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_112",
+   "doc_type": "textbook",
+   "rank_key": "7b66a82cf063c9e13fea349be465cc3b41ca8101ae9e5ca56bdae94164cebaef"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_117",
+   "doc_type": "textbook",
+   "rank_key": "8b78c87e8c2e6a4be861a9e8a3fff791278428d13fd27d8aac6696146d3fa026"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_119",
+   "doc_type": "textbook",
+   "rank_key": "4c9ef02cbfb27da4df53655013982d03b290e7ba8343f0a1665fee35a9aaf5b5"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_123",
+   "doc_type": "textbook",
+   "rank_key": "363de872ea14d9fc122b41af4a73354e5f732d8592cdb949ffcd9289d0042374"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_139",
+   "doc_type": "textbook",
+   "rank_key": "7f94a8cb930e242c858cbaba95ce1a0973481b5943bd4df8772d6efd635fd4f1"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_140",
+   "doc_type": "textbook",
+   "rank_key": "330600490c123ce7bd9d79f98ed2830472c6d12d87b00bd3693970f2cfd62a10"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_144",
+   "doc_type": "textbook",
+   "rank_key": "0fbe6c36c71dbe1059723ba77c4a64ab434df68c39504068fa673619dbe90475"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_184",
+   "doc_type": "textbook",
+   "rank_key": "258e4d93faf1222ea3402754f05c62f49d444a4209be2cedde03dc3fe6f3a724"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_193",
+   "doc_type": "textbook",
+   "rank_key": "8c3bd0761f6d5f71cac6907df1040a040fa37b3018dfa2fa0db28aa7b89053c6"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_197",
+   "doc_type": "textbook",
+   "rank_key": "0bf2a8b4fc2b91c51dbbae71745dcc88da812e0dcb29a867528900b48ef01330"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_199",
+   "doc_type": "textbook",
+   "rank_key": "8717eaeaef7b4ee00bd740c06bddbca516fd4c5e69ffd3a60a286f5d3c376cf7"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_210",
+   "doc_type": "textbook",
+   "rank_key": "0226462cfbd6d51e25a4a872912e44ef9ab610d1a4268de4d7d9826333c1c9a2"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_229",
+   "doc_type": "textbook",
+   "rank_key": "0c179fdaf02044edf0523c66b1058ad33925d7224331115bb1d173601d703650"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_268",
+   "doc_type": "textbook",
+   "rank_key": "4ae3cb72102cd4e4d363d45f7e96b52743532d2a09bbf222b9cae3830efc7765"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_272",
+   "doc_type": "textbook",
+   "rank_key": "5b8598a6598936f2f6aba0fa7f6f09f7f1c4dc834da1d0dde36ccefab5db975b"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_278",
+   "doc_type": "textbook",
+   "rank_key": "0de4c3ba0e62da5ade561d82d6a3cd682fcda565af9db45b376ee3fadad95d34"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_293",
+   "doc_type": "textbook",
+   "rank_key": "8bd6f7f6beffd167217bd431a9d8804e8667f3fd48383360351571b852b9e56d"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_308",
+   "doc_type": "textbook",
+   "rank_key": "8fc1cedd4e20c953bc7942e5688ce3cb0f6bc0c3cd12d31689b4cdbf18b21896"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_313",
+   "doc_type": "textbook",
+   "rank_key": "55cca0d8ccd0b0d245124596fde889c7dd24f77121ef24912fa227b1c0416ef9"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_EU_315",
+   "doc_type": "textbook",
+   "rank_key": "29197854f4b6191ad5121627bcedafa50878e270eb4328e7fe0a6c6ef6faf439"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_013",
+   "doc_type": "textbook",
+   "rank_key": "893b0c1133290d4adf9a22eb07f6cd2605b66e2fd9493a8a819168a4e99ed7c6"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_015",
+   "doc_type": "textbook",
+   "rank_key": "5e57df99934c34351bf26025df10aaf1713febee3a5b683e3205d909f0b2b396"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_066",
+   "doc_type": "textbook",
+   "rank_key": "5388c5927b25818057f755dbb749b97aaa1df7b06149418ed6fbbbb9d2f1734c"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_088",
+   "doc_type": "textbook",
+   "rank_key": "306e057f06cbf2d2718ab53e7827eb1cc74b83847c4987995f6e7b6079965260"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_094",
+   "doc_type": "textbook",
+   "rank_key": "60919ed2f436ca1395b7ecdb792be80bf4c2302a3e0f4fd032efc959e2ee01f0"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_101",
+   "doc_type": "textbook",
+   "rank_key": "41d82c702dfa0c069e486bc91660f579ef09540774c35a3390c13de2146efd1b"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_111",
+   "doc_type": "textbook",
+   "rank_key": "576756f3b7e9b11255a72cc97c3a8574fbc756b2654c7aa6e5d395ea4443fc1e"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_114",
+   "doc_type": "textbook",
+   "rank_key": "6fa2620affe310b0ce1ba0388e0074a34f7ad165da0d3cafd969b2957306379d"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_121",
+   "doc_type": "textbook",
+   "rank_key": "8b81b867f4c7fa65dc086b4b3f7e5c6a3b02a97372018505f7c176b078d27fab"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_132",
+   "doc_type": "textbook",
+   "rank_key": "847b131192afaf2e1a222eda784552cdcab798283385c52a6f79677a6b30fa96"
+  },
+  {
+   "doc_id": "textbook/GNHK_eng_NA_136",
+   "doc_type": "textbook",
+   "rank_key": "44fb09bddfdf937d32356d16862c22a443fead45886b650e2d4e30bead7e6c25"
+  },
+  {
+   "doc_id": "textbook/GSM_110-Matthias_Kreck_-_Differential_Algebraic_Topology__From_Stratifolds_to_Exotic_Spheres-American_Mathematical_Society_(2010).pdf_187",
+   "doc_type": "textbook",
+   "rank_key": "9499dbc01fceb19d61c64dd0391407d6ffb85c336da9502ca605a8bc23e25a58"
+  },
+  {
+   "doc_id": "textbook/GTM164-Additive_Number_Theory1996.pdf_200",
+   "doc_type": "textbook",
+   "rank_key": "0107733302b85a75b630431b586b19db53ce2629c3a4fe09c2b2ce97f1890d09"
+  },
+  {
+   "doc_id": "textbook/GTM272-Operator_Theoretic_Aspects_of_Ergodic_Theory2015.pdf_68",
+   "doc_type": "textbook",
+   "rank_key": "5205f31286ca91829982f2acf2f65ded3412d7ba416defdc5035ce5bc0f36fd6"
+  },
+  {
+   "doc_id": "textbook/Measure-Valued_Branching_Markov_Processes(Li).pdf_256",
+   "doc_type": "textbook",
+   "rank_key": "793095342284318c18323cd8f92b15ce50e3fc4deebabb3c6b31d9ec1a069bdb"
+  },
+  {
+   "doc_id": "textbook/Riemannian_Geometry_And_Geometric_Analysis(Jo.pdf_69",
+   "doc_type": "textbook",
+   "rank_key": "0fa396d7c35918a83b62ab35a7eadabd2ac91fc47e9a8d5c98d2e5f20a85c810"
+  },
+  {
+   "doc_id": "textbook/Weak_Convergence_Of_Measures_Applications_In_.pdf_22",
+   "doc_type": "textbook",
+   "rank_key": "7415cd8276e257d74156b636a20c841dd72b213948087459ceaf0abbd5c1f1ea"
+  },
+  {
+   "doc_id": "textbook/biz-47556.pdf_465",
+   "doc_type": "textbook",
+   "rank_key": "77d3f5155316d86caab23565404da678f121d07cf34873e6f164f2ff3f391617"
+  },
+  {
+   "doc_id": "textbook/chem-431931.pdf_11",
+   "doc_type": "textbook",
+   "rank_key": "7b0c86eb0547937411aea7f6b09892b60ab4c1c394e7bf9fb8f172ee976426ed"
+  },
+  {
+   "doc_id": "textbook/geo-12644.pdf_353",
+   "doc_type": "textbook",
+   "rank_key": "37d2fbab1834138397ca28b6d54c073449f5538099a388037f18e2b791747837"
+  },
+  {
+   "doc_id": "textbook/hw1-3solution.pdf_5",
+   "doc_type": "textbook",
+   "rank_key": "730c3a277ca08d2478e82bd719eb19e9092527a64f2c72f4e9dbff36f5d5fe7a"
+  },
+  {
+   "doc_id": "textbook/jiaocai_needrop_en_745",
+   "doc_type": "textbook",
+   "rank_key": "367e0a09b91f8e9d44c0af9dfcbefcfd68c53ab640c25577617847ed70e36980"
+  },
+  {
+   "doc_id": "textbook/med-41731.pdf_31",
+   "doc_type": "textbook",
+   "rank_key": "80fd45a9d5fe70862f2908350951dd1c3c9d4652319e325ef6ac569c1cb5cd17"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-60482015.pdf_56",
+   "doc_type": "textbook",
+   "rank_key": "7ad3134d5f17e4e03a3f50a0a243e1dc3f757308f1b4c2fbb4ec72e6632488b5"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61520612.pdf_140",
+   "doc_type": "textbook",
+   "rank_key": "3a1af9e279763409ccf5f627d35badaf4700890633c4ea73a32369b2998f2e35"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_jiaocaineedrop_biz-96816.pdf_48",
+   "doc_type": "textbook",
+   "rank_key": "9a9fe4ff467274fd7f4179a199be6e2aa6d48d7982ebf6bebf12acf3abbd3a3e"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_10",
+   "doc_type": "textbook",
+   "rank_key": "10b7033c74e8438f90d9c386883c0b3e38631055515d29b1b29941be511d8308"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_101",
+   "doc_type": "textbook",
+   "rank_key": "9af79c71e5b3c1469c7d082bc425437c0cff294ab80324bd780ff55d20eade39"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_123",
+   "doc_type": "textbook",
+   "rank_key": "4c267f066db4eecc67e4ef43a6902e545f95d66a20c75cbe78a18d68b34230f5"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_125",
+   "doc_type": "textbook",
+   "rank_key": "6eff6f678ef6164baca7b5461ac026d54b03d4393104ee061eeb2d9bc6d68ddc"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_14",
+   "doc_type": "textbook",
+   "rank_key": "90be5c2c7a34918d9d75cb14beb4e5d24eab299c10b98f2ec59b0536a8070e50"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_16",
+   "doc_type": "textbook",
+   "rank_key": "588bd4788a9c7e33b4450b332f32a08b62bcd4c37426101890f1286eeab4c20d"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_30",
+   "doc_type": "textbook",
+   "rank_key": "56bd090fff2690bd33712207cf096e6be44c436645dc3d6a8d6ab7b7ab5210ad"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_36",
+   "doc_type": "textbook",
+   "rank_key": "8811d51ace65ce877ec1b96c38175cc870ce52036d0d86bd33a0a454914e4d96"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_52",
+   "doc_type": "textbook",
+   "rank_key": "987d89f3c005b6347f5f9c816557d2e0dd038b8964b9e5e110ee2e335cb6a076"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_75",
+   "doc_type": "textbook",
+   "rank_key": "3875960ea1f21238f86f7df8dfc8df449b0f8c0ca631e4ca28ee6265ca790ffc"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_77",
+   "doc_type": "textbook",
+   "rank_key": "55bdf87133c66b138d80def5dba6f274ccd355d33ee427a5ac1a84d74b461099"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_98",
+   "doc_type": "textbook",
+   "rank_key": "21fec38e61b941e9a52edbe81eccc6e4f8c5b101e57c39613f4ce74cd00ad2f2"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_99",
+   "doc_type": "textbook",
+   "rank_key": "2370b1415488fea14a1eefbff6f691acacd81bfa153d6fda7ee091ac820b9f4c"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_15",
+   "doc_type": "textbook",
+   "rank_key": "55753f30b3561294f01f9c8abbd866988f2613e8af5de64bee26a7f9d9e7c4fd"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_113",
+   "doc_type": "textbook",
+   "rank_key": "315f59ae8ba1c0ad2d61101d3c23d4d71edf50afd253739fa19a81dc52c41139"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_114",
+   "doc_type": "textbook",
+   "rank_key": "7d3c97f1a1526f0aa2f742aeff091024abefb67dc79e8c1b89d2c160e67acfd3"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_116",
+   "doc_type": "textbook",
+   "rank_key": "022fa3d90517d7708ce5e33b6af38c769c3211b441782bfb21722588269a2287"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_119",
+   "doc_type": "textbook",
+   "rank_key": "3cb43231f70e8d67a29352d44e699098c91fc73dbef4faa7dcd613a0f2b291ed"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_2",
+   "doc_type": "textbook",
+   "rank_key": "63b1e946f57ad10709cb0a46e69bc9eb76707f4bb4c366a7f72eca1ed848fe0d"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_29",
+   "doc_type": "textbook",
+   "rank_key": "586e64c112d30805b4c568b8b120b77692bd33c2d1cdd7c6b53f8608f6d8d898"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_4",
+   "doc_type": "textbook",
+   "rank_key": "1e46f2d1bbf3419ba021ee7ae4836b7ea2649afc36c77caf04164fcba1b9eb7b"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_47",
+   "doc_type": "textbook",
+   "rank_key": "3b40a3575a5267593dab8952edf8025e97f1f735a15665ff002f9a14dfb6712a"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_51",
+   "doc_type": "textbook",
+   "rank_key": "75853be383dfc096433c43fb25d0c2b898c0302600d9ecc9e859aa60920bf08f"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_53",
+   "doc_type": "textbook",
+   "rank_key": "763f349d1925508542ee5a294bec9b41c40b8df36663e91ad36f59007d16bd18"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_6",
+   "doc_type": "textbook",
+   "rank_key": "78c0561aceaafda5952ccdf6a5856f7587a6561182e8034db130de7ef92a9d37"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_7",
+   "doc_type": "textbook",
+   "rank_key": "53b1ed2cacd45a9f6248da9b6ba1c21764696c1f355d69ea55722b2182dc2fef"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_70",
+   "doc_type": "textbook",
+   "rank_key": "071a21faf05246d4140b859e053f3ab6f6bbeefbdca312333cebcb057553263b"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_72",
+   "doc_type": "textbook",
+   "rank_key": "001d5fb8577186f88ff3fa0c6c404b3b74567eaeb66000e84c117d0bf9a4f62a"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_89",
+   "doc_type": "textbook",
+   "rank_key": "15e3b635f0fa730c4db61816bb25b4c9951ed1eb70f2ff96c72c0bd1afaa23f2"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_9",
+   "doc_type": "textbook",
+   "rank_key": "47bb368abfa56b6659aac9d4ece4a88ece74c5f11a001f1bf87c937dd4ef7c33"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_92",
+   "doc_type": "textbook",
+   "rank_key": "0a9789a065843c7680fc12bd12895eb62f707e6cc9cf49b31598d5da57922173"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_94",
+   "doc_type": "textbook",
+   "rank_key": "71e951ad98ccc43133fab22f17ce34094ae0721bdda21dc52ef94f4376c6859d"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_95",
+   "doc_type": "textbook",
+   "rank_key": "2e84dafbbe43cda009afd79d565d03f29715422661f7862d726b86656be64f23"
+  },
+  {
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_97",
+   "doc_type": "textbook",
+   "rank_key": "73087170f9caf726f2abf4c50dd1bb67948cd1fec92f502e465985dc54647206"
+  },
+  {
+   "doc_id": "textbook/socialsci-15334.pdf_180",
+   "doc_type": "textbook",
+   "rank_key": "17382b576e60ef652105693da45ba3ac610f2b973af450317e88fae0bb7cc955"
+  },
+  {
+   "doc_id": "textbook/socialsci-74973.pdf_31",
+   "doc_type": "textbook",
+   "rank_key": "370691b7985971725d5144c71cdbf400c7c74b6b0befb9390b71394392fc2de3"
+  }
+ ],
+ "selected_question_ids": [
+  "01139f6f-ec0a-4b3d-8bf5-e9fa5b54dfb1",
+  "02b6c0e1-17fd-4252-9db9-599398e027ff",
+  "0566d447-aedb-4021-aad8-c43f72bb5039",
+  "0f44704f-1247-4a4e-a469-98e8d39e198b",
+  "14c20481-c397-4d84-b3e9-e4a3e6780b82",
+  "14dc01bc-0aa5-4583-a2a5-a421858da7da",
+  "232f3fae-cbe4-45f7-b702-8e97005161c1",
+  "234bbe59-7ec8-452d-9e2d-2fb4fdfd610a",
+  "234e8815-30ff-44f6-a876-826d9173c6c9",
+  "2359698f-3a98-4017-87de-5502f74f31a7",
+  "2367ad9e-8dcd-4d64-b9e8-e4ee8b7f6d7a",
+  "237f91cb-cc28-4e3d-9db0-2d929f141ca2",
+  "238b0af3-cf0d-49bb-92a7-d8b4bdd8c3c3",
+  "23a59293-3ffe-4e99-9fe5-162e9a726e89",
+  "2e03e952-905c-4b07-befa-37e75e142c4f",
+  "2e101fa7-8689-43e1-a530-57199f67df3d",
+  "357827cd-dcbf-46cb-9082-bfd111b5d536",
+  "358a4939-58db-460f-a9f1-23022160af29",
+  "35951baf-7432-4cbc-983a-f1862d6efa7d",
+  "359b05fa-3ed3-4fbf-a8cc-e369339bace8",
+  "4c1009a4-7b0c-4679-914f-0b7a89af135d",
+  "4c43745b-8063-4ef2-a534-28bbb20ed719",
+  "4c4b91fe-6c14-4fc6-9750-ca7e246cb09c",
+  "4c5b5072-7bdc-406d-ae19-b84936df59df",
+  "4ca49aaf-6b94-4e09-a1cc-14b312bdf75f",
+  "4cb97002-3662-4dd6-8007-5d4eee2b3f68",
+  "4ce68c93-19b6-4dfa-9219-c7785891a706",
+  "4d99eda4-3214-4b76-ae4c-488da800e819",
+  "4dd2f9e1-f9e4-47d4-a34d-b2033de94ef1",
+  "4dd4f052-6167-4073-aa66-3c04d8a2cfb5",
+  "4e051eea-13d7-4846-9777-6c3a57435d9c",
+  "4e49df56-0b64-4acd-bd6e-2667b6651d6e",
+  "4e4b41a1-2e21-48f7-9efe-6dfc522afb96",
+  "4e538609-1f92-454b-bb98-c8d5988d3b07",
+  "4eb98768-84a5-41c3-9095-e4973d798f0b",
+  "4ecc3bcc-9a2c-4553-b455-f0e12a337b45",
+  "4ed0cd4d-5850-45c2-a0a2-2b16cf1e6ccf",
+  "4f0743b1-8ed9-4cf0-bb66-a9ac60e86101",
+  "4f118ed8-3a08-493c-b271-dcf60071ec94",
+  "4f128445-d159-4374-8050-881c9c23ad6c",
+  "4f3d3132-0f46-4f06-b960-229de1968f37",
+  "4f423363-d16e-4edc-8115-59d8d2f428f0",
+  "4f460897-5850-4c02-ac6a-88bad3f1e7df",
+  "4f49ccec-a880-4eaf-ad7c-c84d5540b039",
+  "4f4f2f74-a7d3-44c3-959b-a0b79ec80afb",
+  "4f4fa18f-66e6-45d2-90e1-dbbc5eb38bd0",
+  "4f73efb1-70dc-4c84-b569-62c2706c360e",
+  "4ffc70a4-3152-45dc-9da5-8a92dd172237",
+  "5000f27b-9b72-42e6-a35b-8ec058375c8a",
+  "50011d9d-259a-4324-9e94-d303590b57d9",
+  "5007631f-6b63-419f-9b70-b171a77c6b54",
+  "5027d27b-57b5-4e7e-832c-933af222a0b3",
+  "502e4f40-0a01-4a86-bbfa-754913ee5ee8",
+  "5033bbc9-b32f-47c7-b136-4aa84e451a63",
+  "50962d28-c556-4194-93e5-013e0cf5412c",
+  "509dbfdf-944e-43df-8a12-d0df3988ba0f",
+  "509e1a74-5b95-4ba0-919c-b2d20d4b830f",
+  "50c6fa8c-27a0-408c-8b44-361f16c7354a",
+  "50c72ce8-55e4-4fd2-8977-7baed187a17c",
+  "50c784ed-9f9f-43ab-8619-03af8db3b86e",
+  "51174082-1a5b-48a3-8631-e2ca4ac5fe85",
+  "511cc1dd-73bd-452c-a5fb-b346dc880a29",
+  "5129fb7c-6288-41a5-8c45-782198a6416d",
+  "51abf5e5-cb77-4e24-95eb-3a3de2014a45",
+  "52415f5f-f7d8-477c-8065-50f37ab15b93",
+  "526e1503-9740-4210-b2d1-4092986b3c74",
+  "527507dd-390c-4d7e-9c9d-a0d29087bf0e",
+  "52f32840-1c6c-40f4-ab9b-f856e20d85c0",
+  "52f783b1-b254-4830-a45f-a9d992a971e6",
+  "5306f3f5-1516-4570-9b7c-709acb175a5a",
+  "531bbb0e-9be8-4d6c-81c5-592b71d6ec10",
+  "53466992-bd6a-45bc-9a9a-2be269c819c1",
+  "534bacd2-a338-4cfd-af3d-0471f883d4ec",
+  "53555109-68b3-405d-99d9-97019dc941d6",
+  "5358447c-3331-49ac-8ba7-462717db3ca9",
+  "537f1759-1539-4b6e-8bc0-e5bffc989d4a",
+  "538c2dc7-2df1-49b7-98f5-e3810a6acd24",
+  "53bdfba8-1532-4a14-8642-891b80e1397c",
+  "53be7a04-76f2-4a3f-9089-f14abda9ed3e",
+  "53c1a1eb-74d0-4697-9a4c-1ba8f62c38ed",
+  "53c39979-f940-4ecf-8c0f-1c3e6aab5919",
+  "53c924d5-7a11-48fc-8bb9-304053fa7d38",
+  "53d4c155-6a19-40a0-a028-6ee0552640ce",
+  "53e82886-9411-423a-90b4-17eb7111f1d1",
+  "53e83663-9c14-440d-9b2d-81ccc602bd20",
+  "53f0c3c9-c20d-45bd-90d4-4b3d8aca5410",
+  "53fad41f-b84b-459d-b090-9f10461c460a",
+  "53fb2ed1-b953-4807-b009-61c3855a7d8d",
+  "546e8226-604f-44fe-9b69-0711cb1dad0d",
+  "65083f22-c030-41bf-aaf2-1870e75284ad",
+  "6522ff46-74b7-461c-89ce-15a8afd4fc7b",
+  "65762909-298b-4db1-b1e5-0582535b0d81",
+  "6576dc04-9000-4095-ab30-bb9f232f1944",
+  "659812bf-4a18-4afe-adf4-a7486e7703ae",
+  "65a1158d-9aa9-411e-bded-c9b278d2e177",
+  "65b9af9d-66fc-4a7b-b593-dc66cd2af216",
+  "65bc4877-f333-487b-b32a-47f8819ee73a",
+  "65cab758-443f-4081-9773-52bbead026a4",
+  "65cd78ff-a970-4d01-af8a-59135c150718",
+  "65d6146b-458b-482a-b9be-34907c3847f2",
+  "65d6d7c1-24b4-4aaf-ab3a-1d340e722efa",
+  "670acc5c-b321-4f21-8dd8-eb85b04d3376",
+  "680ac07a-2a93-4d62-bc83-5dc0d9441fa5",
+  "68109efb-62b0-4078-a77b-75fd164a5c3a",
+  "68e592c7-9f3b-439d-940e-bcf22e57aaa0",
+  "68f49b51-f3fa-4613-90ed-41f464aba3f6",
+  "68fc642a-f6f2-4926-8e60-678b82f4b48a",
+  "69083bd6-ef61-4cac-8674-d2447b056d02",
+  "6aafb17e-f4b3-46d9-aae3-d68a6ce1c840",
+  "6ab43621-49dc-429c-a4a2-eb7d17cd1543",
+  "6ac6eac0-f309-478e-9001-5a6750ec3816",
+  "6ac80948-496a-4ea0-898b-f884d047b452",
+  "6c0be55c-90e6-49e1-a44f-c3a96d0c62c3",
+  "6d12f9cc-4ea4-42ad-a888-85361a694238",
+  "6daebd56-a0be-4bb7-aa69-eedd439837fd",
+  "6dfaa388-d622-453d-ac4f-324a59ef6855",
+  "6dfede0d-43bf-4504-9a11-d2c943e6ad9b",
+  "6e24df89-e9c5-4130-8a5b-b410ff6891a9",
+  "6e2d5785-0e50-40e2-8eaf-77d435657815",
+  "6e323ff4-c345-495e-b8fa-29e6831520ca",
+  "6f3742ac-e1fa-406a-a2d7-438e4b055f49",
+  "6f64d5df-8eb2-455f-8890-176137a4b9c8",
+  "6f651019-4f9d-4bbb-a405-823414ab0236",
+  "6f790959-a3e0-4b3b-b56b-0715e7180322",
+  "6f844392-62f9-4bb2-a5dc-ac6cc329870a",
+  "6f8c9548-7e55-4ca6-89f5-86d2468e9a21",
+  "6f94ed84-4cb0-4f1b-b6eb-3b81b26d1e8a",
+  "714f63f9-f41b-41bf-8863-e9a6f426f1fb",
+  "71813db7-6c20-4fe0-a6e5-c4f92268315e",
+  "719aef26-124e-4fa6-a3f0-4b0b742a121d",
+  "71a48a01-61c0-4f4c-83ce-962b456f7d31",
+  "71a70f9c-d185-4d1c-ab71-8df2e0c9cddb",
+  "723c7bc3-64a2-4291-a492-ac551654fe52",
+  "725964c4-73c4-4ceb-8467-81798383818f",
+  "7268134f-adc4-46f7-98b7-b0fb1c8b9032",
+  "728a8543-4a97-4df5-822c-88c0b563146c",
+  "72962d39-d502-4185-9bcd-6b874b297968",
+  "74eff545-3e65-4603-b8e3-654bfaf14ff0",
+  "75fc1b10-b8d1-4539-8562-8912bdf2b5a1",
+  "7608c47a-a8ad-47e3-9bb0-ecd619e3bfe6",
+  "760eff62-298a-4d8a-befc-91f057f599d1",
+  "761211c0-19a7-436e-817e-7aece8dd9dd6",
+  "76847398-fabb-46b6-97f4-3de414934a25",
+  "7685f7bf-b302-4ba8-8feb-a96b427b97f5",
+  "76863578-4e03-4209-83d4-42a0d3339005",
+  "7689350e-a7f1-466f-881f-db407ada2270",
+  "768ea5ba-93ca-4017-9063-937670231287",
+  "76940729-42b7-457e-9fc5-554c8a6fe773",
+  "7b85179a-d5b0-47e0-aa5d-932b45ff2c83",
+  "813f9102-5714-43b3-a712-c4aecee09e5f",
+  "8198c5a3-d851-4581-a78d-2b1e28298f02",
+  "81992dc5-d748-4a76-80aa-f97e454b57c1",
+  "819afc57-22a6-4583-96c7-d4faf7a2a9a3",
+  "81dec65c-1e55-4a1d-a2bd-e4db1aae2581",
+  "81df7030-1998-46ed-919f-1182cfc18599",
+  "81df9a17-13b8-4566-8a93-b88838dc26d0",
+  "81e0a6c4-8f65-4bc4-afb4-8ee6b7a31a1a",
+  "81e1b7a7-e6c6-4dd8-8ec2-8e2bcceb86b2",
+  "81e210ec-a57c-4826-891f-7bd63d85cd44",
+  "81e6da0a-93aa-4c3c-8dd1-ee41d2f064fd",
+  "81ed1f11-212e-4542-bb0f-5bb08c10b614",
+  "81f00628-d299-44da-b3e1-2cb10f806aa3",
+  "825f020b-d155-49db-8a9e-be49e47ca1d3",
+  "825fb250-7045-4164-aca1-16a85e58fa8f",
+  "82609257-0a5b-4608-9afc-6d7fdda4048f",
+  "82611870-c6ef-45d1-88d0-46162ec7a1e1",
+  "84be0670-6cef-4cba-9c71-5dc8f1ec5b50",
+  "854d30de-5a12-4228-95bf-3db8e11b94fe",
+  "860a91ac-420e-48e6-afaf-47fc771b90de",
+  "8628b7d5-19d4-493c-b951-d040c4a175cf",
+  "869cfc33-a169-4bf4-893e-d0d885d13f91",
+  "86b9eea0-3171-4b88-913b-7956d6acf304",
+  "874eb695-910a-416b-b12d-4df6872cfef7",
+  "89202b12-c028-45b2-92f5-3c6dbc08dd19",
+  "8921ef8d-91f0-400b-aa56-89c147065664",
+  "892417f7-ced2-4d74-8971-5b6ab90ad11c",
+  "8928e261-74cf-4770-beab-2fd123f2b3e5",
+  "8b53b7a5-29d0-41b6-be4c-46768c9573f2",
+  "8bb1254c-e1aa-474d-97e1-bbaf6b1caa90",
+  "8c0d37f0-25e3-4594-a4da-eb8f2be8a2b6",
+  "8c10ed08-fa0d-4d09-9630-cdf427da8fcc",
+  "8c141352-edd0-4f6e-850f-cedd8aed9eaa",
+  "8d1ef4be-71de-4549-bc36-eb5e3cc89505",
+  "8d20539b-d2d3-4337-b633-de298eaa40e3",
+  "8d20dbea-7ae3-48cf-8ace-37d3673ef518",
+  "8e053e24-627e-475d-82ef-78a1de2f3215",
+  "8e064490-8cb1-4bf6-832d-56419ea6b2c4",
+  "8e534a4f-1daa-4fb9-ae3a-3c511d6038f5",
+  "8f12e225-81c6-4f0f-8779-6e3c9de4e474",
+  "8ff57b4d-b5c0-4964-a1c7-f48a71b2321d",
+  "8ff87c56-908f-4f7a-9b49-992988fd88f0",
+  "8ffb7f33-937b-4e80-968a-577f98326e26",
+  "8ffba767-55ac-45d3-b043-06bfe5d23032",
+  "90899a2a-5dc4-4442-a6cd-146c6c414b3b",
+  "908b0a78-5fa6-484d-b3ee-d27b74879de9",
+  "90f084af-134d-4480-b8e1-e617442e0f18",
+  "90f089f3-0d18-46c2-90ee-e95136487b1e",
+  "90febde7-a174-4d7a-8efb-9a5200e41c51",
+  "91b738bc-1b3e-49be-ace2-81fb7a2f8deb",
+  "91bb6b8d-0a4e-473a-8c77-9145ffa3cb2f",
+  "91c25d07-3798-4d2d-937f-25101726aa3f",
+  "91c59802-ca04-46ee-8a8b-aec1b2d990a3",
+  "91c5cd40-92a0-492c-a56c-6040f4d79cfd",
+  "93072830-ac0e-4ed5-8d2d-44a3763ac198",
+  "93339293-7a04-40d5-9997-e4bf209fd447",
+  "93346f9e-3479-40b7-a7a5-d08806fd79c3",
+  "940fed9c-23d2-4d18-861c-9c722eec7e73",
+  "9411c240-9fa7-472d-a8f8-0f7f98a4212e",
+  "9414fa0f-9e38-491a-ab9e-b2849b3e16a0",
+  "941781bd-ec59-48cd-83a2-f56553767841",
+  "94b4fd72-7c64-4864-94ee-b7a3c4326691",
+  "94b5373c-842c-4b1c-a9e2-19df47390169",
+  "950fd652-05d6-4d26-a4ba-6148f3aed477",
+  "952fa7f4-cafb-4a9d-abfc-bc99e490b25c",
+  "9530d3d5-a5bb-430b-a780-0ea8ebb24418",
+  "9530ed88-ccaf-43a9-8eb5-e599608ef7bb",
+  "95999d25-7b4b-47fe-9561-33371177fc2c",
+  "96f9ef0c-288b-45f8-aafc-26cd3d634e7e",
+  "96fa70fa-16e3-4e23-ac08-4625526539a4",
+  "96fc18c6-9619-4689-bdd6-fb4a84ef1cee",
+  "970104c5-6177-4295-be6f-1fad0f1483e2",
+  "9701c3d3-7f79-4c6b-a8b6-65ac6a48e5b4",
+  "973cb546-4dae-4e78-bcea-06435791b4fe",
+  "973ecb44-2030-4b95-95ba-b75542804b48",
+  "97f5e7b8-6109-4e6d-a38e-d6d16f55e046",
+  "97f62b4e-cef1-4013-8d1b-1a143c631297",
+  "97f6f514-c080-4388-bffb-19f8624005d4",
+  "99fcd756-e82b-45f2-a6c7-23784fcc105c",
+  "99fe006e-3780-4329-9a3a-d3a3034d1339",
+  "9aa9e62c-8d34-499b-8bfe-a301db93c0f3",
+  "9aaacaa8-9bec-41a0-95bc-cf5eb9d2aef5",
+  "9aaea7e9-7cd2-4b21-a5c8-f804771c3a91",
+  "9aaf3dde-8ef8-4189-b812-55fb4d0e5725",
+  "9ab184b5-c664-4881-8069-5f5eeb5bbbde",
+  "9ad42520-f5b4-49e1-9d4f-d1f303b160ea",
+  "9ae42200-c5a6-4293-b91c-21b799a3b2ef",
+  "9b19122b-6b5b-4344-81bb-b7e27f69cd8f",
+  "9b1927e4-95ff-4e7d-b2c2-0fbf585c7ad6",
+  "9b1c5777-e87d-4884-9b80-b82ea0a62ceb",
+  "9bf7a6cf-71bc-4feb-b6ea-95ed4e330450",
+  "9c0bebdf-94ce-4f9b-8781-7cc6d9640e22",
+  "9c109da8-b480-4b6c-97e3-d64f37ca5608",
+  "9c186760-34c9-43f5-9565-2825761fa15a",
+  "9c27af52-4585-4094-b253-f37b106ef0dc",
+  "9c2b9ad1-b604-484c-9f19-8e4a4768e189",
+  "9cae80b8-4669-4f55-855c-64dde47810a6",
+  "9cec5333-b416-4bed-81d5-80ec4a53ba16",
+  "9d3363db-968e-4249-895a-14046de2e202",
+  "9d36ac5f-6f5e-4d0b-90fe-25aa4aed444f",
+  "9d5ada8e-6683-466a-bfd7-2078a9681f50",
+  "9d73cbef-13d0-4bba-bd7d-5c0a53b56c25",
+  "9d933990-5f89-46ab-9087-14356550c7ab",
+  "9e2d720d-2fc0-41f7-b337-fa387814041d",
+  "9e850bbc-305f-4d94-bcea-ec4cbae9fbec",
+  "9ea4df83-7f0a-420b-9366-ac1d6515398c",
+  "9eb4e79c-9bd8-4763-a5ad-d68d49225ebf",
+  "9eb4e905-4aea-4ba0-ad1f-4a73096cde5c",
+  "9eb997b7-914d-46b5-b5f9-de36764f0d87",
+  "9ecbcf97-c201-4f5a-8527-6f0fecbdaec9",
+  "9edfa3da-6cf5-4b15-8b53-031d05d51433",
+  "9f145852-f153-416b-90ed-151c2b57967e",
+  "9f982188-3744-4a64-8c24-9558f2ad985f",
+  "9fbe505b-accb-44e8-80ff-8b112a183608",
+  "9fc6ec71-c5e8-4460-b965-f4c904dc6357",
+  "9fe7a515-d021-45a7-968c-d0f120a4c25b",
+  "9ff3c8b2-3064-40fc-bfc0-71bd346d4398",
+  "9ff46f4c-216f-4e6d-b97f-66b71cfefd72",
+  "a093653f-562c-4021-a055-c7653ce8207b",
+  "a0937646-df5d-4cb6-a8fd-ffc82a6063d8",
+  "a095b511-c6b2-4dfa-b4cc-a3bf710e304a",
+  "a0a03e20-8a2b-483c-9c24-ef8fa2e7bdb4",
+  "a0b67c2c-3582-46ff-bff3-69fd0fb31216",
+  "a0fcf11f-81d4-44a0-a2af-072dd10132fc",
+  "a17256a8-de44-42be-9567-b3c9af7a98c5",
+  "a18ffbfe-3304-4dd6-a6e0-cdbb18ecb50d",
+  "a20847d8-54ed-4b3b-8f70-70e66b58996c",
+  "a208bc2b-a721-4de8-8b42-dbe49c1920ef",
+  "a2283020-c518-4bf8-972d-a6b91ca305b6",
+  "a2304023-f2bd-43d6-83ed-9b5e88d807c8",
+  "a2521f50-a54e-4c8f-acb3-077a6cef5e55",
+  "a25c4f9e-22bc-4872-8321-5841ea0ffa36",
+  "a265e72c-ecb2-4200-bbed-d51776081fc8",
+  "a269f407-7adf-40b2-a767-f03ce2d361a1",
+  "a27c2a93-5a46-45f7-b7e6-5042e61f115c",
+  "a3112d2c-4755-4f92-a6dc-c1641c3ac811",
+  "a31d73f7-379e-47f0-aa11-73a7809548f5",
+  "a327bbde-83db-4c95-a7c7-ec6cd6747da9",
+  "a328652a-2d0c-4076-a969-633b12ad7191",
+  "a3558002-656b-4830-b0ca-76f717f98524",
+  "a3851afa-dcdc-4839-ab3d-582628c4f706",
+  "a41e0e77-6ca5-4e86-9add-698a4a386d09",
+  "a41e2a9d-b238-4305-ab56-7eecb22c4e95",
+  "a420513e-bc15-4486-acff-426fe223a33b",
+  "a4782863-d1af-4050-a1e6-10b029b4465f",
+  "a498fe88-eda0-42f3-90fd-b1ca941a7e9c",
+  "a4e695c9-b65d-4226-be96-9cf3a7c5cb87",
+  "a4e88c9d-3471-4f8a-9783-5853f2140743",
+  "a4e8f069-e7f8-4a1d-94a7-ef30a0327140",
+  "a4f18d76-56cc-41c9-8fdd-43482e5dc364",
+  "a512090c-68ec-462e-8059-835c2d77c2a9",
+  "a62b03b5-dc2e-4ec0-98a9-82512b9e4f05",
+  "a62e93fb-88bf-4bda-a2e8-6d426cb97225",
+  "a6581f79-5cad-47aa-80f6-f49c39f35b85",
+  "a731d7c5-e983-4d62-a2a8-7e3ba1c7486e",
+  "a8aa7158-2b70-4525-bc67-f831cbc84759",
+  "b3ceedc7-1b3b-4583-bc06-9f2149f0872f",
+  "b4275c48-9ebf-4683-939f-aef5d3cce919",
+  "b574b092-c898-4097-af2d-806db9c39562",
+  "b635cf15-a698-4191-80d6-e6a684050fa4",
+  "b711b399-30df-4872-9b65-1e2ab7924205",
+  "b784a050-1e26-40bc-958d-f7138757aed1",
+  "b78fe4ad-5763-4642-be56-fadcf629f708",
+  "b79c51a3-00fd-4201-b1ba-d5d87f9bc925",
+  "b7a3bfd1-b679-4f97-85e1-442a2ca7f106",
+  "b7a65a9a-c96d-4161-8d7b-a6cfa47356b3",
+  "b7b53fb1-e4ec-4129-96b0-aa03d96326da",
+  "b7c2f2d0-5f93-4594-bf0e-8a6436fc101a",
+  "b7d0d025-fb23-46f6-8e13-b157069e225c",
+  "b7d7800b-635c-46d5-8b26-5a45bacfe19f",
+  "b7e10079-d9f8-4b8f-a624-7a099e01fbfa",
+  "b7ef7794-f741-40c9-92eb-d20d6d535f05",
+  "b80dfb76-258c-48b4-971c-2b80ccfa76e2",
+  "b822a53d-052a-4d51-8dff-0398840a2acc",
+  "b8231ec8-e4cc-4cfd-8307-cc4d29a86d2b",
+  "b858af32-f6db-41b4-a4a9-6fb506bda203",
+  "b858d4d8-e685-44a1-9086-18162ea79e43",
+  "b8953176-96d9-4444-8c43-f6cdeef7b18a",
+  "b89b033b-a89c-44c0-992d-539f059e7410",
+  "b904a95d-e01c-4994-b00b-048cc940af32",
+  "c0b822b9-2bc7-42e1-92e4-a4386cd0ba18",
+  "c0b83e6d-eed5-4b7d-8bb7-a5ad12a5c68d",
+  "c0b9b85e-dd52-4a93-9e6e-66b3bab60579",
+  "c1557e3b-a9ea-44cb-b2d8-af992e967f0d",
+  "c161f252-b46a-4624-95d7-84c68128ced3",
+  "c1754788-6d7f-462d-b5f1-932559df4212",
+  "c175a1e3-3e95-4a0e-978d-8ab3ea0932c7",
+  "c175de4b-7901-4563-b200-e63ad5700b5a",
+  "c176eadb-e517-4c41-bdf1-56226751d1a4",
+  "c177f3b3-0e68-4b93-92c3-530756fe2187",
+  "c2112eda-f1e7-4a9b-af65-70d74643d705",
+  "c28d7434-a541-4a4f-8b35-37155a7af57b",
+  "c3834e7a-d0a8-4d43-80ae-21fd0d73f559",
+  "c38401eb-67fe-4e2b-bef9-8fe8b3ae5a77",
+  "c38411af-3c9a-4ebd-b8e8-ee7c5fe7d40e",
+  "c3861ad7-f25c-4717-a427-3721871d65dc",
+  "c3b33470-3d24-4514-bd2d-b5f729ab7c08",
+  "c3b6750b-0435-4bbc-8e4e-6d2fe5e1a63e",
+  "c3b9b3ac-d4ef-4d3e-8b8f-f2b49ddd6df0",
+  "c3bc6b6b-c9d4-4e78-b490-3e8d215d93b3",
+  "c3bc9a0e-a3e6-415a-aeea-871e12071245",
+  "c3be9ad0-31e7-4472-8a73-7e18b0303a2c",
+  "c3c02b36-ea72-4bf4-a02a-ae6410afa961",
+  "c3c06d98-422b-40ef-bded-53f653e04d41",
+  "c4041ae1-9148-43c3-8ad4-92b3cd096ae9",
+  "c40421fb-18fb-4f2c-9602-a43750ea62aa",
+  "c405a3b2-552c-4b1f-a115-95cc26eb6d76",
+  "c40704f6-726d-485e-b97c-61fb241e840c",
+  "ebd34616-91b7-4d8e-9301-6989bfbbb17f",
+  "ec7fb89b-c404-44a0-8c4f-82394afbdf29",
+  "eca11ec9-96c7-40fd-a842-e73f82e51fdd",
+  "eca2b173-e3dc-4649-968a-74ed9fd16adc",
+  "ecaac5f8-35a8-4b87-82a1-4d3e20007be9",
+  "ecaba097-03fd-4d39-a72f-cca342f4920e",
+  "ecad64a6-2234-4aef-832b-9a2b84e83ba8",
+  "ecad7486-a7c9-4f24-8938-710bff0c2ff3",
+  "ecae9b37-4ac5-4e36-a286-ca4c85987743",
+  "ecaf90c4-83b9-453e-a34c-57912aa48217",
+  "ecafaec2-b6af-455e-8308-d5d79d20e66b",
+  "ecb07f0d-d2c3-454e-a6f3-822b0550bc74",
+  "ecb53184-5f73-4033-a5c1-ac8bb3ee0e05",
+  "ecb5a5f7-639b-4766-bd85-79544bd2e608",
+  "ecb5cd4a-18e7-456f-878e-5307de387ebd",
+  "ecb64d52-732b-48ec-998b-9747f1bb8999",
+  "ecb6d46b-33ac-44a8-8117-107db31bdbb0",
+  "ecb85438-193b-42af-885d-73d93c04a6b2",
+  "ecba194b-e8cb-441c-ae38-1f45e896dabd",
+  "ecbac14d-816a-43fb-a7a1-20a038411fea",
+  "ecbb3bfb-cfbc-42f7-866b-7aed91f5d21a",
+  "ecbb561c-ce81-4be2-b8db-2bf17098b150",
+  "ecbc7a74-7b92-4268-acf8-f298fc236a91",
+  "ecbd6aa3-1038-4618-a7a2-a02c99dc1105",
+  "ecbfd86f-7a0e-410b-9f5e-afaaefada45c",
+  "ecc2b59a-51ec-47de-b013-88c8f203e7af",
+  "ecc6082e-bea1-4264-8892-7f4c8fc91deb",
+  "ecc70c8b-6b6e-432f-bae2-85e44c417af8",
+  "ecc76b68-649d-44ce-ad09-fa0c66fa80b8",
+  "eccbc135-0355-4e90-99af-f07b0d80ff58",
+  "eccc17ba-5901-4ff0-b0f6-61a882ceb0ae",
+  "eccc2372-b470-4ff7-b47f-a32ec3e0237d",
+  "ecccd3a7-43b0-4c9b-9968-448a219408db",
+  "eccd4f0d-db51-4ee9-841a-068fbe102693",
+  "eccfd657-95fc-40ff-a037-377ffd74923f",
+  "ecd024ca-d70a-44b1-9198-dd6b8d0368b8",
+  "ecd0dfa2-c8dd-41e6-b352-5d190f45fab6",
+  "ecd3310b-2b5e-4c65-ada4-f6a05a1c898f",
+  "ecd4a086-0a21-4270-9f88-bfa2b171f97f",
+  "ecd4fef0-2632-4dfc-a6df-a7bd21f6d281",
+  "ecda015a-08ba-488c-886d-c9c08e1d09ab",
+  "ecdd0e32-512a-4127-aa88-9c3a8f28717b",
+  "ecdf50e5-b190-474b-9082-acb6032281a4",
+  "ece18215-3179-4df1-ada4-3edfe7999c76",
+  "ece37a4c-93fe-44bc-b586-b59a93bb6dea",
+  "ece5e614-12d4-4b85-b760-ebca13075ec6",
+  "ece639eb-e7b8-48a0-8f43-020b0213433d",
+  "ece6e5b9-72f9-4e81-9f26-d32541e8579a",
+  "ece77dcc-12c9-4e28-aefb-e60d2b9be391",
+  "ece7a0b3-cf4b-413f-8e47-fc0c8b10c1cf",
+  "ece7b91c-f70d-49ef-902f-a8eb19fdea4c",
+  "ece7bd89-b4aa-430a-87f0-745dde739929",
+  "ece87b22-62ac-472d-9f56-2d96be0d2a10",
+  "ece93a4f-bbf3-4d86-a001-cb89cf9b4588",
+  "ece95998-eb0b-4a2c-8330-e1dd3bd2d1f0",
+  "ecea44a1-107d-48fe-937b-702e7132312e",
+  "f5b78cc7-e6b3-4944-8b32-3e357922bac2"
+ ],
+ "selection_digest": "0d36bf39b9d0d37f623b13bc41f8bc7d0e80de94e62abbdd775f068eb945d657",
+ "source_family_overlap": {
+  "confidence": "uncertain: inferred from naming conventions, not upstream metadata; no other grouping (e.g. company filings, GNHK writers) is attempted",
+  "families": [
+   {
+    "family": "news/omnidocbench_newspaper_0ce88e1e131aef7a59d0533be36870de",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_0ce88e1e131aef7a59d0533be36870de_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_13",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_15",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_3",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_6"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_1",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_10",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_11",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_14",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_2",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_4",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_5",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_8",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_9"
+    ]
+   },
+   {
+    "family": "news/omnidocbench_newspaper_571a946262006cd89199b67353c408b8",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_571a946262006cd89199b67353c408b8_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755_2"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755_1",
+     "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755_3"
+    ]
+   },
+   {
+    "family": "news/omnidocbench_newspaper_73fc8720a9b2798307ba43a8b8e47b5e",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_73fc8720a9b2798307ba43a8b8e47b5e_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_74fc3b01b2cc4a7e6ca0f1af2b998187",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_74fc3b01b2cc4a7e6ca0f1af2b998187_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_e3842a5681ef54c62a58804adec06c3f",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_e3842a5681ef54c62a58804adec06c3f_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_e6cb1ce916e0b7e120c84db53541a3d3",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_e6cb1ce916e0b7e120c84db53541a3d3_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_ef5c785d9cc21ccf6b73d143f231b5c5",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_ef5c785d9cc21ccf6b73d143f231b5c5_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_2",
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_3",
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_4",
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_5"
+    ]
+   },
+   {
+    "family": "textbook/06Numerical_Optimization2006.pdf",
+    "pilot_documents": [
+     "textbook/06Numerical_Optimization2006.pdf_555"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/1c00e16c0db1f129d7b8b87fad27646fdfc393600d20182fa7eb94682601b913.pdf",
+    "pilot_documents": [
+     "textbook/1c00e16c0db1f129d7b8b87fad27646fdfc393600d20182fa7eb94682601b913.pdf_9"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/2021_NEC_Economic_Notes.pdf",
+    "pilot_documents": [
+     "textbook/2021_NEC_Economic_Notes.pdf_23"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/2_Intermediate_Counting_and_Probability_(the_essential_parts).pdf",
+    "pilot_documents": [
+     "textbook/2_Intermediate_Counting_and_Probability_(the_essential_parts).pdf_187"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/8b80f49ec2822cb3cdbe97d9405e39ae40ba418b084c06604b51e2a5af11a7f8.pdf",
+    "pilot_documents": [
+     "textbook/8b80f49ec2822cb3cdbe97d9405e39ae40ba418b084c06604b51e2a5af11a7f8.pdf_11"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/Derivatives_In_Financial_Markets_With_Stochas.pdf",
+    "pilot_documents": [
+     "textbook/Derivatives_In_Financial_Markets_With_Stochas.pdf_14"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/GSM_110-Matthias_Kreck_-_Differential_Algebraic_Topology__From_Stratifolds_to_Exotic_Spheres-American_Mathematical_Society_(2010).pdf",
+    "pilot_documents": [
+     "textbook/GSM_110-Matthias_Kreck_-_Differential_Algebraic_Topology__From_Stratifolds_to_Exotic_Spheres-American_Mathematical_Society_(2010).pdf_187"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/GTM164-Additive_Number_Theory1996.pdf",
+    "pilot_documents": [
+     "textbook/GTM164-Additive_Number_Theory1996.pdf_200"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/GTM272-Operator_Theoretic_Aspects_of_Ergodic_Theory2015.pdf",
+    "pilot_documents": [
+     "textbook/GTM272-Operator_Theoretic_Aspects_of_Ergodic_Theory2015.pdf_68"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/Measure-Valued_Branching_Markov_Processes(Li).pdf",
+    "pilot_documents": [
+     "textbook/Measure-Valued_Branching_Markov_Processes(Li).pdf_256"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/Riemannian_Geometry_And_Geometric_Analysis(Jo.pdf",
+    "pilot_documents": [
+     "textbook/Riemannian_Geometry_And_Geometric_Analysis(Jo.pdf_69"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/Weak_Convergence_Of_Measures_Applications_In_.pdf",
+    "pilot_documents": [
+     "textbook/Weak_Convergence_Of_Measures_Applications_In_.pdf_22"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/biz-47556.pdf",
+    "pilot_documents": [
+     "textbook/biz-47556.pdf_465"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/chem-431931.pdf",
+    "pilot_documents": [
+     "textbook/chem-431931.pdf_11"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/geo-12644.pdf",
+    "pilot_documents": [
+     "textbook/geo-12644.pdf_353"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/hw1-3solution.pdf",
+    "pilot_documents": [
+     "textbook/hw1-3solution.pdf_5"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/med-41731.pdf",
+    "pilot_documents": [
+     "textbook/med-41731.pdf_31"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-60482015.pdf",
+    "pilot_documents": [
+     "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-60482015.pdf_56"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61520612.pdf",
+    "pilot_documents": [
+     "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-61520612.pdf_140"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/omnidocbench_jiaocaineedrop_biz-96816.pdf",
+    "pilot_documents": [
+     "textbook/omnidocbench_jiaocaineedrop_biz-96816.pdf_48"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_10",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_101",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_123",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_125",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_14",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_16",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_30",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_36",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_52",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_75",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_77",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_98",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_99"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_120",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_13",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_37",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_58",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_59",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_76",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_79",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_80",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_81",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_9",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_96",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_97"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_15"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_11",
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_12",
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_14",
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_16"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_113",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_114",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_116",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_119",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_2",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_29",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_4",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_47",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_51",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_53",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_6",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_7",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_70",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_72",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_89",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_9",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_92",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_94",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_95",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_97"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_112",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_117",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_26",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_3",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_68",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_69",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_73",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_91",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_93"
+    ]
+   },
+   {
+    "family": "textbook/socialsci-15334.pdf",
+    "pilot_documents": [
+     "textbook/socialsci-15334.pdf_180"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   },
+   {
+    "family": "textbook/socialsci-74973.pdf",
+    "pilot_documents": [
+     "textbook/socialsci-74973.pdf_31"
+    ],
+    "rule": "pdf_page_suffix",
+    "val_or_test_documents": []
+   }
+  ],
+  "families_shared_with_val_or_test": [
+   {
+    "family": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_13",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_15",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_3",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_6"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_1",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_10",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_11",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_14",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_2",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_4",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_5",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_8",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_9"
+    ]
+   },
+   {
+    "family": "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755_2"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755_1",
+     "news/omnidocbench_newspaper_5e266dfd9c498cab274e12a7b4a75755_3"
+    ]
+   },
+   {
+    "family": "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_1"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_2",
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_3",
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_4",
+     "news/omnidocbench_newspaper_fe5ed29024932fad071afc53807b16ba_5"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_10",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_101",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_123",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_125",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_14",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_16",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_30",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_36",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_52",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_75",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_77",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_98",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_99"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_120",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_13",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_37",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_58",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_59",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_76",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_79",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_80",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_81",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_9",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_96",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_97"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_15"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_11",
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_12",
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_14",
+     "textbook/omnidocbench_notes_9e951846094758afac08c620144e3a76_16"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_113",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_114",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_116",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_119",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_2",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_29",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_4",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_47",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_51",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_53",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_6",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_7",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_70",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_72",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_89",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_9",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_92",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_94",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_95",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_97"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_112",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_117",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_26",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_3",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_68",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_69",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_73",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_91",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_93"
+    ]
+   }
+  ],
+  "families_with_several_pilot_documents": [
+   {
+    "family": "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d",
+    "pilot_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_13",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_15",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_3",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_6"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_1",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_10",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_11",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_14",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_2",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_4",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_5",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_8",
+     "news/omnidocbench_newspaper_2a6b4fa088699701a6fa9ccecfb5c25d_9"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_10",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_101",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_123",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_125",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_14",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_16",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_30",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_36",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_52",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_75",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_77",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_98",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_99"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_120",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_13",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_37",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_58",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_59",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_76",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_79",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_80",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_81",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_9",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_96",
+     "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_97"
+    ]
+   },
+   {
+    "family": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f",
+    "pilot_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_113",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_114",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_116",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_119",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_2",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_29",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_4",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_47",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_51",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_53",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_6",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_7",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_70",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_72",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_89",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_9",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_92",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_94",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_95",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_97"
+    ],
+    "rule": "omnidocbench_hex_page",
+    "val_or_test_documents": [
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_112",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_117",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_26",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_3",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_68",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_69",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_73",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_91",
+     "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_93"
+    ]
+   }
+  ],
+  "pilot_documents_in_families": 69,
+  "rules": {
+   "omnidocbench_hex_page": "'omnidocbench_<collection>_<32-hex id>_<page>': page of one source; family is collection + id",
+   "pdf_page_suffix": "'<publication>.pdf_<page>': page excerpt of one publication; family strips '_<page>'"
+  }
+ },
+ "sources": {
+  "audit_content_sha256": "7bb6df50f543f2c4130409f46e98865a34d2316e7c7e6ceba4e87f0c2557e04b",
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "pdf_archive_sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "pdf_source_lock_sha256": "6f562ba33c413101ce04a177a8dfcec03301590a33f5c76cca8d3413f51b4df6",
+  "qa_sha256": "2446db28741fa9f392067ee7aae7f3b05e0d85c584069a50ddd5b1b5bc783f58",
+  "split_sha256": "64583a532c5db5aa31e4cbb5cd9c7d894c7a2d5e8aa49f1a7f6041f54e714f53",
+  "text_tree_digests": {
+   "OHR-Bench/data/retrieval_base/MinerU": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "a0d022f0359f127d8b90af8ebbb4fafe7ac541549f90f4ccf0c3ae83231bd18c"
+   },
+   "OHR-Bench/data/retrieval_base/gt": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "0ead14d965030864274e5297a1f171c6fc347fc88e6c189c78f60e0e285d10c5"
+   }
+  }
+ },
+ "volatile": {
+  "generated_at_utc": "2026-10-31T22:01:34+00:00",
+  "repository": {
+   "available": true,
+   "branch": "research/terra-answer-model",
+   "commit": "3fb4954f74f881260201d2ae1f682e938ca7bf95",
+   "dirty": true,
+   "dirty_paths": [
+    "config/pilots/ohr_dev_v2.json",
+    "results/pilots/ohr_dev_v2/"
+   ]
+  }
+ }
+}

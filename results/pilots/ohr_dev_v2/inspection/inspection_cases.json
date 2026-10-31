@@ -1,0 +1,501 @@
+{
+ "algorithm": "purposive-quota-hash-rank-v1",
+ "cases": [
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "textbook/GNHK_eng_EU_272",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "a731d7c5-e983-4d62-a2a8-7e3ba1c7486e",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "textbook/GNHK_eng_AF_069",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "a2521f50-a54e-4c8f-acb3-077a6cef5e55",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "textbook/GNHK_eng_EU_197",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "ecbb3bfb-cfbc-42f7-866b-7aed91f5d21a",
+   "question_scripts": [],
+   "selected_for": "ocr_gap"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "text"
+   ],
+   "doc_id": "law/DUDE_4bbae386431f60e15100691032a61886",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b7b53fb1-e4ec-4129-96b0-aa03d96326da",
+   "question_scripts": [],
+   "selected_for": "multi_page_evidence"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "text"
+   ],
+   "doc_id": "news/DUDE_39331a9c535d13822ee9532ef1c3ee12",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    1,
+    4
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b89b033b-a89c-44c0-992d-539f059e7410",
+   "question_scripts": [],
+   "selected_for": "multi_page_evidence"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "multi_evidence_source"
+   ],
+   "doc_id": "finance/DUDE_219acc43859e61b1a16d9e52a42e7216",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    2,
+    4
+   ],
+   "evidence_source": "multi",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b78fe4ad-5763-4642-be56-fadcf629f708",
+   "question_scripts": [],
+   "selected_for": "multi_evidence_source"
+  },
+  {
+   "categories": [
+    "multi_page_evidence",
+    "multi_evidence_source"
+   ],
+   "doc_id": "administration/DUDE_60c907ab29fe748b1b5cd30aff56c628",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0,
+    1
+   ],
+   "evidence_source": "multi",
+   "list_valued_evidence": true,
+   "multi_page_evidence": true,
+   "question_id": "b7d0d025-fb23-46f6-8e13-b157069e225c",
+   "question_scripts": [],
+   "selected_for": "multi_evidence_source"
+  },
+  {
+   "categories": [
+    "han_script",
+    "table"
+   ],
+   "doc_id": "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-60482015.pdf_56",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "81992dc5-d748-4a76-80aa-f97e454b57c1",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "han_script"
+  },
+  {
+   "categories": [
+    "han_script",
+    "reading_order"
+   ],
+   "doc_id": "news/omnidocbench_newspaper_ef5c785d9cc21ccf6b73d143f231b5c5_1",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "c4041ae1-9148-43c3-8ad4-92b3cd096ae9",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "han_script"
+  },
+  {
+   "categories": [
+    "table"
+   ],
+   "doc_id": "administration/DUDE_60c907ab29fe748b1b5cd30aff56c628",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "91c59802-ca04-46ee-8a8b-aec1b2d990a3",
+   "question_scripts": [],
+   "selected_for": "table"
+  },
+  {
+   "categories": [
+    "han_script",
+    "formula"
+   ],
+   "doc_id": "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_98",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "formula",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "ecda015a-08ba-488c-886d-c9c08e1d09ab",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "formula"
+  },
+  {
+   "categories": [
+    "formula"
+   ],
+   "doc_id": "textbook/Derivatives_In_Financial_Markets_With_Stochas.pdf_14",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "formula",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "659812bf-4a18-4afe-adf4-a7486e7703ae",
+   "question_scripts": [],
+   "selected_for": "formula"
+  },
+  {
+   "categories": [
+    "han_script",
+    "reading_order"
+   ],
+   "doc_id": "news/omnidocbench_newspaper_0ce88e1e131aef7a59d0533be36870de_1",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "reading_order",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "c3bc6b6b-c9d4-4e78-b490-3e8d215d93b3",
+   "question_scripts": [
+    "han"
+   ],
+   "selected_for": "reading_order"
+  },
+  {
+   "categories": [
+    "ocr_gap",
+    "text"
+   ],
+   "doc_id": "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_94",
+   "evidence_page_ocr_status": "empty",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "ece95998-eb0b-4a2c-8330-e1dd3bd2d1f0",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "textbook/GNHK_eng_AF_095",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "9d73cbef-13d0-4bba-bd7d-5c0a53b56c25",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "news/06_07",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "52f783b1-b254-4830-a45f-a9d992a971e6",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "news/05_01",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "4cb97002-3662-4dd6-8007-5d4eee2b3f68",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "administration/DUDE_60c907ab29fe748b1b5cd30aff56c628",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "91c5cd40-92a0-492c-a56c-6040f4d79cfd",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "table"
+   ],
+   "doc_id": "administration/DUDE_60c907ab29fe748b1b5cd30aff56c628",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "table",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "81ed1f11-212e-4542-bb0f-5bb08c10b614",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  },
+  {
+   "categories": [
+    "text"
+   ],
+   "doc_id": "administration/DUDE_88a966d2bf227c5d366b9a50ca7c6e8e",
+   "evidence_page_ocr_status": "ok",
+   "evidence_pages": [
+    0
+   ],
+   "evidence_source": "text",
+   "list_valued_evidence": false,
+   "multi_page_evidence": false,
+   "question_id": "b711b399-30df-4872-9b65-1e2ab7924205",
+   "question_scripts": [],
+   "selected_for": "top_up"
+  }
+ ],
+ "category_report": [
+  {
+   "available_in_pilot": 56,
+   "cases_covering": 3,
+   "category": "ocr_gap",
+   "quota": 3
+  },
+  {
+   "available_in_pilot": 25,
+   "cases_covering": 2,
+   "category": "multi_page_evidence",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 2,
+   "cases_covering": 2,
+   "category": "multi_evidence_source",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 62,
+   "cases_covering": 2,
+   "category": "han_script",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 43,
+   "cases_covering": 2,
+   "category": "table",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 49,
+   "cases_covering": 2,
+   "category": "formula",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 0,
+   "cases_covering": 0,
+   "category": "chart",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 36,
+   "cases_covering": 2,
+   "category": "reading_order",
+   "quota": 2
+  },
+  {
+   "available_in_pilot": 284,
+   "cases_covering": 5,
+   "category": "text",
+   "quota": 3
+  }
+ ],
+ "inspection_digest": "5a36de582544d888713474c82f78baf90e7d6315f864685e46b2ad6bc0cba99f",
+ "pilot_id": "ohr_dev_v2",
+ "procedure": "questions ranked by sha256(seed, 'inspect', question_id); category quotas filled in the configured order (a case counts toward every category it has); remaining slots topped up in rank order; a case whose new evidence pages exceed the page budget is skipped for the next-ranked one",
+ "schema_version": 1,
+ "selection_digest": "0d36bf39b9d0d37f623b13bc41f8bc7d0e80de94e62abbdd775f068eb945d657",
+ "skipped_for_page_budget": [],
+ "unavailable_categories": [
+  "chart"
+ ],
+ "unique_pages": [
+  [
+   "administration/DUDE_60c907ab29fe748b1b5cd30aff56c628",
+   0
+  ],
+  [
+   "administration/DUDE_60c907ab29fe748b1b5cd30aff56c628",
+   1
+  ],
+  [
+   "administration/DUDE_88a966d2bf227c5d366b9a50ca7c6e8e",
+   0
+  ],
+  [
+   "finance/DUDE_219acc43859e61b1a16d9e52a42e7216",
+   2
+  ],
+  [
+   "finance/DUDE_219acc43859e61b1a16d9e52a42e7216",
+   4
+  ],
+  [
+   "law/DUDE_4bbae386431f60e15100691032a61886",
+   0
+  ],
+  [
+   "law/DUDE_4bbae386431f60e15100691032a61886",
+   1
+  ],
+  [
+   "news/05_01",
+   0
+  ],
+  [
+   "news/06_07",
+   0
+  ],
+  [
+   "news/DUDE_39331a9c535d13822ee9532ef1c3ee12",
+   1
+  ],
+  [
+   "news/DUDE_39331a9c535d13822ee9532ef1c3ee12",
+   4
+  ],
+  [
+   "news/omnidocbench_newspaper_0ce88e1e131aef7a59d0533be36870de_1",
+   0
+  ],
+  [
+   "news/omnidocbench_newspaper_ef5c785d9cc21ccf6b73d143f231b5c5_1",
+   0
+  ],
+  [
+   "textbook/Derivatives_In_Financial_Markets_With_Stochas.pdf_14",
+   0
+  ],
+  [
+   "textbook/GNHK_eng_AF_069",
+   0
+  ],
+  [
+   "textbook/GNHK_eng_AF_095",
+   0
+  ],
+  [
+   "textbook/GNHK_eng_EU_197",
+   0
+  ],
+  [
+   "textbook/GNHK_eng_EU_272",
+   0
+  ],
+  [
+   "textbook/omnidocbench_docstructbench_dianzishu_zhongwenzaixian-o.O-60482015.pdf_56",
+   0
+  ],
+  [
+   "textbook/omnidocbench_notes_1ba14cb325bc448f7201b20502ecf2b5_98",
+   0
+  ],
+  [
+   "textbook/omnidocbench_notes_f7f010b78016aeebd76e56d9283eb67f_94",
+   0
+  ]
+ ],
+ "warning": "purposive inspection sample; its category proportions are not prevalence estimates"
+}

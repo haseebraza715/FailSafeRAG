@@ -1,10 +1,40 @@
 # Proposal: a larger development pilot, ohr_dev_v2
 
-**Status: proposal for the research lead, written 2026-10-31. Nothing is frozen.** No file exists under
-`config/pilots/ohr_dev_v2.json` or `results/pilots/ohr_dev_v2/`, and no run has used these questions. After
-approval, the config below is written to `config/pilots/ohr_dev_v2.json` and frozen with
-`scripts/data/build_pilot.py`. `ohr_dev_v1`, `config/datasets/ohr_split.json` and `OHR-Bench/data/qas_v2.json`
-stay unchanged.
+**Status: frozen on 2026-10-31 at 201 documents and 414 questions, as the confirmation sample.** The lead approved
+the rule below with one change: about 400 questions instead of 285. Section "As frozen" records the change and the
+result. The rest of this page is the proposal as written before approval, kept unchanged. `ohr_dev_v1`,
+`config/datasets/ohr_split.json` and `OHR-Bench/data/qas_v2.json` stay unchanged.
+
+## As frozen
+
+**Why the size changed.** The lead raised the target from about 285 to about 400 questions. With perfect page choice,
+the gold-page image raised EM by about 7 points on `ohr_dev_v1`. A repair that chooses pages at runtime will
+probably gain 5 to 6 points, and 285 questions detect a gain of that size only about half the time.
+
+**What changed.** Only `selection.documents`, from 138 to 201, and the purpose text. The count follows the rule of
+step 6 below: 400 / (622 / 313) = 201.3, rounded to 201. The seed, pool, stratification, exclusion and inspection
+block are as proposed. The seed was fixed before either draw.
+
+**Result** (`config/pilots/ohr_dev_v2.json`, `results/pilots/ohr_dev_v2/selection_record.json`, selection digest
+`0d36bf39…`):
+
+| | `ohr_dev_v2` | Left in the train-only pool afterwards |
+| --- | ---: | ---: |
+| Questions | 414 | 208 |
+| Documents | 201 | 112 |
+| Pages | 416 | 245 |
+| Questions on multi-page documents | 128 | |
+| Questions whose evidence page has empty MinerU text | 56 | 33 |
+| Han-script questions | 62 | 25 |
+| Questions with evidence on several pages | 25 | 12 |
+
+Documents by type: academic 6, administration 13, finance 2, law 7, manual 11, news 52, textbook 110.
+
+**Role.** `ohr_dev_v2` is the confirmation sample. Development stays on `ohr_dev_v1`. Each pre-registered comparison
+runs on `ohr_dev_v2` once, and nobody inspects its outputs before the comparison is computed. The 208 train-only
+questions left in the pool are not used by any run.
+
+The tables below this point describe the 285-question proposal, not the frozen pilot.
 
 ## Why a second pilot
 
