@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "53e82886-9411-423a-90b4-17eb7111f1d1",
+  "request_id": "8c7e27554a707e052798bf61c04560c0",
+  "attempt": 1,
+  "attempt_id": "8c7e27554a707e052798bf61c04560c0-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBnKrJUfd1tmGZyCV6r9oAic4V6p",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1489,
+    "cached_input_tokens": 0,
+    "output_tokens": 5,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001514,
+  "input_bound_exceeded": false,
+  "latency_ms": 845,
+  "output_status": "ok",
+  "answer": "former presidents",
+  "abstained": false,
+  "provider_response": {
+    "text": "former presidents",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBnKrJUfd1tmGZyCV6r9oAic4V6p",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "former presidents",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485494,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 5,
+        "prompt_tokens": 1489,
+        "total_tokens": 1494,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1486
+        }
+      }
+    }
+  }
+}

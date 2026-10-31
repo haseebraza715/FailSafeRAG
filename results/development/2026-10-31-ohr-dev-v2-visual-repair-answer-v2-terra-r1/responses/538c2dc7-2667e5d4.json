@@ -1,0 +1,58 @@
+{
+  "question_id": "538c2dc7-2df1-49b7-98f5-e3810a6acd24",
+  "attempt_id": "538c2dc7-2667e5d4",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBz5HGI2nxZqvy303mjEJ1YyERBV",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4404,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004484,
+  "latency_ms": 1698,
+  "answer": "SpaceX moved to start carrying small payloads at a discounted price",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBz5HGI2nxZqvy303mjEJ1YyERBV",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "SpaceX moved to start carrying small payloads at a discounted price",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486223,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 4404,
+      "total_tokens": 4420,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

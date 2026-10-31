@@ -1,0 +1,58 @@
+{
+  "question_id": "527507dd-390c-4d7e-9c9d-a0d29087bf0e",
+  "attempt_id": "527507dd-3f461610",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBykkV7QBUfPlwosVYxfJIVrDaiU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4477,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004587,
+  "latency_ms": 1863,
+  "answer": "a drop in average temperatures in the Northern Hemisphere by roughly one degree Fahrenheit in the year that followed",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBykkV7QBUfPlwosVYxfJIVrDaiU",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "a drop in average temperatures in the Northern Hemisphere by roughly one degree Fahrenheit in the year that followed",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486202,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 22,
+      "prompt_tokens": 4477,
+      "total_tokens": 4499,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

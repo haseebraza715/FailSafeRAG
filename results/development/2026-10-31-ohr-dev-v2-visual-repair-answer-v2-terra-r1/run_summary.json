@@ -1,0 +1,20 @@
+{
+  "run_id": "2026-10-31-ohr-dev-v2-visual-repair-answer-v2-terra-r1",
+  "questions": 414,
+  "answered": 414,
+  "execution_failed": 0,
+  "blocked": [],
+  "questions_with_unknown_outcomes": 6,
+  "resent": 6,
+  "abstained": 22,
+  "images": 641,
+  "measured_cost_usd": 2.147518,
+  "reserved_cost_usd": 0.108866,
+  "returned_models": [
+    "gpt-6.1-terra"
+  ],
+  "returned_service_tiers": [
+    "default"
+  ],
+  "complete": true
+}

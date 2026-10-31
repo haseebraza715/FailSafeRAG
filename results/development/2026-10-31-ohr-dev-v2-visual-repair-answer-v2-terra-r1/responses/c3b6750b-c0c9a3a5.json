@@ -1,0 +1,58 @@
+{
+  "question_id": "c3b6750b-0435-4bbc-8e4e-6d2fe5e1a63e",
+  "attempt_id": "c3b6750b-c0c9a3a5",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC96bJ3xDBZJhqNfXUBjo1kvHjx2",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4664,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004809,
+  "latency_ms": 2404,
+  "answer": "最早实现联合国《千年发展目标》贫困人口减半指标，成为全球减贫的主要贡献者",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC96bJ3xDBZJhqNfXUBjo1kvHjx2",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "最早实现联合国《千年发展目标》贫困人口减半指标，成为全球减贫的主要贡献者",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486844,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 29,
+      "prompt_tokens": 4664,
+      "total_tokens": 4693,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c1754788-6d7f-462d-b5f1-932559df4212",
+  "request_id": "8b5aa0fb1c4f03ab87d81ff95ac261ac",
+  "attempt": 1,
+  "attempt_id": "8b5aa0fb1c4f03ab87d81ff95ac261ac-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBrSxhBzfl1oyPyI91iSLTTkE7Si",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1681,
+    "cached_input_tokens": 0,
+    "output_tokens": 49,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001926,
+  "input_bound_exceeded": false,
+  "latency_ms": 1443,
+  "output_status": "ok",
+  "answer": "放宽投资金融机构的资本地域限制，支持异地股东投资农村中小金融机构，支持符合条件的农村中小金融机构跨区域设立县域分支机构和新型农村金融机构",
+  "abstained": false,
+  "provider_response": {
+    "text": "放宽投资金融机构的资本地域限制，支持异地股东投资农村中小金融机构，支持符合条件的农村中小金融机构跨区域设立县域分支机构和新型农村金融机构",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBrSxhBzfl1oyPyI91iSLTTkE7Si",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "放宽投资金融机构的资本地域限制，支持异地股东投资农村中小金融机构，支持符合条件的农村中小金融机构跨区域设立县域分支机构和新型农村金融机构",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485750,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 49,
+        "prompt_tokens": 1681,
+        "total_tokens": 1730,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1678
+        }
+      }
+    }
+  }
+}

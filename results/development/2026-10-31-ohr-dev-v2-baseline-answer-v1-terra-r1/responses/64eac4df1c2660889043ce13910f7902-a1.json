@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8c10ed08-fa0d-4d09-9630-cdf427da8fcc",
+  "request_id": "64eac4df1c2660889043ce13910f7902",
+  "attempt": 1,
+  "attempt_id": "64eac4df1c2660889043ce13910f7902-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBpAKriNeWdvBVENNIrL3sUNqvQj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1566,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001696,
+  "input_bound_exceeded": false,
+  "latency_ms": 1158,
+  "output_status": "ok",
+  "answer": "learning disabilities, hyperactivity, difficulty with attention, speech and language delays, low IQ, poor reasoning and judgment skills",
+  "abstained": false,
+  "provider_response": {
+    "text": "learning disabilities, hyperactivity, difficulty with attention, speech and language delays, low IQ, poor reasoning and judgment skills",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBpAKriNeWdvBVENNIrL3sUNqvQj",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "learning disabilities, hyperactivity, difficulty with attention, speech and language delays, low IQ, poor reasoning and judgment skills",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485608,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 1566,
+        "total_tokens": 1592,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1563
+        }
+      }
+    }
+  }
+}

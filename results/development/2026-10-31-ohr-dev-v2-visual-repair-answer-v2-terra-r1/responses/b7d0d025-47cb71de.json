@@ -1,0 +1,58 @@
+{
+  "question_id": "b7d0d025-fb23-46f6-8e13-b157069e225c",
+  "attempt_id": "b7d0d025-47cb71de",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC7WCRXKROMe8WV7hStnY8HpM6hF",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 7218,
+    "cached_input_tokens": 0,
+    "output_tokens": 47,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.007453,
+  "latency_ms": 2188,
+  "answer": "The crude birth rate fell from 12.6 to 8.6 per 1,000 population, while the total fertility rate rose from 1,127 to 1,235 per 1,000 women",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC7WCRXKROMe8WV7hStnY8HpM6hF",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The crude birth rate fell from 12.6 to 8.6 per 1,000 population, while the total fertility rate rose from 1,127 to 1,235 per 1,000 women",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486746,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 47,
+      "prompt_tokens": 7218,
+      "total_tokens": 7265,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

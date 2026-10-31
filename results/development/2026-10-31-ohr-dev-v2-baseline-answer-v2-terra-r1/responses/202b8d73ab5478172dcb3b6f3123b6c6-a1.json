@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "71a70f9c-d185-4d1c-ab71-8df2e0c9cddb",
+  "request_id": "202b8d73ab5478172dcb3b6f3123b6c6",
+  "attempt": 1,
+  "attempt_id": "202b8d73ab5478172dcb3b6f3123b6c6-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBhYIMT35ayoBWdjzor2TYoK50mM",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1961,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002116,
+  "input_bound_exceeded": false,
+  "latency_ms": 1424,
+  "output_status": "ok",
+  "answer": "For every \\(R>0\\), \\((nR)^n\\leq M\\), and the left hand side is unbounded",
+  "abstained": false,
+  "provider_response": {
+    "text": "For every \\(R>0\\), \\((nR)^n\\leq M\\), and the left hand side is unbounded",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBhYIMT35ayoBWdjzor2TYoK50mM",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "For every \\(R>0\\), \\((nR)^n\\leq M\\), and the left hand side is unbounded",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485136,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 31,
+        "prompt_tokens": 1961,
+        "total_tokens": 1992,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1958
+        }
+      }
+    }
+  }
+}

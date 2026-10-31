@@ -1,0 +1,58 @@
+{
+  "question_id": "b4275c48-9ebf-4683-939f-aef5d3cce919",
+  "attempt_id": "b4275c48-c347b37b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC6ZKDWeSL1VwaBTn5SCO5WJ21FJ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8724,
+    "cached_input_tokens": 0,
+    "output_tokens": 24,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008844,
+  "latency_ms": 1910,
+  "answer": "Page 2, line 28, the compound word “sprocket-wheel” should read gear-wheel",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC6ZKDWeSL1VwaBTn5SCO5WJ21FJ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Page 2, line 28, the compound word “sprocket-wheel” should read gear-wheel",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486687,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 24,
+      "prompt_tokens": 8724,
+      "total_tokens": 8748,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

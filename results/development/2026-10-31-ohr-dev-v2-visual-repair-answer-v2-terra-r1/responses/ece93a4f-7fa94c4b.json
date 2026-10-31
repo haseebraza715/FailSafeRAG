@@ -1,0 +1,58 @@
+{
+  "question_id": "ece93a4f-bbf3-4d86-a001-cb89cf9b4588",
+  "attempt_id": "ece93a4f-7fa94c4b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfCArWUFgEob1k1Litf8AFhqSdZKX",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1474,
+    "cached_input_tokens": 0,
+    "output_tokens": 85,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001899,
+  "latency_ms": 2349,
+  "answer": "这种题型不仅要求考生读懂文章，还要求他们用自己的语言简练地回答问题；既考查了阅读理解能力，也考查了英语表达能力和概括能力，另外，对回答的拼写、语法的正确性的要求使做简答题有一定难度，加上解答几乎没有猜题技巧可言，做题难度更大",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfCArWUFgEob1k1Litf8AFhqSdZKX",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "这种题型不仅要求考生读懂文章，还要求他们用自己的语言简练地回答问题；既考查了阅读理解能力，也考查了英语表达能力和概括能力，另外，对回答的拼写、语法的正确性的要求使做简答题有一定难度，加上解答几乎没有猜题技巧可言，做题难度更大",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486953,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 85,
+      "prompt_tokens": 1474,
+      "total_tokens": 1559,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

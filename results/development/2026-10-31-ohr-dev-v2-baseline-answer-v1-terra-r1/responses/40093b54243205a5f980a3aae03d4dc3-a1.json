@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b7d7800b-635c-46d5-8b26-5a45bacfe19f",
+  "request_id": "40093b54243205a5f980a3aae03d4dc3",
+  "attempt": 1,
+  "attempt_id": "40093b54243205a5f980a3aae03d4dc3-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBr1yl9jeT9EwDFg2IFmXw9tcObg",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1767,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001867,
+  "input_bound_exceeded": false,
+  "latency_ms": 1364,
+  "output_status": "ok",
+  "answer": "September 20, 1912, and December 22, 1913.",
+  "abstained": false,
+  "provider_response": {
+    "text": "September 20, 1912, and December 22, 1913.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBr1yl9jeT9EwDFg2IFmXw9tcObg",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "September 20, 1912, and December 22, 1913.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485723,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1767,
+        "total_tokens": 1787,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1764
+        }
+      }
+    }
+  }
+}

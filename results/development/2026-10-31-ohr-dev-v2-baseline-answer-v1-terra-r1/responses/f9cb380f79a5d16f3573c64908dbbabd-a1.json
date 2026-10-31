@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "768ea5ba-93ca-4017-9063-937670231287",
+  "request_id": "f9cb380f79a5d16f3573c64908dbbabd",
+  "attempt": 1,
+  "attempt_id": "f9cb380f79a5d16f3573c64908dbbabd-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBoZ9rtpLsA60lcC5F507hk2DnXW",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1370,
+    "cached_input_tokens": 0,
+    "output_tokens": 52,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00163,
+  "input_bound_exceeded": false,
+  "latency_ms": 1779,
+  "output_status": "ok",
+  "answer": "\\[\nB_{k+1}=B_k-\\frac{B_ks_ks_k^TB_k}{s_k^TB_ks_k}+\\frac{r_kr_k^T}{s_k^Tr_k}.\n\\]",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\[\nB_{k+1}=B_k-\\frac{B_ks_ks_k^TB_k}{s_k^TB_ks_k}+\\frac{r_kr_k^T}{s_k^Tr_k}.\n\\]",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBoZ9rtpLsA60lcC5F507hk2DnXW",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\[\nB_{k+1}=B_k-\\frac{B_ks_ks_k^TB_k}{s_k^TB_ks_k}+\\frac{r_kr_k^T}{s_k^Tr_k}.\n\\]",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485571,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 52,
+        "prompt_tokens": 1370,
+        "total_tokens": 1422,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1367
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "8c0d37f0-25e3-4594-a4da-eb8f2be8a2b6",
+  "attempt_id": "8c0d37f0-1c4340d3",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC1nTshYtGYSIPxxMNa2eA2TGwAr",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6569,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006684,
+  "latency_ms": 2400,
+  "answer": "Increasing carbon dioxide and other heat-trapping greenhouse gases, declining sulfate emissions, natural cycles unlikely to persist",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC1nTshYtGYSIPxxMNa2eA2TGwAr",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Increasing carbon dioxide and other heat-trapping greenhouse gases, declining sulfate emissions, natural cycles unlikely to persist",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486391,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 23,
+      "prompt_tokens": 6569,
+      "total_tokens": 6592,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "6aafb17e-f4b3-46d9-aae3-d68a6ce1c840",
+  "attempt_id": "6aafb17e-08a77dc2",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBzyYNPXBOMCLa36oBn7hjsIRGBa",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3844,
+    "cached_input_tokens": 0,
+    "output_tokens": 43,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004059,
+  "latency_ms": 1964,
+  "answer": "\\((x,y)\\mapsto(\\bar{x},y)\\) on both \\(D^4\\times S^3\\) and \\(-D^4\\times S^3\\)",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBzyYNPXBOMCLa36oBn7hjsIRGBa",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "\\((x,y)\\mapsto(\\bar{x},y)\\) on both \\(D^4\\times S^3\\) and \\(-D^4\\times S^3\\)",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486278,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 43,
+      "prompt_tokens": 3844,
+      "total_tokens": 3887,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

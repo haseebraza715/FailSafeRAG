@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "51abf5e5-cb77-4e24-95eb-3a3de2014a45",
+  "request_id": "5f3868fe97d368b560350770d0207b2e",
+  "attempt": 1,
+  "attempt_id": "5f3868fe97d368b560350770d0207b2e-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBgGOAwPLUlM1j8oqlRkXyq3KwqN",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1661,
+    "cached_input_tokens": 0,
+    "output_tokens": 6,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001691,
+  "input_bound_exceeded": false,
+  "latency_ms": 894,
+  "output_status": "ok",
+  "answer": "nervous",
+  "abstained": false,
+  "provider_response": {
+    "text": "nervous",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBgGOAwPLUlM1j8oqlRkXyq3KwqN",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "nervous",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485056,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 6,
+        "prompt_tokens": 1661,
+        "total_tokens": 1667,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1658
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "8c10ed08-fa0d-4d09-9630-cdf427da8fcc",
+  "attempt_id": "8c10ed08-3161b096",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC1qEMZ4kWFCeqQo0J1jtRWTtQiC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6756,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006886,
+  "latency_ms": 1952,
+  "answer": "learning disabilities, hyperactivity, difficulty with attention, speech and language delays, low IQ, poor reasoning and judgment skills",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC1qEMZ4kWFCeqQo0J1jtRWTtQiC",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "learning disabilities, hyperactivity, difficulty with attention, speech and language delays, low IQ, poor reasoning and judgment skills",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486394,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 26,
+      "prompt_tokens": 6756,
+      "total_tokens": 6782,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "run_id": "2026-10-31-ohr-dev-v2-visual-repair-answer-v2-terra-r1",
+  "kind": "development_pilot",
+  "repair": "invoke_vlm",
+  "pilot_id": "ohr_dev_v2",
+  "runtime_manifest_sha256": "dd85465dcafa07a5ba113e06724e3ba4a9f05db90f201ff652a239e1769d4efe",
+  "baseline_run": "2026-10-31-ohr-dev-v2-baseline-answer-v2-terra-r1",
+  "baseline_requests_sha256": "54a8e0ef3323385bac2e70f4191fc9beae739ea51c7e879ae260764ab9f052cf",
+  "template_id": "faar-answer-v2",
+  "template_sha256": "61968cd21cb3f9a0a6c0c90d734d12b872537df65509f1016a795d981fa25177",
+  "image_note": "\n\nThe user message also contains images of document pages. The images are evidence too. Read them together with any text blocks, and answer from what the page shows.",
+  "no_text_user_template": "Question:\n{question}\n\nNo text evidence is available. The evidence is the page image(s) below.\n\nReply with the shortest exact answer only. If the evidence lacks the answer, reply NO_ANSWER.",
+  "page_policy": "retrieved-then-gaps-v1",
+  "image_budget": 3,
+  "gate": "abstain-or-ocr-gap-v1",
+  "render": {
+    "dpi": 150,
+    "long_side_max": 2048,
+    "format": "JPEG",
+    "quality": 90,
+    "detail": "high",
+    "archive_sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783"
+  },
+  "image_token_bound": 8000,
+  "provider_config_sha256": "35ea0799e1931fe0167224b5b05483f8881c91b3d1d0f3055c72910906b3ae6e",
+  "resend_rule": "one-resend-connection-lost-v1",
+  "max_consecutive_failures": 3,
+  "forbidden_path_parts": [
+    "evaluation_manifest",
+    "retrieval_base/gt",
+    "scores.jsonl",
+    "score_summary"
+  ],
+  "requests_sha256": "8f787bba22ff051eaaf8ab8b02df6e0f2448ce23bd1755ca90e340be1e197c61",
+  "code": {
+    "scripts/experiments/run_visual_repair.py": "4f77a23311e16a46f31213379d3f03eb68642c237747ecfa5c5281306cab34ca",
+    "src/faar/visual_repair.py": "58131c38fadfd314cdf19b21416b9c84e8ca7480c2880928f8b3afde9d3d5055",
+    "src/faar/answer_prompt.py": "86012464f47f181fee471546fafe5a9321f523e044d81b4807dca110b7c670e7",
+    "src/faar/answer_providers.py": "0b2c45f42313444b11e9812d7d9c97ca39d2712632a724702253e6544b990d1d",
+    "src/faar/request_budget.py": "e036d41cc21fabbd647152bd9da75a5be8ad26eed3e632c92d3990e65c4e09d3"
+  }
+}

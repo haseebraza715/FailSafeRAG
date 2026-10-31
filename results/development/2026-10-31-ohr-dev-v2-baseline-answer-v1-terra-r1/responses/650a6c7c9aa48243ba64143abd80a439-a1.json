@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "6f94ed84-4cb0-4f1b-b6eb-3b81b26d1e8a",
+  "request_id": "650a6c7c9aa48243ba64143abd80a439",
+  "attempt": 1,
+  "attempt_id": "650a6c7c9aa48243ba64143abd80a439-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBoBX0kThDISpYF2w6sYD54M5xxt",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1169,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001284,
+  "input_bound_exceeded": false,
+  "latency_ms": 1100,
+  "output_status": "ok",
+  "answer": "\\(f(4)=f(3)+f(2)=3+2=5\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(f(4)=f(3)+f(2)=3+2=5\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBoBX0kThDISpYF2w6sYD54M5xxt",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(f(4)=f(3)+f(2)=3+2=5\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485547,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1169,
+        "total_tokens": 1192,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1166
+        }
+      }
+    }
+  }
+}

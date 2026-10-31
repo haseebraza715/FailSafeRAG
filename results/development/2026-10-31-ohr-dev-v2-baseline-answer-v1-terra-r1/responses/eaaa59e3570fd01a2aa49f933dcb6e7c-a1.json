@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c40704f6-726d-485e-b97c-61fb241e840c",
+  "request_id": "eaaa59e3570fd01a2aa49f933dcb6e7c",
+  "attempt": 1,
+  "attempt_id": "eaaa59e3570fd01a2aa49f933dcb6e7c-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBs0cGjnp25zwbvD7OO5XRDsk2Mu",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1766,
+    "cached_input_tokens": 0,
+    "output_tokens": 33,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001931,
+  "input_bound_exceeded": false,
+  "latency_ms": 1358,
+  "output_status": "ok",
+  "answer": "工作在基层，吃住在村屯，面对面为农民提供技术指导服务，帮助农民解决遇到的实际问题。",
+  "abstained": false,
+  "provider_response": {
+    "text": "工作在基层，吃住在村屯，面对面为农民提供技术指导服务，帮助农民解决遇到的实际问题。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBs0cGjnp25zwbvD7OO5XRDsk2Mu",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "工作在基层，吃住在村屯，面对面为农民提供技术指导服务，帮助农民解决遇到的实际问题。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485784,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 33,
+        "prompt_tokens": 1766,
+        "total_tokens": 1799,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1763
+        }
+      }
+    }
+  }
+}

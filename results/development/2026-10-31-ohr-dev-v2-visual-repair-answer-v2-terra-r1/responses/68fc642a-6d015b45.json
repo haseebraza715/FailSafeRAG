@@ -1,0 +1,58 @@
+{
+  "question_id": "68fc642a-f6f2-4926-8e60-678b82f4b48a",
+  "attempt_id": "68fc642a-6d015b45",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBzutmAFR0t4Xj37novcEqM5yuT6",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4336,
+    "cached_input_tokens": 0,
+    "output_tokens": 39,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004531,
+  "latency_ms": 1762,
+  "answer": "$F_m\\subseteq K$ is finite and $K\\subseteq\\bigcup_{x\\in F_m}B(x,\\frac{1}{m})$",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBzutmAFR0t4Xj37novcEqM5yuT6",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "$F_m\\subseteq K$ is finite and $K\\subseteq\\bigcup_{x\\in F_m}B(x,\\frac{1}{m})$",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486274,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 39,
+      "prompt_tokens": 4336,
+      "total_tokens": 4375,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

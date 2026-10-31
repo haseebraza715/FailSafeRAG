@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b7a65a9a-c96d-4161-8d7b-a6cfa47356b3",
+  "request_id": "1ce53c57d5026cb58f00fde50ad68984",
+  "attempt": 1,
+  "attempt_id": "1ce53c57d5026cb58f00fde50ad68984-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBkIOGwXxHgS38tx2O1XB8WV1Rly",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1449,
+    "cached_input_tokens": 0,
+    "output_tokens": 36,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001629,
+  "input_bound_exceeded": false,
+  "latency_ms": 1303,
+  "output_status": "ok",
+  "answer": "Water level data, surface water temperature data; warmer surface water temperatures have contributed to lower water levels by increasing rates of evaporation and causing lake ice to form later than usual",
+  "abstained": false,
+  "provider_response": {
+    "text": "Water level data, surface water temperature data; warmer surface water temperatures have contributed to lower water levels by increasing rates of evaporation and causing lake ice to form later than usual",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBkIOGwXxHgS38tx2O1XB8WV1Rly",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Water level data, surface water temperature data; warmer surface water temperatures have contributed to lower water levels by increasing rates of evaporation and causing lake ice to form later than usual",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485306,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 36,
+        "prompt_tokens": 1449,
+        "total_tokens": 1485,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1446
+        }
+      }
+    }
+  }
+}

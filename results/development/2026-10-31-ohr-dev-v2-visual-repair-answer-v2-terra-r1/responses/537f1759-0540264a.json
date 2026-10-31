@@ -1,0 +1,58 @@
+{
+  "question_id": "537f1759-1539-4b6e-8bc0-e5bffc989d4a",
+  "attempt_id": "537f1759-0540264a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBz370mi0P7Qcn82ZAuojXGHa6F3",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4441,
+    "cached_input_tokens": 0,
+    "output_tokens": 46,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004671,
+  "latency_ms": 2139,
+  "answer": "SpaceX; using his vast power and influence to try to keep emerging rivals at bay, his competitors say, even as his success is prompting qualms within the government about such heavy reliance on a mercurial billionaire",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBz370mi0P7Qcn82ZAuojXGHa6F3",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "SpaceX; using his vast power and influence to try to keep emerging rivals at bay, his competitors say, even as his success is prompting qualms within the government about such heavy reliance on a mercurial billionaire",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486221,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 46,
+      "prompt_tokens": 4441,
+      "total_tokens": 4487,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

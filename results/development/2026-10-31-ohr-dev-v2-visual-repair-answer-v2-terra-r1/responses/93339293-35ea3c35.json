@@ -1,0 +1,58 @@
+{
+  "question_id": "93339293-7a04-40d5-9997-e4bf209fd447",
+  "attempt_id": "93339293-35ea3c35",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC2XaEo3CPcVD67myKIuSO8OwVUE",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9089,
+    "cached_input_tokens": 0,
+    "output_tokens": 19,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009184,
+  "latency_ms": 36849,
+  "answer": "Patuxent River, Walker Branch, Crow Branch, B & O railroad track",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC2XaEo3CPcVD67myKIuSO8OwVUE",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Patuxent River, Walker Branch, Crow Branch, B & O railroad track",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486437,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 19,
+      "prompt_tokens": 9089,
+      "total_tokens": 9108,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

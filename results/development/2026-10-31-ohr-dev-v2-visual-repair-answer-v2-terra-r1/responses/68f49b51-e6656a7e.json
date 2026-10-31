@@ -1,0 +1,58 @@
+{
+  "question_id": "68f49b51-f3fa-4613-90ed-41f464aba3f6",
+  "attempt_id": "68f49b51-e6656a7e",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfCBA12aCpJkTcDn4O7bhYIC33zqx",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4335,
+    "cached_input_tokens": 0,
+    "output_tokens": 52,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004595,
+  "latency_ms": 1866,
+  "answer": "The Dirac or evaluation functional at \\(x\\): \\(\\delta_x:C(K)\\to\\mathbb C\\), \\(\\langle f,\\delta_x\\rangle:=f(x)\\) for \\(f\\in C(K)\\)",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfCBA12aCpJkTcDn4O7bhYIC33zqx",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The Dirac or evaluation functional at \\(x\\): \\(\\delta_x:C(K)\\to\\mathbb C\\), \\(\\langle f,\\delta_x\\rangle:=f(x)\\) for \\(f\\in C(K)\\)",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486972,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 52,
+      "prompt_tokens": 4335,
+      "total_tokens": 4387,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

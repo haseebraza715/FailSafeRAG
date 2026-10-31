@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "7689350e-a7f1-466f-881f-db407ada2270",
+  "request_id": "ef08ad2fb0751bfd12ae5dee3f7e9919",
+  "attempt": 1,
+  "attempt_id": "ef08ad2fb0751bfd12ae5dee3f7e9919-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBoYF0uFVwE8sNLSboulJBM7K9uY",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1364,
+    "cached_input_tokens": 0,
+    "output_tokens": 37,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001549,
+  "input_bound_exceeded": false,
+  "latency_ms": 1113,
+  "output_status": "ok",
+  "answer": "\\(\\displaystyle \\theta_k=\\frac{0.8s_k^TB_ks_k}{s_k^TB_ks_k-s_k^Ty_k}\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(\\displaystyle \\theta_k=\\frac{0.8s_k^TB_ks_k}{s_k^TB_ks_k-s_k^Ty_k}\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBoYF0uFVwE8sNLSboulJBM7K9uY",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(\\displaystyle \\theta_k=\\frac{0.8s_k^TB_ks_k}{s_k^TB_ks_k-s_k^Ty_k}\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485570,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 37,
+        "prompt_tokens": 1364,
+        "total_tokens": 1401,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1361
+        }
+      }
+    }
+  }
+}

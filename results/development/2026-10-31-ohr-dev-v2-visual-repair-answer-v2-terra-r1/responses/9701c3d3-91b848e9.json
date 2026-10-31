@@ -1,0 +1,58 @@
+{
+  "question_id": "9701c3d3-7f79-4c6b-a8b6-65ac6a48e5b4",
+  "attempt_id": "9701c3d3-91b848e9",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC3Y9ZstOFEh43hQtgSTjBgK1kxS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8760,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00886,
+  "latency_ms": 1590,
+  "answer": "2000 West Park Drive, Suite 100, Westborough, MA 01581",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC3Y9ZstOFEh43hQtgSTjBgK1kxS",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "2000 West Park Drive, Suite 100, Westborough, MA 01581",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486500,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 20,
+      "prompt_tokens": 8760,
+      "total_tokens": 8780,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

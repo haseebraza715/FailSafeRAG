@@ -1,0 +1,58 @@
+{
+  "question_id": "9ad42520-f5b4-49e1-9d4f-d1f303b160ea",
+  "attempt_id": "9ad42520-d2d570aa",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC40PVUUvCi6imLvky9wj32G3vUr",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8954,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009079,
+  "latency_ms": 1916,
+  "answer": "Lower water levels in the Great Lakes forced ships to reduce their cargo tonnage by 5 to 8 percent",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC40PVUUvCi6imLvky9wj32G3vUr",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Lower water levels in the Great Lakes forced ships to reduce their cargo tonnage by 5 to 8 percent",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486528,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 25,
+      "prompt_tokens": 8954,
+      "total_tokens": 8979,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "75fc1b10-b8d1-4539-8562-8912bdf2b5a1",
+  "request_id": "c3b9d9e3eff648da010baee429bd5d79",
+  "attempt": 1,
+  "attempt_id": "c3b9d9e3eff648da010baee429bd5d79-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBoQro9rRrJ0kWwsJfQpvNjj4g1d",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1519,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001664,
+  "input_bound_exceeded": false,
+  "latency_ms": 1314,
+  "output_status": "ok",
+  "answer": "\\(e_i^2=-1,\\quad e_i e_j=-e_j e_i\\quad(i\\ne j).\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(e_i^2=-1,\\quad e_i e_j=-e_j e_i\\quad(i\\ne j).\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBoQro9rRrJ0kWwsJfQpvNjj4g1d",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(e_i^2=-1,\\quad e_i e_j=-e_j e_i\\quad(i\\ne j).\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485562,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 1519,
+        "total_tokens": 1548,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1516
+        }
+      }
+    }
+  }
+}

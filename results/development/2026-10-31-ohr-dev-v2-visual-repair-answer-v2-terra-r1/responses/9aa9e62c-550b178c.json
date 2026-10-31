@@ -1,0 +1,58 @@
+{
+  "question_id": "9aa9e62c-8d34-499b-8bfe-a301db93c0f3",
+  "attempt_id": "9aa9e62c-550b178c",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC3nON2WgORaKmyr7wwJco7xBCpc",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9161,
+    "cached_input_tokens": 0,
+    "output_tokens": 19,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009256,
+  "latency_ms": 2913,
+  "answer": "reversed as to battery conviction and cause remanded for new trial on that charge",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC3nON2WgORaKmyr7wwJco7xBCpc",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "reversed as to battery conviction and cause remanded for new trial on that charge",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486515,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 19,
+      "prompt_tokens": 9161,
+      "total_tokens": 9180,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "65a1158d-9aa9-411e-bded-c9b278d2e177",
+  "request_id": "beb46c14fbfeee6574c82571c064243b",
+  "attempt": 1,
+  "attempt_id": "beb46c14fbfeee6574c82571c064243b-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBgpoZGIqI3BkQM0m6cKLJ12gK9c",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2210,
+    "cached_input_tokens": 0,
+    "output_tokens": 34,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00238,
+  "input_bound_exceeded": false,
+  "latency_ms": 1323,
+  "output_status": "ok",
+  "answer": "\\(V_{T}\\geq e^{rT}V_{0}\\quad(\\mathbb{P}\\text{-a.s.})\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(V_{T}\\geq e^{rT}V_{0}\\quad(\\mathbb{P}\\text{-a.s.})\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBgpoZGIqI3BkQM0m6cKLJ12gK9c",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(V_{T}\\geq e^{rT}V_{0}\\quad(\\mathbb{P}\\text{-a.s.})\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485091,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 34,
+        "prompt_tokens": 2210,
+        "total_tokens": 2244,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2207
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "95999d25-7b4b-47fe-9561-33371177fc2c",
+  "attempt_id": "95999d25-3162f59e",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC3OboWAjjZkTgmSozNqXvFljYXQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9607,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009697,
+  "latency_ms": 1712,
+  "answer": "extended counselling and EAP support, check-ins, support for accommodations and leaves",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC3OboWAjjZkTgmSozNqXvFljYXQ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "extended counselling and EAP support, check-ins, support for accommodations and leaves",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486490,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 18,
+      "prompt_tokens": 9607,
+      "total_tokens": 9625,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b574b092-c898-4097-af2d-806db9c39562",
+  "request_id": "184a53bd3144875b012ffe4bd16b4a99",
+  "attempt": 1,
+  "attempt_id": "184a53bd3144875b012ffe4bd16b4a99-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBkAQ6eYCRGL2N3p0C9kyXkbfVPj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1447,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001562,
+  "input_bound_exceeded": false,
+  "latency_ms": 1475,
+  "output_status": "ok",
+  "answer": "natural year-to-year variability and other factors such as human use and wastewater discharges can influence water temperatures",
+  "abstained": false,
+  "provider_response": {
+    "text": "natural year-to-year variability and other factors such as human use and wastewater discharges can influence water temperatures",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBkAQ6eYCRGL2N3p0C9kyXkbfVPj",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "natural year-to-year variability and other factors such as human use and wastewater discharges can influence water temperatures",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485298,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1447,
+        "total_tokens": 1470,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1444
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "b7a65a9a-c96d-4161-8d7b-a6cfa47356b3",
+  "attempt_id": "b7a65a9a-18a9915b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC7Pj72aHHHSDcfwzA7wWr2rd3V6",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8986,
+    "cached_input_tokens": 0,
+    "output_tokens": 45,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009211,
+  "latency_ms": 2067,
+  "answer": "Water level data and satellite surface water temperature data: water levels have fluctuated since 1860 and appear to have declined for most lakes in recent decades; average surface water temperatures have increased slightly since 1995",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC7Pj72aHHHSDcfwzA7wWr2rd3V6",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Water level data and satellite surface water temperature data: water levels have fluctuated since 1860 and appear to have declined for most lakes in recent decades; average surface water temperatures have increased slightly since 1995",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486739,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 45,
+      "prompt_tokens": 8986,
+      "total_tokens": 9031,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

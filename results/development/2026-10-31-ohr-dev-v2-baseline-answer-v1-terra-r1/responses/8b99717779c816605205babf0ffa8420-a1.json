@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "91bb6b8d-0a4e-473a-8c77-9145ffa3cb2f",
+  "request_id": "8b99717779c816605205babf0ffa8420",
+  "attempt": 1,
+  "attempt_id": "8b99717779c816605205babf0ffa8420-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBpTg77xdhz30OWxyIdgCQWrJiBT",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1548,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001608,
+  "input_bound_exceeded": false,
+  "latency_ms": 1015,
+  "output_status": "ok",
+  "answer": "Verification Is Required For All \"Transfer Instructions\"",
+  "abstained": false,
+  "provider_response": {
+    "text": "Verification Is Required For All \"Transfer Instructions\"",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBpTg77xdhz30OWxyIdgCQWrJiBT",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Verification Is Required For All \"Transfer Instructions\"",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485627,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1548,
+        "total_tokens": 1560,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1545
+        }
+      }
+    }
+  }
+}

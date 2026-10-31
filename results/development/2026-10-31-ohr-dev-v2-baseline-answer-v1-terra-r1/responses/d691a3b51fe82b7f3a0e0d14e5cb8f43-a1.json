@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9b1927e4-95ff-4e7d-b2c2-0fbf585c7ad6",
+  "request_id": "d691a3b51fe82b7f3a0e0d14e5cb8f43",
+  "attempt": 1,
+  "attempt_id": "d691a3b51fe82b7f3a0e0d14e5cb8f43-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBq8qL5V1dFIGCvC1tK7m3984Mo8",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1540,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00167,
+  "input_bound_exceeded": false,
+  "latency_ms": 1280,
+  "output_status": "ok",
+  "answer": "Political propaganda, military applications, advancement of basic science and knowledge of the earth, the solar system, and the universe",
+  "abstained": false,
+  "provider_response": {
+    "text": "Political propaganda, military applications, advancement of basic science and knowledge of the earth, the solar system, and the universe",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBq8qL5V1dFIGCvC1tK7m3984Mo8",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Political propaganda, military applications, advancement of basic science and knowledge of the earth, the solar system, and the universe",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485668,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 1540,
+        "total_tokens": 1566,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1537
+        }
+      }
+    }
+  }
+}

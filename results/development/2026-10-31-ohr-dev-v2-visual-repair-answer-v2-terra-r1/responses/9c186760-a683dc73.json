@@ -1,0 +1,58 @@
+{
+  "question_id": "9c186760-34c9-43f5-9565-2825761fa15a",
+  "attempt_id": "9c186760-a683dc73",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC4GRhZ3VH51Jo1WtCYpX5IzjbLV",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 10148,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.010228,
+  "latency_ms": 2007,
+  "answer": "4 Choke Cherry Road, Rockville, MD 20850",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC4GRhZ3VH51Jo1WtCYpX5IzjbLV",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "4 Choke Cherry Road, Rockville, MD 20850",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486544,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 10148,
+      "total_tokens": 10164,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

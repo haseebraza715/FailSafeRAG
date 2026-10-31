@@ -1,0 +1,58 @@
+{
+  "question_id": "71a48a01-61c0-4f4c-83ce-962b456f7d31",
+  "attempt_id": "71a48a01-f20325e5",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC0VHszquim5ol6BP8Q74SL8Uj7D",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4873,
+    "cached_input_tokens": 0,
+    "output_tokens": 55,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005148,
+  "latency_ms": 1843,
+  "answer": "\\(\\displaystyle F(z)=\\int_C\\left(\\frac{1}{2\\pi i}\\int_\\alpha^\\beta\\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}\\)",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC0VHszquim5ol6BP8Q74SL8Uj7D",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "\\(\\displaystyle F(z)=\\int_C\\left(\\frac{1}{2\\pi i}\\int_\\alpha^\\beta\\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}\\)",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486311,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 55,
+      "prompt_tokens": 4873,
+      "total_tokens": 4928,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

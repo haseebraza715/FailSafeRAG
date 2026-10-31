@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3b9b3ac-d4ef-4d3e-8b8f-f2b49ddd6df0",
+  "request_id": "0e79e183016ec387385442dd22d60637",
+  "attempt": 1,
+  "attempt_id": "0e79e183016ec387385442dd22d60637-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBrkXbA4rcNcuwOOJtnnNx4pRhRp",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1705,
+    "cached_input_tokens": 0,
+    "output_tokens": 10,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001755,
+  "input_bound_exceeded": false,
+  "latency_ms": 944,
+  "output_status": "ok",
+  "answer": "上海、重庆、成都、深圳",
+  "abstained": false,
+  "provider_response": {
+    "text": "上海、重庆、成都、深圳",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBrkXbA4rcNcuwOOJtnnNx4pRhRp",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "上海、重庆、成都、深圳",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485768,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1705,
+        "total_tokens": 1715,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1702
+        }
+      }
+    }
+  }
+}

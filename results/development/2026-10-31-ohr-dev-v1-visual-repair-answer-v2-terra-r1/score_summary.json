@@ -1,0 +1,7 @@
+{
+  "run_id": "2026-10-31-ohr-dev-v1-visual-repair-answer-v2-terra-r1",
+  "questions": 70,
+  "em": 0.38571428571428573,
+  "f1": 0.6484951398627371,
+  "execution_failed": 0
+}

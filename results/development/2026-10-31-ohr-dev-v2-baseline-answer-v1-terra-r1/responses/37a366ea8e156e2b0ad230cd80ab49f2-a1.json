@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "53e83663-9c14-440d-9b2d-81ccc602bd20",
+  "request_id": "37a366ea8e156e2b0ad230cd80ab49f2",
+  "attempt": 1,
+  "attempt_id": "37a366ea8e156e2b0ad230cd80ab49f2-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBnKj2W92zZiW3DQGOjFJumCoV5d",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1556,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001601,
+  "input_bound_exceeded": false,
+  "latency_ms": 1129,
+  "output_status": "ok",
+  "answer": "Justice Sonia Sotomayor",
+  "abstained": false,
+  "provider_response": {
+    "text": "Justice Sonia Sotomayor",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBnKj2W92zZiW3DQGOjFJumCoV5d",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Justice Sonia Sotomayor",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485494,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1556,
+        "total_tokens": 1565,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1553
+        }
+      }
+    }
+  }
+}

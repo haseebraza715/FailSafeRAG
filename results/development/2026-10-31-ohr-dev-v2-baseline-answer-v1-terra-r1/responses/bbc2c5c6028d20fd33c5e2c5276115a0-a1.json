@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "237f91cb-cc28-4e3d-9db0-2d929f141ca2",
+  "request_id": "bbc2c5c6028d20fd33c5e2c5276115a0",
+  "attempt": 1,
+  "attempt_id": "bbc2c5c6028d20fd33c5e2c5276115a0-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBm6aIWP4kyg4ZJEPdqrFe4W5L5B",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1634,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001719,
+  "input_bound_exceeded": false,
+  "latency_ms": 1072,
+  "output_status": "ok",
+  "answer": "Sections 6.3, 7, 9 and 10",
+  "abstained": false,
+  "provider_response": {
+    "text": "Sections 6.3, 7, 9 and 10",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBm6aIWP4kyg4ZJEPdqrFe4W5L5B",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Sections 6.3, 7, 9 and 10",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485418,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1634,
+        "total_tokens": 1651,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1631
+        }
+      }
+    }
+  }
+}

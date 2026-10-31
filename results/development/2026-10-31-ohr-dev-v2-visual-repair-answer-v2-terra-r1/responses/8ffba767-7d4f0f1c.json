@@ -1,0 +1,58 @@
+{
+  "question_id": "8ffba767-55ac-45d3-b043-06bfe5d23032",
+  "attempt_id": "8ffba767-7d4f0f1c",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC2CzQAL0sYdv7LVyE3SvoOM79Sq",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4285,
+    "cached_input_tokens": 0,
+    "output_tokens": 19,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00438,
+  "latency_ms": 1673,
+  "answer": "infection, wound-poisoning, the operation completely fail, the patient might die",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC2CzQAL0sYdv7LVyE3SvoOM79Sq",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "infection, wound-poisoning, the operation completely fail, the patient might die",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486416,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 19,
+      "prompt_tokens": 4285,
+      "total_tokens": 4304,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

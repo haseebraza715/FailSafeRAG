@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "50c72ce8-55e4-4fd2-8977-7baed187a17c",
+  "request_id": "5a63470080905b6718e8789827677ffd",
+  "attempt": 1,
+  "attempt_id": "5a63470080905b6718e8789827677ffd-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBmsqZK0dp5wDIv8vBo1XGLcPCJB",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1527,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001572,
+  "input_bound_exceeded": false,
+  "latency_ms": 872,
+  "output_status": "ok",
+  "answer": "Judge Amit P. Mehta",
+  "abstained": false,
+  "provider_response": {
+    "text": "Judge Amit P. Mehta",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBmsqZK0dp5wDIv8vBo1XGLcPCJB",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Judge Amit P. Mehta",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485466,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1527,
+        "total_tokens": 1536,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1524
+        }
+      }
+    }
+  }
+}

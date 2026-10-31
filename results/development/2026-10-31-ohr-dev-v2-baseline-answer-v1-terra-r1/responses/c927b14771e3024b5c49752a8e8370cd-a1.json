@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "538c2dc7-2df1-49b7-98f5-e3810a6acd24",
+  "request_id": "c927b14771e3024b5c49752a8e8370cd",
+  "attempt": 1,
+  "attempt_id": "c927b14771e3024b5c49752a8e8370cd-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBnC01fxEUQBOwUHvYiONkI9eNbu",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1524,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001609,
+  "input_bound_exceeded": false,
+  "latency_ms": 1202,
+  "output_status": "ok",
+  "answer": "SpaceX moved to start carrying small payloads at a discounted price.",
+  "abstained": false,
+  "provider_response": {
+    "text": "SpaceX moved to start carrying small payloads at a discounted price.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBnC01fxEUQBOwUHvYiONkI9eNbu",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "SpaceX moved to start carrying small payloads at a discounted price.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485486,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1524,
+        "total_tokens": 1541,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1521
+        }
+      }
+    }
+  }
+}

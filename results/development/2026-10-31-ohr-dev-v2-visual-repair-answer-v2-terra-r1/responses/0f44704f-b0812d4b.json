@@ -1,0 +1,58 @@
+{
+  "question_id": "0f44704f-1247-4a4e-a469-98e8d39e198b",
+  "attempt_id": "0f44704f-b0812d4b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBvl6sW8MrHU1J4DIJsFaBjyUL5M",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4707,
+    "cached_input_tokens": 0,
+    "output_tokens": 51,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004962,
+  "latency_ms": 2364,
+  "answer": "把基本消除绝对贫困现象作为首要任务，把集中连片特殊困难地区作为主战场，继续坚持开发式扶贫方针，实行扶贫开发和农村居民最低生活保障制度有效衔接",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBvl6sW8MrHU1J4DIJsFaBjyUL5M",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "把基本消除绝对贫困现象作为首要任务，把集中连片特殊困难地区作为主战场，继续坚持开发式扶贫方针，实行扶贫开发和农村居民最低生活保障制度有效衔接",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486017,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 51,
+      "prompt_tokens": 4707,
+      "total_tokens": 4758,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

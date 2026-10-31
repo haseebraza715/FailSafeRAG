@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8ff87c56-908f-4f7a-9b49-992988fd88f0",
+  "request_id": "46d7ad94f7ad3f2e1be3deaef488897b",
+  "attempt": 1,
+  "attempt_id": "46d7ad94f7ad3f2e1be3deaef488897b-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBpKnZdEUFYRRpxaMpQtJL6ID1UI",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1366,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001446,
+  "input_bound_exceeded": false,
+  "latency_ms": 1012,
+  "output_status": "ok",
+  "answer": "ovariotomy, oophorectomy, abdominal hysterectomy",
+  "abstained": false,
+  "provider_response": {
+    "text": "ovariotomy, oophorectomy, abdominal hysterectomy",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBpKnZdEUFYRRpxaMpQtJL6ID1UI",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "ovariotomy, oophorectomy, abdominal hysterectomy",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485618,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1366,
+        "total_tokens": 1382,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1363
+        }
+      }
+    }
+  }
+}

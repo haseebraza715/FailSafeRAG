@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "a41e2a9d-b238-4305-ab56-7eecb22c4e95",
+  "request_id": "4aa4744f34c15f83ffbadda6c950ecd4",
+  "attempt": 1,
+  "attempt_id": "4aa4744f34c15f83ffbadda6c950ecd4-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBqaNntf7ylI5rjxU8QyCQOGss7l",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1499,
+    "cached_input_tokens": 0,
+    "output_tokens": 32,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001659,
+  "input_bound_exceeded": false,
+  "latency_ms": 1219,
+  "output_status": "ok",
+  "answer": "Impact resistance of 165 grams and tearing resistance of 480 grams in both the parallel and perpendicular planes with respect to the length of the bag.",
+  "abstained": false,
+  "provider_response": {
+    "text": "Impact resistance of 165 grams and tearing resistance of 480 grams in both the parallel and perpendicular planes with respect to the length of the bag.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBqaNntf7ylI5rjxU8QyCQOGss7l",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Impact resistance of 165 grams and tearing resistance of 480 grams in both the parallel and perpendicular planes with respect to the length of the bag.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485696,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1499,
+        "total_tokens": 1531,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1496
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "74eff545-3e65-4603-b8e3-654bfaf14ff0",
+  "attempt_id": "74eff545-9a4d5de2",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC0hxMOuaMQoSVbFySTIRxNBA5KO",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4829,
+    "cached_input_tokens": 0,
+    "output_tokens": 67,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005164,
+  "latency_ms": 2560,
+  "answer": "通过省、市、县“三级联创”，核心区、示范区、辐射区“三区同建”，配套应用高产栽培技术模式和管护措施，五大粮食作物高产创建区比未创建地区增产粮食112.9亿斤",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC0hxMOuaMQoSVbFySTIRxNBA5KO",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "通过省、市、县“三级联创”，核心区、示范区、辐射区“三区同建”，配套应用高产栽培技术模式和管护措施，五大粮食作物高产创建区比未创建地区增产粮食112.9亿斤",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486323,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 67,
+      "prompt_tokens": 4829,
+      "total_tokens": 4896,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

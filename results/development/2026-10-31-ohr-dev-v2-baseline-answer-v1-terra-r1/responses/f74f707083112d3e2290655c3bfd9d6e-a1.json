@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c161f252-b46a-4624-95d7-84c68128ced3",
+  "request_id": "f74f707083112d3e2290655c3bfd9d6e",
+  "attempt": 1,
+  "attempt_id": "f74f707083112d3e2290655c3bfd9d6e-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBrRK2aaJQZaGlPNTurdtPK0GT9U",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1518,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001648,
+  "input_bound_exceeded": false,
+  "latency_ms": 1357,
+  "output_status": "ok",
+  "answer": "Mogollon Rim, Huachuca Mountains and Canelo Hills, Sierra Madre Occidental and sky island mountain ranges",
+  "abstained": false,
+  "provider_response": {
+    "text": "Mogollon Rim, Huachuca Mountains and Canelo Hills, Sierra Madre Occidental and sky island mountain ranges",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBrRK2aaJQZaGlPNTurdtPK0GT9U",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Mogollon Rim, Huachuca Mountains and Canelo Hills, Sierra Madre Occidental and sky island mountain ranges",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485749,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 1518,
+        "total_tokens": 1544,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1515
+        }
+      }
+    }
+  }
+}

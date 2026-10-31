@@ -1,0 +1,58 @@
+{
+  "question_id": "b784a050-1e26-40bc-958d-f7138757aed1",
+  "attempt_id": "b784a050-2a73a2c5",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC6iSiWspNiDt0INC7f0tb28Tz2V",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9277,
+    "cached_input_tokens": 0,
+    "output_tokens": 27,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009412,
+  "latency_ms": 2205,
+  "answer": "16; ACQ350 is designed to run on multiple workstations linked to a common database stored on a hard disk drive",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC6iSiWspNiDt0INC7f0tb28Tz2V",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "16; ACQ350 is designed to run on multiple workstations linked to a common database stored on a hard disk drive",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486696,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 27,
+      "prompt_tokens": 9277,
+      "total_tokens": 9304,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

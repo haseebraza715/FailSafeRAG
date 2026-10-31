@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9c186760-34c9-43f5-9565-2825761fa15a",
+  "request_id": "58a48094d1ec424f541764ecb0e374d3",
+  "attempt": 1,
+  "attempt_id": "58a48094d1ec424f541764ecb0e374d3-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBqDsNJ9pRNUcbyH51cvge0SHZeQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2298,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002378,
+  "input_bound_exceeded": false,
+  "latency_ms": 1064,
+  "output_status": "ok",
+  "answer": "4 Choke Cherry Road, Rockville, MD 20850",
+  "abstained": false,
+  "provider_response": {
+    "text": "4 Choke Cherry Road, Rockville, MD 20850",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBqDsNJ9pRNUcbyH51cvge0SHZeQ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "4 Choke Cherry Road, Rockville, MD 20850",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485673,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 2298,
+        "total_tokens": 2314,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2295
+        }
+      }
+    }
+  }
+}

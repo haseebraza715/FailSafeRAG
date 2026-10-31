@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b3ceedc7-1b3b-4583-bc06-9f2149f0872f",
+  "request_id": "9f57f1c2f313904ecea06d2105002f18",
+  "attempt": 1,
+  "attempt_id": "9f57f1c2f313904ecea06d2105002f18-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBk7FbodiMD7Y8nyBZD7bdCh5ga8",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1719,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001829,
+  "input_bound_exceeded": false,
+  "latency_ms": 1199,
+  "output_status": "ok",
+  "answer": "Policy development and oversight, advancing legislative priorities, coordinating strategy, and liaising with lawmakers and staff",
+  "abstained": false,
+  "provider_response": {
+    "text": "Policy development and oversight, advancing legislative priorities, coordinating strategy, and liaising with lawmakers and staff",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBk7FbodiMD7Y8nyBZD7bdCh5ga8",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Policy development and oversight, advancing legislative priorities, coordinating strategy, and liaising with lawmakers and staff",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485295,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1719,
+        "total_tokens": 1741,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1716
+        }
+      }
+    }
+  }
+}

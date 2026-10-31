@@ -1,0 +1,58 @@
+{
+  "question_id": "b89d6523-85c6-40cd-9d60-db0fd596f619",
+  "attempt_id": "b89d6523-0cc9c44e",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBu0f10PJhRqmJwmU2S7jkmYL7pl",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9070,
+    "cached_input_tokens": 0,
+    "output_tokens": 37,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009255,
+  "latency_ms": 2340,
+  "answer": "It images the mandible and maxilla in three planes, clearly visualizing cortical bone margins and internal structures, defining ambiguous findings on plain films and guiding diagnosis and surgical treatment",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBu0f10PJhRqmJwmU2S7jkmYL7pl",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "It images the mandible and maxilla in three planes, clearly visualizing cortical bone margins and internal structures, defining ambiguous findings on plain films and guiding diagnosis and surgical treatment",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793485908,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 37,
+      "prompt_tokens": 9070,
+      "total_tokens": 9107,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

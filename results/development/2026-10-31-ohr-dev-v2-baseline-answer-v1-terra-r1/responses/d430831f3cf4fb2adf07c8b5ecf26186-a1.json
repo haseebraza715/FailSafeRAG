@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "0f44704f-1247-4a4e-a469-98e8d39e198b",
+  "request_id": "d430831f3cf4fb2adf07c8b5ecf26186",
+  "attempt": 1,
+  "attempt_id": "d430831f3cf4fb2adf07c8b5ecf26186-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBlw54fLVZQh1dtmU6YOjTXZsXC6",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1689,
+    "cached_input_tokens": 0,
+    "output_tokens": 72,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002049,
+  "input_bound_exceeded": false,
+  "latency_ms": 1811,
+  "output_status": "ok",
+  "answer": "首要任务是基本消除绝对贫困现象，主战场是集中连片特殊困难地区。继续坚持开发式扶贫方针，坚持统筹发展，以促进就业、增加收入、改善民生、加快发展为核心，坚持政府主导，以专项扶贫、行业扶贫、社会扶贫为支撑。",
+  "abstained": false,
+  "provider_response": {
+    "text": "首要任务是基本消除绝对贫困现象，主战场是集中连片特殊困难地区。继续坚持开发式扶贫方针，坚持统筹发展，以促进就业、增加收入、改善民生、加快发展为核心，坚持政府主导，以专项扶贫、行业扶贫、社会扶贫为支撑。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBlw54fLVZQh1dtmU6YOjTXZsXC6",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "首要任务是基本消除绝对贫困现象，主战场是集中连片特殊困难地区。继续坚持开发式扶贫方针，坚持统筹发展，以促进就业、增加收入、改善民生、加快发展为核心，坚持政府主导，以专项扶贫、行业扶贫、社会扶贫为支撑。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485408,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 72,
+        "prompt_tokens": 1689,
+        "total_tokens": 1761,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1686
+        }
+      }
+    }
+  }
+}

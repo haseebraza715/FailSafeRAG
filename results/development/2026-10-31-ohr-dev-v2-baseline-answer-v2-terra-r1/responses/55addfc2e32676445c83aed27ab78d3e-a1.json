@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "74eff545-3e65-4603-b8e3-654bfaf14ff0",
+  "request_id": "55addfc2e32676445c83aed27ab78d3e",
+  "attempt": 1,
+  "attempt_id": "55addfc2e32676445c83aed27ab78d3e-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBhfuPfEeZbpVjcPV3eW5zK7kbpt",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1890,
+    "cached_input_tokens": 0,
+    "output_tokens": 66,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00222,
+  "input_bound_exceeded": false,
+  "latency_ms": 1649,
+  "output_status": "ok",
+  "answer": "玉米“一增五改”、水稻“三化一管”、大豆“两密一膜”、马铃薯“一深一大”、小麦“一稀两秋”、甜菜“纸筒育苗”等高产栽培技术模式和管护措施的配套应用",
+  "abstained": false,
+  "provider_response": {
+    "text": "玉米“一增五改”、水稻“三化一管”、大豆“两密一膜”、马铃薯“一深一大”、小麦“一稀两秋”、甜菜“纸筒育苗”等高产栽培技术模式和管护措施的配套应用",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBhfuPfEeZbpVjcPV3eW5zK7kbpt",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "玉米“一增五改”、水稻“三化一管”、大豆“两密一膜”、马铃薯“一深一大”、小麦“一稀两秋”、甜菜“纸筒育苗”等高产栽培技术模式和管护措施的配套应用",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485143,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 1890,
+        "total_tokens": 1956,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1887
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "c40421fb-18fb-4f2c-9602-a43750ea62aa",
+  "attempt_id": "c40421fb-7d4e12c0",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC9ObnIzpOcgtj1az2q9XB8ksV9u",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4600,
+    "cached_input_tokens": 0,
+    "output_tokens": 54,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00487,
+  "latency_ms": 2430,
+  "answer": "成为继信用社之后，反哺“三农”力度最大、投放贷款最多的金融机构，今年以来，全行已发放小额贷款1200多亿元，解决了1600多万农民的生产经营资金需求问题",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC9ObnIzpOcgtj1az2q9XB8ksV9u",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "成为继信用社之后，反哺“三农”力度最大、投放贷款最多的金融机构，今年以来，全行已发放小额贷款1200多亿元，解决了1600多万农民的生产经营资金需求问题",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486862,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 54,
+      "prompt_tokens": 4600,
+      "total_tokens": 4654,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

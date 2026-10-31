@@ -1,0 +1,58 @@
+{
+  "question_id": "b7aecd17-359b-4b98-adff-49878e2e9fde",
+  "attempt_id": "b7aecd17-9b072b19",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBtpL8a8qEQRvLfCCKHBbJCtnA6V",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9204,
+    "cached_input_tokens": 0,
+    "output_tokens": 89,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009649,
+  "latency_ms": 2849,
+  "answer": "It allows the mandible to be imaged in three planes: axial, panoramic and cross-sectional, permits evaluation of distinctly buccal and lingual cortical bone margins and clear visualization of the incisive and inferior alveolar canals, provides a comprehensive assessment of bone morphology and measurement of the dental implant, and guides the surgical approach by indicating the vestibular or lingual position of the tooth and the exact position of the mandibular canal",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBtpL8a8qEQRvLfCCKHBbJCtnA6V",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "It allows the mandible to be imaged in three planes: axial, panoramic and cross-sectional, permits evaluation of distinctly buccal and lingual cortical bone margins and clear visualization of the incisive and inferior alveolar canals, provides a comprehensive assessment of bone morphology and measurement of the dental implant, and guides the surgical approach by indicating the vestibular or lingual position of the tooth and the exact position of the mandibular canal",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793485897,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 89,
+      "prompt_tokens": 9204,
+      "total_tokens": 9293,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

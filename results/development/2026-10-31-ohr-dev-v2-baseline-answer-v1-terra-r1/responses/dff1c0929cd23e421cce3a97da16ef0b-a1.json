@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b89b033b-a89c-44c0-992d-539f059e7410",
+  "request_id": "dff1c0929cd23e421cce3a97da16ef0b",
+  "attempt": 1,
+  "attempt_id": "dff1c0929cd23e421cce3a97da16ef0b-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBrIPFKpccCm7rEHSJNEuwIWqEhz",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1274,
+    "cached_input_tokens": 0,
+    "output_tokens": 66,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001604,
+  "input_bound_exceeded": false,
+  "latency_ms": 1646,
+  "output_status": "ok",
+  "answer": "Dredging enlarged the St. Clair river opening in the 1910s, 1930s, and 1960s, contributing to greater outflows from Lakes Michigan and Huron. In recent years, warmer surface water temperatures have contributed to lower water levels by increasing evaporation and delaying lake ice formation.",
+  "abstained": false,
+  "provider_response": {
+    "text": "Dredging enlarged the St. Clair river opening in the 1910s, 1930s, and 1960s, contributing to greater outflows from Lakes Michigan and Huron. In recent years, warmer surface water temperatures have contributed to lower water levels by increasing evaporation and delaying lake ice formation.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBrIPFKpccCm7rEHSJNEuwIWqEhz",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Dredging enlarged the St. Clair river opening in the 1910s, 1930s, and 1960s, contributing to greater outflows from Lakes Michigan and Huron. In recent years, warmer surface water temperatures have contributed to lower water levels by increasing evaporation and delaying lake ice formation.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485740,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 1274,
+        "total_tokens": 1340,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1271
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "a41e2a9d-b238-4305-ab56-7eecb22c4e95",
+  "attempt_id": "a41e2a9d-91de923e",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC686FNjTVWnZ5qhTlpmjQmzblI5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9115,
+    "cached_input_tokens": 0,
+    "output_tokens": 32,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009275,
+  "latency_ms": 1929,
+  "answer": "impact resistance of 165 grams and a tearing resistance of 480 grams in both the parallel and perpendicular planes with respect to the length of the bag",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC686FNjTVWnZ5qhTlpmjQmzblI5",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "impact resistance of 165 grams and a tearing resistance of 480 grams in both the parallel and perpendicular planes with respect to the length of the bag",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486660,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 32,
+      "prompt_tokens": 9115,
+      "total_tokens": 9147,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

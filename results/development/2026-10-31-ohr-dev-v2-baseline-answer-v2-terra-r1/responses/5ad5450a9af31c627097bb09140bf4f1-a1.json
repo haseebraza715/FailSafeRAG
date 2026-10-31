@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b8231ec8-e4cc-4cfd-8307-cc4d29a86d2b",
+  "request_id": "5ad5450a9af31c627097bb09140bf4f1",
+  "attempt": 1,
+  "attempt_id": "5ad5450a9af31c627097bb09140bf4f1-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBkViKoLjKXBfKeDRQCZOjBNj2dg",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 1494,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002134,
+  "input_bound_exceeded": false,
+  "latency_ms": 2291,
+  "output_status": "truncated",
+  "answer": "Excessive consumption of alcohol is not permitted when you are at work, performing Google business, or attending a Google-related event, whether onsite or offsite. Going forward, all leaders at the company - Directors, VPs and SVPs - will be expected to create teams, events, offsites and environments in which excessive alcohol consumption is strongly discouraged. For example, many teams have already put two-drink limits in place for events. Others use drink ticket systems. The onus will be on leaders to take appropriate steps to restrict any excessive consumption among their teams, and we will impose more onerous actions if problems persist",
+  "abstained": false,
+  "provider_response": {
+    "text": "Excessive consumption of alcohol is not permitted when you are at work, performing Google business, or attending a Google-related event, whether onsite or offsite. Going forward, all leaders at the company - Directors, VPs and SVPs - will be expected to create teams, events, offsites and environments in which excessive alcohol consumption is strongly discouraged. For example, many teams have already put two-drink limits in place for events. Others use drink ticket systems. The onus will be on leaders to take appropriate steps to restrict any excessive consumption among their teams, and we will impose more onerous actions if problems persist",
+    "finish_reason": "length",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBkViKoLjKXBfKeDRQCZOjBNj2dg",
+      "choices": [
+        {
+          "finish_reason": "length",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Excessive consumption of alcohol is not permitted when you are at work, performing Google business, or attending a Google-related event, whether onsite or offsite. Going forward, all leaders at the company - Directors, VPs and SVPs - will be expected to create teams, events, offsites and environments in which excessive alcohol consumption is strongly discouraged. For example, many teams have already put two-drink limits in place for events. Others use drink ticket systems. The onus will be on leaders to take appropriate steps to restrict any excessive consumption among their teams, and we will impose more onerous actions if problems persist",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485319,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 128,
+        "prompt_tokens": 1494,
+        "total_tokens": 1622,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1491
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "b80dfb76-258c-48b4-971c-2b80ccfa76e2",
+  "attempt_id": "b80dfb76-b1010fe9",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC7f3UTmzZ4NGKm2LgYMcbkg07bC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6841,
+    "cached_input_tokens": 0,
+    "output_tokens": 96,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.007321,
+  "latency_ms": 3077,
+  "answer": "Sterilize each endoscope individually secured in a sterilization container. Only endoscopes marked “autoclave” may be autoclaved: clean thoroughly, steam at 134°C for 5–8 minutes, and allow to cool to room temperature. Do not expose unmarked endoscopes to temperatures above 60°C; use chemical sterilization according to the manufacturer’s instructions. Use each device in approved endoscopic procedures by physicians experienced in endoscopy",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC7f3UTmzZ4NGKm2LgYMcbkg07bC",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Sterilize each endoscope individually secured in a sterilization container. Only endoscopes marked “autoclave” may be autoclaved: clean thoroughly, steam at 134°C for 5–8 minutes, and allow to cool to room temperature. Do not expose unmarked endoscopes to temperatures above 60°C; use chemical sterilization according to the manufacturer’s instructions. Use each device in approved endoscopic procedures by physicians experienced in endoscopy",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486755,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 96,
+      "prompt_tokens": 6841,
+      "total_tokens": 6937,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

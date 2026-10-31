@@ -1,0 +1,58 @@
+{
+  "question_id": "9b1c5777-e87d-4884-9b80-b82ea0a62ceb",
+  "attempt_id": "9b1c5777-9b66843b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC48i4sbXLEs0SpvtCE3U786fgcQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9374,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009439,
+  "latency_ms": 2752,
+  "answer": "to facilitate the regulation of cosmic flights for peaceful purposes",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC48i4sbXLEs0SpvtCE3U786fgcQ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "to facilitate the regulation of cosmic flights for peaceful purposes",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486536,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 9374,
+      "total_tokens": 9387,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

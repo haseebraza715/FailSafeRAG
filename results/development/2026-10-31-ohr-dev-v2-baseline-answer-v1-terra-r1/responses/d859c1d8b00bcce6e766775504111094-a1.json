@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "96fa70fa-16e3-4e23-ac08-4625526539a4",
+  "request_id": "d859c1d8b00bcce6e766775504111094",
+  "attempt": 1,
+  "attempt_id": "d859c1d8b00bcce6e766775504111094-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBpnj7gGgGcI2cwlpKX4wvsO2DcQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1161,
+    "cached_input_tokens": 0,
+    "output_tokens": 19,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001256,
+  "input_bound_exceeded": false,
+  "latency_ms": 1163,
+  "output_status": "ok",
+  "answer": "March 2, 2019, at 12:43 p.m.",
+  "abstained": false,
+  "provider_response": {
+    "text": "March 2, 2019, at 12:43 p.m.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBpnj7gGgGcI2cwlpKX4wvsO2DcQ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "March 2, 2019, at 12:43 p.m.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485647,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 19,
+        "prompt_tokens": 1161,
+        "total_tokens": 1180,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1158
+        }
+      }
+    }
+  }
+}

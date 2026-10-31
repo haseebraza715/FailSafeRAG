@@ -1,0 +1,58 @@
+{
+  "question_id": "b7c2f2d0-5f93-4594-bf0e-8a6436fc101a",
+  "attempt_id": "b7c2f2d0-377fcc89",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC7TrmNEW10wemv3l0RvFOhh0I9P",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8529,
+    "cached_input_tokens": 0,
+    "output_tokens": 71,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008884,
+  "latency_ms": 2862,
+  "answer": "It will take off horizontally like an airplane, “scramjet” engines that burn a mix of hydrogen fuel carried on board and oxygen scooped up from the air, circulate hydrogen fuel through some of its structures, its flight path is more shallow, its body will be shaped to produce “lift” in the atmosphere to support its own weight",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC7TrmNEW10wemv3l0RvFOhh0I9P",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "It will take off horizontally like an airplane, “scramjet” engines that burn a mix of hydrogen fuel carried on board and oxygen scooped up from the air, circulate hydrogen fuel through some of its structures, its flight path is more shallow, its body will be shaped to produce “lift” in the atmosphere to support its own weight",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486743,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 71,
+      "prompt_tokens": 8529,
+      "total_tokens": 8600,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

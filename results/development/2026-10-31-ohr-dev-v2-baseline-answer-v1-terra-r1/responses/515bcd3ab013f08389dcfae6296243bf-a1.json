@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "546e8226-604f-44fe-9b69-0711cb1dad0d",
+  "request_id": "515bcd3ab013f08389dcfae6296243bf",
+  "attempt": 1,
+  "attempt_id": "515bcd3ab013f08389dcfae6296243bf-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBnPSJMdABOIAsnwFRLHv62oFHNB",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1523,
+    "cached_input_tokens": 0,
+    "output_tokens": 8,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001563,
+  "input_bound_exceeded": false,
+  "latency_ms": 1018,
+  "output_status": "ok",
+  "answer": "Amtrak lost electricity.",
+  "abstained": false,
+  "provider_response": {
+    "text": "Amtrak lost electricity.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBnPSJMdABOIAsnwFRLHv62oFHNB",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Amtrak lost electricity.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485499,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 1523,
+        "total_tokens": 1531,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1520
+        }
+      }
+    }
+  }
+}

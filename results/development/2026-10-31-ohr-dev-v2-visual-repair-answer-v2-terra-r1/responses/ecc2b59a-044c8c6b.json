@@ -1,0 +1,58 @@
+{
+  "question_id": "ecc2b59a-51ec-47de-b013-88c8f203e7af",
+  "attempt_id": "ecc2b59a-044c8c6b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfCAF1DIGHkVeU9A8VmgVhFmFBi6p",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3351,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003441,
+  "latency_ms": 1393,
+  "answer": "categorise banking-book exposures into broad classes of assets with different underlying risk characteristics",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfCAF1DIGHkVeU9A8VmgVhFmFBi6p",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "categorise banking-book exposures into broad classes of assets with different underlying risk characteristics",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486915,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 18,
+      "prompt_tokens": 3351,
+      "total_tokens": 3369,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9aaea7e9-7cd2-4b21-a5c8-f804771c3a91",
+  "request_id": "810af9900f37c178328eb0d3418fad2c",
+  "attempt": 1,
+  "attempt_id": "810af9900f37c178328eb0d3418fad2c-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBjMClShfGsJYrhHLqZdcTgim0iM",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1494,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001594,
+  "input_bound_exceeded": false,
+  "latency_ms": 1357,
+  "output_status": "ok",
+  "answer": "the seriousness of the crime, appellant's extensive criminal record and his volatile and violent character",
+  "abstained": false,
+  "provider_response": {
+    "text": "the seriousness of the crime, appellant's extensive criminal record and his volatile and violent character",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBjMClShfGsJYrhHLqZdcTgim0iM",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "the seriousness of the crime, appellant's extensive criminal record and his volatile and violent character",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485248,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1494,
+        "total_tokens": 1514,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1491
+        }
+      }
+    }
+  }
+}

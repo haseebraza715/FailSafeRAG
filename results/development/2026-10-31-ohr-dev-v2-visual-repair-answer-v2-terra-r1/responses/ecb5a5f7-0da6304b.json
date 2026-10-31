@@ -1,0 +1,58 @@
+{
+  "question_id": "ecb5a5f7-639b-4766-bd85-79544bd2e608",
+  "attempt_id": "ecb5a5f7-0da6304b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC9tsAMIBmMqZqHeFnV8jgemd5qb",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3357,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003432,
+  "latency_ms": 1524,
+  "answer": "The two LL’s look like M, when they are together",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC9tsAMIBmMqZqHeFnV8jgemd5qb",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The two LL’s look like M, when they are together",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486893,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 15,
+      "prompt_tokens": 3357,
+      "total_tokens": 3372,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

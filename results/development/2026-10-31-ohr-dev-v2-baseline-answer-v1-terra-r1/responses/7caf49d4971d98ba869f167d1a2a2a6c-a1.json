@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "6576dc04-9000-4095-ab30-bb9f232f1944",
+  "request_id": "7caf49d4971d98ba869f167d1a2a2a6c",
+  "attempt": 1,
+  "attempt_id": "7caf49d4971d98ba869f167d1a2a2a6c-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBnTJT05ZHslO6DEHfkNM86d6P0v",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2123,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002168,
+  "input_bound_exceeded": false,
+  "latency_ms": 1040,
+  "output_status": "ok",
+  "answer": "A standard Brownian motion.",
+  "abstained": false,
+  "provider_response": {
+    "text": "A standard Brownian motion.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBnTJT05ZHslO6DEHfkNM86d6P0v",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "A standard Brownian motion.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485503,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 2123,
+        "total_tokens": 2132,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2120
+        }
+      }
+    }
+  }
+}

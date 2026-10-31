@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "4dd2f9e1-f9e4-47d4-a34d-b2033de94ef1",
+  "request_id": "92b1364865c2d3872e424c07fb4b6157",
+  "attempt": 1,
+  "attempt_id": "92b1364865c2d3872e424c07fb4b6157-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBmMGJQ5D9kPK8DXsrX1wB3wsyzy",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1500,
+    "cached_input_tokens": 0,
+    "output_tokens": 8,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00154,
+  "input_bound_exceeded": false,
+  "latency_ms": 1054,
+  "output_status": "ok",
+  "answer": "Vice President Kamala Harris",
+  "abstained": false,
+  "provider_response": {
+    "text": "Vice President Kamala Harris",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBmMGJQ5D9kPK8DXsrX1wB3wsyzy",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Vice President Kamala Harris",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485434,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 1500,
+        "total_tokens": 1508,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1497
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "c40704f6-726d-485e-b97c-61fb241e840c",
+  "attempt_id": "c40704f6-057d1ed0",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC9Th1bqhYlEQMwbvMcoq0VAAmXY",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4784,
+    "cached_input_tokens": 0,
+    "output_tokens": 32,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004944,
+  "latency_ms": 2184,
+  "answer": "工作在基层，吃住在村屯，面对面为农民提供技术指导服务，帮助农民解决遇到的实际问题",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC9Th1bqhYlEQMwbvMcoq0VAAmXY",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "工作在基层，吃住在村屯，面对面为农民提供技术指导服务，帮助农民解决遇到的实际问题",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486867,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 32,
+      "prompt_tokens": 4784,
+      "total_tokens": 4816,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

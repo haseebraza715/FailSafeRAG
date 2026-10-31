@@ -1,0 +1,58 @@
+{
+  "question_id": "a27c2a93-5a46-45f7-b7e6-5042e61f115c",
+  "attempt_id": "a27c2a93-4b9dedc9",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC5wugEdRLe1WOYWcJWi2SIir6vI",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8753,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008843,
+  "latency_ms": 1804,
+  "answer": "to admit of adjustment of the disks for tightening and loosening the lacing",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC5wugEdRLe1WOYWcJWi2SIir6vI",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "to admit of adjustment of the disks for tightening and loosening the lacing",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486648,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 18,
+      "prompt_tokens": 8753,
+      "total_tokens": 8771,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

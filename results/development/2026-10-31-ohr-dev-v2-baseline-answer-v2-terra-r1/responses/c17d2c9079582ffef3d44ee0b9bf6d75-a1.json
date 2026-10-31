@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "71a48a01-61c0-4f4c-83ce-962b456f7d31",
+  "request_id": "c17d2c9079582ffef3d44ee0b9bf6d75",
+  "attempt": 1,
+  "attempt_id": "c17d2c9079582ffef3d44ee0b9bf6d75-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBhXZTKmTAEbX3vV59Vz8ofMV8nV",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1947,
+    "cached_input_tokens": 0,
+    "output_tokens": 55,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002222,
+  "input_bound_exceeded": false,
+  "latency_ms": 1487,
+  "output_status": "ok",
+  "answer": "\\(\\displaystyle F(z)=\\int_C\\left(\\frac{1}{2\\pi i}\\int_\\alpha^\\beta\\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(\\displaystyle F(z)=\\int_C\\left(\\frac{1}{2\\pi i}\\int_\\alpha^\\beta\\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBhXZTKmTAEbX3vV59Vz8ofMV8nV",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(\\displaystyle F(z)=\\int_C\\left(\\frac{1}{2\\pi i}\\int_\\alpha^\\beta\\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485135,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 55,
+        "prompt_tokens": 1947,
+        "total_tokens": 2002,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1944
+        }
+      }
+    }
+  }
+}

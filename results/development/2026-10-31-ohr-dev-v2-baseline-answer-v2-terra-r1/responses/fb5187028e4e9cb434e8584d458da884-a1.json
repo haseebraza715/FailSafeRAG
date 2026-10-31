@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9aa9e62c-8d34-499b-8bfe-a301db93c0f3",
+  "request_id": "fb5187028e4e9cb434e8584d458da884",
+  "attempt": 1,
+  "attempt_id": "fb5187028e4e9cb434e8584d458da884-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBjJXfi9mMMEqCrqhXDBIT0ytLtZ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1624,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001699,
+  "input_bound_exceeded": false,
+  "latency_ms": 1415,
+  "output_status": "ok",
+  "answer": "Reversed and remanded for a new trial on that charge",
+  "abstained": false,
+  "provider_response": {
+    "text": "Reversed and remanded for a new trial on that charge",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBjJXfi9mMMEqCrqhXDBIT0ytLtZ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Reversed and remanded for a new trial on that charge",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485245,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1624,
+        "total_tokens": 1639,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1621
+        }
+      }
+    }
+  }
+}

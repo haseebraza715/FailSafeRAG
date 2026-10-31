@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "714f63f9-f41b-41bf-8863-e9a6f426f1fb",
+  "request_id": "08a716fba06f223d249f7c44f64bc762",
+  "attempt": 1,
+  "attempt_id": "08a716fba06f223d249f7c44f64bc762-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBoC5mDPU40DaCznR7B5R0xfQ1Ef",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1662,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001717,
+  "input_bound_exceeded": false,
+  "latency_ms": 1067,
+  "output_status": "ok",
+  "answer": "Convergence of the finite-dimensional distributions.",
+  "abstained": false,
+  "provider_response": {
+    "text": "Convergence of the finite-dimensional distributions.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBoC5mDPU40DaCznR7B5R0xfQ1Ef",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Convergence of the finite-dimensional distributions.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485548,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1662,
+        "total_tokens": 1673,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1659
+        }
+      }
+    }
+  }
+}

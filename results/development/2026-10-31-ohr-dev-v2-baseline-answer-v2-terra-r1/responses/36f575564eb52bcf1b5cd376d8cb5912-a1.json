@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b904a95d-e01c-4994-b00b-048cc940af32",
+  "request_id": "36f575564eb52bcf1b5cd376d8cb5912",
+  "attempt": 1,
+  "attempt_id": "36f575564eb52bcf1b5cd376d8cb5912-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBkdkBRbuDEcb72SDvhRSzZ2oq8C",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1635,
+    "cached_input_tokens": 0,
+    "output_tokens": 82,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002045,
+  "input_bound_exceeded": false,
+  "latency_ms": 1829,
+  "output_status": "ok",
+  "answer": "“Company Action Level RBC” shall have the meanings ascribed thereto under the insurance laws and regulations of the Domiciliary State, or, with respect to “Total Adjusted Capital” and “Company Action Level RBC”, if not defined therein, shall have the meanings ascribed thereto in the risk-based capital (\"RBC\") instructions promulgated by the National Association of Insurance Commissioners (\"NAIC\")",
+  "abstained": false,
+  "provider_response": {
+    "text": "“Company Action Level RBC” shall have the meanings ascribed thereto under the insurance laws and regulations of the Domiciliary State, or, with respect to “Total Adjusted Capital” and “Company Action Level RBC”, if not defined therein, shall have the meanings ascribed thereto in the risk-based capital (\"RBC\") instructions promulgated by the National Association of Insurance Commissioners (\"NAIC\")",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBkdkBRbuDEcb72SDvhRSzZ2oq8C",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "“Company Action Level RBC” shall have the meanings ascribed thereto under the insurance laws and regulations of the Domiciliary State, or, with respect to “Total Adjusted Capital” and “Company Action Level RBC”, if not defined therein, shall have the meanings ascribed thereto in the risk-based capital (\"RBC\") instructions promulgated by the National Association of Insurance Commissioners (\"NAIC\")",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485327,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 82,
+        "prompt_tokens": 1635,
+        "total_tokens": 1717,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1632
+        }
+      }
+    }
+  }
+}

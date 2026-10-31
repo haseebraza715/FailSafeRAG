@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "71a48a01-61c0-4f4c-83ce-962b456f7d31",
+  "request_id": "2d7c3fa66aa092f6968ad6b895388acb",
+  "attempt": 1,
+  "attempt_id": "2d7c3fa66aa092f6968ad6b895388acb-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBoGBtIb4WV9nNYh0RqWXIfmyqvI",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1868,
+    "cached_input_tokens": 0,
+    "output_tokens": 55,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002143,
+  "input_bound_exceeded": false,
+  "latency_ms": 1636,
+  "output_status": "ok",
+  "answer": "\\[\nF(z)=\\frac{1}{2\\pi i}\\int_C\\left(\\int_\\alpha^\\beta \\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}.\n\\]",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\[\nF(z)=\\frac{1}{2\\pi i}\\int_C\\left(\\int_\\alpha^\\beta \\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}.\n\\]",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBoGBtIb4WV9nNYh0RqWXIfmyqvI",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\[\nF(z)=\\frac{1}{2\\pi i}\\int_C\\left(\\int_\\alpha^\\beta \\varphi(\\zeta,t)\\,dt\\right)\\frac{d\\zeta}{\\zeta-z}.\n\\]",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485552,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 55,
+        "prompt_tokens": 1868,
+        "total_tokens": 1923,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1865
+        }
+      }
+    }
+  }
+}

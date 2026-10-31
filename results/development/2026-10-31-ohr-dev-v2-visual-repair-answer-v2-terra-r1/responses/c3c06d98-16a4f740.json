@@ -1,0 +1,58 @@
+{
+  "question_id": "c3c06d98-422b-40ef-bded-53f653e04d41",
+  "attempt_id": "c3c06d98-16a4f740",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC9J9fyDljr8RJ1Fi5GbeZbYC5lC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4673,
+    "cached_input_tokens": 0,
+    "output_tokens": 65,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004998,
+  "latency_ms": 2235,
+  "answer": "粮食产量达到10928亿斤，再创历史新高，实现半个世纪以来首次连续7年增产，首次连续4年保持在1万亿斤以上，农业科技装备水平明显提高，农业技术推广体系不断健全，农业科技创新步伐进一步加快",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC9J9fyDljr8RJ1Fi5GbeZbYC5lC",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "粮食产量达到10928亿斤，再创历史新高，实现半个世纪以来首次连续7年增产，首次连续4年保持在1万亿斤以上，农业科技装备水平明显提高，农业技术推广体系不断健全，农业科技创新步伐进一步加快",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486857,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 65,
+      "prompt_tokens": 4673,
+      "total_tokens": 4738,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "b3ceedc7-1b3b-4583-bc06-9f2149f0872f",
+  "attempt_id": "b3ceedc7-c267b8d4",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC6XdqRRAsVhMGFp4UuXcosGDPbJ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6754,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006884,
+  "latency_ms": 2112,
+  "answer": "Oversight of policy direction and decisions, policy involvement and development, advocacy on Capitol Hill, coordination of policy and strategy",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC6XdqRRAsVhMGFp4UuXcosGDPbJ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Oversight of policy direction and decisions, policy involvement and development, advocacy on Capitol Hill, coordination of policy and strategy",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486685,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 26,
+      "prompt_tokens": 6754,
+      "total_tokens": 6780,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

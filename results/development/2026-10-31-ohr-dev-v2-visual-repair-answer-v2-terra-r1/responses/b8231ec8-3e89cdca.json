@@ -1,0 +1,58 @@
+{
+  "question_id": "b8231ec8-e4cc-4cfd-8307-cc4d29a86d2b",
+  "attempt_id": "b8231ec8-3e89cdca",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC7k1xDLyK1d2DCDUYzEwwXSfsIK",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9751,
+    "cached_input_tokens": 0,
+    "output_tokens": 86,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.010181,
+  "latency_ms": 2799,
+  "answer": "Excessive consumption of alcohol is not permitted when you are at work, performing Google business, or attending a Google-related event, whether onsite or offsite. The onus will be on leaders to take appropriate steps to restrict any excessive consumption among their teams, and we will impose more onerous actions if problems persist. Many teams have already put two-drink limits in place for events. Others use drink ticket systems",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC7k1xDLyK1d2DCDUYzEwwXSfsIK",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Excessive consumption of alcohol is not permitted when you are at work, performing Google business, or attending a Google-related event, whether onsite or offsite. The onus will be on leaders to take appropriate steps to restrict any excessive consumption among their teams, and we will impose more onerous actions if problems persist. Many teams have already put two-drink limits in place for events. Others use drink ticket systems",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486760,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 86,
+      "prompt_tokens": 9751,
+      "total_tokens": 9837,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

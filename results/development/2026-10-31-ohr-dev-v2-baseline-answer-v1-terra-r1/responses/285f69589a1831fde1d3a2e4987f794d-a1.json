@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8c141352-edd0-4f6e-850f-cedd8aed9eaa",
+  "request_id": "285f69589a1831fde1d3a2e4987f794d",
+  "attempt": 1,
+  "attempt_id": "285f69589a1831fde1d3a2e4987f794d-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBpBIck30NRh5M0e9VAuDiZEhkBQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1446,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001491,
+  "input_bound_exceeded": false,
+  "latency_ms": 1181,
+  "output_status": "ok",
+  "answer": "The same amount of alcohol.",
+  "abstained": false,
+  "provider_response": {
+    "text": "The same amount of alcohol.",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBpBIck30NRh5M0e9VAuDiZEhkBQ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "The same amount of alcohol.",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485609,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1446,
+        "total_tokens": 1455,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1443
+        }
+      }
+    }
+  }
+}

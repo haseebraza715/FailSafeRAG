@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "5306f3f5-1516-4570-9b7c-709acb175a5a",
+  "request_id": "41fbb2b347e826073437edcf8c5a5a6c",
+  "attempt": 1,
+  "attempt_id": "41fbb2b347e826073437edcf8c5a5a6c-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBn2BYrphD84moRSfBtJdNd1W5aQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1548,
+    "cached_input_tokens": 0,
+    "output_tokens": 6,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001578,
+  "input_bound_exceeded": false,
+  "latency_ms": 865,
+  "output_status": "ok",
+  "answer": "Nuseirat",
+  "abstained": false,
+  "provider_response": {
+    "text": "Nuseirat",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBn2BYrphD84moRSfBtJdNd1W5aQ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Nuseirat",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485476,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 6,
+        "prompt_tokens": 1548,
+        "total_tokens": 1554,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1545
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9414fa0f-9e38-491a-ab9e-b2849b3e16a0",
+  "request_id": "6c48b478359fc87c73246b33b152403c",
+  "attempt": 1,
+  "attempt_id": "6c48b478359fc87c73246b33b152403c-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBpdnV3LlFRcQ6kl4CVz5sqRoQqD",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 577,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.000657,
+  "input_bound_exceeded": false,
+  "latency_ms": 1213,
+  "output_status": "ok",
+  "answer": "1199 new articles, 12,366,317 bytes added",
+  "abstained": false,
+  "provider_response": {
+    "text": "1199 new articles, 12,366,317 bytes added",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBpdnV3LlFRcQ6kl4CVz5sqRoQqD",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "1199 new articles, 12,366,317 bytes added",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485637,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 577,
+        "total_tokens": 593,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3834e7a-d0a8-4d43-80ae-21fd0d73f559",
+  "request_id": "3f09c33fdd2e9c0673a645fb4d38056c",
+  "attempt": 1,
+  "attempt_id": "3f09c33fdd2e9c0673a645fb4d38056c-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBrbMuf2iW8amUS4862NoyuybWTy",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1660,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001715,
+  "input_bound_exceeded": false,
+  "latency_ms": 1349,
+  "output_status": "ok",
+  "answer": "带动农民持续增收。",
+  "abstained": false,
+  "provider_response": {
+    "text": "带动农民持续增收。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBrbMuf2iW8amUS4862NoyuybWTy",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "带动农民持续增收。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485759,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1660,
+        "total_tokens": 1671,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1657
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "9aaf3dde-8ef8-4189-b812-55fb4d0e5725",
+  "attempt_id": "9aaf3dde-7b74a894",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC3voCa6AwM7mcHCzvke8QF6fWN8",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9171,
+    "cached_input_tokens": 0,
+    "output_tokens": 71,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009526,
+  "latency_ms": 2711,
+  "answer": "In reviewing the evidence to determine if it supports a conviction, we consider it in a manner most favorable to the state. Reversal is required where the evidence viewed in this manner is so insufficient in probative value and force that, as a matter of law, no trier of fact acting reasonably could be convinced of guilt beyond a reasonable doubt",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC3voCa6AwM7mcHCzvke8QF6fWN8",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "In reviewing the evidence to determine if it supports a conviction, we consider it in a manner most favorable to the state. Reversal is required where the evidence viewed in this manner is so insufficient in probative value and force that, as a matter of law, no trier of fact acting reasonably could be convinced of guilt beyond a reasonable doubt",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486523,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 71,
+      "prompt_tokens": 9171,
+      "total_tokens": 9242,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

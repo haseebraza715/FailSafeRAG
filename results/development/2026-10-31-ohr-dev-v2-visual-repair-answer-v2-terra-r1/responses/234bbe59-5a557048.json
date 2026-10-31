@@ -1,0 +1,58 @@
+{
+  "question_id": "234bbe59-7ec8-452d-9e2d-2fb4fdfd610a",
+  "attempt_id": "234bbe59-5a557048",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBvrwrB6eMaEt9vhkjphcs4m8uf3",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9400,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00951,
+  "latency_ms": 37078,
+  "answer": "no later than sixty (60) days from the date this Agreement has been executed by both Parties",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBvrwrB6eMaEt9vhkjphcs4m8uf3",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "no later than sixty (60) days from the date this Agreement has been executed by both Parties",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486023,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 22,
+      "prompt_tokens": 9400,
+      "total_tokens": 9422,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "4f0743b1-8ed9-4cf0-bb66-a9ac60e86101",
+  "request_id": "178a0d4ecdef39c54da67638ac2139e1",
+  "attempt": 1,
+  "attempt_id": "178a0d4ecdef39c54da67638ac2139e1-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBmW6mZdxVnECG41rh7IMasjhoiS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1507,
+    "cached_input_tokens": 0,
+    "output_tokens": 5,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001532,
+  "input_bound_exceeded": false,
+  "latency_ms": 786,
+  "output_status": "ok",
+  "answer": "President Biden",
+  "abstained": false,
+  "provider_response": {
+    "text": "President Biden",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBmW6mZdxVnECG41rh7IMasjhoiS",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "President Biden",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485444,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 5,
+        "prompt_tokens": 1507,
+        "total_tokens": 1512,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1504
+        }
+      }
+    }
+  }
+}

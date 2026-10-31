@@ -1,0 +1,58 @@
+{
+  "question_id": "c3bc6b6b-c9d4-4e78-b490-3e8d215d93b3",
+  "attempt_id": "c3bc6b6b-73a4683d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC9Anhsub2XA5tPiNQtdSiZOYcC0",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4542,
+    "cached_input_tokens": 0,
+    "output_tokens": 42,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004752,
+  "latency_ms": 2087,
+  "answer": "对转户农民在农村的土地承包经营权、宅基地使用权和林权给予一定期限的过渡期，允许按照依法、自愿、有偿原则流转",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC9Anhsub2XA5tPiNQtdSiZOYcC0",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "对转户农民在农村的土地承包经营权、宅基地使用权和林权给予一定期限的过渡期，允许按照依法、自愿、有偿原则流转",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486848,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 42,
+      "prompt_tokens": 4542,
+      "total_tokens": 4584,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "680ac07a-2a93-4d62-bc83-5dc0d9441fa5",
+  "request_id": "0f74c2e255299ca4fa2910137bd50a86",
+  "attempt": 1,
+  "attempt_id": "0f74c2e255299ca4fa2910137bd50a86-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBh06x8wTDwf17onk3bmduYTk7tc",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1767,
+    "cached_input_tokens": 0,
+    "output_tokens": 82,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002177,
+  "input_bound_exceeded": false,
+  "latency_ms": 1907,
+  "output_status": "ok",
+  "answer": "支持优质企业通过发行债券和上市融资等方式获得资金，积极引导城市金融机构到县域设立网点，出资组建贷款公司等贷款专营机构，鼓励设立新型农村金融机构，建立大型银行与县域法人银行的资金批发运用机制，引导城市富余资金用于支持县域经济发展",
+  "abstained": false,
+  "provider_response": {
+    "text": "支持优质企业通过发行债券和上市融资等方式获得资金，积极引导城市金融机构到县域设立网点，出资组建贷款公司等贷款专营机构，鼓励设立新型农村金融机构，建立大型银行与县域法人银行的资金批发运用机制，引导城市富余资金用于支持县域经济发展",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBh06x8wTDwf17onk3bmduYTk7tc",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "支持优质企业通过发行债券和上市融资等方式获得资金，积极引导城市金融机构到县域设立网点，出资组建贷款公司等贷款专营机构，鼓励设立新型农村金融机构，建立大型银行与县域法人银行的资金批发运用机制，引导城市富余资金用于支持县域经济发展",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485102,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 82,
+        "prompt_tokens": 1767,
+        "total_tokens": 1849,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1764
+        }
+      }
+    }
+  }
+}

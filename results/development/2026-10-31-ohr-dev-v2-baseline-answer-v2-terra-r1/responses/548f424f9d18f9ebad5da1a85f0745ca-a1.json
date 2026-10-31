@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9b1927e4-95ff-4e7d-b2c2-0fbf585c7ad6",
+  "request_id": "548f424f9d18f9ebad5da1a85f0745ca",
+  "attempt": 1,
+  "attempt_id": "548f424f9d18f9ebad5da1a85f0745ca-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBjTNvLTILMTw9TOa5JfpKyFkg3T",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1619,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001684,
+  "input_bound_exceeded": false,
+  "latency_ms": 1082,
+  "output_status": "ok",
+  "answer": "political, miitary, and scientifc",
+  "abstained": false,
+  "provider_response": {
+    "text": "political, miitary, and scientifc",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBjTNvLTILMTw9TOa5JfpKyFkg3T",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "political, miitary, and scientifc",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485255,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1619,
+        "total_tokens": 1632,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1616
+        }
+      }
+    }
+  }
+}

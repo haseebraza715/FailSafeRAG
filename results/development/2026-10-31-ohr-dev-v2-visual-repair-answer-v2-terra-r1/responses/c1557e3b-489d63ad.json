@@ -1,0 +1,58 @@
+{
+  "question_id": "c1557e3b-a9ea-44cb-b2d8-af992e967f0d",
+  "attempt_id": "c1557e3b-489d63ad",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC8bdEZiFSC1uaQh7urkPW8QuYvu",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4241,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004331,
+  "latency_ms": 1730,
+  "answer": "Marketing Agreement and Order No. 989 (7 CFR part 989)",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC8bdEZiFSC1uaQh7urkPW8QuYvu",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Marketing Agreement and Order No. 989 (7 CFR part 989)",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486813,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 18,
+      "prompt_tokens": 4241,
+      "total_tokens": 4259,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

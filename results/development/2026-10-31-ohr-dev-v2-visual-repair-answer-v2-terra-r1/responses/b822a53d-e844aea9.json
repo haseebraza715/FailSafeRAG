@@ -1,0 +1,58 @@
+{
+  "question_id": "b822a53d-052a-4d51-8dff-0398840a2acc",
+  "attempt_id": "b822a53d-e844aea9",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC7iOeAyDs77ydWWsthZcd5Fb5y9",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9725,
+    "cached_input_tokens": 0,
+    "output_tokens": 62,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.010035,
+  "latency_ms": 2066,
+  "answer": "Opt-in care services including extended counselling and EAP support, check-ins, support for accommodations and leaves; a companion during an HR investigation or when raising concerns; and a specialty team of advisors. These support its commitment to a representative, equitable, and respectful workplace and a more inclusive culture for everyone",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC7iOeAyDs77ydWWsthZcd5Fb5y9",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Opt-in care services including extended counselling and EAP support, check-ins, support for accommodations and leaves; a companion during an HR investigation or when raising concerns; and a specialty team of advisors. These support its commitment to a representative, equitable, and respectful workplace and a more inclusive culture for everyone",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486758,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 9725,
+      "total_tokens": 9787,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

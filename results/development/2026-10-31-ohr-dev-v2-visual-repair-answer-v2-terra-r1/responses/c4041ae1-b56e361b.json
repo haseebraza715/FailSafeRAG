@@ -1,0 +1,58 @@
+{
+  "question_id": "c4041ae1-9148-43c3-8ad4-92b3cd096ae9",
+  "attempt_id": "c4041ae1-b56e361b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC9Lt7tqCd8A2rySElMKQ2LQtPUL",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4594,
+    "cached_input_tokens": 0,
+    "output_tokens": 71,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004949,
+  "latency_ms": 2856,
+  "answer": "在总部专门设立了农村金融服务部门，优化和完善金融服务网络，推出专门面向农村地区的小额贷款业务，在广大农村地区设立“三农”服务站，代发新农保、新农合等涉农资金，送国债、基金、保险等理财产品下乡",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC9Lt7tqCd8A2rySElMKQ2LQtPUL",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "在总部专门设立了农村金融服务部门，优化和完善金融服务网络，推出专门面向农村地区的小额贷款业务，在广大农村地区设立“三农”服务站，代发新农保、新农合等涉农资金，送国债、基金、保险等理财产品下乡",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486859,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 71,
+      "prompt_tokens": 4594,
+      "total_tokens": 4665,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "f5b78cc7-e6b3-4944-8b32-3e357922bac2",
+  "request_id": "009c20a6486caa1dbfd22b10e9c17081",
+  "attempt": 1,
+  "attempt_id": "009c20a6486caa1dbfd22b10e9c17081-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBsJ667RMOrp3W3CzVGs4xaCTSIh",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1775,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001875,
+  "input_bound_exceeded": false,
+  "latency_ms": 1272,
+  "output_status": "ok",
+  "answer": "在省县财政补贴的基础上，还增加了补贴的比例。",
+  "abstained": false,
+  "provider_response": {
+    "text": "在省县财政补贴的基础上，还增加了补贴的比例。",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBsJ667RMOrp3W3CzVGs4xaCTSIh",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "在省县财政补贴的基础上，还增加了补贴的比例。",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485803,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1775,
+        "total_tokens": 1795,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1772
+        }
+      }
+    }
+  }
+}

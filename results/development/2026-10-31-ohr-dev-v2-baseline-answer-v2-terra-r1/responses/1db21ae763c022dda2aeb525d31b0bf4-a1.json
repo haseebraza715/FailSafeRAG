@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "0f44704f-1247-4a4e-a469-98e8d39e198b",
+  "request_id": "1db21ae763c022dda2aeb525d31b0bf4",
+  "attempt": 1,
+  "attempt_id": "1db21ae763c022dda2aeb525d31b0bf4-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBfBzf2xxyBSC8psCrUOUQVxb0bF",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1768,
+    "cached_input_tokens": 0,
+    "output_tokens": 27,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001903,
+  "input_bound_exceeded": false,
+  "latency_ms": 1607,
+  "output_status": "ok",
+  "answer": "基本消除绝对贫困现象，集中连片特殊困难地区，继续坚持开发式扶贫方针",
+  "abstained": false,
+  "provider_response": {
+    "text": "基本消除绝对贫困现象，集中连片特殊困难地区，继续坚持开发式扶贫方针",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBfBzf2xxyBSC8psCrUOUQVxb0bF",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "基本消除绝对贫困现象，集中连片特殊困难地区，继续坚持开发式扶贫方针",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793484989,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 27,
+        "prompt_tokens": 1768,
+        "total_tokens": 1795,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1765
+        }
+      }
+    }
+  }
+}

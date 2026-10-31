@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b7e10079-d9f8-4b8f-a624-7a099e01fbfa",
+  "request_id": "15f89cc776dd62ee9edd32bc7ef70965",
+  "attempt": 1,
+  "attempt_id": "15f89cc776dd62ee9edd32bc7ef70965-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBkPiIA3nKD1NYYWew1SyFbiEgT0",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1508,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001593,
+  "input_bound_exceeded": false,
+  "latency_ms": 1151,
+  "output_status": "ok",
+  "answer": "coordinate health security financing, regional surge capacity, and triggers for rapid response",
+  "abstained": false,
+  "provider_response": {
+    "text": "coordinate health security financing, regional surge capacity, and triggers for rapid response",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBkPiIA3nKD1NYYWew1SyFbiEgT0",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "coordinate health security financing, regional surge capacity, and triggers for rapid response",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485313,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1508,
+        "total_tokens": 1525,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1505
+        }
+      }
+    }
+  }
+}

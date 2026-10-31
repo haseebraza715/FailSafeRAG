@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b80dfb76-258c-48b4-971c-2b80ccfa76e2",
+  "request_id": "d2df87e31be03c987da71c665db1247c",
+  "attempt": 1,
+  "attempt_id": "d2df87e31be03c987da71c665db1247c-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBr84xOg15uXbmF5Qo41znis3Ii1",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 1727,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002367,
+  "input_bound_exceeded": false,
+  "latency_ms": 2208,
+  "output_status": "truncated",
+  "answer": "Sterilize each endoscope individually secured in a sterilization container. Only endoscopes marked “autoclave” can be autoclaved: clean thoroughly, then steam sterilize at 134°C for 5–8 minutes. Keep the container closed until cooled to room temperature; never immerse in cold water. Endoscopes not marked “autoclave” must not exceed 60°C; use sterilizing chemical solutions according to the manufacturer’s instructions.\n\nUse for illumination and visualization in diagnostic procedures and, in conjunction with instruments, operative arthroscopic and laparoscopic procedures; also for endoscopic examination and treatment of the",
+  "abstained": false,
+  "provider_response": {
+    "text": "Sterilize each endoscope individually secured in a sterilization container. Only endoscopes marked “autoclave” can be autoclaved: clean thoroughly, then steam sterilize at 134°C for 5–8 minutes. Keep the container closed until cooled to room temperature; never immerse in cold water. Endoscopes not marked “autoclave” must not exceed 60°C; use sterilizing chemical solutions according to the manufacturer’s instructions.\n\nUse for illumination and visualization in diagnostic procedures and, in conjunction with instruments, operative arthroscopic and laparoscopic procedures; also for endoscopic examination and treatment of the",
+    "finish_reason": "length",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBr84xOg15uXbmF5Qo41znis3Ii1",
+      "choices": [
+        {
+          "finish_reason": "length",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Sterilize each endoscope individually secured in a sterilization container. Only endoscopes marked “autoclave” can be autoclaved: clean thoroughly, then steam sterilize at 134°C for 5–8 minutes. Keep the container closed until cooled to room temperature; never immerse in cold water. Endoscopes not marked “autoclave” must not exceed 60°C; use sterilizing chemical solutions according to the manufacturer’s instructions.\n\nUse for illumination and visualization in diagnostic procedures and, in conjunction with instruments, operative arthroscopic and laparoscopic procedures; also for endoscopic examination and treatment of the",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485730,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 128,
+        "prompt_tokens": 1727,
+        "total_tokens": 1855,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1724
+        }
+      }
+    }
+  }
+}

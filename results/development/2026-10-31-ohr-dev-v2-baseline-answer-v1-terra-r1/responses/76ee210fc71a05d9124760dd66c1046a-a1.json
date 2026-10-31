@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "90f089f3-0d18-46c2-90ee-e95136487b1e",
+  "request_id": "76ee210fc71a05d9124760dd66c1046a",
+  "attempt": 1,
+  "attempt_id": "76ee210fc71a05d9124760dd66c1046a-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBpR5Xi2sm6pvzHjOhM7wXRESdsY",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1459,
+    "cached_input_tokens": 0,
+    "output_tokens": 6,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001489,
+  "input_bound_exceeded": false,
+  "latency_ms": 1068,
+  "output_status": "ok",
+  "answer": "1987年",
+  "abstained": false,
+  "provider_response": {
+    "text": "1987年",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBpR5Xi2sm6pvzHjOhM7wXRESdsY",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "1987年",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485625,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 6,
+        "prompt_tokens": 1459,
+        "total_tokens": 1465,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1456
+        }
+      }
+    }
+  }
+}

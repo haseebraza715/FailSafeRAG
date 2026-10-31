@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "ebd34616-91b7-4d8e-9301-6989bfbbb17f",
+  "request_id": "29ee26c1654ccb1f94ed7b78494a78a9",
+  "attempt": 1,
+  "attempt_id": "29ee26c1654ccb1f94ed7b78494a78a9-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBs13Ji7RpQpSHDHQ3nQmchThyca",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1711,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001811,
+  "input_bound_exceeded": false,
+  "latency_ms": 1007,
+  "output_status": "ok",
+  "answer": "重庆市统筹城乡户籍制度改革农村居民转户实施试行办法",
+  "abstained": false,
+  "provider_response": {
+    "text": "重庆市统筹城乡户籍制度改革农村居民转户实施试行办法",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBs13Ji7RpQpSHDHQ3nQmchThyca",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "重庆市统筹城乡户籍制度改革农村居民转户实施试行办法",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485785,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1711,
+        "total_tokens": 1731,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1708
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "86b9eea0-3171-4b88-913b-7956d6acf304",
+  "request_id": "204c1991488f03d7d68316ef051eb8de",
+  "attempt": 1,
+  "attempt_id": "204c1991488f03d7d68316ef051eb8de-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBiIbiZIA08Rx2Hkdd0ZZ1YUu8pv",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1636,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001696,
+  "input_bound_exceeded": false,
+  "latency_ms": 1400,
+  "output_status": "ok",
+  "answer": "3; threats were imminent and high in magnitude",
+  "abstained": false,
+  "provider_response": {
+    "text": "3; threats were imminent and high in magnitude",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBiIbiZIA08Rx2Hkdd0ZZ1YUu8pv",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "3; threats were imminent and high in magnitude",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485182,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1636,
+        "total_tokens": 1648,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1633
+        }
+      }
+    }
+  }
+}

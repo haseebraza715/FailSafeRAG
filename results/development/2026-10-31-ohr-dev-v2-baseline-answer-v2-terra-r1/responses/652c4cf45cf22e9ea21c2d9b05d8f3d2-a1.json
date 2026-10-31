@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "537f1759-1539-4b6e-8bc0-e5bffc989d4a",
+  "request_id": "652c4cf45cf22e9ea21c2d9b05d8f3d2",
+  "attempt": 1,
+  "attempt_id": "652c4cf45cf22e9ea21c2d9b05d8f3d2-a1",
+  "saved_by_invocation": "59e54588f8544526855154a8fb9f10ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBgTCkvyHwMvGZ6Ww06tTbRvXtrT",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1640,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00178,
+  "input_bound_exceeded": false,
+  "latency_ms": 1253,
+  "output_status": "ok",
+  "answer": "SpaceX; using its vast power and influence to keep emerging rivals at bay, and heavy reliance on a mercurial billionaire",
+  "abstained": false,
+  "provider_response": {
+    "text": "SpaceX; using its vast power and influence to keep emerging rivals at bay, and heavy reliance on a mercurial billionaire",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBgTCkvyHwMvGZ6Ww06tTbRvXtrT",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "SpaceX; using its vast power and influence to keep emerging rivals at bay, and heavy reliance on a mercurial billionaire",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485069,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 1640,
+        "total_tokens": 1668,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1637
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "b8cb2ea3-f2a6-4007-b0b1-cd3118fc45be",
+  "attempt_id": "b8cb2ea3-59d34dfd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBu2NfNCJOU7SJvEz5rEjBTNSr5D",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9150,
+    "cached_input_tokens": 0,
+    "output_tokens": 79,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009545,
+  "latency_ms": 2596,
+  "answer": "State: All direct and indirect costs incurred for an EEI or member company response to a State notice of inquiry or proposed State rulemaking or administrative or regulatory proceeding, including filing comments on proposed actions\n\nFederal: Costs of studying and responding to federal inquiries and proceedings, filing comments, discussions with agencies, preparing background information and analyses, responding to inquiries, and monitoring existing federal government programs",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfBu2NfNCJOU7SJvEz5rEjBTNSr5D",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "State: All direct and indirect costs incurred for an EEI or member company response to a State notice of inquiry or proposed State rulemaking or administrative or regulatory proceeding, including filing comments on proposed actions\n\nFederal: Costs of studying and responding to federal inquiries and proceedings, filing comments, discussions with agencies, preparing background information and analyses, responding to inquiries, and monitoring existing federal government programs",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793485910,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 79,
+      "prompt_tokens": 9150,
+      "total_tokens": 9229,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

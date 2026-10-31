@@ -1,0 +1,58 @@
+{
+  "question_id": "9d36ac5f-6f5e-4d0b-90fe-25aa4aed444f",
+  "attempt_id": "9d36ac5f-68ab148d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfC4RThIC8IrU7xoLXoU5revZvNvL",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9110,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009185,
+  "latency_ms": 2128,
+  "answer": "March 31, 1980, Pamela L. Moss",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfC4RThIC8IrU7xoLXoU5revZvNvL",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "March 31, 1980, Pamela L. Moss",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793486555,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 15,
+      "prompt_tokens": 9110,
+      "total_tokens": 9125,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

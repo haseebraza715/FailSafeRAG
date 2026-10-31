@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "534bacd2-a338-4cfd-af3d-0471f883d4ec",
+  "request_id": "7244cf4bb67cf0295c76c6286b8b901e",
+  "attempt": 1,
+  "attempt_id": "7244cf4bb67cf0295c76c6286b8b901e-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBn65bdNLhAyyxsXZ8awsFxVENBV",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1549,
+    "cached_input_tokens": 0,
+    "output_tokens": 6,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001579,
+  "input_bound_exceeded": false,
+  "latency_ms": 942,
+  "output_status": "ok",
+  "answer": "Next Generation PAC",
+  "abstained": false,
+  "provider_response": {
+    "text": "Next Generation PAC",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBn65bdNLhAyyxsXZ8awsFxVENBV",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Next Generation PAC",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485480,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 6,
+        "prompt_tokens": 1549,
+        "total_tokens": 1555,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1546
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "869cfc33-a169-4bf4-893e-d0d885d13f91",
+  "request_id": "5a19b4ccf112d4870e8d7f36e43ee46d",
+  "attempt": 1,
+  "attempt_id": "5a19b4ccf112d4870e8d7f36e43ee46d-a1",
+  "saved_by_invocation": "538898ff135f47b8b95622fdafea0428",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfBoyku5nDKVtpQcU3GFsht2bfEEo",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1469,
+    "cached_input_tokens": 0,
+    "output_tokens": 19,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001564,
+  "input_bound_exceeded": false,
+  "latency_ms": 1191,
+  "output_status": "ok",
+  "answer": "Improved riparian and aquatic habitat, water quality, diversion efficiency, recreation opportunity",
+  "abstained": false,
+  "provider_response": {
+    "text": "Improved riparian and aquatic habitat, water quality, diversion efficiency, recreation opportunity",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfBoyku5nDKVtpQcU3GFsht2bfEEo",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Improved riparian and aquatic habitat, water quality, diversion efficiency, recreation opportunity",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793485596,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 19,
+        "prompt_tokens": 1469,
+        "total_tokens": 1488,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1466
+        }
+      }
+    }
+  }
+}
