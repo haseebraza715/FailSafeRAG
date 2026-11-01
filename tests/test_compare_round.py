@@ -62,7 +62,7 @@ def sample(tmp_path):
     dump(pilot / "runtime_manifest.json", {"pilot_id": "pilot", "questions": questions, "documents": []})
     dump(pilot / "evaluation_manifest.json", {"pilot_id": "pilot", "questions": {q["question_id"]: {"answers": "yes"} for q in questions}})
     runtime_sha = sha(pilot / "runtime_manifest.json")
-    req = [{"question_id": q["question_id"], "doc_id": q["doc_id"], "action": "send"} for q in questions]
+    req = [{"question_id": q["question_id"], "doc_id": q["doc_id"], "action": "send", "max_output_tokens": 128} for q in questions]
     jsonl(baseline / "requests.jsonl", req)
     base_sha = sha(baseline / "requests.jsonl")
     dump(baseline / "run_config.json", {"mode": "live", "identity": {"runtime_manifest_sha256": runtime_sha, "run_kind": "development_pilot", "pilot_manifest": {"canonical": True}, "provider": {**{k: v for k, v in provider.items() if k != "store"}, "storage": "disabled"}, "prompt": {"template_id": TEMPLATE_V2.template_id, "template_sha256": TEMPLATE_V2.sha256}}})
@@ -87,6 +87,7 @@ def sample(tmp_path):
     for repair, directory in dirs.items():
         records = [{"question_id": f"q{i}", "doc_id": f"d{i // 2}", "action": "skip" if repair == "correct_text" and i == 1 else "send",
                     "skip_reason": "nothing" if repair == "correct_text" and i == 1 else None,
+                    "max_output_tokens": None if repair == "correct_text" and i == 1 else 128,
                     **({"selected_pages": [0, 1]} if repair == "invoke_vlm" else {})} for i in range(3)]
         dump(directory / "run_config.json", {**identity, "run_id": repair, "repair": repair, "requests_sha256": canonical(records),
                                                "render": {"dpi": 150, "detail": "high"}, "provider_config_sha256": sha(provider_path),
@@ -149,6 +150,8 @@ def test_outputs_policies_statistics_and_hashes(sample):
     assert result["contrasts"]["random_pooled"]["mcnemar_em"]["p_value"] == max(result["contrasts"][f"random_{s}"]["mcnemar_em"]["p_value"] for s in RANDOM_SEEDS)
     assert result["detectable"]["disagreement_rate"] == 0
     assert result["decision"]["label"] == "development result, not a confirmation"
+    response = sample["baseline_dir"] / "responses/q0.json"
+    assert result["input_and_code_sha256"][str(response.resolve())] == sha(response)
     assert str(SCRIPT) in result["input_and_code_sha256"]
     assert result["input_and_code_sha256"][str((sample["baseline_dir"] / "requests.jsonl").resolve())] == sha(sample["baseline_dir"] / "requests.jsonl")
     assert "descriptive, unadjusted" in (sample["out_dir"] / "report.md").read_text()
@@ -332,7 +335,7 @@ def test_baseline_prediction_hash_must_match_summary(sample):
 def test_terminal_baseline_failure_reaches_validity_check(sample):
     baseline = sample["baseline_dir"]
     rows = read_jsonl(baseline / "predictions.jsonl")
-    rows[0].update(status="execution_failed", answer="yes")
+    rows[0].update(status="execution_failed", answer=None, returned_model=None, returned_service_tier=None)
     jsonl(baseline / "predictions.jsonl", rows)
     events = read_jsonl(baseline / "attempts.jsonl")
     event = next(e for e in events if e.get("attempt_id") == "q0" and e["event"] == "response_saved")
@@ -408,4 +411,17 @@ def test_returned_event_settings_must_match(sample, run_name, field):
     next(e for e in events if e["event"] in ("saved", "response_saved"))[field] = "wrong"
     jsonl(path, events)
     with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)
+
+
+@pytest.mark.parametrize("field", ["model", "params", "max_output_tokens", "token_limit_param", "service_tier", "storage"])
+def test_missing_baseline_provider_field_is_refused(sample, field):
+    change_json(sample["baseline_dir"] / "run_config.json", lambda x: x["identity"]["provider"].pop(field))
+    with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)
+
+
+def test_request_output_limits_must_match(sample):
+    update_requests(sample["repair_dirs"]["retry_retrieval"], lambda rows: rows[0].update(max_output_tokens=256))
+    with pytest.raises(compare_round.ComparisonError, match="max_output_tokens"):
         run(sample)

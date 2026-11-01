@@ -70,13 +70,13 @@ def check_set(actual: set[str], expected: set[str], label: str) -> None:
 
 
 def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Path,
-                repair_dirs: dict[str, Path], reader: Reader, provider_config: Path) -> dict[str, Any]:
+                repair_dirs: dict[str, Path], reader: Reader, provider_config: Path, *, allowed_split: str = "train") -> dict[str, Any]:
     if not pilot_id or Path(pilot_id).name != pilot_id or pilot_id in (".", ".."):
         raise ComparisonError("invalid pilot id")
     pilot = root / "results/pilots" / pilot_id
     selection = reader.json(pilot / "selection_record.json")
-    if selection.get("pilot_id") != pilot_id or selection.get("config", {}).get("selection", {}).get("question_splits") != ["train"]:
-        raise ComparisonError("pilot selection must record train as its only question split")
+    if selection.get("pilot_id") != pilot_id or selection.get("config", {}).get("selection", {}).get("question_splits") != [allowed_split]:
+        raise ComparisonError(f"pilot selection must record {allowed_split} as its only question split")
     runtime = reader.json(pilot / "runtime_manifest.json")
     if runtime.get("pilot_id") != pilot_id:
         raise ComparisonError("runtime pilot mismatch")
@@ -90,7 +90,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     baseline_config = reader.json(baseline_dir / "run_config.json")
     summary = reader.json(baseline_dir / "run_summary.json")
     identity_config = baseline_config.get("identity", {})
-    provider_bytes = provider_config.read_bytes()
+    provider_bytes = reader.bytes(provider_config)
     provider = json.loads(provider_bytes)
     provider_sha = hashlib.sha256(provider_bytes).hexdigest()
     baseline_provider = identity_config.get("provider", {})
@@ -99,13 +99,12 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         baseline_field = "storage" if field == "store" else field
         if field not in provider:
             raise ComparisonError(f"provider config missing {field}")
-        if baseline_field in baseline_provider:
-            value = ("disabled" if provider[field] is False else "enabled" if provider[field] is True else None) if field == "store" else provider[field]
-            if value is None or value != baseline_provider[baseline_field]:
-                raise ComparisonError(f"baseline provider {field} mismatch")
-            checked_fields.append(field)
-    if "model" not in checked_fields or "params" not in checked_fields or "service_tier" not in checked_fields:
-        raise ComparisonError("baseline provider missing model, params or service_tier")
+        if baseline_field not in baseline_provider:
+            raise ComparisonError(f"baseline provider missing {baseline_field}")
+        value = ("disabled" if provider[field] is False else "enabled" if provider[field] is True else None) if field == "store" else provider[field]
+        if value is None or value != baseline_provider[baseline_field]:
+            raise ComparisonError(f"baseline provider {field} mismatch")
+        checked_fields.append(field)
     prompt = identity_config.get("prompt", {})
     try:
         template = get_template(prompt["template_id"])
@@ -133,12 +132,15 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     check_set(set(requests), ids, "baseline requests")
     check_set(set(predictions), ids, "baseline predictions")
     for qid, request in requests.items():
+        if request.get("action") == "send" and request.get("max_output_tokens") != provider["max_output_tokens"]:
+            raise ComparisonError(f"baseline request max_output_tokens mismatch for {qid}")
         if request.get("doc_id") != questions[qid]["doc_id"] or ("question" in request and request["question"] != questions[qid]["question"]):
             raise ComparisonError(f"baseline request mismatch for {qid}")
     if any(p.get("unserved") or p.get("awaiting_reconciliation") or p.get("status") not in ("answered", "no_evidence", "execution_failed") for p in predictions.values()):
         raise ComparisonError("baseline has unfinished predictions")
     for prediction in predictions.values():
-        check_returned(prediction, "baseline prediction", required=False)
+        if prediction["status"] == "answered":
+            check_returned(prediction, "baseline prediction", required=False)
     events = reader.jsonl(baseline_dir / "attempts.jsonl")
     saved_questions = set()
     for event in events:
@@ -146,7 +148,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
             continue
         qid = event["question_id"]
         response_path = baseline_dir / "responses" / f"{event['attempt_id']}.json"
-        response_bytes = response_path.read_bytes()
+        response_bytes = reader.bytes(response_path)
         response = json.loads(response_bytes)
         if (hashlib.sha256(response_bytes).hexdigest() != event.get("response_sha256")
                 or response.get("question_id") != qid or response.get("attempt_id") != event["attempt_id"]):
@@ -209,7 +211,10 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         if not blocked <= flagged:
             raise ComparisonError(f"{repair} has unknown blocked questions")
         for qid, row in rows.items():
-            check_returned(row, f"{repair} prediction", required=False)
+            if records[qid].get("action", "send") == "send" and records[qid].get("max_output_tokens") != provider["max_output_tokens"]:
+                raise ComparisonError(f"{repair} request max_output_tokens mismatch for {qid}")
+            if row.get("status") == "answered":
+                check_returned(row, f"{repair} prediction", required=False)
             if records[qid].get("doc_id") != questions[qid]["doc_id"]:
                 raise ComparisonError(f"{repair} document mismatch for {qid}")
             status = row.get("status")
