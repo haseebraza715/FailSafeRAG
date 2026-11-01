@@ -208,3 +208,30 @@ allows on development data. It never uses validation.
 The confirmation on the 835 validation questions is costed later. At these unit costs it is roughly 1.6 USD for the
 no-recovery run, 3 to 4 USD for the gated visual bar, and about 2 USD for FAAR's text repairs and the random policy,
 so about 7 to 8 USD.
+
+## 13. Practice rounds and round 1 decisions (2026-11-01, before step 1 runs)
+
+The research lead approved the practice stage on 2026-11-01: at most 3 practice rounds on `ohr_long_dev_v1`, a
+spending cap of 10 USD for the stage counting reserved cost, then the freeze. Rounds 2 and 3 rerun only what
+changed. After round 3, tuning stops whatever the result. The study lead fixed the following before step 1 of round 1.
+
+1. **Steps.** Round 1 runs steps 1, 2, 3, 5 and 6 of section 12. Step 4 (`append-anchor-words-v0`) is skipped: it
+   resent the same chunks for 38 of 63 questions on `ohr_dev_v1`. `correct_text` uses SymSpell
+   (`symspell-en-82765`); ByT5 is not downloaded. Steps 3, 5 and 6 run on the flagged set only.
+2. **Confidence condition (Youden's J), exact form.** Population: the questions the base gate
+   (`abstain-or-ocr-gap-v1`) does not flag and whose feature value is not null, since only there can the condition
+   change the flagged set. Positive: no-recovery official EM 0. For each feature in `CONFIDENCE_FEATURES` and each
+   distinct observed value `t` in that population, the condition flags `feature < t`. Candidates that flag more than
+   `floor(0.30 × N)` of the `N` questions in the population are dropped. The highest J wins; ties go to the fewer
+   flagged questions, then to the earlier feature in `CONFIDENCE_FEATURES`, then to the lower `t`. If no candidate
+   has J above 0, the gate stays the base gate. Gold answers of `ohr_long_dev_v1` (train split) are read only for
+   this choice; the script refuses any pilot that is not train data.
+3. **Diagnosis thresholds in round 1:** the code defaults, `structural_threshold` 1 and `weird_char_threshold` 0.10.
+4. **Random repair:** seeds 20261101, 20261102 and 20261103. Each flagged question gets
+   `REPAIRS[int(sha256(f"{seed}:{question_id}"), 16) % 3]` with `REPAIRS = (retry_retrieval, correct_text,
+   invoke_vlm)`. A drawn repair that skips the question keeps the initial answer.
+5. **Per-run ceilings in round 1 (USD, reserved cost):** no-recovery 1.20, `retry_retrieval` 0.70, `correct_text`
+   0.70, visual repair 3.50. The stage cap of 10 USD binds over all rounds.
+6. **What a round measures.** On development data, every policy of section 3 is assembled from the same runs
+   (FAAR, the gated visual bar, random and no recovery), with the all-repairs diagnostic of brief section 6 and the
+   costs of brief section 5. These are development results, never a confirmation.
