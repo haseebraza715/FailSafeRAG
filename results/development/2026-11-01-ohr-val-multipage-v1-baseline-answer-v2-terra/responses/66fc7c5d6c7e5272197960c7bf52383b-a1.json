@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "912507a1-11c0-45f1-970d-d7c0452d2a84",
+  "request_id": "66fc7c5d6c7e5272197960c7bf52383b",
+  "attempt": 1,
+  "attempt_id": "66fc7c5d6c7e5272197960c7bf52383b-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEetZClN4GCWwm3W5kzIB8O1TXqj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1474,
+    "cached_input_tokens": 0,
+    "output_tokens": 19,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001569,
+  "input_bound_exceeded": false,
+  "latency_ms": 1111,
+  "output_status": "ok",
+  "answer": "stabilize the agricultural market, providing nutritious, high-quality food to school children",
+  "abstained": false,
+  "provider_response": {
+    "text": "stabilize the agricultural market, providing nutritious, high-quality food to school children",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEetZClN4GCWwm3W5kzIB8O1TXqj",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "stabilize the agricultural market, providing nutritious, high-quality food to school children",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496503,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 19,
+        "prompt_tokens": 1474,
+        "total_tokens": 1493,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1471
+        }
+      }
+    }
+  }
+}

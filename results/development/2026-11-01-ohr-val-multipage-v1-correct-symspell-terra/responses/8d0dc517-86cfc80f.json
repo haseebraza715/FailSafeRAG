@@ -1,0 +1,59 @@
+{
+  "question_id": "8d0dc517-3916-4ed8-ae3f-16394ed4f3fe",
+  "attempt_id": "8d0dc517-86cfc80f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfF2Wilg5ji59y5xgKJLc8uzNWgQG",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1434,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001534,
+  "latency_ms": 1123,
+  "answer": "Nationally-Appropriate Mitigation Actions for the Building Sector through Carbon Metric Tool Trainings",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfF2Wilg5ji59y5xgKJLc8uzNWgQG",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Nationally-Appropriate Mitigation Actions for the Building Sector through Carbon Metric Tool Trainings",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497968,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 20,
+      "prompt_tokens": 1434,
+      "total_tokens": 1454,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1431
+      }
+    }
+  }
+}

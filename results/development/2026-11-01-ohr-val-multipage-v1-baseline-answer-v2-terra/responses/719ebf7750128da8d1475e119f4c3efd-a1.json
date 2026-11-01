@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "1cdea031-54cc-4ef2-93d8-f65576569652",
+  "request_id": "719ebf7750128da8d1475e119f4c3efd",
+  "attempt": 1,
+  "attempt_id": "719ebf7750128da8d1475e119f4c3efd-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEZjoiBSp2dkYRwZg9PD11Dsb67Q",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1636,
+    "cached_input_tokens": 0,
+    "output_tokens": 41,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001841,
+  "input_bound_exceeded": false,
+  "latency_ms": 1442,
+  "output_status": "ok",
+  "answer": "ESSI engages Talent and Talent hereby accepts the engagement to act as a Spokesperson for ESSI, and to provide his endorsement of all ESSI products and services, domestically and worldwide",
+  "abstained": false,
+  "provider_response": {
+    "text": "ESSI engages Talent and Talent hereby accepts the engagement to act as a Spokesperson for ESSI, and to provide his endorsement of all ESSI products and services, domestically and worldwide",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEZjoiBSp2dkYRwZg9PD11Dsb67Q",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "ESSI engages Talent and Talent hereby accepts the engagement to act as a Spokesperson for ESSI, and to provide his endorsement of all ESSI products and services, domestically and worldwide",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496183,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1636,
+        "total_tokens": 1677,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1633
+        }
+      }
+    }
+  }
+}

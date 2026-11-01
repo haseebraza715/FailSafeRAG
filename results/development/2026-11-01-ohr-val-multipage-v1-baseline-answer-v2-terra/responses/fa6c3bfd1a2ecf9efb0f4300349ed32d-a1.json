@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "2490a429-6c77-400a-95d6-2f9b05b03a35",
+  "request_id": "fa6c3bfd1a2ecf9efb0f4300349ed32d",
+  "attempt": 1,
+  "attempt_id": "fa6c3bfd1a2ecf9efb0f4300349ed32d-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEZyyPWu7NNQzLOpbyXrHePsw7ey",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1699,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001799,
+  "input_bound_exceeded": false,
+  "latency_ms": 1236,
+  "output_status": "ok",
+  "answer": "3035 East Patrick Lane, Suite 14, Las Vegas, Nevada 89120",
+  "abstained": false,
+  "provider_response": {
+    "text": "3035 East Patrick Lane, Suite 14, Las Vegas, Nevada 89120",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEZyyPWu7NNQzLOpbyXrHePsw7ey",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "3035 East Patrick Lane, Suite 14, Las Vegas, Nevada 89120",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496198,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1699,
+        "total_tokens": 1719,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1696
+        }
+      }
+    }
+  }
+}

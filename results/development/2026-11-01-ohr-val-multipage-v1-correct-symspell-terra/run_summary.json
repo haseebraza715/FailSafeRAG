@@ -1,0 +1,21 @@
+{
+  "run_id": "2026-11-01-ohr-val-multipage-v1-correct-symspell-terra",
+  "questions": 647,
+  "answered": 645,
+  "execution_failed": 0,
+  "blocked": [],
+  "questions_with_unknown_outcomes": 0,
+  "resent": 0,
+  "abstained": 438,
+  "images": 0,
+  "measured_cost_usd": 1.071389,
+  "reserved_cost_usd": 0.0,
+  "returned_models": [
+    "gpt-6.1-terra"
+  ],
+  "returned_service_tiers": [
+    "default"
+  ],
+  "skipped": 2,
+  "complete": true
+}

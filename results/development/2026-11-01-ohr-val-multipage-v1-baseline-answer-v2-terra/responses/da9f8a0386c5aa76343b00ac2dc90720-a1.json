@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "eca32033-ad75-41a5-b7bf-ff2f1883bc1c",
+  "request_id": "da9f8a0386c5aa76343b00ac2dc90720",
+  "attempt": 1,
+  "attempt_id": "da9f8a0386c5aa76343b00ac2dc90720-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEllYZxCjy0VRMfnm11HODhxNKm7",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1628,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001688,
+  "input_bound_exceeded": false,
+  "latency_ms": 1082,
+  "output_status": "ok",
+  "answer": "the excellence of its programs and its unique location",
+  "abstained": false,
+  "provider_response": {
+    "text": "the excellence of its programs and its unique location",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEllYZxCjy0VRMfnm11HODhxNKm7",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "the excellence of its programs and its unique location",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496929,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1628,
+        "total_tokens": 1640,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1625
+        }
+      }
+    }
+  }
+}

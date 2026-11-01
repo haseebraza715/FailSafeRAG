@@ -1,0 +1,59 @@
+{
+  "question_id": "8d022d24-fbfb-4ee1-bf4f-2a8948922eb9",
+  "attempt_id": "8d022d24-eb2e0339",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfF2VW6awfDdYB5MZmXx53yQg5F5O",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1540,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00162,
+  "latency_ms": 1305,
+  "answer": "Coral Triangle Initiative on Coral Reefs, Fisheries and Food Security",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfF2VW6awfDdYB5MZmXx53yQg5F5O",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Coral Triangle Initiative on Coral Reefs, Fisheries and Food Security",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497967,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 1540,
+      "total_tokens": 1556,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1537
+      }
+    }
+  }
+}

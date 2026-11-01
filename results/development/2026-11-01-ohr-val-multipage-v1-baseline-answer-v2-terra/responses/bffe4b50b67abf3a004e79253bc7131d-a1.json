@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c420e583-5f93-454b-bc2b-821e31aebe6f",
+  "request_id": "bffe4b50b67abf3a004e79253bc7131d",
+  "attempt": 1,
+  "attempt_id": "bffe4b50b67abf3a004e79253bc7131d-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEl96F3x22QilTQSgJbRQqwl7cvi",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1720,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.0018,
+  "input_bound_exceeded": false,
+  "latency_ms": 1303,
+  "output_status": "ok",
+  "answer": "Self-Reflective Retrieval-Augmented Generation (SELF-RAG)",
+  "abstained": false,
+  "provider_response": {
+    "text": "Self-Reflective Retrieval-Augmented Generation (SELF-RAG)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEl96F3x22QilTQSgJbRQqwl7cvi",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Self-Reflective Retrieval-Augmented Generation (SELF-RAG)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496891,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1720,
+        "total_tokens": 1736,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1717
+        }
+      }
+    }
+  }
+}

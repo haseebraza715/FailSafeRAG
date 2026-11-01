@@ -1,0 +1,59 @@
+{
+  "question_id": "ac7e8492-cf96-4374-8345-bd4f1ae2be2b",
+  "attempt_id": "ac7e8492-0d7464fe",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEwCbXFq4N3CrgkRsoxs6GpxWNp1",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1720,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001785,
+  "latency_ms": 1125,
+  "answer": "$912 million impact from non-recourse debt transactions",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfEwCbXFq4N3CrgkRsoxs6GpxWNp1",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "$912 million impact from non-recourse debt transactions",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497576,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 1720,
+      "total_tokens": 1733,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1717
+      }
+    }
+  }
+}

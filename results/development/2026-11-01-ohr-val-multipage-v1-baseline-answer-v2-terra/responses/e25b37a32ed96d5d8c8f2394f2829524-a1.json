@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "3eb8a77a-743c-4617-b313-0c573342a08a",
+  "request_id": "e25b37a32ed96d5d8c8f2394f2829524",
+  "attempt": 1,
+  "attempt_id": "e25b37a32ed96d5d8c8f2394f2829524-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEb494VzYHUyCovskzFQnY5CXtzW",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1479,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001559,
+  "input_bound_exceeded": false,
+  "latency_ms": 1179,
+  "output_status": "ok",
+  "answer": "a highly reliable, inexpensive storage system featuring high concurrency and low latency",
+  "abstained": false,
+  "provider_response": {
+    "text": "a highly reliable, inexpensive storage system featuring high concurrency and low latency",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEb494VzYHUyCovskzFQnY5CXtzW",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "a highly reliable, inexpensive storage system featuring high concurrency and low latency",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496266,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1479,
+        "total_tokens": 1495,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1476
+        }
+      }
+    }
+  }
+}

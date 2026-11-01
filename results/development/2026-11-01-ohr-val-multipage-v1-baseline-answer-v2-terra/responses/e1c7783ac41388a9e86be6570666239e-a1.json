@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b8a97775-c5d0-49d3-83b8-fc7f83dbd122",
+  "request_id": "e1c7783ac41388a9e86be6570666239e",
+  "attempt": 1,
+  "attempt_id": "e1c7783ac41388a9e86be6570666239e-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEkzzlyJGaMz6d4qDLBa4WLAkCNP",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1701,
+    "cached_input_tokens": 0,
+    "output_tokens": 39,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001896,
+  "input_bound_exceeded": false,
+  "latency_ms": 1359,
+  "output_status": "ok",
+  "answer": "The law of the State of Vermont, U.S.A.; the non-exclusive jurisdiction of the courts of the State of Vermont and of the United States having jurisdiction in Orleans County, Vermont",
+  "abstained": false,
+  "provider_response": {
+    "text": "The law of the State of Vermont, U.S.A.; the non-exclusive jurisdiction of the courts of the State of Vermont and of the United States having jurisdiction in Orleans County, Vermont",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEkzzlyJGaMz6d4qDLBa4WLAkCNP",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "The law of the State of Vermont, U.S.A.; the non-exclusive jurisdiction of the courts of the State of Vermont and of the United States having jurisdiction in Orleans County, Vermont",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496881,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 39,
+        "prompt_tokens": 1701,
+        "total_tokens": 1740,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1698
+        }
+      }
+    }
+  }
+}

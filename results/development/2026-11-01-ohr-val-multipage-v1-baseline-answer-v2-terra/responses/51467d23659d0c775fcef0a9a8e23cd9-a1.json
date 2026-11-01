@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "1b1b928a-8650-42fa-96d6-7cf421acdfef",
+  "request_id": "51467d23659d0c775fcef0a9a8e23cd9",
+  "attempt": 1,
+  "attempt_id": "51467d23659d0c775fcef0a9a8e23cd9-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEZe6fYWCbtdtJmqr1PxYGIIPWtc",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1483,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001518,
+  "input_bound_exceeded": false,
+  "latency_ms": 915,
+  "output_status": "ok",
+  "answer": "M&I Relationship Manager",
+  "abstained": false,
+  "provider_response": {
+    "text": "M&I Relationship Manager",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEZe6fYWCbtdtJmqr1PxYGIIPWtc",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "M&I Relationship Manager",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496178,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 1483,
+        "total_tokens": 1490,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1480
+        }
+      }
+    }
+  }
+}

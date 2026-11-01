@@ -1,0 +1,59 @@
+{
+  "question_id": "b8a0b435-583f-4e23-83c2-28442e22c593",
+  "attempt_id": "b8a0b435-4cb1031c",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfExLkp6r0YwjJCBAchbNiEx4Yxbp",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1572,
+    "cached_input_tokens": 0,
+    "output_tokens": 56,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001852,
+  "latency_ms": 1564,
+  "answer": "assistants spoke with Mr. Giuliani just.recently and we are hoping very much that Mr. Giuliani will be able to travel to Ukraine and we will meet once he comes to Ukraine. Rudy very much knows what's happening and he is a very capable guy",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfExLkp6r0YwjJCBAchbNiEx4Yxbp",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "assistants spoke with Mr. Giuliani just.recently and we are hoping very much that Mr. Giuliani will be able to travel to Ukraine and we will meet once he comes to Ukraine. Rudy very much knows what's happening and he is a very capable guy",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497647,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 56,
+      "prompt_tokens": 1572,
+      "total_tokens": 1628,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1569
+      }
+    }
+  }
+}

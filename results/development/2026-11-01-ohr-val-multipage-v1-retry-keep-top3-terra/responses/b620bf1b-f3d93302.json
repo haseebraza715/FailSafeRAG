@@ -1,0 +1,59 @@
+{
+  "question_id": "b620bf1b-fcdd-4759-bf72-778d0a1212e8",
+  "attempt_id": "b620bf1b-f3d93302",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEwQjDLdfXy7EScDMO41WcJL9LIy",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1433,
+    "cached_input_tokens": 0,
+    "output_tokens": 32,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001593,
+  "latency_ms": 1103,
+  "answer": "an unauthorized restriction of the legal rights of not only companies who are participants in the SRA, but also agents who are not party to the agreement",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfEwQjDLdfXy7EScDMO41WcJL9LIy",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "an unauthorized restriction of the legal rights of not only companies who are participants in the SRA, but also agents who are not party to the agreement",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497590,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 32,
+      "prompt_tokens": 1433,
+      "total_tokens": 1465,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1430
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "8d0dc517-3916-4ed8-ae3f-16394ed4f3fe",
+  "attempt_id": "8d0dc517-16c99ba3",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEsbPH5AIc4L15F1OtVTh7OdJCMa",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1562,
+    "cached_input_tokens": 0,
+    "output_tokens": 14,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001632,
+  "latency_ms": 1042,
+  "answer": "greening social housing, increasing the uptake of green buildings",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfEsbPH5AIc4L15F1OtVTh7OdJCMa",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "greening social housing, increasing the uptake of green buildings",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497353,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 14,
+      "prompt_tokens": 1562,
+      "total_tokens": 1576,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1559
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "b6dd8000-da1f-435c-bf1b-2f3f14b9478d",
+  "attempt_id": "b6dd8000-63cb043b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfF6pylh6OSnzfnwlnrdKKHM5nrDi",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1683,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001798,
+  "latency_ms": 1263,
+  "answer": "simultaneously viewing the Universe in the visible, Ultra violet and X-ray regions of the electromagnetic spectrum",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfF6pylh6OSnzfnwlnrdKKHM5nrDi",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "simultaneously viewing the Universe in the visible, Ultra violet and X-ray regions of the electromagnetic spectrum",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793498235,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 23,
+      "prompt_tokens": 1683,
+      "total_tokens": 1706,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1680
+      }
+    }
+  }
+}

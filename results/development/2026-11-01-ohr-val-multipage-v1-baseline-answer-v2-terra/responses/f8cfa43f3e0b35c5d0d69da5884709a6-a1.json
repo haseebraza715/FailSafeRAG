@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b741defb-4b2e-40e9-a740-20d1a0fdb1a6",
+  "request_id": "f8cfa43f3e0b35c5d0d69da5884709a6",
+  "attempt": 1,
+  "attempt_id": "f8cfa43f3e0b35c5d0d69da5884709a6-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEkGwanMFB6dpZgytSGskdHh6BIi",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1582,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001617,
+  "input_bound_exceeded": false,
+  "latency_ms": 792,
+  "output_status": "ok",
+  "answer": "David A. Smith",
+  "abstained": false,
+  "provider_response": {
+    "text": "David A. Smith",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEkGwanMFB6dpZgytSGskdHh6BIi",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "David A. Smith",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496836,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 1582,
+        "total_tokens": 1589,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1579
+        }
+      }
+    }
+  }
+}

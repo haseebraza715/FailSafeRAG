@@ -1,0 +1,59 @@
+{
+  "question_id": "94f548b7-37fd-449b-821c-9f0ba98c2a9a",
+  "attempt_id": "94f548b7-f9d43abb",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEtGffYoZYucLhpUfHl0a05OBvdp",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1403,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001488,
+  "latency_ms": 1463,
+  "answer": "accrued interest on the amount prepaid to the date of prepayment",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfEtGffYoZYucLhpUfHl0a05OBvdp",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "accrued interest on the amount prepaid to the date of prepayment",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497394,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 1403,
+      "total_tokens": 1420,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1400
+      }
+    }
+  }
+}

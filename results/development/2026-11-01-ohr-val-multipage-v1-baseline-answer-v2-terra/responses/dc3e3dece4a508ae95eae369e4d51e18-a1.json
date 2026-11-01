@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "62830869-0fa7-4e05-b897-4df5bff773ce",
+  "request_id": "dc3e3dece4a508ae95eae369e4d51e18",
+  "attempt": 1,
+  "attempt_id": "dc3e3dece4a508ae95eae369e4d51e18-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEc7nVffls7G7zXCAqTuTCNVVNSw",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2551,
+    "cached_input_tokens": 0,
+    "output_tokens": 73,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002916,
+  "input_bound_exceeded": false,
+  "latency_ms": 1893,
+  "output_status": "ok",
+  "answer": "\\[\np_{S_{\\theta}}(c_{i}|x)=\\frac{\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{i}))}{\\sum_{j=1}^{|\\mathbb{C}|}\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{j}))}\n\\]",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\[\np_{S_{\\theta}}(c_{i}|x)=\\frac{\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{i}))}{\\sum_{j=1}^{|\\mathbb{C}|}\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{j}))}\n\\]",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEc7nVffls7G7zXCAqTuTCNVVNSw",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\[\np_{S_{\\theta}}(c_{i}|x)=\\frac{\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{i}))}{\\sum_{j=1}^{|\\mathbb{C}|}\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{j}))}\n\\]",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496331,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 73,
+        "prompt_tokens": 2551,
+        "total_tokens": 2624,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2548
+        }
+      }
+    }
+  }
+}

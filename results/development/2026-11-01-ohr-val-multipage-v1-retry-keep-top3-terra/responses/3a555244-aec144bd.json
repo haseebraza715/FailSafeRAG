@@ -1,0 +1,59 @@
+{
+  "question_id": "3a555244-dd18-413f-8dd4-77808b6653de",
+  "attempt_id": "3a555244-aec144bd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEprGj75UuBVaVBYLYHODGiQIXgj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1242,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001277,
+  "latency_ms": 1184,
+  "answer": "NTU’s website",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfEprGj75UuBVaVBYLYHODGiQIXgj",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "NTU’s website",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497183,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 7,
+      "prompt_tokens": 1242,
+      "total_tokens": 1249,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1239
+      }
+    }
+  }
+}

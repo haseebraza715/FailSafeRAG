@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "82fcbdb5-9c61-4ac1-887a-cf1646c01d73",
+  "request_id": "d47eb3a5997b5308270a2b3917e84340",
+  "attempt": 1,
+  "attempt_id": "d47eb3a5997b5308270a2b3917e84340-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEcvyWIwyKMAbrbdKnnRL11TKt4y",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1545,
+    "cached_input_tokens": 0,
+    "output_tokens": 24,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001665,
+  "input_bound_exceeded": false,
+  "latency_ms": 1262,
+  "output_status": "ok",
+  "answer": "Contact UniCare Customer Service within 24 hours of, or the next business day after, an emergency admission",
+  "abstained": false,
+  "provider_response": {
+    "text": "Contact UniCare Customer Service within 24 hours of, or the next business day after, an emergency admission",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEcvyWIwyKMAbrbdKnnRL11TKt4y",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Contact UniCare Customer Service within 24 hours of, or the next business day after, an emergency admission",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496381,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1545,
+        "total_tokens": 1569,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1542
+        }
+      }
+    }
+  }
+}

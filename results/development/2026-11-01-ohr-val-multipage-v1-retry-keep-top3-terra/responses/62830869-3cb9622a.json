@@ -1,0 +1,59 @@
+{
+  "question_id": "62830869-0fa7-4e05-b897-4df5bff773ce",
+  "attempt_id": "62830869-3cb9622a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEqsCkWbJ8WPDLNs103vVDlxmfpt",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2570,
+    "cached_input_tokens": 0,
+    "output_tokens": 73,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002935,
+  "latency_ms": 1835,
+  "answer": "\\[\np_{S_{\\theta}}(c_{i}|x)=\\frac{\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{i}))}{\\sum_{j=1}^{|\\mathbb{C}|}\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{j}))}\n\\]",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfEqsCkWbJ8WPDLNs103vVDlxmfpt",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "\\[\np_{S_{\\theta}}(c_{i}|x)=\\frac{\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{i}))}{\\sum_{j=1}^{|\\mathbb{C}|}\\exp(S_{\\theta}(x~[\\mathrm{SEP}]~c_{j}))}\n\\]",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497246,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 73,
+      "prompt_tokens": 2570,
+      "total_tokens": 2643,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 2567
+      }
+    }
+  }
+}

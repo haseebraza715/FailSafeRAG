@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8854af16-f057-4d63-b9b7-8685108aed26",
+  "request_id": "1a0c3c3bf3902af9b77dc511993bf6cf",
+  "attempt": 1,
+  "attempt_id": "1a0c3c3bf3902af9b77dc511993bf6cf-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEdrT5glvVwCN6pTJNi3s6pY5ZF8",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1868,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001913,
+  "input_bound_exceeded": false,
+  "latency_ms": 901,
+  "output_status": "ok",
+  "answer": "M. S. Kohli",
+  "abstained": false,
+  "provider_response": {
+    "text": "M. S. Kohli",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEdrT5glvVwCN6pTJNi3s6pY5ZF8",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "M. S. Kohli",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496439,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1868,
+        "total_tokens": 1877,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1865
+        }
+      }
+    }
+  }
+}

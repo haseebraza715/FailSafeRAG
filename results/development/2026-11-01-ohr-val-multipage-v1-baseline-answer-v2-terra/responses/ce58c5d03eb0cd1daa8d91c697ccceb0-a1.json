@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b5794065-3208-4ba4-8db1-2decf5cb15e6",
+  "request_id": "ce58c5d03eb0cd1daa8d91c697ccceb0",
+  "attempt": 1,
+  "attempt_id": "ce58c5d03eb0cd1daa8d91c697ccceb0-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEjY2r0e62ObRzOSh1MUsfX12L7P",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2535,
+    "cached_input_tokens": 0,
+    "output_tokens": 102,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003045,
+  "input_bound_exceeded": false,
+  "latency_ms": 1950,
+  "output_status": "ok",
+  "answer": "Massachusetts: The Home Garden, Michigan: The Home Vegetable Garden, Mississippi: The Year-Round Home Garden and Home Production of Small Fruits in Mississippi, Montana: The Montana Farm Garden, New Jersey: The Home Vegetable Garden, New York: The Home Garden, North Carolina: The Farm and Home Garden Manual, Oregon: The Farm Vegetable Garden, Pennsylvania: The Family Vegetable Garden, South Dakota: Planning and Growing the Family Food Supply and Questions and Answers on Fruit Culture, Washington: Home Gardens",
+  "abstained": false,
+  "provider_response": {
+    "text": "Massachusetts: The Home Garden, Michigan: The Home Vegetable Garden, Mississippi: The Year-Round Home Garden and Home Production of Small Fruits in Mississippi, Montana: The Montana Farm Garden, New Jersey: The Home Vegetable Garden, New York: The Home Garden, North Carolina: The Farm and Home Garden Manual, Oregon: The Farm Vegetable Garden, Pennsylvania: The Family Vegetable Garden, South Dakota: Planning and Growing the Family Food Supply and Questions and Answers on Fruit Culture, Washington: Home Gardens",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEjY2r0e62ObRzOSh1MUsfX12L7P",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Massachusetts: The Home Garden, Michigan: The Home Vegetable Garden, Mississippi: The Year-Round Home Garden and Home Production of Small Fruits in Mississippi, Montana: The Montana Farm Garden, New Jersey: The Home Vegetable Garden, New York: The Home Garden, North Carolina: The Farm and Home Garden Manual, Oregon: The Farm Vegetable Garden, Pennsylvania: The Family Vegetable Garden, South Dakota: Planning and Growing the Family Food Supply and Questions and Answers on Fruit Culture, Washington: Home Gardens",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496792,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 102,
+        "prompt_tokens": 2535,
+        "total_tokens": 2637,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2532
+        }
+      }
+    }
+  }
+}

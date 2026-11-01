@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b817bbb7-8f8e-4bde-8d23-4509ef85acba",
+  "request_id": "3c2a01b4df74fc14d0066bf6fc659706",
+  "attempt": 1,
+  "attempt_id": "3c2a01b4df74fc14d0066bf6fc659706-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEkibTzR2azV0sKWmdhIQg5k7y9b",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1742,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001832,
+  "input_bound_exceeded": false,
+  "latency_ms": 1248,
+  "output_status": "ok",
+  "answer": "Supplies NH₄HCO₃ for buffer exchange and volume adjustment",
+  "abstained": false,
+  "provider_response": {
+    "text": "Supplies NH₄HCO₃ for buffer exchange and volume adjustment",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEkibTzR2azV0sKWmdhIQg5k7y9b",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Supplies NH₄HCO₃ for buffer exchange and volume adjustment",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496864,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 1742,
+        "total_tokens": 1760,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1739
+        }
+      }
+    }
+  }
+}

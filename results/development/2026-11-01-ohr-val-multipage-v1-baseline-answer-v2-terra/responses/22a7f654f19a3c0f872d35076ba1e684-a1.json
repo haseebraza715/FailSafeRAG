@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b79c77f9-0b8d-4b81-b36f-6f21643e43db",
+  "request_id": "22a7f654f19a3c0f872d35076ba1e684",
+  "attempt": 1,
+  "attempt_id": "22a7f654f19a3c0f872d35076ba1e684-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEkQaP51bGCyNzFiPp2bpEBU8OAO",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1794,
+    "cached_input_tokens": 0,
+    "output_tokens": 46,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002024,
+  "input_bound_exceeded": false,
+  "latency_ms": 2133,
+  "output_status": "ok",
+  "answer": "CBP provides support to the Federal Protective Service and interagency partners to protect federal facilities and property. Its officers and agents receive Federal Law Enforcement Training Center training, and deployed personnel have specialized training for operations in chaotic environments",
+  "abstained": false,
+  "provider_response": {
+    "text": "CBP provides support to the Federal Protective Service and interagency partners to protect federal facilities and property. Its officers and agents receive Federal Law Enforcement Training Center training, and deployed personnel have specialized training for operations in chaotic environments",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEkQaP51bGCyNzFiPp2bpEBU8OAO",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "CBP provides support to the Federal Protective Service and interagency partners to protect federal facilities and property. Its officers and agents receive Federal Law Enforcement Training Center training, and deployed personnel have specialized training for operations in chaotic environments",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496846,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 46,
+        "prompt_tokens": 1794,
+        "total_tokens": 1840,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1791
+        }
+      }
+    }
+  }
+}

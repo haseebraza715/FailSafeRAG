@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8d022d24-fbfb-4ee1-bf4f-2a8948922eb9",
+  "request_id": "49125eb6155be694ee75a090c26c48d5",
+  "attempt": 1,
+  "attempt_id": "49125eb6155be694ee75a090c26c48d5-a1",
+  "saved_by_invocation": "e8db9d40f18f436c81b02b167cce2095",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfEeOCjTRTm6lVgK5j4wTMMq5SrMS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1598,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001678,
+  "input_bound_exceeded": false,
+  "latency_ms": 997,
+  "output_status": "ok",
+  "answer": "Coral Triangle Initiative on Coral Reefs, Fisheries and Food Security",
+  "abstained": false,
+  "provider_response": {
+    "text": "Coral Triangle Initiative on Coral Reefs, Fisheries and Food Security",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfEeOCjTRTm6lVgK5j4wTMMq5SrMS",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Coral Triangle Initiative on Coral Reefs, Fisheries and Food Security",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793496472,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1598,
+        "total_tokens": 1614,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1595
+        }
+      }
+    }
+  }
+}

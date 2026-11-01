@@ -1,0 +1,59 @@
+{
+  "question_id": "ec84bee5-cb16-4d77-86f5-df2814f2f616",
+  "attempt_id": "ec84bee5-3afd7914",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfExrS8tGqvfsdWWQAu3M8WtjUs8Y",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1625,
+    "cached_input_tokens": 0,
+    "output_tokens": 38,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001815,
+  "latency_ms": 1361,
+  "answer": "nothing in this Section 13 is intended to limit Lender's right to bring any suit, action or proceeding relating to matters under this Instrument in any court of any other jurisdiction",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfExrS8tGqvfsdWWQAu3M8WtjUs8Y",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "nothing in this Section 13 is intended to limit Lender's right to bring any suit, action or proceeding relating to matters under this Instrument in any court of any other jurisdiction",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793497679,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 38,
+      "prompt_tokens": 1625,
+      "total_tokens": 1663,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1622
+      }
+    }
+  }
+}
