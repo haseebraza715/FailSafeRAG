@@ -70,13 +70,13 @@ def check_set(actual: set[str], expected: set[str], label: str) -> None:
 
 
 def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Path,
-                repair_dirs: dict[str, Path], reader: Reader, provider_config: Path) -> dict[str, Any]:
+                repair_dirs: dict[str, Path], reader: Reader, provider_config: Path, *, allowed_split: str = "train") -> dict[str, Any]:
     if not pilot_id or Path(pilot_id).name != pilot_id or pilot_id in (".", ".."):
         raise ComparisonError("invalid pilot id")
     pilot = root / "results/pilots" / pilot_id
     selection = reader.json(pilot / "selection_record.json")
-    if selection.get("pilot_id") != pilot_id or selection.get("config", {}).get("selection", {}).get("question_splits") != ["train"]:
-        raise ComparisonError("pilot selection must record train as its only question split")
+    if selection.get("pilot_id") != pilot_id or selection.get("config", {}).get("selection", {}).get("question_splits") != [allowed_split]:
+        raise ComparisonError(f"pilot selection must record {allowed_split} as its only question split")
     runtime = reader.json(pilot / "runtime_manifest.json")
     if runtime.get("pilot_id") != pilot_id:
         raise ComparisonError("runtime pilot mismatch")
@@ -90,7 +90,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     baseline_config = reader.json(baseline_dir / "run_config.json")
     summary = reader.json(baseline_dir / "run_summary.json")
     identity_config = baseline_config.get("identity", {})
-    provider_bytes = provider_config.read_bytes()
+    provider_bytes = reader.bytes(provider_config)
     provider = json.loads(provider_bytes)
     provider_sha = hashlib.sha256(provider_bytes).hexdigest()
     baseline_provider = identity_config.get("provider", {})
