@@ -82,6 +82,9 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     if not questions:
         raise ComparisonError("empty pilot")
     ids = set(questions)
+    selected = selection.get("selected_question_ids", [])
+    if len(selected) != len(ids) or set(selected) != ids:
+        raise ComparisonError("pilot selection question set differs")
     baseline_config = reader.json(baseline_dir / "run_config.json")
     summary = reader.json(baseline_dir / "run_summary.json")
     if summary.get("run_state") != "complete" or summary.get("valid_baseline") is not True or summary.get("pilot_id") != pilot_id:

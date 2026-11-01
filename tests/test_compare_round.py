@@ -51,7 +51,7 @@ def sample(tmp_path):
     dirs = {name: tmp_path / name for name in REPAIRS}
     out = tmp_path / "out"
     questions = [{"question_id": f"q{i}", "doc_id": f"d{i // 2}", "question": f"question {i}"} for i in range(4)]
-    dump(pilot / "selection_record.json", {"pilot_id": "pilot", "config": {"selection": {"question_splits": ["train"]}}})
+    dump(pilot / "selection_record.json", {"pilot_id": "pilot", "config": {"selection": {"question_splits": ["train"]}}, "selected_question_ids": [q["question_id"] for q in questions]})
     dump(pilot / "runtime_manifest.json", {"pilot_id": "pilot", "questions": questions, "documents": []})
     dump(pilot / "evaluation_manifest.json", {"pilot_id": "pilot", "questions": {q["question_id"]: {"answers": "yes"} for q in questions}})
     runtime_sha = sha(pilot / "runtime_manifest.json")
@@ -298,3 +298,10 @@ def test_not_sent_attempt_has_no_api_cost_or_request():
     row = compare_round.ledger_by_question(events, {"q": {}}, {"q": {"selected_pages": [1]}}, baseline=False)["q"]
     assert row["dispatches"] == 1
     assert row["requests"] == row["images"] == row["reserved"] == 0
+
+
+def test_selection_must_cover_runtime_questions(sample):
+    pilot = sample["root"] / "results/pilots/pilot"
+    change_json(pilot / "selection_record.json", lambda x: x.update(selected_question_ids=[]))
+    with pytest.raises(compare_round.ComparisonError, match="selection question set"):
+        run(sample)
