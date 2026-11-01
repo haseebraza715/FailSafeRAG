@@ -1,0 +1,59 @@
+{
+  "question_id": "b3b314c5-7228-4c18-91c8-aa4427411f71",
+  "attempt_id": "b3b314c5-bc28d358",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE8clIMw9s05ZzcuFvuxt8P8m37g",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1584,
+    "cached_input_tokens": 0,
+    "output_tokens": 44,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001804,
+  "latency_ms": 1852,
+  "answer": "Retail Promotions granted to the Company shall be placed in such a way as to provide no more or less prominence to the Company than is provided to any other Competing Computer Retailer signing an agreement with CNET",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE8clIMw9s05ZzcuFvuxt8P8m37g",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Retail Promotions granted to the Company shall be placed in such a way as to provide no more or less prominence to the Company than is provided to any other Competing Computer Retailer signing an agreement with CNET",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494502,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 44,
+      "prompt_tokens": 1584,
+      "total_tokens": 1628,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1581
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "b787f84c-52fd-4f39-bb3e-27b57f395b4e",
+  "attempt_id": "b787f84c-dcb90f30",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE8rbkBqD9gqCBw2yfwnvlMRq4zt",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1784,
+    "cached_input_tokens": 0,
+    "output_tokens": 24,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001904,
+  "latency_ms": 1162,
+  "answer": "The GAB started disseminating TNA forms in compliance with the CSC’s HRM-PRIME requirement",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE8rbkBqD9gqCBw2yfwnvlMRq4zt",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The GAB started disseminating TNA forms in compliance with the CSC’s HRM-PRIME requirement",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494517,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 24,
+      "prompt_tokens": 1784,
+      "total_tokens": 1808,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1781
+      }
+    }
+  }
+}

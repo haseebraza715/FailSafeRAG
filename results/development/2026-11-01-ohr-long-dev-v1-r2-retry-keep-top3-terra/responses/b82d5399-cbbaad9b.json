@@ -1,0 +1,59 @@
+{
+  "question_id": "b82d5399-aa1e-4657-a5be-a308cd9070bb",
+  "attempt_id": "b82d5399-cbbaad9b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE94IYwMfoj0AElgZTlazjhbh8Oj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1696,
+    "cached_input_tokens": 0,
+    "output_tokens": 39,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001891,
+  "latency_ms": 1212,
+  "answer": "A report on the criminal code of Pennsylvania, with an account of the penitentiary, was distributed among New York legislators to call attention to a similar reformation in their own laws",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE94IYwMfoj0AElgZTlazjhbh8Oj",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A report on the criminal code of Pennsylvania, with an account of the penitentiary, was distributed among New York legislators to call attention to a similar reformation in their own laws",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494530,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 39,
+      "prompt_tokens": 1696,
+      "total_tokens": 1735,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1693
+      }
+    }
+  }
+}

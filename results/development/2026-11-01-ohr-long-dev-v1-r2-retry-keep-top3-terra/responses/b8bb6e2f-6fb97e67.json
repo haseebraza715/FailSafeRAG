@@ -1,0 +1,59 @@
+{
+  "question_id": "b8bb6e2f-795f-4962-a099-e0d9cf24692e",
+  "attempt_id": "b8bb6e2f-6fb97e67",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE9CuE7FQNqM7Oc9rFc7hbcpN6RH",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1334,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001399,
+  "latency_ms": 1214,
+  "answer": "522 total, 240 fertilizers, 282 pesticides",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE9CuE7FQNqM7Oc9rFc7hbcpN6RH",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "522 total, 240 fertilizers, 282 pesticides",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494538,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 1334,
+      "total_tokens": 1347,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1331
+      }
+    }
+  }
+}

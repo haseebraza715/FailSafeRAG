@@ -1,0 +1,59 @@
+{
+  "question_id": "b7e52ee0-eefa-4066-b91c-9643ea05a163",
+  "attempt_id": "b7e52ee0-ec19b6d1",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE8ytWEvkRqMksdSKtigh4gdYRd3",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1209,
+    "cached_input_tokens": 0,
+    "output_tokens": 24,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001329,
+  "latency_ms": 1277,
+  "answer": "Required warehouse registration and compliance with storage and handling regulations, approved 340 warehouse applications, renewed 613 applications",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE8ytWEvkRqMksdSKtigh4gdYRd3",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Required warehouse registration and compliance with storage and handling regulations, approved 340 warehouse applications, renewed 613 applications",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494524,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 24,
+      "prompt_tokens": 1209,
+      "total_tokens": 1233,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1206
+      }
+    }
+  }
+}

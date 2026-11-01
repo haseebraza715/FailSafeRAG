@@ -1,0 +1,59 @@
+{
+  "question_id": "8c5574cc-785f-40a7-b766-88560b9714b0",
+  "attempt_id": "8c5574cc-06abc06a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE72DIaXLwysC1tXhkbHFu7CbtR2",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1604,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001659,
+  "latency_ms": 1047,
+  "answer": "twenty feet, two to five tons",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE72DIaXLwysC1tXhkbHFu7CbtR2",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "twenty feet, two to five tons",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494404,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 11,
+      "prompt_tokens": 1604,
+      "total_tokens": 1615,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1601
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "b8051bba-602d-4ace-aa6c-d937c92fbb30",
+  "attempt_id": "b8051bba-c8153561",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE90OZiaMTOGXpSkBEuuJkVAD35R",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1723,
+    "cached_input_tokens": 0,
+    "output_tokens": 54,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001993,
+  "latency_ms": 1633,
+  "answer": "The effect of reducing the County Occupancy limit from 50l. to 1ol. would, as we have just endeavoured to show, place (say) 186,0o0 votes at the disposal of the County and Borough Registers",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE90OZiaMTOGXpSkBEuuJkVAD35R",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The effect of reducing the County Occupancy limit from 50l. to 1ol. would, as we have just endeavoured to show, place (say) 186,0o0 votes at the disposal of the County and Borough Registers",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494526,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 54,
+      "prompt_tokens": 1723,
+      "total_tokens": 1777,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1720
+      }
+    }
+  }
+}

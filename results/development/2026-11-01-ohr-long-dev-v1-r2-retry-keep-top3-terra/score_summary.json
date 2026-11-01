@@ -1,0 +1,7 @@
+{
+  "run_id": "2026-11-01-ohr-long-dev-v1-r2-retry-keep-top3-terra",
+  "questions": 228,
+  "em": 0.19298245614035087,
+  "f1": 0.3397638830429855,
+  "execution_failed": 0
+}

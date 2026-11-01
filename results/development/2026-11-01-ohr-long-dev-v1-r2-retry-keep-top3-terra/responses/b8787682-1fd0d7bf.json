@@ -1,0 +1,59 @@
+{
+  "question_id": "b8787682-a725-451a-8969-6f9acf7e9cbf",
+  "attempt_id": "b8787682-1fd0d7bf",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE9Ad7uoBRjDoriE08Ps3iqlIxX6",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1605,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001715,
+  "latency_ms": 1504,
+  "answer": "In the performance of the routine of military service, he is executing the collective will of the people",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE9Ad7uoBRjDoriE08Ps3iqlIxX6",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "In the performance of the routine of military service, he is executing the collective will of the people",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494536,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 22,
+      "prompt_tokens": 1605,
+      "total_tokens": 1627,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1602
+      }
+    }
+  }
+}

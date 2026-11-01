@@ -1,0 +1,59 @@
+{
+  "question_id": "937cdb03-40bd-4acc-9e30-e4c3daeea67f",
+  "attempt_id": "937cdb03-d1752ac2",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfE7M6UsAHSaMHVU7kC6IedkEflWf",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1566,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001646,
+  "latency_ms": 1469,
+  "answer": "57 took erysipelas in conserquence of vaccination and died",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfE7M6UsAHSaMHVU7kC6IedkEflWf",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "57 took erysipelas in conserquence of vaccination and died",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793494424,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 1566,
+      "total_tokens": 1582,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1563
+      }
+    }
+  }
+}
