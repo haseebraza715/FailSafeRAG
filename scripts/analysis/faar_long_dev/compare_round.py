@@ -27,8 +27,10 @@ from scipy.optimize import brentq  # noqa: E402
 from scipy.stats import beta, norm  # noqa: E402
 from stats import cluster_bootstrap_diff, mcnemar_exact  # noqa: E402
 
+from faar.answer_prompt import get_template  # noqa: E402
 from faar.ohr_scoring import exact_match_score, f1_score  # noqa: E402
 from faar.policies import RANDOM_SEEDS, REPAIRS, assemble  # noqa: E402
+from faar.visual_repair import IMAGE_NOTE, NO_TEXT_USER_PREFIX  # noqa: E402
 
 METRICS = ("em", "f1", "anls", "nfkc_em")
 RANDOM = tuple(f"random_{seed}" for seed in RANDOM_SEEDS)
@@ -68,7 +70,7 @@ def check_set(actual: set[str], expected: set[str], label: str) -> None:
 
 
 def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Path,
-                repair_dirs: dict[str, Path], reader: Reader) -> dict[str, Any]:
+                repair_dirs: dict[str, Path], reader: Reader, provider_config: Path) -> dict[str, Any]:
     if not pilot_id or Path(pilot_id).name != pilot_id or pilot_id in (".", ".."):
         raise ComparisonError("invalid pilot id")
     pilot = root / "results/pilots" / pilot_id
@@ -88,6 +90,33 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     baseline_config = reader.json(baseline_dir / "run_config.json")
     summary = reader.json(baseline_dir / "run_summary.json")
     identity_config = baseline_config.get("identity", {})
+    provider_bytes = provider_config.read_bytes()
+    provider = json.loads(provider_bytes)
+    provider_sha = hashlib.sha256(provider_bytes).hexdigest()
+    baseline_provider = identity_config.get("provider", {})
+    checked_fields = []
+    for field in ("model", "params", "max_output_tokens", "token_limit_param", "service_tier", "store"):
+        baseline_field = "storage" if field == "store" else field
+        if field not in provider:
+            raise ComparisonError(f"provider config missing {field}")
+        if baseline_field in baseline_provider:
+            value = ("disabled" if provider[field] is False else "enabled" if provider[field] is True else None) if field == "store" else provider[field]
+            if value is None or value != baseline_provider[baseline_field]:
+                raise ComparisonError(f"baseline provider {field} mismatch")
+            checked_fields.append(field)
+    if "model" not in checked_fields or "params" not in checked_fields or "service_tier" not in checked_fields:
+        raise ComparisonError("baseline provider missing model, params or service_tier")
+    prompt = identity_config.get("prompt", {})
+    try:
+        template = get_template(prompt["template_id"])
+    except KeyError as exc:
+        raise ComparisonError("baseline template_id missing or unknown") from exc
+    if prompt.get("template_sha256") != template.sha256:
+        raise ComparisonError("baseline template_sha256 mismatch")
+    def check_returned(record: dict[str, Any], label: str, *, required: bool) -> None:
+        for field, key in (("returned_model", "model"), ("returned_service_tier", "service_tier")):
+            if (required or field in record) and record.get(field) != provider[key]:
+                raise ComparisonError(f"{label} {field} mismatch")
     blockers = summary.get("valid_baseline_blockers", [])
     if (summary.get("run_state") != "complete" or summary.get("pilot_id") != pilot_id
             or baseline_config.get("mode") != "live" or identity_config.get("run_kind") != "development_pilot"
@@ -108,6 +137,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
             raise ComparisonError(f"baseline request mismatch for {qid}")
     if any(p.get("unserved") or p.get("awaiting_reconciliation") or p.get("status") not in ("answered", "no_evidence", "execution_failed") for p in predictions.values()):
         raise ComparisonError("baseline has unfinished predictions")
+    for prediction in predictions.values():
+        check_returned(prediction, "baseline prediction", required=False)
     events = reader.jsonl(baseline_dir / "attempts.jsonl")
     saved_questions = set()
     for event in events:
@@ -120,6 +151,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         if (hashlib.sha256(response_bytes).hexdigest() != event.get("response_sha256")
                 or response.get("question_id") != qid or response.get("attempt_id") != event["attempt_id"]):
             raise ComparisonError("baseline response hash or identity mismatch")
+        check_returned(response, "baseline response", required=True)
+        check_returned(event, "baseline event", required=True)
         if any(event.get(k) != response.get(k) for k in ("answer", "abstained", "output_status", "usage", "measured_cost", "returned_model", "returned_service_tier")):
             raise ComparisonError("baseline event differs from response")
         if qid in saved_questions or qid not in predictions or predictions[qid].get("status") != "answered" or predictions[qid].get("answer") != response.get("answer"):
@@ -152,6 +185,15 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     for repair, directory in repair_dirs.items():
         config = reader.json(directory / "run_config.json")
         identity(config, repair)
+        if config.get("provider_config_sha256") != provider_sha:
+            raise ComparisonError(f"{repair} provider_config_sha256 mismatch")
+        for field in ("template_id", "template_sha256"):
+            if config.get(field) != prompt.get(field):
+                raise ComparisonError(f"{repair} {field} mismatch")
+        if repair == "invoke_vlm":
+            for field, expected in (("image_note", IMAGE_NOTE), ("no_text_user_template", NO_TEXT_USER_PREFIX + template.closing_line)):
+                if config.get(field) != expected:
+                    raise ComparisonError(f"{repair} {field} mismatch")
         if config.get("repair") != repair:
             raise ComparisonError(f"wrong repair in {directory}")
         records_list = reader.jsonl(directory / "requests.jsonl")
@@ -167,6 +209,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         if not blocked <= flagged:
             raise ComparisonError(f"{repair} has unknown blocked questions")
         for qid, row in rows.items():
+            check_returned(row, f"{repair} prediction", required=False)
             if records[qid].get("doc_id") != questions[qid]["doc_id"]:
                 raise ComparisonError(f"{repair} document mismatch for {qid}")
             status = row.get("status")
@@ -189,6 +232,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
             response = reader.json(response_path)
             if reader.hashes[str(response_path.resolve())] != event["response_sha256"]:
                 raise ComparisonError(f"{repair} response hash mismatch")
+            check_returned(response, f"{repair} response", required=True)
+            check_returned(event, f"{repair} event", required=True)
             if response.get("question_id") != event["question_id"] or response.get("attempt_id") != event["attempt_id"]:
                 raise ComparisonError(f"{repair} response identity mismatch")
             prediction = rows[event["question_id"]]
@@ -203,7 +248,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     check_set(set(evaluation["questions"]), ids, "evaluation")
     for code in (Path(__file__), CODE_ROOT / "src/faar/policies.py", CODE_ROOT / "src/faar/ohr_scoring.py", HELPERS / "stats.py", HELPERS / "measures.py"):
         reader.bytes(code)
-    return {"questions": questions, "evaluation": evaluation["questions"], "diagnosis": diagnosis,
+    return {"provider_config_sha256": provider_sha, "provider_fields_checked": checked_fields, "questions": questions, "evaluation": evaluation["questions"], "diagnosis": diagnosis,
             "baseline": {"config": baseline_config, "summary": summary, "requests": requests, "rows": predictions, "events": events},
             "repairs": runs, "flagged": flagged}
 
@@ -515,15 +560,17 @@ def report(results: dict[str, Any]) -> str:
 
 
 def compare(root: Path, pilot_id: str, round_number: int, baseline_dir: Path, diagnosis_dir: Path,
-            repair_dirs: dict[str, Path], out_dir: Path) -> dict[str, Any]:
+            repair_dirs: dict[str, Path], out_dir: Path, provider_config: Path) -> dict[str, Any]:
     if out_dir.exists() and (not out_dir.is_dir() or any(out_dir.iterdir())):
         raise ComparisonError("output directory is not empty")
     if round_number < 1:
         raise ComparisonError("round must be positive")
     reader = Reader()
-    data = read_inputs(root, pilot_id, baseline_dir, diagnosis_dir, repair_dirs, reader)
+    data = read_inputs(root, pilot_id, baseline_dir, diagnosis_dir, repair_dirs, reader, provider_config)
     rows = cases(data)
     results = analyse(data, rows, pilot_id, round_number)
+    results["provider_config_sha256"] = data["provider_config_sha256"]
+    results["provider_fields_checked"] = data["provider_fields_checked"]
     results["input_and_code_sha256"] = reader.hashes
     out_dir.mkdir(parents=True, exist_ok=True)
     with (out_dir / "case_scores.csv").open("w", encoding="utf-8", newline="") as f:
@@ -542,10 +589,11 @@ def main() -> int:
     parser.add_argument("--round", type=int, required=True)
     for name in ("baseline-run-dir", "diagnosis-dir", "visual-run-dir", "retry-run-dir", "correct-run-dir", "out-dir"):
         parser.add_argument(f"--{name}", type=Path, required=True)
+    parser.add_argument("--provider-config", type=Path, required=True)
     args = parser.parse_args()
     try:
         compare(ROOT, args.pilot_id, args.round, args.baseline_run_dir, args.diagnosis_dir,
-                {"invoke_vlm": args.visual_run_dir, "retry_retrieval": args.retry_run_dir, "correct_text": args.correct_run_dir}, args.out_dir)
+                {"invoke_vlm": args.visual_run_dir, "retry_retrieval": args.retry_run_dir, "correct_text": args.correct_run_dir}, args.out_dir, args.provider_config)
     except (ComparisonError, OSError, KeyError, ValueError) as exc:
         parser.exit(2, f"comparison refused: {exc}\n")
     return 0
