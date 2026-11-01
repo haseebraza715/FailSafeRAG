@@ -97,9 +97,10 @@ class Project:
         gt.write_text("[]")
         self.baseline = root / "results" / "development" / "base"
         self.baseline.mkdir(parents=True)
-        (self.baseline / "run_config.json").write_text(json.dumps({"identity": {"runtime_manifest": {"sha256": manifest_sha}}}))
-        (self.baseline / "run_summary.json").write_text(json.dumps({"pilot_id": PILOT, "valid_baseline": valid_baseline}))
+        (self.baseline / "run_config.json").write_text(json.dumps({"mode": "live", "identity": {"runtime_manifest": {"sha256": manifest_sha}, "run_kind": "development_pilot", "pilot_manifest": {"canonical": True}}}))
+        (self.baseline / "run_summary.json").write_text(json.dumps({"pilot_id": PILOT, "valid_baseline": valid_baseline, "run_state": "complete", "valid_baseline_blockers": [] if valid_baseline else ["invalid"]}))
         (self.baseline / "scores.jsonl").write_text("{}\n")
+        (self.baseline / "predictions.jsonl").write_text("".join(json.dumps({"question_id": q["question_id"], "status": "no_evidence" if q["question_id"] == "q3" else "answered", "abstained": False}) + "\n" for q in questions))
         evidence = {"q1": [{"rank": 1, "page_idx": 1}, {"rank": 2, "page_idx": 0}, {"rank": 3, "page_idx": 1}],
                     "q2": [{"rank": 1, "page_idx": 3}]}
         rows = []

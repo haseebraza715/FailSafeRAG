@@ -28,6 +28,7 @@ from scipy.stats import beta, norm  # noqa: E402
 from stats import cluster_bootstrap_diff, mcnemar_exact  # noqa: E402
 
 from faar.answer_prompt import get_template  # noqa: E402
+from faar.baseline import terminal_baseline, terminal_prediction  # noqa: E402
 from faar.ohr_scoring import exact_match_score, f1_score  # noqa: E402
 from faar.policies import RANDOM_SEEDS, REPAIRS, assemble  # noqa: E402
 from faar.visual_repair import IMAGE_NOTE, NO_TEXT_USER_PREFIX  # noqa: E402
@@ -116,11 +117,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         for field, key in (("returned_model", "model"), ("returned_service_tier", "service_tier")):
             if (required or field in record) and record.get(field) != provider[key]:
                 raise ComparisonError(f"{label} {field} mismatch")
-    blockers = summary.get("valid_baseline_blockers", [])
-    if (summary.get("run_state") != "complete" or summary.get("pilot_id") != pilot_id
-            or baseline_config.get("mode") != "live" or identity_config.get("run_kind") != "development_pilot"
-            or identity_config.get("pilot_manifest", {}).get("canonical") is not True
-            or any(not b.endswith("question(s) are execution_failed") for b in blockers)):
+    if not terminal_baseline(baseline_config, summary, pilot_id):
         raise ComparisonError("baseline is incomplete or invalid")
     runtime_sha = reader.hashes[str((pilot / "runtime_manifest.json").resolve())]
     if runtime_sha not in json.dumps(baseline_config):
@@ -136,7 +133,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
             raise ComparisonError(f"baseline request max_output_tokens mismatch for {qid}")
         if request.get("doc_id") != questions[qid]["doc_id"] or ("question" in request and request["question"] != questions[qid]["question"]):
             raise ComparisonError(f"baseline request mismatch for {qid}")
-    if any(p.get("unserved") or p.get("awaiting_reconciliation") or p.get("status") not in ("answered", "no_evidence", "execution_failed") for p in predictions.values()):
+    if any(not terminal_prediction(p) for p in predictions.values()):
         raise ComparisonError("baseline has unfinished predictions")
     for prediction in predictions.values():
         if prediction["status"] == "answered":
