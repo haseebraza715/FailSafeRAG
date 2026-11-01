@@ -5,6 +5,7 @@ T2. Scoring, strict comparison, exclusions or cap are wrong.
 T3. Ties, nonpositive or undefined J choose the wrong condition.
 T4. The printed threshold changes the gate, or output is overwritten.
 T5. An undefined feature suppresses a valid candidate, or input provenance is incomplete.
+T6. The chooser cannot consume an actual diagnosis run configuration.
 """
 import csv
 import hashlib
@@ -15,6 +16,9 @@ import sys
 import choose_confidence_gate as choice
 import diagnose_run
 import pytest
+import run_visual_repair as rvr
+from test_text_repair import fake_replay
+from test_visual_repair import PILOT, Project
 
 from faar.diagnosis import CONFIDENCE_FEATURES, GateRule, gate
 
@@ -40,9 +44,9 @@ def fixture(root, values, wrong, flagged=(), null=()):
     lines(base / "predictions.jsonl", [{"question_id": i, "status": "answered", "answer": "no" if int(i) in wrong else "yes"} for i in ids])
     lines(diag / "diagnosis.jsonl", [{"question_id": i, "flagged": int(i) in flagged,
          "features": {f: None if int(i) in null else values[int(i)] for f in CONFIDENCE_FEATURES}} for i in ids])
-    write(diag / "diagnosis_config.json", {"pilot_id": "pilot", "baseline_run": "baseline",
+    rvr.write_identity(diag, {"pilot_id": "pilot", "baseline_run": "baseline",
           "baseline_requests_sha256": hashlib.sha256((base / "requests.jsonl").read_bytes()).hexdigest(),
-          "gate_rule": {"feature": None, "threshold": None}})
+          "gate_rule": {"feature": None, "threshold": None}}, None)
     return pilot, base, diag, root / "out"
 
 
@@ -63,14 +67,14 @@ def test_refusals_before_output_and_gold(tmp_path):
     assert not out.exists()
     record["config"]["selection"]["question_splits"] = ["train"]
     write(pilot / "selection_record.json", record)
-    config = choice.read_json(diag / "diagnosis_config.json")
+    config = choice.read_json(diag / "run_config.json")
     config["gate_rule"] = {"feature": "fused_margin", "threshold": 0.1}
-    write(diag / "diagnosis_config.json", config)
+    write(diag / "run_config.json", config)
     with pytest.raises(ValueError, match="base gate"):
         run(tmp_path, paths)
     config["gate_rule"] = {"feature": None, "threshold": None}
     config["baseline_requests_sha256"] = "wrong"
-    write(diag / "diagnosis_config.json", config)
+    write(diag / "run_config.json", config)
     with pytest.raises(ValueError, match="mismatch"):
         run(tmp_path, paths)
     assert not out.exists()
@@ -157,3 +161,18 @@ def test_records_scoring_and_selection_hashes(tmp_path):
     saved = choice.read_json(paths[3] / "gate_choice.json")
     for path in (paths[0] / "selection_record.json", choice.ROOT / "src/faar/ohr_scoring.py"):
         assert saved["sha256"][str(path)] == hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_choose_from_actual_diagnosis_run(tmp_path, monkeypatch):
+    project = Project(tmp_path)
+    pilot = tmp_path / "results/pilots" / PILOT
+    ids = ["q1", "q2", "q3"]
+    write(pilot / "selection_record.json", {"pilot_id": PILOT, "config": {"selection": {"question_splits": ["train"]}}, "selected_question_ids": ids})
+    lines(project.baseline / "predictions.jsonl", [{"question_id": qid, "status": "answered", "answer": "x", "abstained": False} for qid in ids])
+    monkeypatch.setattr(diagnose_run, "replay_retrieval", lambda root, pilot_id, requests: fake_replay(project))
+    diagnosis = tmp_path / "real_diagnosis"
+    diagnose_run.diagnose_run(root=tmp_path, pilot_id=PILOT, baseline_run_dir=project.baseline, out_dir=diagnosis, rule=GateRule())
+    assert (diagnosis / "run_config.json").is_file()
+    result = choice.choose(tmp_path, PILOT, project.baseline, diagnosis, tmp_path / "choice")
+    assert result["feature"] is None
+    assert result["sha256"][str(diagnosis / "run_config.json")] == hashlib.sha256((diagnosis / "run_config.json").read_bytes()).hexdigest()
