@@ -1,0 +1,59 @@
+{
+  "question_id": "a4dcf23b-efb1-4210-a3d5-6a65c17346e3",
+  "attempt_id": "a4dcf23b-6aa57e7a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOuSutohY7U5ujzGu9AGcJR9LFCH",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1716,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001771,
+  "latency_ms": 1200,
+  "answer": "Severance/Mineral Royalties",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOuSutohY7U5ujzGu9AGcJR9LFCH",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Severance/Mineral Royalties",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793535908,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 11,
+      "prompt_tokens": 1716,
+      "total_tokens": 1727,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1713
+      }
+    }
+  }
+}

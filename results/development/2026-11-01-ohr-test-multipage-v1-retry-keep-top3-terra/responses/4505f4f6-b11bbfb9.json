@@ -1,0 +1,59 @@
+{
+  "question_id": "4505f4f6-0a8c-46c7-8921-5f4f9edb95f2",
+  "attempt_id": "4505f4f6-b11bbfb9",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOpgDYVdzpZfL3fW5EwJz80vfYp5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1541,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001616,
+  "latency_ms": 1166,
+  "answer": "Increase student body diversity — racially, geographically or by gender",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOpgDYVdzpZfL3fW5EwJz80vfYp5",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Increase student body diversity — racially, geographically or by gender",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793535612,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 15,
+      "prompt_tokens": 1541,
+      "total_tokens": 1556,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1538
+      }
+    }
+  }
+}

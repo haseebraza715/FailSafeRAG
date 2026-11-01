@@ -1,0 +1,59 @@
+{
+  "question_id": "8e5c9a22-f123-45d0-a70e-39ef8e38dbe7",
+  "attempt_id": "8e5c9a22-4bede16f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOsN5ISZMCIVbyFTZsl4oNPci6Gz",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1547,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001647,
+  "latency_ms": 1240,
+  "answer": "Tacolcy Garden Walk v. Navarro, Winter Haven Housing Authority v. Wampler",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOsN5ISZMCIVbyFTZsl4oNPci6Gz",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Tacolcy Garden Walk v. Navarro, Winter Haven Housing Authority v. Wampler",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793535779,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 20,
+      "prompt_tokens": 1547,
+      "total_tokens": 1567,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1544
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "98ba0f0e-120d-4126-9da5-3b38d1aa6c5e",
+  "attempt_id": "98ba0f0e-25b81045",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOtSFwKvB8LvaOPigzoH3O7ecPBu",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1706,
+    "cached_input_tokens": 0,
+    "output_tokens": 49,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001951,
+  "latency_ms": 1330,
+  "answer": "Chronic disease hospitals / facilities, Long-term care hospitals / facilities, Skilled nursing facilities, Sub-acute care hospitals / facilities, Transitional care hospitals / facilities, Any inpatient facility with an average length of stay greater than 25 days",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOtSFwKvB8LvaOPigzoH3O7ecPBu",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Chronic disease hospitals / facilities, Long-term care hospitals / facilities, Skilled nursing facilities, Sub-acute care hospitals / facilities, Transitional care hospitals / facilities, Any inpatient facility with an average length of stay greater than 25 days",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793535846,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 49,
+      "prompt_tokens": 1706,
+      "total_tokens": 1755,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1703
+      }
+    }
+  }
+}

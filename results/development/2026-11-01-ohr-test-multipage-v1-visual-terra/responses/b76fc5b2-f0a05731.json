@@ -1,0 +1,58 @@
+{
+  "question_id": "b76fc5b2-acc5-42df-bac4-9efa5be12d09",
+  "attempt_id": "b76fc5b2-f0a05731",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPRRnmUKKON3QWz8AGK2mNpE178r",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5020,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00516,
+  "latency_ms": 1675,
+  "answer": "Behavioral Health Surveillance and Psychological and Emotional Wellbeing, integrated through public health surveillance, Epidemiology Study Design and Epidemiological Analysis",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPRRnmUKKON3QWz8AGK2mNpE178r",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Behavioral Health Surveillance and Psychological and Emotional Wellbeing, integrated through public health surveillance, Epidemiology Study Design and Epidemiological Analysis",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537953,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 5020,
+      "total_tokens": 5048,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

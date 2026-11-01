@@ -1,0 +1,59 @@
+{
+  "question_id": "b78a140f-f850-499e-a146-d504dd48f46f",
+  "attempt_id": "b78a140f-0a11eed1",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfP7jMyhjFTaAGndT1MpxCSHlODC2",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1583,
+    "cached_input_tokens": 0,
+    "output_tokens": 48,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001823,
+  "latency_ms": 1389,
+  "answer": "Health Care Financing Administration; conducts studies and projects that demonstrate and evaluate optional reimbursement, coverage, eligibility, and management alternatives to the present Federal programs; assesses program impacts; monitors national health care expenditures and prices; provides actuarial analyses",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfP7jMyhjFTaAGndT1MpxCSHlODC2",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Health Care Financing Administration; conducts studies and projects that demonstrate and evaluate optional reimbursement, coverage, eligibility, and management alternatives to the present Federal programs; assesses program impacts; monitors national health care expenditures and prices; provides actuarial analyses",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536731,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 48,
+      "prompt_tokens": 1583,
+      "total_tokens": 1631,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1580
+      }
+    }
+  }
+}

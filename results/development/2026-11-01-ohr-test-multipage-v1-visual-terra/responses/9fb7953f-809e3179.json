@@ -1,0 +1,58 @@
+{
+  "question_id": "9fb7953f-0b78-4c45-8b48-0f30e92d31c2",
+  "attempt_id": "9fb7953f-809e3179",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPKyVvw9cAg1qAf8fgMXMNtjFk3c",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 7854,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.007979,
+  "latency_ms": 1793,
+  "answer": "Not less than 42 mm per meter of the nominal tile diameter, with a minimum spacing of 25 mm",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPKyVvw9cAg1qAf8fgMXMNtjFk3c",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Not less than 42 mm per meter of the nominal tile diameter, with a minimum spacing of 25 mm",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537552,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 25,
+      "prompt_tokens": 7854,
+      "total_tokens": 7879,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

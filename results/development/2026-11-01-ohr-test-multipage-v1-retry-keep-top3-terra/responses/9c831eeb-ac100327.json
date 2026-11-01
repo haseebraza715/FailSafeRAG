@@ -1,0 +1,59 @@
+{
+  "question_id": "9c831eeb-d949-4847-b17c-939dfdadf355",
+  "attempt_id": "9c831eeb-ac100327",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOtt58oBTT2PWfQN6adE1qvkCjc8",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1637,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001782,
+  "latency_ms": 1031,
+  "answer": "No fossils have yet been found in these shales either by Dr. Jackson in Edale or by the Geological Survey in this area",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOtt58oBTT2PWfQN6adE1qvkCjc8",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "No fossils have yet been found in these shales either by Dr. Jackson in Edale or by the Geological Survey in this area",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793535873,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 29,
+      "prompt_tokens": 1637,
+      "total_tokens": 1666,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1634
+      }
+    }
+  }
+}

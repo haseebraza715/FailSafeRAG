@@ -1,0 +1,59 @@
+{
+  "question_id": "99083b8b-5de6-4850-90e8-d2b5cf941367",
+  "attempt_id": "99083b8b-1776304a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOtXrq71GJZjes8AaYREcqoUCFCd",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1568,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001633,
+  "latency_ms": 1081,
+  "answer": "A provider that does not participate in the Beacon network",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOtXrq71GJZjes8AaYREcqoUCFCd",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A provider that does not participate in the Beacon network",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793535851,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 1568,
+      "total_tokens": 1581,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1565
+      }
+    }
+  }
+}

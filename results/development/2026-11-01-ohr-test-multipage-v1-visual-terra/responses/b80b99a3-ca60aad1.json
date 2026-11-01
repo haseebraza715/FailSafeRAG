@@ -1,0 +1,58 @@
+{
+  "question_id": "b80b99a3-e55c-4c7c-82f0-d85a29236cba",
+  "attempt_id": "b80b99a3-ca60aad1",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPRs9t3dQX4Okbx62rm1kajfp8zA",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6051,
+    "cached_input_tokens": 0,
+    "output_tokens": 30,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006201,
+  "latency_ms": 1774,
+  "answer": "$93,383; meals during group sessions, gift cards and baby supplies for participants, case manager cell phone reimbursement at $20/month",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPRs9t3dQX4Okbx62rm1kajfp8zA",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "$93,383; meals during group sessions, gift cards and baby supplies for participants, case manager cell phone reimbursement at $20/month",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537980,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 30,
+      "prompt_tokens": 6051,
+      "total_tokens": 6081,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

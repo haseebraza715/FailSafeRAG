@@ -1,0 +1,59 @@
+{
+  "question_id": "9fb7953f-0b78-4c45-8b48-0f30e92d31c2",
+  "attempt_id": "9fb7953f-9380d8ee",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOu6tbe9yVIwAmeqJGd2CzEVwrnI",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1664,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001754,
+  "latency_ms": 1296,
+  "answer": "25 mm; 42–83 mm per meter of the nominal tile diameter",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOu6tbe9yVIwAmeqJGd2CzEVwrnI",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "25 mm; 42–83 mm per meter of the nominal tile diameter",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793535886,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 18,
+      "prompt_tokens": 1664,
+      "total_tokens": 1682,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1661
+      }
+    }
+  }
+}

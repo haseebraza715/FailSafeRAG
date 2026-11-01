@@ -1,0 +1,58 @@
+{
+  "question_id": "b75e8314-dff8-4e56-b0f6-3b07624d6e2e",
+  "attempt_id": "b75e8314-b49ec8d4",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPRGTX18zJbs2q6YIO43ubHT0qdU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9326,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009401,
+  "latency_ms": 1639,
+  "answer": "in writing and signed by both Cargill and Bioamber",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPRGTX18zJbs2q6YIO43ubHT0qdU",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "in writing and signed by both Cargill and Bioamber",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537942,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 15,
+      "prompt_tokens": 9326,
+      "total_tokens": 9341,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

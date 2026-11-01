@@ -1,0 +1,59 @@
+{
+  "question_id": "9c831eeb-d949-4847-b17c-939dfdadf355",
+  "attempt_id": "9c831eeb-5bd6cc35",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfP4Sa4BHFCQJtUryZjvMzsXY1EZT",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1581,
+    "cached_input_tokens": 0,
+    "output_tokens": 27,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001716,
+  "latency_ms": 1185,
+  "answer": "No fossils have yet been found in these sales either by Dr. Jackson in Dale or by the Geological Survey in this area",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfP4Sa4BHFCQJtUryZjvMzsXY1EZT",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "No fossils have yet been found in these sales either by Dr. Jackson in Dale or by the Geological Survey in this area",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536528,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 27,
+      "prompt_tokens": 1581,
+      "total_tokens": 1608,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1578
+      }
+    }
+  }
+}

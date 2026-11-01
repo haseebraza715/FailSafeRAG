@@ -1,0 +1,58 @@
+{
+  "question_id": "b835faf4-7a25-4999-bf7e-da170da8255b",
+  "attempt_id": "b835faf4-bebb8bdf",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPS71Ershs1qTw2XcvyQkFGJRly0",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9427,
+    "cached_input_tokens": 0,
+    "output_tokens": 81,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009832,
+  "latency_ms": 2924,
+  "answer": "Each Party must safeguard the other’s confidential information, use it only as necessary under the Agreement, and not disclose it without written permission, using at least reasonable care. Product information is Supplier’s confidential information. If disclosure is legally required, the disclosing Party must notify the other and cooperate to limit or object to disclosure. These obligations remain in effect after termination as necessary to carry out their purpose",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPS71Ershs1qTw2XcvyQkFGJRly0",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Each Party must safeguard the other’s confidential information, use it only as necessary under the Agreement, and not disclose it without written permission, using at least reasonable care. Product information is Supplier’s confidential information. If disclosure is legally required, the disclosing Party must notify the other and cooperate to limit or object to disclosure. These obligations remain in effect after termination as necessary to carry out their purpose",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537995,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 81,
+      "prompt_tokens": 9427,
+      "total_tokens": 9508,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

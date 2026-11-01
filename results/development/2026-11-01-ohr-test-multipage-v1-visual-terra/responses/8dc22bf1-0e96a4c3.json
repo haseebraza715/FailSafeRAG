@@ -1,0 +1,58 @@
+{
+  "question_id": "8dc22bf1-a46f-4f42-8554-ac8a56530509",
+  "attempt_id": "8dc22bf1-0e96a4c3",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPHMENBY30fxAAvu3ET5NNG9dVrA",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9126,
+    "cached_input_tokens": 0,
+    "output_tokens": 14,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009196,
+  "latency_ms": 1974,
+  "answer": "Request enrollment within 30 days of your group coverage termination",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPHMENBY30fxAAvu3ET5NNG9dVrA",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Request enrollment within 30 days of your group coverage termination",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537328,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 14,
+      "prompt_tokens": 9126,
+      "total_tokens": 9140,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

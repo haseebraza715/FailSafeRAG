@@ -1,0 +1,59 @@
+{
+  "question_id": "b80e256c-9d00-497a-bd66-1eaacc52e546",
+  "attempt_id": "b80e256c-d89ef8a0",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOxSjVhdK2ockzJgU3euOuJluut4",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1330,
+    "cached_input_tokens": 0,
+    "output_tokens": 24,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00145,
+  "latency_ms": 1048,
+  "answer": "An appreciation in the exchange value of the dollar reduces the price competitiveness of U.S. agricultural and other exports",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOxSjVhdK2ockzJgU3euOuJluut4",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "An appreciation in the exchange value of the dollar reduces the price competitiveness of U.S. agricultural and other exports",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536094,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 24,
+      "prompt_tokens": 1330,
+      "total_tokens": 1354,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1327
+      }
+    }
+  }
+}

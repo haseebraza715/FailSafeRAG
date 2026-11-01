@@ -1,0 +1,58 @@
+{
+  "question_id": "b80e256c-9d00-497a-bd66-1eaacc52e546",
+  "attempt_id": "b80e256c-b8f2f96a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPRxNW0KoNaTwIQq0jOcAQeOXq1R",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9018,
+    "cached_input_tokens": 0,
+    "output_tokens": 30,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009168,
+  "latency_ms": 2395,
+  "answer": "Currency devaluations have raised import prices, reducing demand for imports. Appreciation of the dollar reduces the price competitiveness of U.S. exports",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPRxNW0KoNaTwIQq0jOcAQeOXq1R",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Currency devaluations have raised import prices, reducing demand for imports. Appreciation of the dollar reduces the price competitiveness of U.S. exports",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537985,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 30,
+      "prompt_tokens": 9018,
+      "total_tokens": 9048,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

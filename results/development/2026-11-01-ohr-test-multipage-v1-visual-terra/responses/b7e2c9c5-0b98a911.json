@@ -1,0 +1,58 @@
+{
+  "question_id": "b7e2c9c5-7e15-4e9d-b920-e6035d5f8960",
+  "attempt_id": "b7e2c9c5-0b98a911",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPRkby35cjvdlO5Bq9zEXtpvEERY",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 10403,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.010548,
+  "latency_ms": 2164,
+  "answer": "Quitclaim deed with covenant; a 15 x 30 foot sewer easement to be granted to the Scarborough Sanitary District",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPRkby35cjvdlO5Bq9zEXtpvEERY",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Quitclaim deed with covenant; a 15 x 30 foot sewer easement to be granted to the Scarborough Sanitary District",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537972,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 29,
+      "prompt_tokens": 10403,
+      "total_tokens": 10432,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

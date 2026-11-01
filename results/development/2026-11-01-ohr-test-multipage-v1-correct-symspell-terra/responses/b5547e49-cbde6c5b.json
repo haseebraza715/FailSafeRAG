@@ -1,0 +1,59 @@
+{
+  "question_id": "b5547e49-8847-4c35-b2be-8f241a64c88a",
+  "attempt_id": "b5547e49-cbde6c5b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfP6sJQDjzxU2R25d0K7eZaBGqNjR",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1427,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001512,
+  "latency_ms": 1102,
+  "answer": "promote the timely delivery of appropriate, quality health care to its beneficiaries",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfP6sJQDjzxU2R25d0K7eZaBGqNjR",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "promote the timely delivery of appropriate, quality health care to its beneficiaries",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536678,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 1427,
+      "total_tokens": 1444,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1424
+      }
+    }
+  }
+}

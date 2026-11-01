@@ -1,0 +1,58 @@
+{
+  "question_id": "8c81f39f-4ab4-4c83-b5cf-9da9a323164f",
+  "attempt_id": "8c81f39f-e7bf8174",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPGouqnGrZIIm01GuJZloW5AKxuy",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 7227,
+    "cached_input_tokens": 0,
+    "output_tokens": 37,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.007412,
+  "latency_ms": 2083,
+  "answer": "The necessary grooving should be provided in the wall and roof-panels and these grooves should be filled up with cotton cord coated with white stiff paint (Safaida)",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPGouqnGrZIIm01GuJZloW5AKxuy",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The necessary grooving should be provided in the wall and roof-panels and these grooves should be filled up with cotton cord coated with white stiff paint (Safaida)",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537294,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 37,
+      "prompt_tokens": 7227,
+      "total_tokens": 7264,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

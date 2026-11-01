@@ -1,0 +1,59 @@
+{
+  "question_id": "b8e3ad10-46f3-4269-844e-f78e16764a3c",
+  "attempt_id": "b8e3ad10-19002a70",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOxh9EyMfouT0lKFusDCSLY3vUDA",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1581,
+    "cached_input_tokens": 0,
+    "output_tokens": 41,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001786,
+  "latency_ms": 1316,
+  "answer": "In-network: $200 copay per quarter, waived if you are readmitted within 30 days of discharge; out-of-network: $200 copay per quarter, subject to the deductible",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOxh9EyMfouT0lKFusDCSLY3vUDA",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "In-network: $200 copay per quarter, waived if you are readmitted within 30 days of discharge; out-of-network: $200 copay per quarter, subject to the deductible",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536109,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 41,
+      "prompt_tokens": 1581,
+      "total_tokens": 1622,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1578
+      }
+    }
+  }
+}

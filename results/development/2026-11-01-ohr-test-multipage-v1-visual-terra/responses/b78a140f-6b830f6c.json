@@ -1,0 +1,58 @@
+{
+  "question_id": "b78a140f-f850-499e-a146-d504dd48f46f",
+  "attempt_id": "b78a140f-6b830f6c",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPRVRUoEsUGvk8YJOUIaNPgIcsdC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8061,
+    "cached_input_tokens": 0,
+    "output_tokens": 37,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008246,
+  "latency_ms": 1789,
+  "answer": "The Health Care Financing Administration; ORDS conducts studies and projects, assesses the impact of HCFA programs, monitors national health care expenditures and prices, and provides actuarial analyses",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPRVRUoEsUGvk8YJOUIaNPgIcsdC",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The Health Care Financing Administration; ORDS conducts studies and projects, assesses the impact of HCFA programs, monitors national health care expenditures and prices, and provides actuarial analyses",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537957,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 37,
+      "prompt_tokens": 8061,
+      "total_tokens": 8098,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

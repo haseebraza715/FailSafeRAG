@@ -1,0 +1,59 @@
+{
+  "question_id": "b78b1afb-03f6-4c7d-a1fe-df0e3d685df5",
+  "attempt_id": "b78b1afb-ab70a59f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOxFMZN5mHPnt4d6M3C80ZSodKph",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1708,
+    "cached_input_tokens": 0,
+    "output_tokens": 10,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001758,
+  "latency_ms": 957,
+  "answer": "Climate Information Services (CIS)",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOxFMZN5mHPnt4d6M3C80ZSodKph",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Climate Information Services (CIS)",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536081,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 10,
+      "prompt_tokens": 1708,
+      "total_tokens": 1718,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1705
+      }
+    }
+  }
+}

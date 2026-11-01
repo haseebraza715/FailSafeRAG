@@ -1,0 +1,59 @@
+{
+  "question_id": "b7c2cdf6-da16-47ee-a782-3fe57c6d6276",
+  "attempt_id": "b7c2cdf6-66187094",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOxJGCSfbJE0ePdGRFBxNNUKXtOC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1816,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001956,
+  "latency_ms": 1297,
+  "answer": "It stirs defiance and calls for action, challenging the stereotype of Jews docilely letting the Nazis lead them to slaughter",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfOxJGCSfbJE0ePdGRFBxNNUKXtOC",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "It stirs defiance and calls for action, challenging the stereotype of Jews docilely letting the Nazis lead them to slaughter",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536085,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 1816,
+      "total_tokens": 1844,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1813
+      }
+    }
+  }
+}

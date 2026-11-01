@@ -1,0 +1,58 @@
+{
+  "question_id": "8ad22449-38e3-4ac1-b28e-91322cf7d12b",
+  "attempt_id": "8ad22449-c8ba6e62",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPGPbT3xThToOcPC1s9HbwUcUwLa",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6473,
+    "cached_input_tokens": 0,
+    "output_tokens": 47,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006708,
+  "latency_ms": 1707,
+  "answer": "PRELIMINARY, PENDING SUPERVISOR REVIEW, PENDING ASSIGN TEAM, PENDING APPROVE TEAM, PENDING ASSIGN INVESTIGATOR, PENDING INVESTIGATION, ADMINISTRATIVELY CLOSED",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPGPbT3xThToOcPC1s9HbwUcUwLa",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "PRELIMINARY, PENDING SUPERVISOR REVIEW, PENDING ASSIGN TEAM, PENDING APPROVE TEAM, PENDING ASSIGN INVESTIGATOR, PENDING INVESTIGATION, ADMINISTRATIVELY CLOSED",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537269,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 47,
+      "prompt_tokens": 6473,
+      "total_tokens": 6520,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

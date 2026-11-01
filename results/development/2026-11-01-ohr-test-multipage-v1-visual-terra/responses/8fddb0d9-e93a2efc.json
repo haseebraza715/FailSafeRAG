@@ -1,0 +1,58 @@
+{
+  "question_id": "8fddb0d9-dd4c-4778-a958-eec9ebfc3908",
+  "attempt_id": "8fddb0d9-e93a2efc",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPHnqkJkvDJkbK7zi8nUIA2uI2xc",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5760,
+    "cached_input_tokens": 0,
+    "output_tokens": 35,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005935,
+  "latency_ms": 2127,
+  "answer": "Comb Wash flows south in a fairly wide shallow channel with moderate-sized meanders; Butler Wash has a narrower, deeper channel with much smaller, more twisted meanders",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPHnqkJkvDJkbK7zi8nUIA2uI2xc",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Comb Wash flows south in a fairly wide shallow channel with moderate-sized meanders; Butler Wash has a narrower, deeper channel with much smaller, more twisted meanders",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793537355,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 35,
+      "prompt_tokens": 5760,
+      "total_tokens": 5795,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

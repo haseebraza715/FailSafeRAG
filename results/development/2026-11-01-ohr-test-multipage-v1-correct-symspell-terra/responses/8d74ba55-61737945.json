@@ -1,0 +1,59 @@
+{
+  "question_id": "8d74ba55-ce73-4847-a581-3357351b4a8d",
+  "attempt_id": "8d74ba55-61737945",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfP2hkIQXvRIQGtLePIu2Mtml9Uiw",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1561,
+    "cached_input_tokens": 0,
+    "output_tokens": 30,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001711,
+  "latency_ms": 1334,
+  "answer": "Reviewing published medical reports and literature, consulting with expert practitioners, benchmarking, presenting recommendations to internal policy committees responsible for making decisions regarding coverage",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfP2hkIQXvRIQGtLePIu2Mtml9Uiw",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Reviewing published medical reports and literature, consulting with expert practitioners, benchmarking, presenting recommendations to internal policy committees responsible for making decisions regarding coverage",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536419,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 30,
+      "prompt_tokens": 1561,
+      "total_tokens": 1591,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1558
+      }
+    }
+  }
+}

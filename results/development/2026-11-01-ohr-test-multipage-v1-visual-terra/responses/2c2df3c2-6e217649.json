@@ -1,0 +1,58 @@
+{
+  "question_id": "2c2df3c2-1951-4f87-b63f-83c6c89309e9",
+  "attempt_id": "2c2df3c2-6e217649",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPBKJbTU50e6YfYMKce5EW41o8xE",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9509,
+    "cached_input_tokens": 0,
+    "output_tokens": 14,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009579,
+  "latency_ms": 1795,
+  "answer": "BPC Initials, Sanofi Pasteur Initials",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPBKJbTU50e6YfYMKce5EW41o8xE",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "BPC Initials, Sanofi Pasteur Initials",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793536954,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 14,
+      "prompt_tokens": 9509,
+      "total_tokens": 9523,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}
