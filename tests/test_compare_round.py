@@ -62,12 +62,15 @@ def sample(tmp_path):
     dump(baseline / "run_summary.json", {"pilot_id": "pilot", "run_state": "complete", "valid_baseline": True,
                                          "cost": {"measured": 0.4, "reserved": 0}})
     jsonl(baseline / "predictions.jsonl", [{"question_id": q["question_id"], "status": "answered", "answer": "yes" if i == 0 else "no"} for i, q in enumerate(questions)])
+    change_json(baseline / "run_summary.json", lambda x: x.update(predictions_sha256=sha(baseline / "predictions.jsonl")))
     events = []
     for i, q in enumerate(questions):
         qid = q["question_id"]
+        response = baseline / "responses" / f"{qid}.json"
+        dump(response, {"question_id": qid, "attempt_id": qid, "answer": "yes" if i == 0 else "no", "usage": {"input_tokens": 10, "output_tokens": 2}, "measured_cost": 0.1})
         events.extend([{"event": "dispatch_started", "question_id": qid, "attempt_id": qid, "cost_upper_bound": 0.2},
                        {"event": "response_saved", "question_id": qid, "attempt_id": qid, "measured_cost": 0.1,
-                        "usage": {"input_tokens": 10, "output_tokens": 2}}])
+                        "usage": {"input_tokens": 10, "output_tokens": 2}, "answer": "yes" if i == 0 else "no", "response_file": f"responses/{qid}.json", "response_sha256": sha(response)}])
     jsonl(baseline / "attempts.jsonl", events)
     identity = {"pilot_id": "pilot", "baseline_run": "baseline", "baseline_requests_sha256": base_sha, "runtime_manifest_sha256": runtime_sha}
     dump(diagnosis / "run_config.json", identity)
@@ -304,4 +307,14 @@ def test_selection_must_cover_runtime_questions(sample):
     pilot = sample["root"] / "results/pilots/pilot"
     change_json(pilot / "selection_record.json", lambda x: x.update(selected_question_ids=[]))
     with pytest.raises(compare_round.ComparisonError, match="selection question set"):
+        run(sample)
+
+
+def test_baseline_prediction_hash_must_match_summary(sample):
+    path = sample["baseline_dir"] / "predictions.jsonl"
+    change_json(sample["baseline_dir"] / "run_summary.json", lambda x: x.update(predictions_sha256=sha(path)))
+    rows = read_jsonl(path)
+    rows[0]["answer"] = "tampered"
+    jsonl(path, rows)
+    with pytest.raises(compare_round.ComparisonError, match="predictions hash"):
         run(sample)

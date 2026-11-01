@@ -94,6 +94,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         raise ComparisonError("baseline runtime manifest mismatch")
     requests = indexed(reader.jsonl(baseline_dir / "requests.jsonl"), "baseline requests")
     predictions = indexed(reader.jsonl(baseline_dir / "predictions.jsonl"), "baseline predictions")
+    if summary.get("predictions_sha256") != reader.hashes[str((baseline_dir / "predictions.jsonl").resolve())]:
+        raise ComparisonError("baseline predictions hash mismatch")
     check_set(set(requests), ids, "baseline requests")
     check_set(set(predictions), ids, "baseline predictions")
     for qid, request in requests.items():
@@ -102,6 +104,24 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     if any(p.get("unserved") or p.get("awaiting_reconciliation") or p.get("status") not in ("answered", "no_evidence", "execution_failed") for p in predictions.values()):
         raise ComparisonError("baseline has unfinished predictions")
     events = reader.jsonl(baseline_dir / "attempts.jsonl")
+    saved_questions = set()
+    for event in events:
+        if event.get("event") != "response_saved":
+            continue
+        qid = event["question_id"]
+        response_path = baseline_dir / "responses" / f"{event['attempt_id']}.json"
+        response_bytes = response_path.read_bytes()
+        response = json.loads(response_bytes)
+        if (hashlib.sha256(response_bytes).hexdigest() != event.get("response_sha256")
+                or response.get("question_id") != qid or response.get("attempt_id") != event["attempt_id"]):
+            raise ComparisonError("baseline response hash or identity mismatch")
+        if any(event.get(k) != response.get(k) for k in ("answer", "abstained", "output_status", "usage", "measured_cost", "returned_model", "returned_service_tier")):
+            raise ComparisonError("baseline event differs from response")
+        if qid in saved_questions or qid not in predictions or predictions[qid].get("status") != "answered" or predictions[qid].get("answer") != response.get("answer"):
+            raise ComparisonError("baseline prediction differs from response")
+        saved_questions.add(qid)
+    if saved_questions != {q for q, row in predictions.items() if row["status"] == "answered"}:
+        raise ComparisonError("baseline answered question has no saved response")
     baseline_hash = reader.hashes[str((baseline_dir / "requests.jsonl").resolve())]
     diag_config = reader.json(diagnosis_dir / "run_config.json")
     diagnosis = indexed(reader.jsonl(diagnosis_dir / "diagnosis.jsonl"), "diagnosis")
