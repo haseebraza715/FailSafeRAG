@@ -37,11 +37,8 @@ def choose(root, pilot_id, baseline, diagnosis, out):
     pilot = root / "results" / "pilots" / pilot_id
     record_path = pilot / "selection_record.json"
     record = read_json(record_path)
-    selection = record["config"]["selection"]
-    if record["pilot_id"] != pilot_id or not (
-        selection.get("question_splits") == ["train"]
-        or (selection.get("question_splits") is None and selection.get("pool", "train_exclusive") == "train_exclusive")
-    ):
+    selection = record.get("config", {}).get("selection", {})
+    if record.get("pilot_id") != pilot_id or selection.get("question_splits") != ["train"]:
         raise ValueError("pilot's recorded split is not train")
     config_path = diagnosis / "run_config.json"
     config = read_json(config_path)

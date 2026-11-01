@@ -7,6 +7,7 @@
 5. Unknown attempts lose their upper-bound cost, or skips incur repair cost.
 6. Amendment 2 invalid comparisons are reported as valid.
 7. The three output files omit the required results or route diagnostics.
+8. Provider settings, prompt templates or returned model and tier differ across runs.
 """
 
 from __future__ import annotations
@@ -18,7 +19,9 @@ from pathlib import Path
 
 import pytest
 
+from faar.answer_prompt import TEMPLATE_V2
 from faar.policies import RANDOM_SEEDS, REPAIRS, random_repair
+from faar.visual_repair import IMAGE_NOTE, NO_TEXT_USER_PREFIX
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts/analysis/faar_long_dev/compare_round.py"
 spec = importlib.util.spec_from_file_location("compare_round", SCRIPT)
@@ -50,24 +53,31 @@ def sample(tmp_path):
     baseline, diagnosis = tmp_path / "baseline", tmp_path / "diagnosis"
     dirs = {name: tmp_path / name for name in REPAIRS}
     out = tmp_path / "out"
+    provider = {"model": "test-model", "params": {"temperature": 0}, "max_output_tokens": 128,
+                "token_limit_param": "max_tokens", "service_tier": "default", "store": False}
+    provider_path = tmp_path / "provider.json"
+    dump(provider_path, provider)
     questions = [{"question_id": f"q{i}", "doc_id": f"d{i // 2}", "question": f"question {i}"} for i in range(4)]
-    dump(pilot / "selection_record.json", {"pilot_id": "pilot", "config": {"selection": {"question_splits": ["train"]}}})
+    dump(pilot / "selection_record.json", {"pilot_id": "pilot", "config": {"selection": {"question_splits": ["train"]}}, "selected_question_ids": [q["question_id"] for q in questions]})
     dump(pilot / "runtime_manifest.json", {"pilot_id": "pilot", "questions": questions, "documents": []})
     dump(pilot / "evaluation_manifest.json", {"pilot_id": "pilot", "questions": {q["question_id"]: {"answers": "yes"} for q in questions}})
     runtime_sha = sha(pilot / "runtime_manifest.json")
     req = [{"question_id": q["question_id"], "doc_id": q["doc_id"], "action": "send"} for q in questions]
     jsonl(baseline / "requests.jsonl", req)
     base_sha = sha(baseline / "requests.jsonl")
-    dump(baseline / "run_config.json", {"identity": {"runtime_manifest_sha256": runtime_sha}})
+    dump(baseline / "run_config.json", {"mode": "live", "identity": {"runtime_manifest_sha256": runtime_sha, "run_kind": "development_pilot", "pilot_manifest": {"canonical": True}, "provider": {**{k: v for k, v in provider.items() if k != "store"}, "storage": "disabled"}, "prompt": {"template_id": TEMPLATE_V2.template_id, "template_sha256": TEMPLATE_V2.sha256}}})
     dump(baseline / "run_summary.json", {"pilot_id": "pilot", "run_state": "complete", "valid_baseline": True,
-                                         "cost": {"measured": 0.4, "reserved": 0}})
+                                         "cost": {"measured": 0.4, "reserved": 0}, "valid_baseline_blockers": []})
     jsonl(baseline / "predictions.jsonl", [{"question_id": q["question_id"], "status": "answered", "answer": "yes" if i == 0 else "no"} for i, q in enumerate(questions)])
+    change_json(baseline / "run_summary.json", lambda x: x.update(predictions_sha256=sha(baseline / "predictions.jsonl")))
     events = []
     for i, q in enumerate(questions):
         qid = q["question_id"]
+        response = baseline / "responses" / f"{qid}.json"
+        dump(response, {"question_id": qid, "attempt_id": qid, "answer": "yes" if i == 0 else "no", "usage": {"input_tokens": 10, "output_tokens": 2}, "measured_cost": 0.1, "returned_model": "test-model", "returned_service_tier": "default"})
         events.extend([{"event": "dispatch_started", "question_id": qid, "attempt_id": qid, "cost_upper_bound": 0.2},
                        {"event": "response_saved", "question_id": qid, "attempt_id": qid, "measured_cost": 0.1,
-                        "usage": {"input_tokens": 10, "output_tokens": 2}}])
+                        "usage": {"input_tokens": 10, "output_tokens": 2}, "answer": "yes" if i == 0 else "no", "returned_model": "test-model", "returned_service_tier": "default", "response_file": f"responses/{qid}.json", "response_sha256": sha(response)}])
     jsonl(baseline / "attempts.jsonl", events)
     identity = {"pilot_id": "pilot", "baseline_run": "baseline", "baseline_requests_sha256": base_sha, "runtime_manifest_sha256": runtime_sha}
     dump(diagnosis / "run_config.json", identity)
@@ -79,7 +89,9 @@ def sample(tmp_path):
                     "skip_reason": "nothing" if repair == "correct_text" and i == 1 else None,
                     **({"selected_pages": [0, 1]} if repair == "invoke_vlm" else {})} for i in range(3)]
         dump(directory / "run_config.json", {**identity, "run_id": repair, "repair": repair, "requests_sha256": canonical(records),
-                                               "render": {"dpi": 150, "detail": "high"}})
+                                               "render": {"dpi": 150, "detail": "high"}, "provider_config_sha256": sha(provider_path),
+                                               "template_id": TEMPLATE_V2.template_id, "template_sha256": TEMPLATE_V2.sha256,
+                                               **({"image_note": IMAGE_NOTE, "no_text_user_template": NO_TEXT_USER_PREFIX + TEMPLATE_V2.closing_line} if repair == "invoke_vlm" else {})})
         jsonl(directory / "requests.jsonl", records)
         predictions, ev = [], []
         for i, rec in enumerate(records):
@@ -91,14 +103,14 @@ def sample(tmp_path):
             predictions.append({"question_id": qid, "status": "answered", "answer": "yes", "measured_cost": 0.2, "usage": usage})
             aid = f"{repair}-{qid}"
             response_path = directory / "responses" / f"{aid}.json"
-            dump(response_path, {"question_id": qid, "attempt_id": aid, "answer": "yes", "usage": usage, "measured_cost": 0.2, "latency_ms": 100})
+            dump(response_path, {"question_id": qid, "attempt_id": aid, "answer": "yes", "usage": usage, "measured_cost": 0.2, "latency_ms": 100, "returned_model": "test-model", "returned_service_tier": "default"})
             ev.extend([{"event": "dispatch", "question_id": qid, "attempt_id": aid, "cost_upper_bound": 0.5, "resend": False},
-                       {"event": "saved", "question_id": qid, "attempt_id": aid, "measured_cost": 0.2, "response_sha256": sha(response_path)}])
+                       {"event": "saved", "question_id": qid, "attempt_id": aid, "measured_cost": 0.2, "response_sha256": sha(response_path), "returned_model": "test-model", "returned_service_tier": "default"}])
         jsonl(directory / "predictions.jsonl", predictions)
         jsonl(directory / "attempts.jsonl", ev)
         dump(directory / "run_summary.json", {"complete": True, "blocked": [], "measured_cost_usd": 0.2 * len(predictions) - (0.2 if repair == "correct_text" else 0), "reserved_cost_usd": 0})
     return {"root": tmp_path, "pilot_id": "pilot", "round_number": 1, "baseline_dir": baseline,
-            "diagnosis_dir": diagnosis, "repair_dirs": dirs, "out_dir": out}
+            "diagnosis_dir": diagnosis, "repair_dirs": dirs, "out_dir": out, "provider_config": provider_path}
 
 
 def run(sample):
@@ -146,7 +158,7 @@ def test_outputs_policies_statistics_and_hashes(sample):
 
 def test_oracle_tie_and_random_assignment(sample):
     reader = compare_round.Reader()
-    data = compare_round.read_inputs(sample["root"], "pilot", sample["baseline_dir"], sample["diagnosis_dir"], sample["repair_dirs"], reader)
+    data = compare_round.read_inputs(sample["root"], "pilot", sample["baseline_dir"], sample["diagnosis_dir"], sample["repair_dirs"], reader, sample["provider_config"])
     rows = compare_round.cases(data)
     assert rows[0]["oracle:source"] == "initial"
     assert rows[1]["oracle:source"] == "repair:retry_retrieval"
@@ -270,7 +282,7 @@ def test_cli_writes_outputs(sample, monkeypatch):
                                      "--baseline-run-dir", str(sample["baseline_dir"]), "--diagnosis-dir", str(sample["diagnosis_dir"]),
                                      "--visual-run-dir", str(sample["repair_dirs"]["invoke_vlm"]),
                                      "--retry-run-dir", str(sample["repair_dirs"]["retry_retrieval"]),
-                                     "--correct-run-dir", str(sample["repair_dirs"]["correct_text"]), "--out-dir", str(sample["out_dir"])])
+                                     "--correct-run-dir", str(sample["repair_dirs"]["correct_text"]), "--out-dir", str(sample["out_dir"]), "--provider-config", str(sample["provider_config"])])
     assert compare_round.main() == 0
     assert (sample["out_dir"] / "report.md").is_file()
 
@@ -298,3 +310,102 @@ def test_not_sent_attempt_has_no_api_cost_or_request():
     row = compare_round.ledger_by_question(events, {"q": {}}, {"q": {"selected_pages": [1]}}, baseline=False)["q"]
     assert row["dispatches"] == 1
     assert row["requests"] == row["images"] == row["reserved"] == 0
+
+
+def test_selection_must_cover_runtime_questions(sample):
+    pilot = sample["root"] / "results/pilots/pilot"
+    change_json(pilot / "selection_record.json", lambda x: x.update(selected_question_ids=[]))
+    with pytest.raises(compare_round.ComparisonError, match="selection question set"):
+        run(sample)
+
+
+def test_baseline_prediction_hash_must_match_summary(sample):
+    path = sample["baseline_dir"] / "predictions.jsonl"
+    change_json(sample["baseline_dir"] / "run_summary.json", lambda x: x.update(predictions_sha256=sha(path)))
+    rows = read_jsonl(path)
+    rows[0]["answer"] = "tampered"
+    jsonl(path, rows)
+    with pytest.raises(compare_round.ComparisonError, match="predictions hash"):
+        run(sample)
+
+
+def test_terminal_baseline_failure_reaches_validity_check(sample):
+    baseline = sample["baseline_dir"]
+    rows = read_jsonl(baseline / "predictions.jsonl")
+    rows[0].update(status="execution_failed", answer="yes")
+    jsonl(baseline / "predictions.jsonl", rows)
+    events = read_jsonl(baseline / "attempts.jsonl")
+    event = next(e for e in events if e.get("attempt_id") == "q0" and e["event"] == "response_saved")
+    event.update(event="outcome_unknown")
+    jsonl(baseline / "attempts.jsonl", events)
+    change_json(baseline / "run_summary.json", lambda x: x.update(valid_baseline=False, valid_baseline_blockers=["1 question(s) are execution_failed"], predictions_sha256=sha(baseline / "predictions.jsonl"), cost={"measured": 0.3, "reserved": 0.2}))
+    result = run(sample)
+    assert result["policies"]["no_recovery"]["em"] == 0
+    assert result["validity"]["valid"] is False
+
+
+@pytest.mark.parametrize("field", ["model", "params", "max_output_tokens", "token_limit_param", "service_tier", "store"])
+def test_provider_fields_must_match_baseline(sample, field):
+    baseline = sample["baseline_dir"] / "run_config.json"
+    key = "storage" if field == "store" else field
+    change_json(baseline, lambda x: x["identity"]["provider"].update({key: "wrong"}))
+    with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)
+
+
+@pytest.mark.parametrize("field", ["provider_config_sha256", "template_id", "template_sha256", "image_note", "no_text_user_template"])
+def test_repair_settings_must_match(sample, field):
+    repair = sample["repair_dirs"]["invoke_vlm"]
+    change_json(repair / "run_config.json", lambda x: x.update({field: "wrong"}))
+    with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)
+
+
+@pytest.mark.parametrize("run_name", ["baseline", "repair"])
+@pytest.mark.parametrize("field", ["returned_model", "returned_service_tier"])
+def test_returned_settings_must_match(sample, run_name, field):
+    directory = sample["baseline_dir"] if run_name == "baseline" else sample["repair_dirs"]["invoke_vlm"]
+    events_path = directory / "attempts.jsonl"
+    events = read_jsonl(events_path)
+    event = next(e for e in events if e["event"] in ("saved", "response_saved"))
+    response_path = directory / "responses" / f"{event['attempt_id']}.json"
+    change_json(response_path, lambda x: x.update({field: "wrong"}))
+    event[field] = "wrong"
+    event["response_sha256"] = sha(response_path)
+    jsonl(events_path, events)
+    with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)
+
+
+@pytest.mark.parametrize("repair_name", REPAIRS)
+@pytest.mark.parametrize("field", ["provider_config_sha256", "template_id", "template_sha256"])
+def test_each_repair_rejects_changed_settings(sample, repair_name, field):
+    change_json(sample["repair_dirs"][repair_name] / "run_config.json", lambda x: x.update({field: "wrong"}))
+    with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)
+
+
+@pytest.mark.parametrize("run_name", ["baseline", "repair"])
+@pytest.mark.parametrize("field", ["returned_model", "returned_service_tier"])
+def test_recorded_prediction_settings_must_match(sample, run_name, field):
+    directory = sample["baseline_dir"] if run_name == "baseline" else sample["repair_dirs"]["invoke_vlm"]
+    path = directory / "predictions.jsonl"
+    rows = read_jsonl(path)
+    rows[0][field] = "wrong"
+    jsonl(path, rows)
+    if run_name == "baseline":
+        change_json(directory / "run_summary.json", lambda x: x.update(predictions_sha256=sha(path)))
+    with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)
+
+
+@pytest.mark.parametrize("run_name", ["baseline", "repair"])
+@pytest.mark.parametrize("field", ["returned_model", "returned_service_tier"])
+def test_returned_event_settings_must_match(sample, run_name, field):
+    directory = sample["baseline_dir"] if run_name == "baseline" else sample["repair_dirs"]["invoke_vlm"]
+    path = directory / "attempts.jsonl"
+    events = read_jsonl(path)
+    next(e for e in events if e["event"] in ("saved", "response_saved"))[field] = "wrong"
+    jsonl(path, events)
+    with pytest.raises(compare_round.ComparisonError, match=field):
+        run(sample)

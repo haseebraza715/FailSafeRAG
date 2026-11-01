@@ -176,3 +176,14 @@ def test_choose_from_actual_diagnosis_run(tmp_path, monkeypatch):
     result = choice.choose(tmp_path, PILOT, project.baseline, diagnosis, tmp_path / "choice")
     assert result["feature"] is None
     assert result["sha256"][str(diagnosis / "run_config.json")] == hashlib.sha256((diagnosis / "run_config.json").read_bytes()).hexdigest()
+
+
+@pytest.mark.parametrize("selection", [{}, {"pool": "train_exclusive"}, {"question_splits": []}, {"question_splits": ["train", "val"]}])
+def test_unknown_split_refused_before_gold(tmp_path, selection):
+    paths = fixture(tmp_path, list(range(10)), {0})
+    change = choice.read_json(paths[0] / "selection_record.json")
+    change["config"]["selection"] = selection
+    write(paths[0] / "selection_record.json", change)
+    (paths[0] / "evaluation_manifest.json").unlink()
+    with pytest.raises(ValueError, match="split"):
+        run(tmp_path, paths)
