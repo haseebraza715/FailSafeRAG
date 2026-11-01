@@ -1,0 +1,59 @@
+{
+  "question_id": "f4188f3f-8a14-4e62-a95b-4715c333e861",
+  "attempt_id": "f4188f3f-dba8123e",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPehJMejKkPijnCaVe2AISKYwSRm",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2012,
+    "cached_input_tokens": 0,
+    "output_tokens": 42,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002222,
+  "latency_ms": 1247,
+  "answer": "谎称自己欠下巨额赌债让丈夫偿还，雇请“债主”暴力相逼，持刀抢走丈夫银行卡内的2.8万元",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPehJMejKkPijnCaVe2AISKYwSRm",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "谎称自己欠下巨额赌债让丈夫偿还，雇请“债主”暴力相逼，持刀抢走丈夫银行卡内的2.8万元",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538775,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 42,
+      "prompt_tokens": 2012,
+      "total_tokens": 2054,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 2009
+      }
+    }
+  }
+}

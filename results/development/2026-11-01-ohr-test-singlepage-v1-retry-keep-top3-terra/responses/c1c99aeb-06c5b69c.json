@@ -1,0 +1,59 @@
+{
+  "question_id": "c1c99aeb-a646-406a-8d87-f67e78f3524b",
+  "attempt_id": "c1c99aeb-06c5b69c",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPdrDzemiVd0kTJigzypGr78P7Zm",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1781,
+    "cached_input_tokens": 0,
+    "output_tokens": 57,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002066,
+  "latency_ms": 1959,
+  "answer": "发挥市民课堂、乡镇文化站、社区文化活动文化中心等基层宣传文化阵地的作用，组织开展图片展览、知识竞赛、演讲征文、文艺表演、座谈交流和富有特色的网上活动",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPdrDzemiVd0kTJigzypGr78P7Zm",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "发挥市民课堂、乡镇文化站、社区文化活动文化中心等基层宣传文化阵地的作用，组织开展图片展览、知识竞赛、演讲征文、文艺表演、座谈交流和富有特色的网上活动",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538723,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 57,
+      "prompt_tokens": 1781,
+      "total_tokens": 1838,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1778
+      }
+    }
+  }
+}

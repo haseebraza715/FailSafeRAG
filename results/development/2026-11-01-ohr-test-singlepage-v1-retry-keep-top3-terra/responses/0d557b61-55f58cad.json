@@ -1,0 +1,59 @@
+{
+  "question_id": "0d557b61-8a17-4dfe-bfc0-0dc804f64d86",
+  "attempt_id": "0d557b61-55f58cad",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPd11ehPWB9W0MSC2jRbleAIjYM3",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1860,
+    "cached_input_tokens": 0,
+    "output_tokens": 35,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002035,
+  "latency_ms": 1361,
+  "answer": "多养几头猪，猪粪填充沼气池，再利用沼液、沼渣种蔬菜和瓜果",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPd11ehPWB9W0MSC2jRbleAIjYM3",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "多养几头猪，猪粪填充沼气池，再利用沼液、沼渣种蔬菜和瓜果",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538671,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 35,
+      "prompt_tokens": 1860,
+      "total_tokens": 1895,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1857
+      }
+    }
+  }
+}

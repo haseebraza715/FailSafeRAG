@@ -1,0 +1,58 @@
+{
+  "question_id": "9c2151a2-75c8-4e6c-b9ea-86e7a5b6a7d3",
+  "attempt_id": "9c2151a2-10a4156f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPj8dkTQjbYx5f8bzhlOURtrKbl9",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1576,
+    "cached_input_tokens": 0,
+    "output_tokens": 34,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001746,
+  "latency_ms": 1727,
+  "answer": "空气稀薄洁净，水汽含量很少，阳光穿过大气时损耗少，直接辐射较强",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPj8dkTQjbYx5f8bzhlOURtrKbl9",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "空气稀薄洁净，水汽含量很少，阳光穿过大气时损耗少，直接辐射较强",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539050,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 34,
+      "prompt_tokens": 1576,
+      "total_tokens": 1610,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "c3813bcd-700f-4ec0-91ba-c0bd5492ba7a",
+  "attempt_id": "c3813bcd-dabde6a6",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPlUBrn4DqBF0jKWwXGrRQBmSx73",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4749,
+    "cached_input_tokens": 0,
+    "output_tokens": 122,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005359,
+  "latency_ms": 3189,
+  "answer": "领导机关和领导干部中贪污贿赂、失职渎职案件，重点领域和关键环节中的违纪违法案件，严重违反政治纪律和组织人事纪律的案件，重大责任事故和群体性事件涉及的失职渎职及背后的腐败案件，商业贿赂案件，基层政权组织和重点岗位以权谋私、滥用职权的案件，以案谋私、贪赃枉法和为黑恶势力充当“保护伞”等案件",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPlUBrn4DqBF0jKWwXGrRQBmSx73",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "领导机关和领导干部中贪污贿赂、失职渎职案件，重点领域和关键环节中的违纪违法案件，严重违反政治纪律和组织人事纪律的案件，重大责任事故和群体性事件涉及的失职渎职及背后的腐败案件，商业贿赂案件，基层政权组织和重点岗位以权谋私、滥用职权的案件，以案谋私、贪赃枉法和为黑恶势力充当“保护伞”等案件",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539196,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 122,
+      "prompt_tokens": 4749,
+      "total_tokens": 4871,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "c3fe57d3-b181-40a2-ab9a-636eda59f349",
+  "attempt_id": "c3fe57d3-2c1a9424",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPeY2NYSzWjo9Sia36OCI0NZ7B7K",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1717,
+    "cached_input_tokens": 0,
+    "output_tokens": 68,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002057,
+  "latency_ms": 1627,
+  "answer": "从解决农村能源和环境卫生的需求向在改变农业农村发展方式中发挥基础性作用转变，从户用沼气建设为主向户用沼气与大中型沼气工程建设并重转变，从分散建设管理向产业化和社会化服务转变",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPeY2NYSzWjo9Sia36OCI0NZ7B7K",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "从解决农村能源和环境卫生的需求向在改变农业农村发展方式中发挥基础性作用转变，从户用沼气建设为主向户用沼气与大中型沼气工程建设并重转变，从分散建设管理向产业化和社会化服务转变",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538766,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 68,
+      "prompt_tokens": 1717,
+      "total_tokens": 1785,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1714
+      }
+    }
+  }
+}

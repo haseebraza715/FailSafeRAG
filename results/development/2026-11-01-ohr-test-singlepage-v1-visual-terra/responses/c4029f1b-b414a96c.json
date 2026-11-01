@@ -1,0 +1,58 @@
+{
+  "question_id": "c4029f1b-3811-4ea8-a5c5-d2109f758289",
+  "attempt_id": "c4029f1b-b414a96c",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPlneCCHAz0PtwHZ17Lc3F6vsEhB",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4457,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004597,
+  "latency_ms": 2185,
+  "answer": "完善基础设施、优化品种品质、创新模式机制、发展循环农业、完善服务体系、强化科技支撑",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPlneCCHAz0PtwHZ17Lc3F6vsEhB",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "完善基础设施、优化品种品质、创新模式机制、发展循环农业、完善服务体系、强化科技支撑",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539215,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 4457,
+      "total_tokens": 4485,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

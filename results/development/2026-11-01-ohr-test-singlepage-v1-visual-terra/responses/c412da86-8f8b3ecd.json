@@ -1,0 +1,58 @@
+{
+  "question_id": "c412da86-8498-48fe-81e9-37bb0cdb0161",
+  "attempt_id": "c412da86-8f8b3ecd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPlp2GI8L4UZSy5C6ztMC76jvDYU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4762,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004797,
+  "latency_ms": 1698,
+  "answer": "淡水鱼产品",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPlp2GI8L4UZSy5C6ztMC76jvDYU",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "淡水鱼产品",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539217,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 7,
+      "prompt_tokens": 4762,
+      "total_tokens": 4769,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "c186cc8f-66fa-4cfc-9ce2-6ff48e3b8d3b",
+  "attempt_id": "c186cc8f-82bb6b5a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPdmVZ5FQndcn8na4wW2MuLO3Lw0",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1828,
+    "cached_input_tokens": 0,
+    "output_tokens": 45,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002053,
+  "latency_ms": 1518,
+  "answer": "组建农机专业服务队，组织农机农艺技术人员联合开展培训，使农机手掌握机械操作和农艺要求，实行集中统一规范的覆膜机播作业",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPdmVZ5FQndcn8na4wW2MuLO3Lw0",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "组建农机专业服务队，组织农机农艺技术人员联合开展培训，使农机手掌握机械操作和农艺要求，实行集中统一规范的覆膜机播作业",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538718,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 45,
+      "prompt_tokens": 1828,
+      "total_tokens": 1873,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1825
+      }
+    }
+  }
+}

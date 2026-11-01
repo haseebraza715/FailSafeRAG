@@ -1,0 +1,58 @@
+{
+  "question_id": "85c4b44f-f93b-4dbf-83ae-a2d1ba2bdab5",
+  "attempt_id": "85c4b44f-bfdbc151",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPiocol5uBtcjIrTmC3puE78SOtm",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3342,
+    "cached_input_tokens": 0,
+    "output_tokens": 32,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003502,
+  "latency_ms": 1588,
+  "answer": "Batchelor Buttons, Dianthus, Wildflower mix, plain old grass, Cosmos, Portulaca, Zinnia, Nicotiana",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPiocol5uBtcjIrTmC3puE78SOtm",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Batchelor Buttons, Dianthus, Wildflower mix, plain old grass, Cosmos, Portulaca, Zinnia, Nicotiana",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539030,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 32,
+      "prompt_tokens": 3342,
+      "total_tokens": 3374,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

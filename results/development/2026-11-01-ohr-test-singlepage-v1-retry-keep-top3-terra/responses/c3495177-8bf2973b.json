@@ -1,0 +1,59 @@
+{
+  "question_id": "c3495177-8d52-4ba0-8184-d2b578b0f654",
+  "attempt_id": "c3495177-8bf2973b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPeKuzybsobPuUVpsZvqwi6FWVYg",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1864,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001994,
+  "latency_ms": 1098,
+  "answer": "6万多亩老橘园重新焕发生机，实现了4年投产3年丰产",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPeKuzybsobPuUVpsZvqwi6FWVYg",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "6万多亩老橘园重新焕发生机，实现了4年投产3年丰产",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538752,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 26,
+      "prompt_tokens": 1864,
+      "total_tokens": 1890,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1861
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "question_id": "53710d59-b77f-4039-924a-b4e2ebdc732a",
+  "attempt_id": "53710d59-70a22c81",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPeyID98IeO9GbtzjyaJfRpaSR0h",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1592,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001647,
+  "latency_ms": 2038,
+  "answer": "how to generate hundreds of millions of jobs",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPeyID98IeO9GbtzjyaJfRpaSR0h",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "how to generate hundreds of millions of jobs",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538792,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 11,
+      "prompt_tokens": 1592,
+      "total_tokens": 1603,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1589
+      }
+    }
+  }
+}

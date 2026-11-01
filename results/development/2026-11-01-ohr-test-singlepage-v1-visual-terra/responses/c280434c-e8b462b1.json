@@ -1,0 +1,58 @@
+{
+  "question_id": "c280434c-5fcf-4c87-9eca-352f28116deb",
+  "attempt_id": "c280434c-e8b462b1",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPkfM4EeH6Z4Rj6z7VUcEmhThvZR",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5009,
+    "cached_input_tokens": 0,
+    "output_tokens": 66,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005339,
+  "latency_ms": 2384,
+  "answer": "苗期少灌水，控水蹲苗；结果期看天灌溉，阴天不灌水，果实膨大一般要与太阳出来后再灌才好，结果期灌水一般要与追肥同步，实现水肥一体化",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPkfM4EeH6Z4Rj6z7VUcEmhThvZR",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "苗期少灌水，控水蹲苗；结果期看天灌溉，阴天不灌水，果实膨大一般要与太阳出来后再灌才好，结果期灌水一般要与追肥同步，实现水肥一体化",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539145,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 66,
+      "prompt_tokens": 5009,
+      "total_tokens": 5075,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

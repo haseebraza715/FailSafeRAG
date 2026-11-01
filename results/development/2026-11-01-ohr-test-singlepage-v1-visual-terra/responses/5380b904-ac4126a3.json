@@ -1,0 +1,58 @@
+{
+  "question_id": "5380b904-688c-4015-aab9-7e494f2d4796",
+  "attempt_id": "5380b904-ac4126a3",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPhEP9ql3Dh3xA0x5SLYeyV0KUXj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4618,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004743,
+  "latency_ms": 1909,
+  "answer": "开发利用农村建设用地，土地开发经营的收益主要用于改善农村的基础设施和公共服务",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPhEP9ql3Dh3xA0x5SLYeyV0KUXj",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "开发利用农村建设用地，土地开发经营的收益主要用于改善农村的基础设施和公共服务",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538932,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 25,
+      "prompt_tokens": 4618,
+      "total_tokens": 4643,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

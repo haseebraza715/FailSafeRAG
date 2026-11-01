@@ -1,0 +1,59 @@
+{
+  "question_id": "ab0e664e-9c3e-42d5-91e1-aa9676f72255",
+  "attempt_id": "ab0e664e-7c726885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPdW4Q8sZ2uf6IZ82knScunfHTjc",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1849,
+    "cached_input_tokens": 0,
+    "output_tokens": 63,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002164,
+  "latency_ms": 1694,
+  "answer": "全球卫星定位技术、遥感技术、地理技术、计算机自动控制技术等现代科技成果，经过综合组装配套，使大马力机械实现了自动导航、精密播种、变量施肥、即时测产等精准化、标准化作业",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPdW4Q8sZ2uf6IZ82knScunfHTjc",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "全球卫星定位技术、遥感技术、地理技术、计算机自动控制技术等现代科技成果，经过综合组装配套，使大马力机械实现了自动导航、精密播种、变量施肥、即时测产等精准化、标准化作业",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538702,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 63,
+      "prompt_tokens": 1849,
+      "total_tokens": 1912,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1846
+      }
+    }
+  }
+}

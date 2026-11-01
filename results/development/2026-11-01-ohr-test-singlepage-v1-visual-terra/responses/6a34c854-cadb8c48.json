@@ -1,0 +1,58 @@
+{
+  "question_id": "6a34c854-1071-4d51-b6c5-9dacb4d7e28e",
+  "attempt_id": "6a34c854-cadb8c48",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPhcDi8VIKksEeaPiShyf1aL22Cl",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4130,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00426,
+  "latency_ms": 1733,
+  "answer": "gravel, cobble, boulder, and bedrock substrates with no, or very little, silt overlay",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPhcDi8VIKksEeaPiShyf1aL22Cl",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "gravel, cobble, boulder, and bedrock substrates with no, or very little, silt overlay",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538956,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 26,
+      "prompt_tokens": 4130,
+      "total_tokens": 4156,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

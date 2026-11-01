@@ -1,0 +1,58 @@
+{
+  "question_id": "4223623b-cc3e-4dde-9ad5-cf06364d7c87",
+  "attempt_id": "4223623b-1b21d8c6",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPgu5PtKaz7KTNTLQ0lAWUU3BsiS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4786,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004941,
+  "latency_ms": 1714,
+  "answer": "高忠为了带头，硬是咬着牙四处借款交上了这几十万，买下其中的一台",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPgu5PtKaz7KTNTLQ0lAWUU3BsiS",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "高忠为了带头，硬是咬着牙四处借款交上了这几十万，买下其中的一台",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538912,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 31,
+      "prompt_tokens": 4786,
+      "total_tokens": 4817,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

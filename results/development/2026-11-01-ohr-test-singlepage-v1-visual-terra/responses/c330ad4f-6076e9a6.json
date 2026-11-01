@@ -1,0 +1,58 @@
+{
+  "question_id": "c330ad4f-9dcc-4998-bc6b-05350399a6c0",
+  "attempt_id": "c330ad4f-6076e9a6",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPlA3ybKc9JiZBqp1Ys5FQ5rZ5JS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4701,
+    "cached_input_tokens": 0,
+    "output_tokens": 41,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004906,
+  "latency_ms": 1840,
+  "answer": "从衣食住行各方面感受低碳生活的新鲜方式，引导人们改变生活观念，从点滴做起，积极践行低碳生活方式",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPlA3ybKc9JiZBqp1Ys5FQ5rZ5JS",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "从衣食住行各方面感受低碳生活的新鲜方式，引导人们改变生活观念，从点滴做起，积极践行低碳生活方式",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539176,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 41,
+      "prompt_tokens": 4701,
+      "total_tokens": 4742,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

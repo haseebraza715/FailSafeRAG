@@ -1,0 +1,58 @@
+{
+  "question_id": "c2daa41d-c189-4eb9-95fb-8869bb18065e",
+  "attempt_id": "c2daa41d-6693ff41",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPkxLvvz2FRcB2fnZH8olzuVHUka",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4632,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004747,
+  "latency_ms": 1713,
+  "answer": "合理调控个人年度小客车增长速度，抑制小客车过快增长",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPkxLvvz2FRcB2fnZH8olzuVHUka",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "合理调控个人年度小客车增长速度，抑制小客车过快增长",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539163,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 23,
+      "prompt_tokens": 4632,
+      "total_tokens": 4655,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "74af8d34-bbfd-4135-a90a-5d07eefc4863",
+  "attempt_id": "74af8d34-015ce8a2",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPiBPRYzE9WYsrHpEJVMWX9Vxjm1",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4143,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004298,
+  "latency_ms": 1420,
+  "answer": "\\(b\\in\\mathbb{R}^{d}\\), \\(A\\) an orthogonal \\(d\\times d\\)-matrix",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPiBPRYzE9WYsrHpEJVMWX9Vxjm1",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "\\(b\\in\\mathbb{R}^{d}\\), \\(A\\) an orthogonal \\(d\\times d\\)-matrix",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538991,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 31,
+      "prompt_tokens": 4143,
+      "total_tokens": 4174,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

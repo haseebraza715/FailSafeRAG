@@ -1,0 +1,58 @@
+{
+  "question_id": "c217fb0d-6818-47f3-b00d-eabc21d5e2df",
+  "attempt_id": "c217fb0d-34fcacb0",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPkaeb2vFcvKG9WXX77XJoumqxow",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4877,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004977,
+  "latency_ms": 1724,
+  "answer": "平均亩产提高，蔗糖分提高，延长宿根年限",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPkaeb2vFcvKG9WXX77XJoumqxow",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "平均亩产提高，蔗糖分提高，延长宿根年限",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539140,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 20,
+      "prompt_tokens": 4877,
+      "total_tokens": 4897,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

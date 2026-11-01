@@ -1,0 +1,58 @@
+{
+  "question_id": "c1118f67-b40c-4b64-abfb-45ab03fff94e",
+  "attempt_id": "c1118f67-fcf13079",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPk6cINtf0S0oMy2AMBUk9PBRb18",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4671,
+    "cached_input_tokens": 0,
+    "output_tokens": 48,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004911,
+  "latency_ms": 2166,
+  "answer": "海南虽是一个区划小省，却是个农业大省，农业人口所占的比例，农业GDP所占的比例都比较高，农业经济发展对大多数农民增收至关重要",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPk6cINtf0S0oMy2AMBUk9PBRb18",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "海南虽是一个区划小省，却是个农业大省，农业人口所占的比例，农业GDP所占的比例都比较高，农业经济发展对大多数农民增收至关重要",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539110,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 48,
+      "prompt_tokens": 4671,
+      "total_tokens": 4719,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

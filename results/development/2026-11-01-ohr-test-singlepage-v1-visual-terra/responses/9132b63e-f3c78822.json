@@ -1,0 +1,58 @@
+{
+  "question_id": "9132b63e-f162-47e4-a9c3-49e03602f8ac",
+  "attempt_id": "9132b63e-f3c78822",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPj0walqvdPBYyDi7ShGUFr2ofTv",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4609,
+    "cached_input_tokens": 0,
+    "output_tokens": 43,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004824,
+  "latency_ms": 2251,
+  "answer": "发挥特色农业优势，发展精品农业、品牌农业、功能化农业、农产品加工业、农产品流通业，建设特色农业基地，实施“五个覆盖”惠民工程",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPj0walqvdPBYyDi7ShGUFr2ofTv",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "发挥特色农业优势，发展精品农业、品牌农业、功能化农业、农产品加工业、农产品流通业，建设特色农业基地，实施“五个覆盖”惠民工程",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539042,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 43,
+      "prompt_tokens": 4609,
+      "total_tokens": 4652,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

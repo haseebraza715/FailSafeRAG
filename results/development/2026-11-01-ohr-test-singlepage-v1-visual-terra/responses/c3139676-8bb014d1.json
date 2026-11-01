@@ -1,0 +1,58 @@
+{
+  "question_id": "c3139676-4d5c-4b51-87d2-90c59b8dab2b",
+  "attempt_id": "c3139676-8bb014d1",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPl8iyVlk6kqM9H3ORTcF36q66nd",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4766,
+    "cached_input_tokens": 0,
+    "output_tokens": 53,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005031,
+  "latency_ms": 2106,
+  "answer": "在种草的基础上，采取耦合发展，用粮竹草养牛，用草纤维造出超强度草纤维板，提取草汁饮料，用牛的粪便做沼气",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPl8iyVlk6kqM9H3ORTcF36q66nd",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "在种草的基础上，采取耦合发展，用粮竹草养牛，用草纤维造出超强度草纤维板，提取草汁饮料，用牛的粪便做沼气",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539174,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 53,
+      "prompt_tokens": 4766,
+      "total_tokens": 4819,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

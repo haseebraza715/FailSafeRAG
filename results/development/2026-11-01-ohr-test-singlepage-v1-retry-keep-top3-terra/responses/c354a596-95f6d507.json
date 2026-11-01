@@ -1,0 +1,59 @@
+{
+  "question_id": "c354a596-4a33-4349-ad55-b1b1711e214a",
+  "attempt_id": "c354a596-95f6d507",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPeL8wP9CaU3Cj7K5YScU3vA1Yrt",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1671,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001801,
+  "latency_ms": 1123,
+  "answer": "促进农业增产增效，加快农村劳动力转移就业，努力保持农民收入较快增长",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPeL8wP9CaU3Cj7K5YScU3vA1Yrt",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "促进农业增产增效，加快农村劳动力转移就业，努力保持农民收入较快增长",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538753,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 26,
+      "prompt_tokens": 1671,
+      "total_tokens": 1697,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1668
+      }
+    }
+  }
+}

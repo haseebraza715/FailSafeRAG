@@ -1,0 +1,59 @@
+{
+  "question_id": "c2d18967-1294-41af-8bf9-7d45c5354d5d",
+  "attempt_id": "c2d18967-4cb711c7",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPeAbzCuQfA2Pr1u7fMBt2x8kwOV",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1883,
+    "cached_input_tokens": 0,
+    "output_tokens": 35,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002058,
+  "latency_ms": 1827,
+  "answer": "购买育种书籍仔细研读，边学习边育种，每月拜访老专家，虚心请教育种过程中的疑难问题",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPeAbzCuQfA2Pr1u7fMBt2x8kwOV",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "购买育种书籍仔细研读，边学习边育种，每月拜访老专家，虚心请教育种过程中的疑难问题",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538742,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 35,
+      "prompt_tokens": 1883,
+      "total_tokens": 1918,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1880
+      }
+    }
+  }
+}

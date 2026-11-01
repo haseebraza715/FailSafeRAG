@@ -1,0 +1,58 @@
+{
+  "question_id": "c3ea41dd-bab3-4bd2-bafa-918f2161b71d",
+  "attempt_id": "c3ea41dd-04ff77d6",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPlipbzL7pk65sv5LuIijlJJZ1K1",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4757,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004912,
+  "latency_ms": 1817,
+  "answer": "调整畜群结构，养羊的数量由2000年的800只降至现在的240只，多养了60头牛",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPlipbzL7pk65sv5LuIijlJJZ1K1",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "调整畜群结构，养羊的数量由2000年的800只降至现在的240只，多养了60头牛",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539210,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 31,
+      "prompt_tokens": 4757,
+      "total_tokens": 4788,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

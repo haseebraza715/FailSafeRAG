@@ -1,0 +1,59 @@
+{
+  "question_id": "1d48a071-ab61-47b1-b93b-4c3220500494",
+  "attempt_id": "1d48a071-243f9b09",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPd2aqYjCOURvvAgv4lwKIuRhTie",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1802,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001917,
+  "latency_ms": 1119,
+  "answer": "农产品深加工、高效生态、循环经济、粮草轮作、粮草并举",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPd2aqYjCOURvvAgv4lwKIuRhTie",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "农产品深加工、高效生态、循环经济、粮草轮作、粮草并举",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538672,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 23,
+      "prompt_tokens": 1802,
+      "total_tokens": 1825,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1799
+      }
+    }
+  }
+}

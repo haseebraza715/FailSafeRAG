@@ -1,0 +1,58 @@
+{
+  "question_id": "c29fe946-5cb2-4e87-8a88-35b6a9f99d56",
+  "attempt_id": "c29fe946-aeaf0f93",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPknfHJ2g72LXxAUcJeXPHtSGyrW",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4776,
+    "cached_input_tokens": 0,
+    "output_tokens": 57,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005061,
+  "latency_ms": 2436,
+  "answer": "制定切实可行的实施方案，分档次、分级别、分批次进行，区别对待，分类指导，完善管理制度，落实管理经费和责任，定期培训管理员，建立健全科学管理的长效机制",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPknfHJ2g72LXxAUcJeXPHtSGyrW",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "制定切实可行的实施方案，分档次、分级别、分批次进行，区别对待，分类指导，完善管理制度，落实管理经费和责任，定期培训管理员，建立健全科学管理的长效机制",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539153,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 57,
+      "prompt_tokens": 4776,
+      "total_tokens": 4833,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

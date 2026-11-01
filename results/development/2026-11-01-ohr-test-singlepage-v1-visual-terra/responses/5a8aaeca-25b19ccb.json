@@ -1,0 +1,58 @@
+{
+  "question_id": "5a8aaeca-1a50-4ec3-aabc-25fa3fe12e47",
+  "attempt_id": "5a8aaeca-25b19ccb",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPhJSYLVF8OLlfOmP5UdvAGAob7I",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4690,
+    "cached_input_tokens": 0,
+    "output_tokens": 76,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00507,
+  "latency_ms": 2341,
+  "answer": "安徽、浙江、河北、山西、山东、重庆、陕西、广东、四川和江苏；农业土地流转加快，农业规模和高效农业增长，农机投资上升，基础设施增值提升，农民工汇款增长，金融服务扩展，2.5亿～3亿农村消费者开始显示消费能力",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPhJSYLVF8OLlfOmP5UdvAGAob7I",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "安徽、浙江、河北、山西、山东、重庆、陕西、广东、四川和江苏；农业土地流转加快，农业规模和高效农业增长，农机投资上升，基础设施增值提升，农民工汇款增长，金融服务扩展，2.5亿～3亿农村消费者开始显示消费能力",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538937,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 76,
+      "prompt_tokens": 4690,
+      "total_tokens": 4766,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

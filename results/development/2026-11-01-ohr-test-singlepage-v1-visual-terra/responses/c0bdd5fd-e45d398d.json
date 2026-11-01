@@ -1,0 +1,58 @@
+{
+  "question_id": "c0bdd5fd-66e9-45a9-93dc-57bb16d35b12",
+  "attempt_id": "c0bdd5fd-e45d398d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPjzamQIxZefzI06FUkAuNvo2K9R",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4790,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004915,
+  "latency_ms": 2481,
+  "answer": "预订：北京站、北京西站；购买：北京站、北京西站、北京北站",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPjzamQIxZefzI06FUkAuNvo2K9R",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "预订：北京站、北京西站；购买：北京站、北京西站、北京北站",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539103,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 25,
+      "prompt_tokens": 4790,
+      "total_tokens": 4815,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

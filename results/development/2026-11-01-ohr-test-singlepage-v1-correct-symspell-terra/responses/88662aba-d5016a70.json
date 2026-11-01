@@ -1,0 +1,59 @@
+{
+  "question_id": "88662aba-1601-4cc6-9b16-0641207417e7",
+  "attempt_id": "88662aba-d5016a70",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPfz2jER3f82rG6Tdgcoi6IWIk5e",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1632,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001722,
+  "latency_ms": 1184,
+  "answer": "Apartments and Condominiums with 3 or more units, Residential Hotels",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPfz2jER3f82rG6Tdgcoi6IWIk5e",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Apartments and Condominiums with 3 or more units, Residential Hotels",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538855,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 18,
+      "prompt_tokens": 1632,
+      "total_tokens": 1650,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1629
+      }
+    }
+  }
+}

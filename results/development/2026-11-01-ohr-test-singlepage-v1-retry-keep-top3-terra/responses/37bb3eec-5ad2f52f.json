@@ -1,0 +1,59 @@
+{
+  "question_id": "37bb3eec-4bf5-4b52-b09d-258c27a0c3d7",
+  "attempt_id": "37bb3eec-5ad2f52f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPd4VgkZH0ACqyvsgKpelt4mwcUu",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1832,
+    "cached_input_tokens": 0,
+    "output_tokens": 46,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002062,
+  "latency_ms": 1487,
+  "answer": "抑制地表蒸发，提高水分生产效率，提高地温，使播期提前，提高天然降雨利用率，保住底墒，解决春旱玉米出苗难的问题",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPd4VgkZH0ACqyvsgKpelt4mwcUu",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "抑制地表蒸发，提高水分生产效率，提高地温，使播期提前，提高天然降雨利用率，保住底墒，解决春旱玉米出苗难的问题",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538674,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 46,
+      "prompt_tokens": 1832,
+      "total_tokens": 1878,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1829
+      }
+    }
+  }
+}

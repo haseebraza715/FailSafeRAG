@@ -1,0 +1,59 @@
+{
+  "question_id": "5057df41-835b-4afb-98c8-ba854885bc05",
+  "attempt_id": "5057df41-6b96aa1d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPdEMgEXIoYSaYIE71yWlVtlqPBA",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1653,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001738,
+  "latency_ms": 997,
+  "answer": "fearful that conscription is a oneway ticket to the front line",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPdEMgEXIoYSaYIE71yWlVtlqPBA",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "fearful that conscription is a oneway ticket to the front line",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538684,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 1653,
+      "total_tokens": 1670,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1650
+      }
+    }
+  }
+}

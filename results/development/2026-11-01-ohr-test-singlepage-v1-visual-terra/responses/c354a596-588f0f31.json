@@ -1,0 +1,58 @@
+{
+  "question_id": "c354a596-4a33-4349-ad55-b1b1711e214a",
+  "attempt_id": "c354a596-588f0f31",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPlMDGT44bukX5njtZ2hC1NzNQ5G",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4639,
+    "cached_input_tokens": 0,
+    "output_tokens": 81,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005044,
+  "latency_ms": 2922,
+  "answer": "促进农产品总量和结构平衡,保障市场有效供给,促进物价总水平稳定,提高效益增收入,就是要促进农业增产增效,加快农村劳动力转移就业,努力保持农民收入较快增长,提升能力促转变,就是要夯实农业发展基础,稳步提高农业综合生产能力",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPlMDGT44bukX5njtZ2hC1NzNQ5G",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "促进农产品总量和结构平衡,保障市场有效供给,促进物价总水平稳定,提高效益增收入,就是要促进农业增产增效,加快农村劳动力转移就业,努力保持农民收入较快增长,提升能力促转变,就是要夯实农业发展基础,稳步提高农业综合生产能力",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539188,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 81,
+      "prompt_tokens": 4639,
+      "total_tokens": 4720,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

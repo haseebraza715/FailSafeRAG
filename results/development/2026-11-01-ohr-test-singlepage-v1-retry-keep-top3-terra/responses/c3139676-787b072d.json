@@ -1,0 +1,59 @@
+{
+  "question_id": "c3139676-4d5c-4b51-87d2-90c59b8dab2b",
+  "attempt_id": "c3139676-787b072d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPeI5N1teBMaXNBR06fKggwTDcER",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1841,
+    "cached_input_tokens": 0,
+    "output_tokens": 41,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002046,
+  "latency_ms": 1232,
+  "answer": "用粮竹草养牛，用草纤维造出超强度草纤维板，提取草汁饮料，用牛的粪便做沼气",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPeI5N1teBMaXNBR06fKggwTDcER",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "用粮竹草养牛，用草纤维造出超强度草纤维板，提取草汁饮料，用牛的粪便做沼气",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538750,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 41,
+      "prompt_tokens": 1841,
+      "total_tokens": 1882,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1838
+      }
+    }
+  }
+}

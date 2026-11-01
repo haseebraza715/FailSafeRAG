@@ -1,0 +1,59 @@
+{
+  "question_id": "fb10987f-20ac-4703-ab67-146a77a6e17c",
+  "attempt_id": "fb10987f-010c801f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPejFOVT7YfvqQeYXOZQuukUSced",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1934,
+    "cached_input_tokens": 0,
+    "output_tokens": 109,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002479,
+  "latency_ms": 1914,
+  "answer": "戈壁温室大棚数量已达1911座，1121名农牧民、回乡大学生从事设施农业生产和学习，大棚蔬菜的亩均效益增长到了1万元左右，2000多名定居牧民从事戈壁养殖业，全县养殖量发展到了51.2万羽，1715户定居牧民户均有一座温室大棚、15只土鸡特禽和10亩特色林果",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPejFOVT7YfvqQeYXOZQuukUSced",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "戈壁温室大棚数量已达1911座，1121名农牧民、回乡大学生从事设施农业生产和学习，大棚蔬菜的亩均效益增长到了1万元左右，2000多名定居牧民从事戈壁养殖业，全县养殖量发展到了51.2万羽，1715户定居牧民户均有一座温室大棚、15只土鸡特禽和10亩特色林果",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538777,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 109,
+      "prompt_tokens": 1934,
+      "total_tokens": 2043,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1931
+      }
+    }
+  }
+}

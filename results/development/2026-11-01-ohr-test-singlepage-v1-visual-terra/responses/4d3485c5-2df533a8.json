@@ -1,0 +1,58 @@
+{
+  "question_id": "4d3485c5-c5c1-4eb4-b27b-3d901a16342c",
+  "attempt_id": "4d3485c5-2df533a8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPgyHHOAKsm9Agc2u5wgFJXL7zdh",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4787,
+    "cached_input_tokens": 0,
+    "output_tokens": 27,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004922,
+  "latency_ms": 1833,
+  "answer": "不能取得毕业证，找工作也不顺利，又因为口吃等让他失去了生活的信心",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPgyHHOAKsm9Agc2u5wgFJXL7zdh",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "不能取得毕业证，找工作也不顺利，又因为口吃等让他失去了生活的信心",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538916,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 27,
+      "prompt_tokens": 4787,
+      "total_tokens": 4814,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

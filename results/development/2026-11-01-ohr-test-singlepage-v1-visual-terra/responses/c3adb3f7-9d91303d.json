@@ -1,0 +1,58 @@
+{
+  "question_id": "c3adb3f7-c04a-4826-8a14-828433d1cb64",
+  "attempt_id": "c3adb3f7-9d91303d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPlcAVBUKJa28Y0Fz44Y5ycVvThh",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4611,
+    "cached_input_tokens": 0,
+    "output_tokens": 37,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004796,
+  "latency_ms": 1968,
+  "answer": "在全国农村地区普遍开展农村社区建设，将60%以上的农村社区基本建设成为管理有序、服务完善、文明祥和的社会生活共同体",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPlcAVBUKJa28Y0Fz44Y5ycVvThh",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "在全国农村地区普遍开展农村社区建设，将60%以上的农村社区基本建设成为管理有序、服务完善、文明祥和的社会生活共同体",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539204,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 37,
+      "prompt_tokens": 4611,
+      "total_tokens": 4648,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

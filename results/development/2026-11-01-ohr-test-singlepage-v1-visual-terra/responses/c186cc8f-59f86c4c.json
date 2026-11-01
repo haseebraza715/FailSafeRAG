@@ -1,0 +1,58 @@
+{
+  "question_id": "c186cc8f-66fa-4cfc-9ce2-6ff48e3b8d3b",
+  "attempt_id": "c186cc8f-59f86c4c",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPkFqPK2vi16MHx8laxgqWQjVNdf",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4740,
+    "cached_input_tokens": 0,
+    "output_tokens": 62,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00505,
+  "latency_ms": 2399,
+  "answer": "组建农机专业服务队，组织农机农艺技术人员联合开展培训，使农机手掌握机械操作和农艺要求，实行集中统一规范的覆膜机播作业，提高工作效率，保障覆膜质量，并通过机播增加种植密度",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPkFqPK2vi16MHx8laxgqWQjVNdf",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "组建农机专业服务队，组织农机农艺技术人员联合开展培训，使农机手掌握机械操作和农艺要求，实行集中统一规范的覆膜机播作业，提高工作效率，保障覆膜质量，并通过机播增加种植密度",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539119,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 4740,
+      "total_tokens": 4802,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

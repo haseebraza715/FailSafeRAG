@@ -1,0 +1,59 @@
+{
+  "question_id": "8e6b81a3-e9ed-459c-a80a-b2000cfcbe46",
+  "attempt_id": "8e6b81a3-d388ed4b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPg05CgVYZHwkmEIfg3Tq4qG8rOL",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1043,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001098,
+  "latency_ms": 930,
+  "answer": "Case Assigned to Judge Carl J. Nichols",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPg05CgVYZHwkmEIfg3Tq4qG8rOL",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Case Assigned to Judge Carl J. Nichols",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538856,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 11,
+      "prompt_tokens": 1043,
+      "total_tokens": 1054,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1040
+      }
+    }
+  }
+}

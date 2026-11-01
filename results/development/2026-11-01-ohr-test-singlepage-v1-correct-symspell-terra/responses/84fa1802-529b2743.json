@@ -1,0 +1,59 @@
+{
+  "question_id": "84fa1802-2c7b-43ea-abca-1e759ae5038a",
+  "attempt_id": "84fa1802-529b2743",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPftv9koj0onzgy1uBhCY7Sx54LB",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1715,
+    "cached_input_tokens": 0,
+    "output_tokens": 10,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001765,
+  "latency_ms": 921,
+  "answer": "《建设工程项目管理规范》",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPftv9koj0onzgy1uBhCY7Sx54LB",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "《建设工程项目管理规范》",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538849,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 10,
+      "prompt_tokens": 1715,
+      "total_tokens": 1725,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1712
+      }
+    }
+  }
+}

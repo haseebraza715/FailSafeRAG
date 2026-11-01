@@ -1,0 +1,58 @@
+{
+  "question_id": "07f194f9-c115-4d6d-8a4e-5b70a6d964a3",
+  "attempt_id": "07f194f9-cc52fdc8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPgiL8YkOrDweuUc8ZxNAKZtZPo1",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4705,
+    "cached_input_tokens": 0,
+    "output_tokens": 21,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00481,
+  "latency_ms": 1803,
+  "answer": "牧业发展不仅关系到牧民生活改善，也关系到城市居民副食供应",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPgiL8YkOrDweuUc8ZxNAKZtZPo1",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "牧业发展不仅关系到牧民生活改善，也关系到城市居民副食供应",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538900,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 21,
+      "prompt_tokens": 4705,
+      "total_tokens": 4726,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

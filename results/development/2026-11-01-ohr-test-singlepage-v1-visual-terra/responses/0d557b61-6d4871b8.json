@@ -1,0 +1,58 @@
+{
+  "question_id": "0d557b61-8a17-4dfe-bfc0-0dc804f64d86",
+  "attempt_id": "0d557b61-6d4871b8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPgkpTD8qOsBPfFHgdyWulBY9Ybn",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4829,
+    "cached_input_tokens": 0,
+    "output_tokens": 46,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005059,
+  "latency_ms": 2227,
+  "answer": "一年喂上5头猪，猪粪填充沼气池，再利用沼液、沼渣种上2亩菜，少说也能赚2万多块钱",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPgkpTD8qOsBPfFHgdyWulBY9Ybn",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "一年喂上5头猪，猪粪填充沼气池，再利用沼液、沼渣种上2亩菜，少说也能赚2万多块钱",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538902,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 46,
+      "prompt_tokens": 4829,
+      "total_tokens": 4875,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

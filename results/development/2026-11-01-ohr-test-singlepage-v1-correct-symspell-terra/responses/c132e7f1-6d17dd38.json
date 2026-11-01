@@ -1,0 +1,59 @@
+{
+  "question_id": "c132e7f1-47cb-4531-82f9-139fbf36e46f",
+  "attempt_id": "c132e7f1-6d17dd38",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPgOJx4JhYZmMUWCtiJFh806Hl5L",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1817,
+    "cached_input_tokens": 0,
+    "output_tokens": 59,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002112,
+  "latency_ms": 1537,
+  "answer": "以村为单位，对组一级的资产也进行清查登记，对集体所有的资金资产资源全面清查登记，严格按照“清查、登记、核实、公示、确认、上报”六个程序开展，推行委托代理制",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPgOJx4JhYZmMUWCtiJFh806Hl5L",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "以村为单位，对组一级的资产也进行清查登记，对集体所有的资金资产资源全面清查登记，严格按照“清查、登记、核实、公示、确认、上报”六个程序开展，推行委托代理制",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538880,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 59,
+      "prompt_tokens": 1817,
+      "total_tokens": 1876,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1814
+      }
+    }
+  }
+}

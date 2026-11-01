@@ -1,0 +1,59 @@
+{
+  "question_id": "c1d6acf9-573c-49c2-9e9b-8b1933e65267",
+  "attempt_id": "c1d6acf9-faaf9ac2",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPduOl6uE0Fs8i5We3azsp3DBXR7",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1814,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001924,
+  "latency_ms": 1060,
+  "answer": "依靠现代科技，五邑农业优质稻产业领跑同行快速腾飞",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPduOl6uE0Fs8i5We3azsp3DBXR7",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "依靠现代科技，五邑农业优质稻产业领跑同行快速腾飞",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538726,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 22,
+      "prompt_tokens": 1814,
+      "total_tokens": 1836,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1811
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "c203f3db-9b79-4aa4-9cd8-845193d8d153",
+  "attempt_id": "c203f3db-f49ab7a9",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPkXaeGIQM3yka92263qqASui52q",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4756,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004866,
+  "latency_ms": 1842,
+  "answer": "龙头企业集群、农畜产品加工水平、农畜产品品牌建设",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPkXaeGIQM3yka92263qqASui52q",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "龙头企业集群、农畜产品加工水平、农畜产品品牌建设",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793539137,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 22,
+      "prompt_tokens": 4756,
+      "total_tokens": 4778,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

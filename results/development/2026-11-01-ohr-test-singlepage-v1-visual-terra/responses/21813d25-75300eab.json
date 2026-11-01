@@ -1,0 +1,58 @@
+{
+  "question_id": "21813d25-6552-48a6-83ff-50113d1a85dd",
+  "attempt_id": "21813d25-75300eab",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPgoZHb3twT9OeDmua2qZbNNxaJm",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 4405,
+    "cached_input_tokens": 0,
+    "output_tokens": 14,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004475,
+  "latency_ms": 1599,
+  "answer": "The LPN was elevated from 5 to 2",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfPgoZHb3twT9OeDmua2qZbNNxaJm",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "The LPN was elevated from 5 to 2",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793538906,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 14,
+      "prompt_tokens": 4405,
+      "total_tokens": 4419,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

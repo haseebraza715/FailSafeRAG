@@ -1,0 +1,21 @@
+{
+  "run_id": "2026-11-01-ohr-test-singlepage-v1-retry-keep-top3-terra",
+  "questions": 198,
+  "answered": 94,
+  "execution_failed": 0,
+  "blocked": [],
+  "questions_with_unknown_outcomes": 0,
+  "resent": 0,
+  "abstained": 4,
+  "images": 0,
+  "measured_cost_usd": 0.182478,
+  "reserved_cost_usd": 0.0,
+  "returned_models": [
+    "gpt-6.1-terra"
+  ],
+  "returned_service_tiers": [
+    "default"
+  ],
+  "skipped": 104,
+  "complete": true
+}
