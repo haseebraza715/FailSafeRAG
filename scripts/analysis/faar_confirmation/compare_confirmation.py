@@ -80,34 +80,39 @@ def check_settings(configs: dict[str, dict[str, Any]]) -> dict[str, Any]:
     return {field: expected for _, expected, field in checks}
 
 
-def compare(root: Path) -> dict[str, Any]:
-    out = root / OUTPUT
+def compare(root: Path, *, pilot: str = PILOT, runs: dict[str, str] | None = None, output: str = OUTPUT,
+            allowed_split: str = "validation", title: str | None = None,
+            label: str = "Confirmation result (pre-registered, section 5)", heading: str = "Confirmation decision",
+            script_path: Path | None = None) -> dict[str, Any]:
+    out = root / output
     if out.exists() or out.is_symlink():
         raise shared.ComparisonError("output directory exists")
     reader = shared.Reader()
     provider = root / ".local/work/provider-config.gpt-6.1-terra.json"
     require(hashlib.sha256(reader.bytes(provider)).hexdigest(), PROVIDER_SHA, "provider config sha256")
-    dirs = {name: root / "results/development" / run for name, run in RUNS.items()}
+    dirs = {name: root / "results/development" / run for name, run in (RUNS if runs is None else runs).items()}
     configs = {name: reader.json(path / "run_config.json") for name, path in dirs.items()}
     settings = check_settings(configs)
     check_code(reader, configs)
-    data = shared.read_inputs(root, PILOT, dirs["baseline"], dirs["diagnosis"],
-                              {name: dirs[name] for name in shared.REPAIRS}, reader, provider, allowed_split="validation")
+    data = shared.read_inputs(root, pilot, dirs["baseline"], dirs["diagnosis"],
+                              {name: dirs[name] for name in shared.REPAIRS}, reader, provider, allowed_split=allowed_split)
     rows = shared.cases(data)
-    result = shared.analyse(data, rows, PILOT, 1)
-    result["decision"]["label"] = "Confirmation result (pre-registered, section 5)"
+    result = shared.analyse(data, rows, pilot, 1)
+    result["decision"]["label"] = label
     if not result["validity"]["valid"]:
         result["decision"]["met"] = None
     result["frozen_settings_checked"] = settings
     result["provider_config_sha256"] = data["provider_config_sha256"]
     result["provider_fields_checked"] = data["provider_fields_checked"]
     reader.bytes(Path(__file__))
+    if script_path is not None:
+        reader.bytes(script_path)
     result["input_and_code_sha256"] = reader.hashes
     result["checkout"] = {"commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                           "dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip())}
     report = shared.report(result)
-    report = report.replace(f"# {PILOT} round 1 policy comparison", f"# {PILOT} confirmation policy comparison")
-    report = report.replace("## Development decision", "## Confirmation decision")
+    report = report.replace(f"# {pilot} round 1 policy comparison", f"# {pilot} confirmation policy comparison" if title is None else f"# {title}")
+    report = report.replace("## Development decision", f"## {heading}")
     if not result["validity"]["valid"]:
         report = report.replace(result["decision"]["rule"] + "\nRule met: None. Valid comparison: False.",
                                 "Invalid comparison under amendment 2. No decision.")

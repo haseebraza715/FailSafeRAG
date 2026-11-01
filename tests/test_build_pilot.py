@@ -421,3 +421,53 @@ def test_validation_pool_uses_standard_eligibility() -> None:
     assert {row["doc_id"] for row in pool["exclusions"]} == {"missing", "unresolved", "multi"}
     assert pilot.build_pool(inputs, "train_exclusive")["eligible"] == ["train"]
     assert pilot.build_pool(inputs, "train_without_test")["eligible"] == ["train"]
+
+
+# Test-pool failures: non-test rows enter, page limits or exclusions are ignored,
+# or invalid split and page bounds are accepted.
+def test_test_pool_filters_and_excludes(project: Path) -> None:
+    config = json.loads(write_config(project, name="test_sample").read_text())
+    config["selection"].update(pool="test", documents="all", min_pages=2, question_splits=["test"])
+    config["inspection"]["enabled"] = False
+    path = project / "config/pilots/test_sample.json"
+    _write(path, config)
+    assert build(project, path, "--no-render") == 0
+    record, runtime, _ = load(project, "test_sample")
+    assert {d["doc_id"] for d in record["selected_documents"]} == {"news/testonly"}
+    assert {q["question_id"] for q in runtime["questions"]} == {"t1"}
+    config["pilot_id"], config["output_dir"] = "excluded", "results/pilots/excluded"
+    config["selection"]["exclude_documents_of_pilots"] = ["test_sample"]
+    _write(path, config)
+    assert build(project, path, "--no-render") == pilot.EXIT_INVALID
+    config["selection"].pop("exclude_documents_of_pilots")
+    config["selection"].update(max_pages=1)
+    _write(path, config)
+    assert build(project, path, "--no-render") == pilot.EXIT_INVALID
+    config["selection"].pop("min_pages")
+    _write(path, config)
+    assert build(project, path, "--no-render") == pilot.EXIT_INVALID
+    config["selection"].update(max_pages=2, question_splits=["validation"])
+    _write(path, config)
+    assert build(project, path, "--no-render") == pilot.EXIT_INVALID
+
+
+def test_single_page_test_document_is_selected(tmp_path: Path) -> None:
+    project = make_project(tmp_path)
+    archive = project / "data/ohr_bench_raw/pdfs.zip"
+    with zipfile.ZipFile(archive, "w") as zf:
+        for doc in DOCS:
+            zf.writestr(f"{doc}.pdf", _pdf(1 if doc == "news/testonly" else 2))
+    lock_path = project / "config/ohr_pdf_source_lock.json"
+    lock = json.loads(lock_path.read_text())
+    lock["pdf_archive"]["sha256"] = _sha(archive)
+    _write(lock_path, lock)
+    for source in ("gt", "MinerU"):
+        _write(project / f"OHR-Bench/data/retrieval_base/{source}/news/testonly.json", [{"page_idx": 0, "text": "a"}])
+    run_audit(project)
+    config = json.loads(write_config(project, name="single").read_text())
+    config["selection"].update(pool="test", documents="all", max_pages=1, question_splits=["test"])
+    config["inspection"]["enabled"] = False
+    path = project / "config/pilots/single.json"
+    _write(path, config)
+    assert build(project, path, "--no-render") == 0
+    assert [q["question_id"] for q in load(project, "single")[1]["questions"]] == ["t1"]
