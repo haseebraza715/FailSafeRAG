@@ -1,0 +1,58 @@
+{
+  "question_id": "b64957d6-b8d8-4981-857b-ef357e18ca29",
+  "attempt_id": "b64957d6-b3753940",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfN1bNfsTbSrXmEeqpg9huqwGCKXO",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8866,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008931,
+  "latency_ms": 1609,
+  "answer": "Public Herald, dedicated to journalism in the public interest",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfN1bNfsTbSrXmEeqpg9huqwGCKXO",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Public Herald, dedicated to journalism in the public interest",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528663,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 8866,
+      "total_tokens": 8879,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

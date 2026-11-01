@@ -1,0 +1,58 @@
+{
+  "question_id": "93599e68-d9ce-44ea-86f7-14cec22f33d8",
+  "attempt_id": "93599e68-17dbf6ee",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfMshPpHHvKWVUJReh7AffhIGZ9gH",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9226,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009306,
+  "latency_ms": 2066,
+  "answer": "to encourage building, improvement and to promote the material prosperity of Aurora",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfMshPpHHvKWVUJReh7AffhIGZ9gH",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "to encourage building, improvement and to promote the material prosperity of Aurora",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528111,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 9226,
+      "total_tokens": 9242,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "run_id": "2026-11-01-ohr-val-multipage-v1-visual-terra",
+  "questions": 647,
+  "answered": 644,
+  "execution_failed": 3,
+  "blocked": [
+    "9368566c-1001-46a1-9fbb-a0447fca2b30",
+    "a751952d-a74b-4734-b3d5-53da689841ee",
+    "ab39109c-0381-4d2b-86c6-c6dea5dc21c9"
+  ],
+  "questions_with_unknown_outcomes": 22,
+  "resent": 22,
+  "abstained": 307,
+  "images": 1934,
+  "measured_cost_usd": 5.661816,
+  "reserved_cost_usd": 0.794997,
+  "returned_models": [
+    "gpt-6.1-terra"
+  ],
+  "returned_service_tiers": [
+    "default"
+  ],
+  "skipped": 0,
+  "complete": false
+}

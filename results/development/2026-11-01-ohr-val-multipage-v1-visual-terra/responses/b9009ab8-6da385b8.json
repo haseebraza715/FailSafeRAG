@@ -1,0 +1,58 @@
+{
+  "question_id": "b9009ab8-b748-4a8b-9b5d-963dc1e4f6f4",
+  "attempt_id": "b9009ab8-6da385b8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfN3PEAotnmDB4OXlLki5l75g3huE",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3682,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003827,
+  "latency_ms": 1649,
+  "answer": "If the light is glowing amber, the battery needs to be charged. If the light is glowing green, the battery is fully charged",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfN3PEAotnmDB4OXlLki5l75g3huE",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "If the light is glowing amber, the battery needs to be charged. If the light is glowing green, the battery is fully charged",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528775,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 29,
+      "prompt_tokens": 3682,
+      "total_tokens": 3711,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

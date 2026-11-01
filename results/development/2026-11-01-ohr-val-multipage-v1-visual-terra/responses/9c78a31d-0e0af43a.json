@@ -1,0 +1,58 @@
+{
+  "question_id": "9c78a31d-b448-4bb3-a809-10d43ce2ebed",
+  "attempt_id": "9c78a31d-0e0af43a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfMuMeMbty46V5DQaHEphGL3ydsdl",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5882,
+    "cached_input_tokens": 0,
+    "output_tokens": 19,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005977,
+  "latency_ms": 1585,
+  "answer": "A modification of the ridge and furrow type, the country south of Langsett",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfMuMeMbty46V5DQaHEphGL3ydsdl",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A modification of the ridge and furrow type, the country south of Langsett",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528214,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 19,
+      "prompt_tokens": 5882,
+      "total_tokens": 5901,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

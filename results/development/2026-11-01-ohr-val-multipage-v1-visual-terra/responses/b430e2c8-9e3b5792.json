@@ -1,0 +1,58 @@
+{
+  "question_id": "b430e2c8-3485-4b9d-a63b-d08a3e6af2ca",
+  "attempt_id": "b430e2c8-9e3b5792",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfN1BZnNqvHV5irBG4DrBT6pC8XGd",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 10376,
+    "cached_input_tokens": 0,
+    "output_tokens": 33,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.010541,
+  "latency_ms": 2887,
+  "answer": "Up-to-date programs that meet the needs of industry, on-the-job training, opportunities for part-time and summer work, social, recreational and cultural experiences",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfN1BZnNqvHV5irBG4DrBT6pC8XGd",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Up-to-date programs that meet the needs of industry, on-the-job training, opportunities for part-time and summer work, social, recreational and cultural experiences",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528637,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 33,
+      "prompt_tokens": 10376,
+      "total_tokens": 10409,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

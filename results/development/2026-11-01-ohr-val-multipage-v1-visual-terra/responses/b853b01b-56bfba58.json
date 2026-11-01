@@ -1,0 +1,58 @@
+{
+  "question_id": "b853b01b-e867-404c-a686-2d1d78d95c51",
+  "attempt_id": "b853b01b-56bfba58",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfN2uenD1B16cHmC8TgP2BIHnmfEN",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9403,
+    "cached_input_tokens": 0,
+    "output_tokens": 36,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009583,
+  "latency_ms": 2163,
+  "answer": "Sanofi Pasteur shall be entitled to obtain from ADMA as liquidated damages, and not a penalty, amounting to $[***] ([***]) USD",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfN2uenD1B16cHmC8TgP2BIHnmfEN",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Sanofi Pasteur shall be entitled to obtain from ADMA as liquidated damages, and not a penalty, amounting to $[***] ([***]) USD",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528744,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 36,
+      "prompt_tokens": 9403,
+      "total_tokens": 9439,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

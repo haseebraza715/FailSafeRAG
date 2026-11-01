@@ -1,0 +1,58 @@
+{
+  "question_id": "b5794065-3208-4ba4-8db1-2decf5cb15e6",
+  "attempt_id": "b5794065-4118ba74",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfN1HYIwIQHOIh6yKSg60XNvyJF0g",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 4204,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.004844,
+  "latency_ms": 2809,
+  "answer": "Colorado — Grow Your Own Vegetables, Iowa — The Vegetable Garden, Kansas — A Garden Guide for Farm and Town; Home Fruit Production, Massachusetts — The Home Garden, Michigan — The Home Vegetable Garden, Mississippi — The Year-Round Home Garden; Home Production of Small Fruits in Mississippi, Montana — The Montana Farm Garden, New Jersey — The Home Vegetable Garden, New York — The Home Garden, North Carolina — The Farm and Home Garden Manual, Oregon — The Farm Vegetable Garden, Pennsylvania — The Family Vegetable Garden, South Dakota — Planning and Growing the Family Food Supply; Questions and Answers on Fruit Culture, Washington — Home",
+  "abstained": false,
+  "output_status": "truncated",
+  "raw": {
+    "id": "chatcmpl-EfN1HYIwIQHOIh6yKSg60XNvyJF0g",
+    "choices": [
+      {
+        "finish_reason": "length",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Colorado — Grow Your Own Vegetables, Iowa — The Vegetable Garden, Kansas — A Garden Guide for Farm and Town; Home Fruit Production, Massachusetts — The Home Garden, Michigan — The Home Vegetable Garden, Mississippi — The Year-Round Home Garden; Home Production of Small Fruits in Mississippi, Montana — The Montana Farm Garden, New Jersey — The Home Vegetable Garden, New York — The Home Garden, North Carolina — The Farm and Home Garden Manual, Oregon — The Farm Vegetable Garden, Pennsylvania — The Family Vegetable Garden, South Dakota — Planning and Growing the Family Food Supply; Questions and Answers on Fruit Culture, Washington — Home",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528643,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 128,
+      "prompt_tokens": 4204,
+      "total_tokens": 4332,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

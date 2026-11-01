@@ -1,0 +1,58 @@
+{
+  "question_id": "b89395df-3f26-438f-8449-9508c9f720d2",
+  "attempt_id": "b89395df-b0485eff",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfN33dPzL7HeRwsjouqz8c1abt5yr",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9889,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.010029,
+  "latency_ms": 2936,
+  "answer": "A dinner party at the Seaside Club, an informal reception at the Atsugi Officer’s Club, wearing Yukata more often",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfN33dPzL7HeRwsjouqz8c1abt5yr",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A dinner party at the Seaside Club, an informal reception at the Atsugi Officer’s Club, wearing Yukata more often",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793528753,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 9889,
+      "total_tokens": 9917,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}
