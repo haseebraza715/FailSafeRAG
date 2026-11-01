@@ -35,7 +35,8 @@ def choose(root, pilot_id, baseline, diagnosis, out):
     if out.exists() and (not out.is_dir() or any(out.iterdir())):
         raise ValueError("output directory is not empty")
     pilot = root / "results" / "pilots" / pilot_id
-    record = read_json(pilot / "selection_record.json")
+    record_path = pilot / "selection_record.json"
+    record = read_json(record_path)
     selection = record["config"]["selection"]
     if record["pilot_id"] != pilot_id or not (
         selection.get("question_splits") == ["train"]
@@ -91,11 +92,11 @@ def choose(root, pilot_id, baseline, diagnosis, out):
             candidates.append(dict(feature=feature, t=t, flagged=len(flagged), TP=tp, FP=fp,
                                    TPR=tpr, FPR=fpr, J=j, within_cap=len(flagged) <= cap))
     eligible = [c for c in candidates if c["within_cap"] and c["J"] is not None]
-    best = min(eligible, key=lambda c: (-c["J"], c["flagged"], CONFIDENCE_FEATURES.index(c["feature"]), c["t"])) if eligible and not undefined else None
+    best = min(eligible, key=lambda c: (-c["J"], c["flagged"], CONFIDENCE_FEATURES.index(c["feature"]), c["t"])) if eligible else None
     if best and best["J"] <= 0:
         best = None
-    reason = ("J undefined: population has no positives or no negatives for " + ", ".join(undefined)
-              if undefined else (None if best else "no candidate has J above zero"))
+    reason = (None if best else "no candidate has J above zero" +
+              ("; J undefined: population has no positives or no negatives for " + ", ".join(undefined) if undefined else ""))
     def number(value):
         return float(value) if isinstance(value, Fraction) else value
     chosen = {k: number(best[k]) for k in ("feature", "t", "flagged", "TP", "FP", "TPR", "FPR", "J")} if best else None
@@ -110,7 +111,7 @@ def choose(root, pilot_id, baseline, diagnosis, out):
               "population": stats,
               "populations": populations, "reason": reason, "gate_arguments": args,
               "population_note": "N differs by feature only when null values differ; current features are null together.",
-              "sha256": {str(p): digest(p) for p in (predictions_path, diagnosis_path, config_path, evaluation_path, Path(__file__), ROOT / "src/faar/diagnosis.py")}}
+              "sha256": {str(p): digest(p) for p in (predictions_path, diagnosis_path, config_path, evaluation_path, record_path, Path(__file__), ROOT / "src/faar/diagnosis.py", ROOT / "src/faar/ohr_scoring.py")}}
     out.mkdir(parents=True, exist_ok=True)
     (out / "gate_choice.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     with (out / "candidates.csv").open("w", newline="", encoding="utf-8") as f:

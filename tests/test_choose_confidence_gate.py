@@ -4,6 +4,7 @@ T1. Non-train, confidence-gated or mismatched inputs are accepted.
 T2. Scoring, strict comparison, exclusions or cap are wrong.
 T3. Ties, nonpositive or undefined J choose the wrong condition.
 T4. The printed threshold changes the gate, or output is overwritten.
+T5. An undefined feature suppresses a valid candidate, or input provenance is incomplete.
 """
 import csv
 import hashlib
@@ -136,3 +137,23 @@ def test_failed_and_no_evidence_are_wrong_even_if_answer_matches(tmp_path):
     lines(paths[1] / "predictions.jsonl", predictions)
     result = run(tmp_path, paths)
     assert result["positives"] == 2 and result["threshold"] == 2
+
+
+def test_undefined_feature_does_not_suppress_other_candidates(tmp_path):
+    paths = fixture(tmp_path, list(range(10)), {0})
+    rows = list(choice.indexed(paths[2] / "diagnosis.jsonl").values())
+    for row in rows:
+        row["features"]["query_token_coverage"] = None
+    lines(paths[2] / "diagnosis.jsonl", rows)
+    result = run(tmp_path, paths)
+    assert result["feature"] == "top_fused_score"
+    assert result["threshold"] == 1.0
+    assert result["reason"] is None
+
+
+def test_records_scoring_and_selection_hashes(tmp_path):
+    paths = fixture(tmp_path, list(range(10)), {0})
+    run(tmp_path, paths)
+    saved = choice.read_json(paths[3] / "gate_choice.json")
+    for path in (paths[0] / "selection_record.json", choice.ROOT / "src/faar/ohr_scoring.py"):
+        assert saved["sha256"][str(path)] == hashlib.sha256(path.read_bytes()).hexdigest()
