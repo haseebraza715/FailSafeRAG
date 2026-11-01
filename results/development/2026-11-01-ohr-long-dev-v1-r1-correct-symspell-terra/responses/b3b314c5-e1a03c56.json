@@ -1,0 +1,59 @@
+{
+  "question_id": "b3b314c5-7228-4c18-91c8-aa4427411f71",
+  "attempt_id": "b3b314c5-e1a03c56",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDjbszXGFtl31ebC8UGfoCX8LQ6Y",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1501,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001611,
+  "latency_ms": 1074,
+  "answer": "Retail Promotions, no more or less prominence than is provided to any other Competing Computer Retailer",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDjbszXGFtl31ebC8UGfoCX8LQ6Y",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Retail Promotions, no more or less prominence than is provided to any other Competing Computer Retailer",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492951,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 22,
+      "prompt_tokens": 1501,
+      "total_tokens": 1523,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1498
+      }
+    }
+  }
+}

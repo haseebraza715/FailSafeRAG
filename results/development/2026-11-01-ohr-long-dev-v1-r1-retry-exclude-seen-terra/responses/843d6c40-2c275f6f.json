@@ -1,0 +1,59 @@
+{
+  "question_id": "843d6c40-d061-4554-8b75-e075af1249ea",
+  "attempt_id": "843d6c40-2c275f6f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDe8xmxHFskgLIb7i7GIsumL6lmm",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1447,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001602,
+  "latency_ms": 1814,
+  "answer": "Silver, Copper, Aluminum, Zinc, Brass, Platinum, Iron, Nickel, Tin, Lead, Antimony, Mercury, Carbon, Slate",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDe8xmxHFskgLIb7i7GIsumL6lmm",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Silver, Copper, Aluminum, Zinc, Brass, Platinum, Iron, Nickel, Tin, Lead, Antimony, Mercury, Carbon, Slate",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492612,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 31,
+      "prompt_tokens": 1447,
+      "total_tokens": 1478,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1444
+      }
+    }
+  }
+}

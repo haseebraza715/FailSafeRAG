@@ -1,0 +1,59 @@
+{
+  "question_id": "a21b4bf3-9b63-4a9f-8001-6aeb0e22b629",
+  "attempt_id": "a21b4bf3-c5c2823b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDfWHzJFPYSGSopsIY2JLGvQoFZo",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1713,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001803,
+  "latency_ms": 1287,
+  "answer": "reproductive disorders in chickens, birth defects in victims of the Yusho Incident",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDfWHzJFPYSGSopsIY2JLGvQoFZo",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "reproductive disorders in chickens, birth defects in victims of the Yusho Incident",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492698,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 18,
+      "prompt_tokens": 1713,
+      "total_tokens": 1731,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1710
+      }
+    }
+  }
+}

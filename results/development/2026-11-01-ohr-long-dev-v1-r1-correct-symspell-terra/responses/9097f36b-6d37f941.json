@@ -1,0 +1,59 @@
+{
+  "question_id": "9097f36b-edc4-40f0-912b-f74760ab4ccf",
+  "attempt_id": "9097f36b-6d37f941",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDi7k7xHruBNKxQ2hKPAp5D7TDAZ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1456,
+    "cached_input_tokens": 0,
+    "output_tokens": 21,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001561,
+  "latency_ms": 1166,
+  "answer": "Wireless speaker, Micro USB cable, Aux cable, User Manual, PP bag, Hanging strap",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDi7k7xHruBNKxQ2hKPAp5D7TDAZ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Wireless speaker, Micro USB cable, Aux cable, User Manual, PP bag, Hanging strap",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492859,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 21,
+      "prompt_tokens": 1456,
+      "total_tokens": 1477,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1453
+      }
+    }
+  }
+}

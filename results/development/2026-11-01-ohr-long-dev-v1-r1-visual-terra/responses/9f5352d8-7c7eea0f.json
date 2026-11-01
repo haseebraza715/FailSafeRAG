@@ -1,0 +1,58 @@
+{
+  "question_id": "9f5352d8-0357-45e4-ac9e-7997fcd45155",
+  "attempt_id": "9f5352d8-7c7eea0f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDoaSHOKbiAaykSoiBwkR97yaw5S",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9126,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009281,
+  "latency_ms": 2341,
+  "answer": "Stated preferences: respondents state what they would do in a given situation, revealed preferences: market participants reveal their price preferences by making purchase decisions",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDoaSHOKbiAaykSoiBwkR97yaw5S",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Stated preferences: respondents state what they would do in a given situation, revealed preferences: market participants reveal their price preferences by making purchase decisions",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493260,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 31,
+      "prompt_tokens": 9126,
+      "total_tokens": 9157,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

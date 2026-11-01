@@ -1,0 +1,59 @@
+{
+  "question_id": "b61e3803-68ca-4d1f-828b-a2a8a6bbbbc2",
+  "attempt_id": "b61e3803-9e0af4b4",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDjkFPCwUSODMmJU6Vuk5BSUkFE6",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1539,
+    "cached_input_tokens": 0,
+    "output_tokens": 36,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001719,
+  "latency_ms": 1213,
+  "answer": "fit right, function better, last longer, Prompt service whenever you need it, Expert service by factory trained technicians, Guaranteed Factory Specification Parts especially made for your Kenmore",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDjkFPCwUSODMmJU6Vuk5BSUkFE6",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "fit right, function better, last longer, Prompt service whenever you need it, Expert service by factory trained technicians, Guaranteed Factory Specification Parts especially made for your Kenmore",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492960,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 36,
+      "prompt_tokens": 1539,
+      "total_tokens": 1575,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1536
+      }
+    }
+  }
+}

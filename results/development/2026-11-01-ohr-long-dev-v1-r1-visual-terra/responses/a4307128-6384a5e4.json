@@ -1,0 +1,58 @@
+{
+  "question_id": "a4307128-ddd6-4d56-b3e8-5ef1122401db",
+  "attempt_id": "a4307128-6384a5e4",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDov2f9x9eF7hgfmV3wFHF38KFjc",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8084,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008184,
+  "latency_ms": 2002,
+  "answer": "Follow-up procedures, which may be carried out by local public health workers, are planned",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDov2f9x9eF7hgfmV3wFHF38KFjc",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Follow-up procedures, which may be carried out by local public health workers, are planned",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493281,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 20,
+      "prompt_tokens": 8084,
+      "total_tokens": 8104,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

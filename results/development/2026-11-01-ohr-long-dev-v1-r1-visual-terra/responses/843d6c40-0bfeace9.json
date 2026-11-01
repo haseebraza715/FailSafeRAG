@@ -1,0 +1,58 @@
+{
+  "question_id": "843d6c40-d061-4554-8b75-e075af1249ea",
+  "attempt_id": "843d6c40-0bfeace9",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDlztUbFNR79pKZiRxNjsmZ2NlwN",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8286,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008351,
+  "latency_ms": 1853,
+  "answer": "copper, silver, gold, aluminum, mercury",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDlztUbFNR79pKZiRxNjsmZ2NlwN",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "copper, silver, gold, aluminum, mercury",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493099,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 8286,
+      "total_tokens": 8299,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "b8c3b6e2-a492-47dc-b744-d0e579ba19af",
+  "attempt_id": "b8c3b6e2-70073e03",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDr4DMFtOAYBUN53kH1GnILH1IR5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9132,
+    "cached_input_tokens": 0,
+    "output_tokens": 99,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009627,
+  "latency_ms": 2957,
+  "answer": "A Master's degree in Library Science from an American Library Association accredited college or university and seven years of professional library experience, with three of those in an administrative capacity in a moderate to large library system\n\nA second degree in Business, Public Administration or HR is preferred, along with experience managing multiple sites, fundraising, library elections and serving diverse communities\n\nThese align with the ideal candidate’s qualities as a skilled administrator, visionary leader and community builder committed to staff development, equity, diversity and inclusion",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDr4DMFtOAYBUN53kH1GnILH1IR5",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A Master's degree in Library Science from an American Library Association accredited college or university and seven years of professional library experience, with three of those in an administrative capacity in a moderate to large library system\n\nA second degree in Business, Public Administration or HR is preferred, along with experience managing multiple sites, fundraising, library elections and serving diverse communities\n\nThese align with the ideal candidate’s qualities as a skilled administrator, visionary leader and community builder committed to staff development, equity, diversity and inclusion",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493414,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 99,
+      "prompt_tokens": 9132,
+      "total_tokens": 9231,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

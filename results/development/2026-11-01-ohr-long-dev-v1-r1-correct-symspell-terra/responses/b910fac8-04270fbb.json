@@ -1,0 +1,59 @@
+{
+  "question_id": "b910fac8-bf30-47c6-96b6-7d811723d47c",
+  "attempt_id": "b910fac8-04270fbb",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDkOJshibjGhdD0nd0BZRg3yzPpj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1520,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001605,
+  "latency_ms": 1363,
+  "answer": "select Confirm → Storage → Controller Mode. Ensure that St mode is selected",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDkOJshibjGhdD0nd0BZRg3yzPpj",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "select Confirm → Storage → Controller Mode. Ensure that St mode is selected",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493000,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 1520,
+      "total_tokens": 1537,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1517
+      }
+    }
+  }
+}

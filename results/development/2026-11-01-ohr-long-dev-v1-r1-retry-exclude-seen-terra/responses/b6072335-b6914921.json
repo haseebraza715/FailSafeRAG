@@ -1,0 +1,59 @@
+{
+  "question_id": "b6072335-c4ad-4387-ab8d-5728f5717350",
+  "attempt_id": "b6072335-b6914921",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDg2Nr398Y9yLE4aLSHRIG06tWqP",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1699,
+    "cached_input_tokens": 0,
+    "output_tokens": 16,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001779,
+  "latency_ms": 1024,
+  "answer": "In the event of a breach of this Paragraph 7 by Consultant",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDg2Nr398Y9yLE4aLSHRIG06tWqP",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "In the event of a breach of this Paragraph 7 by Consultant",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492730,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 1699,
+      "total_tokens": 1715,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1696
+      }
+    }
+  }
+}

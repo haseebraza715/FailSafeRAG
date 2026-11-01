@@ -1,0 +1,58 @@
+{
+  "question_id": "b5879288-43c6-404b-97bf-22abf5006c1d",
+  "attempt_id": "b5879288-bb39657d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDpeUXSNBwdBJc0EWLpW6LOeqlf0",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9192,
+    "cached_input_tokens": 0,
+    "output_tokens": 44,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009412,
+  "latency_ms": 2144,
+  "answer": "Reardon stated Underwood was under contract with Snohomish County to provide advice to the County Executive. Underwood and Snohomish County stated that Underwood was not under contract with Snohomish County",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDpeUXSNBwdBJc0EWLpW6LOeqlf0",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Reardon stated Underwood was under contract with Snohomish County to provide advice to the County Executive. Underwood and Snohomish County stated that Underwood was not under contract with Snohomish County",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493326,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 44,
+      "prompt_tokens": 9192,
+      "total_tokens": 9236,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

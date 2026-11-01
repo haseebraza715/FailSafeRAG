@@ -1,0 +1,59 @@
+{
+  "question_id": "b587e220-ddb2-4258-87f5-a9de6a0e5eca",
+  "attempt_id": "b587e220-1bdb4bf0",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDjhq2XEyLCfD8yaWYMqyigqtNAs",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1602,
+    "cached_input_tokens": 0,
+    "output_tokens": 27,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001737,
+  "latency_ms": 1259,
+  "answer": "County business was discussed in his office; campaign-related meetings took place off campus at a Starbucks, his home or another location",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDjhq2XEyLCfD8yaWYMqyigqtNAs",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "County business was discussed in his office; campaign-related meetings took place off campus at a Starbucks, his home or another location",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492957,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 27,
+      "prompt_tokens": 1602,
+      "total_tokens": 1629,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1599
+      }
+    }
+  }
+}

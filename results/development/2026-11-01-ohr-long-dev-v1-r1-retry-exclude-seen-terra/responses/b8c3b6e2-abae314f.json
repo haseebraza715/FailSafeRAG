@@ -1,0 +1,59 @@
+{
+  "question_id": "b8c3b6e2-a492-47dc-b744-d0e579ba19af",
+  "attempt_id": "b8c3b6e2-abae314f",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDgVyqhZXFouDShM85hVjzAEjsYw",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1439,
+    "cached_input_tokens": 0,
+    "output_tokens": 79,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001834,
+  "latency_ms": 1994,
+  "answer": "A second degree in Business, Public Administration or HR (Bachelor's or Masters) preferred, management experience in a public library system with multiple sites, successful experience with fundraising and library elections, experience providing library service to diverse communities; aligned with effective fiscal, change, and project management, managing multiple branches in a diverse community, cultural competence, and commitment to equity, diversity, and inclusion",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDgVyqhZXFouDShM85hVjzAEjsYw",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A second degree in Business, Public Administration or HR (Bachelor's or Masters) preferred, management experience in a public library system with multiple sites, successful experience with fundraising and library elections, experience providing library service to diverse communities; aligned with effective fiscal, change, and project management, managing multiple branches in a diverse community, cultural competence, and commitment to equity, diversity, and inclusion",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492759,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 79,
+      "prompt_tokens": 1439,
+      "total_tokens": 1518,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1436
+      }
+    }
+  }
+}

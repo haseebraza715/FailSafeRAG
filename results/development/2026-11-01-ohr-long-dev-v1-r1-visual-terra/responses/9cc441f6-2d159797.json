@@ -1,0 +1,58 @@
+{
+  "question_id": "9cc441f6-477e-4595-b266-b908df40bd85",
+  "attempt_id": "9cc441f6-2d159797",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDoMBOBkDwHbSIKFRzd6o47qBdUH",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9150,
+    "cached_input_tokens": 0,
+    "output_tokens": 27,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009285,
+  "latency_ms": 1936,
+  "answer": "Jurisdictions that require a complete judicial proceeding, those that do not require a judicial proceeding, those that are a hybrid",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDoMBOBkDwHbSIKFRzd6o47qBdUH",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Jurisdictions that require a complete judicial proceeding, those that do not require a judicial proceeding, those that are a hybrid",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493246,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 27,
+      "prompt_tokens": 9150,
+      "total_tokens": 9177,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

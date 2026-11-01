@@ -1,0 +1,58 @@
+{
+  "question_id": "938eff47-9080-4fb5-acb2-14c6ba61b9c4",
+  "attempt_id": "938eff47-54a892e8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDnIekPDBwZXaUZBvv8fe4eAF2Db",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9559,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009689,
+  "latency_ms": 2708,
+  "answer": "White flour, wheat, white sugar, puddings, pastries, jellies, jams, cakes, soyas",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDnIekPDBwZXaUZBvv8fe4eAF2Db",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "White flour, wheat, white sugar, puddings, pastries, jellies, jams, cakes, soyas",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493180,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 26,
+      "prompt_tokens": 9559,
+      "total_tokens": 9585,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

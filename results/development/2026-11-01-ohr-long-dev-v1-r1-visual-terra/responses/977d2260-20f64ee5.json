@@ -1,0 +1,58 @@
+{
+  "question_id": "977d2260-20bd-4e66-868d-c95e39a71648",
+  "attempt_id": "977d2260-20f64ee5",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDnmXG3CJZZQ5MNOLUChlfkss4Gq",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9897,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.010037,
+  "latency_ms": 2673,
+  "answer": "97.8%, 100.2%, 99.9%; 2-ethoxyethanol has the highest DE",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDnmXG3CJZZQ5MNOLUChlfkss4Gq",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "97.8%, 100.2%, 99.9%; 2-ethoxyethanol has the highest DE",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493210,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 9897,
+      "total_tokens": 9925,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

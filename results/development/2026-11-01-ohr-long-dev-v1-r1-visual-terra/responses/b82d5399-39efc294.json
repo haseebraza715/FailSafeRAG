@@ -1,0 +1,58 @@
+{
+  "question_id": "b82d5399-aa1e-4657-a5be-a308cd9070bb",
+  "attempt_id": "b82d5399-39efc294",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDqs4yDW9IYie4PzflOsEWsgmWM0",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6958,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.007073,
+  "latency_ms": 1751,
+  "answer": "It inspired General Schuyler to prepare a bill for altering the criminal laws and erecting state prisons",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDqs4yDW9IYie4PzflOsEWsgmWM0",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "It inspired General Schuyler to prepare a bill for altering the criminal laws and erecting state prisons",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493402,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 23,
+      "prompt_tokens": 6958,
+      "total_tokens": 6981,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

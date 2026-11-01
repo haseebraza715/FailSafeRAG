@@ -1,0 +1,59 @@
+{
+  "question_id": "94835d55-eac1-4699-acfe-620a461bb97b",
+  "attempt_id": "94835d55-94246f48",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDemtzj90DLsafDxSN1ehdfIq4Ph",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1446,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001561,
+  "latency_ms": 1178,
+  "answer": "this exhibition of moral courage has never been surpassed in the annals of the Army of the United States",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDemtzj90DLsafDxSN1ehdfIq4Ph",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "this exhibition of moral courage has never been surpassed in the annals of the Army of the United States",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492652,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 23,
+      "prompt_tokens": 1446,
+      "total_tokens": 1469,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1443
+      }
+    }
+  }
+}

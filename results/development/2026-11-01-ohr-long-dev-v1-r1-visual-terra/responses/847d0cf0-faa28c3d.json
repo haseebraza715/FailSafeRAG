@@ -1,0 +1,58 @@
+{
+  "question_id": "847d0cf0-ff5b-4a5b-9ada-eb5d72a8dfb0",
+  "attempt_id": "847d0cf0-faa28c3d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDm1JGfnFG76ImIqaEJlzrWSk7kQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9015,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00905,
+  "latency_ms": 1807,
+  "answer": "Wetlands Reserve Program",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDm1JGfnFG76ImIqaEJlzrWSk7kQ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Wetlands Reserve Program",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493101,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 7,
+      "prompt_tokens": 9015,
+      "total_tokens": 9022,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "cdb3b0cb-61fc-4e36-9944-f9e9575a906e",
+  "attempt_id": "cdb3b0cb-9f445129",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDrHRhfMgORUI5nXMLz4wHW1iNtt",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9037,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009112,
+  "latency_ms": 2254,
+  "answer": "New York’s growth was slightly lower than the United States’",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDrHRhfMgORUI5nXMLz4wHW1iNtt",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "New York’s growth was slightly lower than the United States’",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493427,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 15,
+      "prompt_tokens": 9037,
+      "total_tokens": 9052,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

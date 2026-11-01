@@ -1,0 +1,59 @@
+{
+  "question_id": "909b7782-6720-4193-b283-769706fc5848",
+  "attempt_id": "909b7782-9115f6d8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDi9CoRt6Uz8v2LJR7PKN7gHCtD5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1468,
+    "cached_input_tokens": 0,
+    "output_tokens": 59,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001763,
+  "latency_ms": 1607,
+  "answer": "Turn the speaker completely off, connect the small end of the charging cable to the Micro USB port and the larger end to a computer’s USB port or an AC adaptor. Charge until the red LED turns off, up to 3–4 hours. Do not play music while charging",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDi9CoRt6Uz8v2LJR7PKN7gHCtD5",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Turn the speaker completely off, connect the small end of the charging cable to the Micro USB port and the larger end to a computer’s USB port or an AC adaptor. Charge until the red LED turns off, up to 3–4 hours. Do not play music while charging",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492861,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 59,
+      "prompt_tokens": 1468,
+      "total_tokens": 1527,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1465
+      }
+    }
+  }
+}

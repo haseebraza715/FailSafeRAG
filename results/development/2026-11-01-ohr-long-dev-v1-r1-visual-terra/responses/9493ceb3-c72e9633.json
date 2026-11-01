@@ -1,0 +1,58 @@
+{
+  "question_id": "9493ceb3-c789-433b-9244-ab7ecd7b27dd",
+  "attempt_id": "9493ceb3-c72e9633",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDqXIoaEwny7gbsbGzZS4B6mYTL5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5836,
+    "cached_input_tokens": 0,
+    "output_tokens": 13,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005901,
+  "latency_ms": 2002,
+  "answer": "interest in his work, understands its purpose and importance",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDqXIoaEwny7gbsbGzZS4B6mYTL5",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "interest in his work, understands its purpose and importance",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493381,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 5836,
+      "total_tokens": 5849,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

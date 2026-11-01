@@ -1,0 +1,59 @@
+{
+  "question_id": "b8787682-a725-451a-8969-6f9acf7e9cbf",
+  "attempt_id": "b8787682-94b00303",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDkG5IpL2H0fS0ZhG9tETQLoGSx6",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1612,
+    "cached_input_tokens": 0,
+    "output_tokens": 21,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001717,
+  "latency_ms": 1156,
+  "answer": "By combining topics on military duties with American history, government, and the duty of the citizen",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDkG5IpL2H0fS0ZhG9tETQLoGSx6",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "By combining topics on military duties with American history, government, and the duty of the citizen",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492992,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 21,
+      "prompt_tokens": 1612,
+      "total_tokens": 1633,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1609
+      }
+    }
+  }
+}

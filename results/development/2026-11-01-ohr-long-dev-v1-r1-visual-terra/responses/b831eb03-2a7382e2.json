@@ -1,0 +1,58 @@
+{
+  "question_id": "b831eb03-3467-4d84-97d6-62f61b2d5cc9",
+  "attempt_id": "b831eb03-2a7382e2",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDquX9rUKMapqhx7Y31s8XS9CEZQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9209,
+    "cached_input_tokens": 0,
+    "output_tokens": 28,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009349,
+  "latency_ms": 2335,
+  "answer": "Rains caused an upset; rates in multiple units, including the No. 2 FCC, were reduced for 11 hours",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDquX9rUKMapqhx7Y31s8XS9CEZQ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Rains caused an upset; rates in multiple units, including the No. 2 FCC, were reduced for 11 hours",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493404,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 9209,
+      "total_tokens": 9237,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

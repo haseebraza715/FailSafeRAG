@@ -1,0 +1,58 @@
+{
+  "question_id": "b7bf492b-0cb0-46fd-812c-98b28964f2ac",
+  "attempt_id": "b7bf492b-14908adc",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDqC33gA7I0r2xkRosrMjiZrTt4D",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2278,
+    "cached_input_tokens": 0,
+    "output_tokens": 55,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002553,
+  "latency_ms": 1860,
+  "answer": "A war of extermination killed combatants and noncombatants, destroyed homes and displaced families. About 30,000 Filipinos were reported dead; U.S. casualties totaled 4,989, including 2,590 deaths and 2,399 wounded",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDqC33gA7I0r2xkRosrMjiZrTt4D",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A war of extermination killed combatants and noncombatants, destroyed homes and displaced families. About 30,000 Filipinos were reported dead; U.S. casualties totaled 4,989, including 2,590 deaths and 2,399 wounded",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493360,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 55,
+      "prompt_tokens": 2278,
+      "total_tokens": 2333,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "question_id": "b7bc62c4-8b89-4b1f-bfc5-0a2205f4818e",
+  "attempt_id": "b7bc62c4-f2e8915b",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDq9vFPch8q9vApr8IVzLvw1Z3Uf",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 3520,
+    "cached_input_tokens": 0,
+    "output_tokens": 35,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.003695,
+  "latency_ms": 1604,
+  "answer": "1949 American Artists Award, remarkable gifts as musician and technician, imaginative insight, power to communicate feeling, confidence, efficiency, fleetness of fingers, enormous facility",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDq9vFPch8q9vApr8IVzLvw1Z3Uf",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "1949 American Artists Award, remarkable gifts as musician and technician, imaginative insight, power to communicate feeling, confidence, efficiency, fleetness of fingers, enormous facility",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493357,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 35,
+      "prompt_tokens": 3520,
+      "total_tokens": 3555,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

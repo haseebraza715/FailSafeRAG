@@ -1,0 +1,58 @@
+{
+  "question_id": "80377639-52db-45e3-b701-f8f18453c6a2",
+  "attempt_id": "80377639-1c8ec05e",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDlU0f9CSTmHONpOBaRIPJTp9B1R",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9077,
+    "cached_input_tokens": 0,
+    "output_tokens": 17,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009162,
+  "latency_ms": 1859,
+  "answer": "Come Prepared, Act Respectfully, Think Responsibly, Show Self Control",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDlU0f9CSTmHONpOBaRIPJTp9B1R",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Come Prepared, Act Respectfully, Think Responsibly, Show Self Control",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493068,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 9077,
+      "total_tokens": 9094,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

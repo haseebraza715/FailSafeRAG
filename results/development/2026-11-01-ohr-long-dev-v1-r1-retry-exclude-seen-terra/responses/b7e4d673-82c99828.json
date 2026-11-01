@@ -1,0 +1,59 @@
+{
+  "question_id": "b7e4d673-773e-4f9f-9413-09ae9d553408",
+  "attempt_id": "b7e4d673-82c99828",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDgFaKMKnEKwmPrfTR1iYGqjV9rI",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1005,
+    "cached_input_tokens": 0,
+    "output_tokens": 34,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001175,
+  "latency_ms": 1372,
+  "answer": "57 trainings and symposia conducted/ coordinated with a total of 2,685 participants, 1,940 fertilizer and pesticide handlers' representatives were accredited",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDgFaKMKnEKwmPrfTR1iYGqjV9rI",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "57 trainings and symposia conducted/ coordinated with a total of 2,685 participants, 1,940 fertilizer and pesticide handlers' representatives were accredited",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492743,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 34,
+      "prompt_tokens": 1005,
+      "total_tokens": 1039,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    }
+  }
+}

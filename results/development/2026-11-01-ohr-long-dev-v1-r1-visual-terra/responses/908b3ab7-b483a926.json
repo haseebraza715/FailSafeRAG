@@ -1,0 +1,58 @@
+{
+  "question_id": "908b3ab7-aa80-46ae-a77d-6a367f06712f",
+  "attempt_id": "908b3ab7-b483a926",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDmw4Fh84fvnlgPNQQfeZAIRPfug",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6465,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00651,
+  "latency_ms": 1537,
+  "answer": "10, V5.0",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDmw4Fh84fvnlgPNQQfeZAIRPfug",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "10, V5.0",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493158,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 9,
+      "prompt_tokens": 6465,
+      "total_tokens": 6474,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

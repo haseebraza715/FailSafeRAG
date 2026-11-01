@@ -1,0 +1,58 @@
+{
+  "question_id": "7ff5ad31-09fb-40c6-82c4-f9e84e7090a0",
+  "attempt_id": "7ff5ad31-a6366b9a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDlJmBD1OfOfLiPsM3Y9qZv5DJGU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 7722,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.007847,
+  "latency_ms": 2429,
+  "answer": "Great Allegheny Passage：Confluence–Frostburg，47英里（75.6公里）",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDlJmBD1OfOfLiPsM3Y9qZv5DJGU",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Great Allegheny Passage：Confluence–Frostburg，47英里（75.6公里）",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493057,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 25,
+      "prompt_tokens": 7722,
+      "total_tokens": 7747,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

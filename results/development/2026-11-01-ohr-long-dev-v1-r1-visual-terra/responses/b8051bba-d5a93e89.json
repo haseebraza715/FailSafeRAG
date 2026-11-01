@@ -1,0 +1,58 @@
+{
+  "question_id": "b8051bba-602d-4ace-aa6c-d937c92fbb30",
+  "attempt_id": "b8051bba-d5a93e89",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDqh7Fdh96eg6Bh2HGEXCMRrUpCe",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5400,
+    "cached_input_tokens": 0,
+    "output_tokens": 43,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.005615,
+  "latency_ms": 2122,
+  "answer": "Poor Rate assessments were used to estimate parliamentary votes by rent level, broadly confirming the 1859 estimates; the proposed Government Scheme was expected to add between 400,000 and 500,000 votes",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDqh7Fdh96eg6Bh2HGEXCMRrUpCe",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Poor Rate assessments were used to estimate parliamentary votes by rent level, broadly confirming the 1859 estimates; the proposed Government Scheme was expected to add between 400,000 and 500,000 votes",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493391,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 43,
+      "prompt_tokens": 5400,
+      "total_tokens": 5443,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

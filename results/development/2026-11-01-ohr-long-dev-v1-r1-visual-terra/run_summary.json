@@ -1,0 +1,21 @@
+{
+  "run_id": "2026-11-01-ohr-long-dev-v1-r1-visual-terra",
+  "questions": 228,
+  "answered": 228,
+  "execution_failed": 0,
+  "blocked": [],
+  "questions_with_unknown_outcomes": 14,
+  "resent": 14,
+  "abstained": 43,
+  "images": 649,
+  "measured_cost_usd": 1.887237,
+  "reserved_cost_usd": 0.413327,
+  "returned_models": [
+    "gpt-6.1-terra"
+  ],
+  "returned_service_tiers": [
+    "default"
+  ],
+  "skipped": 0,
+  "complete": true
+}

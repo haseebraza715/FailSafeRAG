@@ -1,0 +1,59 @@
+{
+  "question_id": "b8dd59cf-7568-4502-a2ed-09a55306e394",
+  "attempt_id": "b8dd59cf-a76d871a",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDkMs4LlN16lHizWP5P4BNhAvZJz",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1745,
+    "cached_input_tokens": 0,
+    "output_tokens": 33,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00191,
+  "latency_ms": 1854,
+  "answer": "birth defects, low birth weights, and numerous other chronic effects, a sixfold increase in liver-cancer deaths among affected men and threefold among women",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDkMs4LlN16lHizWP5P4BNhAvZJz",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "birth defects, low birth weights, and numerous other chronic effects, a sixfold increase in liver-cancer deaths among affected men and threefold among women",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492998,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 33,
+      "prompt_tokens": 1745,
+      "total_tokens": 1778,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1742
+      }
+    }
+  }
+}

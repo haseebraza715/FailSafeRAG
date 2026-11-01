@@ -1,0 +1,58 @@
+{
+  "question_id": "9c494ae7-5839-445a-808a-c59437fbccc2",
+  "attempt_id": "9c494ae7-61774135",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDoK6hY2ib62qyZGFdxU3NgXwmkx",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 8301,
+    "cached_input_tokens": 0,
+    "output_tokens": 14,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.008371,
+  "latency_ms": 2031,
+  "answer": "to prevent the switch from shorting out two line studs",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDoK6hY2ib62qyZGFdxU3NgXwmkx",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "to prevent the switch from shorting out two line studs",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493244,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 14,
+      "prompt_tokens": 8301,
+      "total_tokens": 8315,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

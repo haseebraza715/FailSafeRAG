@@ -1,0 +1,58 @@
+{
+  "question_id": "948317da-3afe-4665-bf5e-7e29cb02c651",
+  "attempt_id": "948317da-ab5f7f23",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDnMmse7fubN1RzEpiDubCXY9Ouy",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 5949,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006004,
+  "latency_ms": 1920,
+  "answer": "they should receive no pecuniary reward",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDnMmse7fubN1RzEpiDubCXY9Ouy",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "they should receive no pecuniary reward",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493184,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 11,
+      "prompt_tokens": 5949,
+      "total_tokens": 5960,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

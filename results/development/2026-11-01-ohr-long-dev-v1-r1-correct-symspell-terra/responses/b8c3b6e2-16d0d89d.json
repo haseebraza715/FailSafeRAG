@@ -1,0 +1,59 @@
+{
+  "question_id": "b8c3b6e2-a492-47dc-b744-d0e579ba19af",
+  "attempt_id": "b8c3b6e2-16d0d89d",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDkIfODleJHRHfxElUDDp5btqmW6",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 1581,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002221,
+  "latency_ms": 2293,
+  "answer": "A Master's degree in Library Science from an American Library Association accredited college or university and seven years of professional library experience, with three of those in an administrative capacity in a moderate to large library system. Highly qualified candidates will have a second degree in Business, Public Administration or HR (Bachelor's or Masters) preferred, management experience in a public library system with multiple sites, successful experience with fundraising and library elections, experience providing library service to diverse communities. The ideal candidate is experienced in creating a positive people-centered, customer-service oriented culture, managing multiple branches in a diverse community, technology and library automation systems, using data to make decisions",
+  "abstained": false,
+  "output_status": "truncated",
+  "raw": {
+    "id": "chatcmpl-EfDkIfODleJHRHfxElUDDp5btqmW6",
+    "choices": [
+      {
+        "finish_reason": "length",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "A Master's degree in Library Science from an American Library Association accredited college or university and seven years of professional library experience, with three of those in an administrative capacity in a moderate to large library system. Highly qualified candidates will have a second degree in Business, Public Administration or HR (Bachelor's or Masters) preferred, management experience in a public library system with multiple sites, successful experience with fundraising and library elections, experience providing library service to diverse communities. The ideal candidate is experienced in creating a positive people-centered, customer-service oriented culture, managing multiple branches in a diverse community, technology and library automation systems, using data to make decisions",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793492994,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 128,
+      "prompt_tokens": 1581,
+      "total_tokens": 1709,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1578
+      }
+    }
+  }
+}

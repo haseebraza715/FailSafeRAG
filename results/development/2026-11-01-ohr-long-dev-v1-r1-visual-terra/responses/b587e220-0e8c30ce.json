@@ -1,0 +1,58 @@
+{
+  "question_id": "b587e220-ddb2-4258-87f5-a9de6a0e5eca",
+  "attempt_id": "b587e220-0e8c30ce",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDpgQavhD0DoeFh9517eaIIXH7GJ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 9186,
+    "cached_input_tokens": 0,
+    "output_tokens": 33,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.009351,
+  "latency_ms": 1856,
+  "answer": "Reardon said meetings in his office were to discuss county business, while campaign-related meetings took place off campus at a Starbucks, his home or another location",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDpgQavhD0DoeFh9517eaIIXH7GJ",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Reardon said meetings in his office were to discuss county business, while campaign-related meetings took place off campus at a Starbucks, his home or another location",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493328,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 33,
+      "prompt_tokens": 9186,
+      "total_tokens": 9219,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}

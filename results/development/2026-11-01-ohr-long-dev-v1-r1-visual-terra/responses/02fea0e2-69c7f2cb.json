@@ -1,0 +1,58 @@
+{
+  "question_id": "02fea0e2-41a7-42d6-895f-a84518cb913a",
+  "attempt_id": "02fea0e2-69c7f2cb",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDkcFpPFY5M5ML8EiCykMjGh7z1o",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 6704,
+    "cached_input_tokens": 0,
+    "output_tokens": 32,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.006864,
+  "latency_ms": 1843,
+  "answer": "SODIUM, TOTAL (WATER & WASTE) BY ICP, STRONTIUM, TOTAL (WATER & WASTE) BY ICP",
+  "abstained": false,
+  "output_status": "ok",
+  "raw": {
+    "id": "chatcmpl-EfDkcFpPFY5M5ML8EiCykMjGh7z1o",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "SODIUM, TOTAL (WATER & WASTE) BY ICP, STRONTIUM, TOTAL (WATER & WASTE) BY ICP",
+          "refusal": null,
+          "role": "assistant",
+          "annotations": [],
+          "audio": null,
+          "function_call": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1793493014,
+    "model": "gpt-6.1-terra",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 32,
+      "prompt_tokens": 6704,
+      "total_tokens": 6736,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    }
+  }
+}
