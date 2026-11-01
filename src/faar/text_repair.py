@@ -10,6 +10,7 @@ Query expansion rules for ``retry_retrieval`` (one is chosen on development data
                             of the retrieved text, then the top ``k`` chunks. It can repeat the first error.
 ``exclude-seen-v1``         the question unchanged, retrieving ``2k`` chunks and keeping the first ``k`` that the
                             initial answer did not see. The model always gets evidence it has not seen.
+``keep-top3-add-next2-v1``   keep the first three initial chunks and add up to two unseen chunks in retrieval order.
 
 Correctors for ``correct_text`` (one is chosen on development data):
 
@@ -29,7 +30,7 @@ from typing import Any
 from .live_contract import EvidenceBlock
 from .recovery import semantic_backtrack
 
-EXPANSION_RULES = ("append-anchor-words-v0", "exclude-seen-v1")
+EXPANSION_RULES = ("append-anchor-words-v0", "exclude-seen-v1", "keep-top3-add-next2-v1")
 CORRECTORS = ("symspell-en-82765", "byt5-small")
 
 
@@ -49,6 +50,11 @@ def retry_hits(rule: str, question: str, initial_hits: Sequence[Any], retriever:
     if rule == "exclude-seen-v1":
         seen = {h.chunk.chunk_id for h in initial_hits}
         return [h for h in retriever.retrieve(question, top_k=2 * top_k) if h.chunk.chunk_id not in seen][:top_k]
+    if rule == "keep-top3-add-next2-v1":
+        kept = list(initial_hits[:min(3, top_k)])
+        seen = {h.chunk.chunk_id for h in initial_hits}
+        unseen = [h for h in retriever.retrieve(question, top_k=2 * top_k) if h.chunk.chunk_id not in seen][:min(2, max(0, top_k - len(kept)))]
+        return kept + unseen if unseen else []
     raise TextRepairError(f"unknown expansion rule {rule!r}; known: {EXPANSION_RULES}")
 
 
