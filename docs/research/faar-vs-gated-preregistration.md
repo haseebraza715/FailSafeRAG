@@ -260,3 +260,10 @@ The research lead decided to keep the routing of section 4 and freeze after prac
 `retry_retrieval` and `correct_text` on the flagged set, then the comparison script. Spending cap 10 USD counting
 reserved cost. A run that breaks amendment 2 is reported as invalid; it is not rerun with changed settings. The
 report adds the oracle against the gated repair as descriptive headroom only, not as a claim.
+
+**Amendment to section 14 (2026-11-01, before any validation run).** The final review of the frozen method found that
+a no-recovery run with a question still blocked after the amendment 1 resend stopped diagnosis and repair preparation,
+so the run could never reach the amendment 2 check. The fix (`ba0f920`, reviewed with no findings) lets such
+terminal failures through and changes nothing for runs without them (development results reproduce exactly). It
+uses no outcome. The frozen code commit is now `b075dbd`; every other frozen value is unchanged. Registry record
+`2026-11-01-faar-frozen-method-v2` supersedes `-v1`.
