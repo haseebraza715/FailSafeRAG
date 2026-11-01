@@ -53,3 +53,40 @@ chunks, which may explain why retry scores below the initial answer.
 
 **Changes for round 2.** A retry rule that keeps the initial top 3 chunks and adds the 2 best unseen ones
 (`keep-top3-add-next2-v1`, allowed by amendment 3 item 5). Round 2 reruns only `retry_retrieval` and the comparison.
+
+## Round 2 (2026-11-01)
+
+**What changed.** Only the `retry_retrieval` expansion rule: `keep-top3-add-next2-v1` keeps the initial top 3 chunks
+and adds the 2 best chunks the initial retrieval did not send (merged at `75f04e7`). Round 2 reran only that repair
+and the comparison; the no-recovery run, gate, diagnosis, `correct_text` and image runs are those of round 1. The
+comparison now also checks that every run shares the provider config, prompt and returned model (round 1 review
+fixes, merged at `a9cfccc`).
+
+| Run | What | Measured USD | Reserved USD |
+| --- | --- | ---: | ---: |
+| `2026-11-01-ohr-long-dev-v1-r2-retry-keep-top3-terra` | `retry_retrieval`, `keep-top3-add-next2-v1`, 201 sent, 27 skipped, 0 unknown outcomes | 0.342294 | 0 |
+
+Stage total after round 2: 3.624891 USD measured, 4.038218 USD counting reserved cost, of the 10 USD cap.
+
+**Measured** (`results/analysis/2026-11-01-ohr-long-dev-v1-round-2/report.md`; an independent review recomputed these
+numbers and they matched):
+
+| Policy | Official EM | Total USD per question |
+| --- | ---: | ---: |
+| No recovery | 0.310 (131/423) | 0.00167 |
+| Gated visual repair (the bar) | 0.397 (168/423) | 0.00711 |
+| FAAR | 0.343 (145/423) | 0.00290 |
+| Random repair, 3 seeds | 0.336, 0.350, 0.350 | 0.0036 to 0.0041 |
+| `retry_retrieval` on every flagged question | 0.340 (144/423) | 0.00248 |
+
+FAAR minus the bar: -0.054 EM, document interval [-0.092, -0.022], McNemar p 1.5e-5. FAAR minus no recovery: +0.033,
+interval [0.009, 0.063], Holm-adjusted p 0.001. FAAR's cost is 0.41 times the bar's. The new rule raised retry on its
+own route from 0.075 to 0.168 EM (initial 0.124, image 0.280).
+
+**Reading (interpretation).** Keeping the initial evidence turned retry from harmful into helpful, so FAAR now beats
+no recovery on development data. The image still scores highest on every route, so FAAR stays below the bar.
+
+**Decision (research lead, 2026-11-01).** Keep the diagnosis-to-repair routing as preregistered and freeze the method
+after round 2. No round 3. The one approved setting left, a higher `weird_char_threshold` that would move the 44
+`word_level` cases from `correct_text` to retry, was not tested: it would change about 5 answers and not the
+conclusion.
