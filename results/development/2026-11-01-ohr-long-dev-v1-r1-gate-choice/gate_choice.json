@@ -1,0 +1,52 @@
+{
+  "rule_id": "youden-j-cap30-v1",
+  "feature": "query_token_coverage",
+  "threshold": 0.6923076923076923,
+  "J": 0.11609971078363862,
+  "TPR": 0.24817518248175183,
+  "FPR": 0.1320754716981132,
+  "flagged": 48,
+  "N": 243,
+  "cap": 72,
+  "positives": 137,
+  "negatives": 106,
+  "population": {
+    "N": 243,
+    "cap": 72,
+    "positives": 137,
+    "negatives": 106
+  },
+  "populations": {
+    "top_fused_score": {
+      "N": 243,
+      "cap": 72,
+      "positives": 137,
+      "negatives": 106
+    },
+    "fused_margin": {
+      "N": 243,
+      "cap": 72,
+      "positives": 137,
+      "negatives": 106
+    },
+    "query_token_coverage": {
+      "N": 243,
+      "cap": 72,
+      "positives": 137,
+      "negatives": 106
+    }
+  },
+  "reason": null,
+  "gate_arguments": "--gate-feature query_token_coverage --gate-threshold 0.6923076923076923",
+  "population_note": "N differs by feature only when null values differ; current features are null together.",
+  "sha256": {
+    "results/development/2026-11-01-ohr-long-dev-v1-baseline-answer-v2-terra-r1/predictions.jsonl": "74d639fd59641f6fd569f0d8c5453f4ba3a34ad04d2cb698ad581416e5a0424e",
+    "results/development/2026-11-01-ohr-long-dev-v1-r1-diagnosis-base-gate/diagnosis.jsonl": "b19a6837a527dd05538b605a094263235232767c9062e3bde7e1d1db85986211",
+    "results/development/2026-11-01-ohr-long-dev-v1-r1-diagnosis-base-gate/run_config.json": "b7ef9a70c65a11cd68327ff973742ef376897de84aede56009f99d38e821d515",
+    "/Users/haseeb/Thesis-Paper/Code/results/pilots/ohr_long_dev_v1/evaluation_manifest.json": "c3317cf1b463a2c000ea6c4be93cbfdab22a57136e59c27745665cd448956a88",
+    "/Users/haseeb/Thesis-Paper/Code/results/pilots/ohr_long_dev_v1/selection_record.json": "0998f83608e913240d71cb2a38416c4e8020c9400f9ab590163baa17a5c85730",
+    "/Users/haseeb/Thesis-Paper/Code/scripts/experiments/choose_confidence_gate.py": "1cf23b067da87071d70c16430b2dc5c21e28de91333df857ee042b28ffe74fbe",
+    "/Users/haseeb/Thesis-Paper/Code/src/faar/diagnosis.py": "6aa86b92efa5f2af4291ab89db0a66669e6142ce6766f1b73dd80d2afe3a4d0a",
+    "/Users/haseeb/Thesis-Paper/Code/src/faar/ohr_scoring.py": "3c9b75e83cdb0993806781a8429fd1b3f0082486f09a00fbc8a865607a3f2045"
+  }
+}
