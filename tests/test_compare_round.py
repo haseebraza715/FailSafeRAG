@@ -332,7 +332,7 @@ def test_baseline_prediction_hash_must_match_summary(sample):
 def test_terminal_baseline_failure_reaches_validity_check(sample):
     baseline = sample["baseline_dir"]
     rows = read_jsonl(baseline / "predictions.jsonl")
-    rows[0].update(status="execution_failed", answer="yes")
+    rows[0].update(status="execution_failed", answer=None, returned_model=None, returned_service_tier=None)
     jsonl(baseline / "predictions.jsonl", rows)
     events = read_jsonl(baseline / "attempts.jsonl")
     event = next(e for e in events if e.get("attempt_id") == "q0" and e["event"] == "response_saved")

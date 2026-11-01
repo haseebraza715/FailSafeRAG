@@ -138,7 +138,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     if any(p.get("unserved") or p.get("awaiting_reconciliation") or p.get("status") not in ("answered", "no_evidence", "execution_failed") for p in predictions.values()):
         raise ComparisonError("baseline has unfinished predictions")
     for prediction in predictions.values():
-        check_returned(prediction, "baseline prediction", required=False)
+        if prediction["status"] == "answered":
+            check_returned(prediction, "baseline prediction", required=False)
     events = reader.jsonl(baseline_dir / "attempts.jsonl")
     saved_questions = set()
     for event in events:
@@ -209,7 +210,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         if not blocked <= flagged:
             raise ComparisonError(f"{repair} has unknown blocked questions")
         for qid, row in rows.items():
-            check_returned(row, f"{repair} prediction", required=False)
+            if row.get("status") == "answered":
+                check_returned(row, f"{repair} prediction", required=False)
             if records[qid].get("doc_id") != questions[qid]["doc_id"]:
                 raise ComparisonError(f"{repair} document mismatch for {qid}")
             status = row.get("status")
