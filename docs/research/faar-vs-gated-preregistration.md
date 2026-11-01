@@ -235,3 +235,28 @@ changed. After round 3, tuning stops whatever the result. The study lead fixed t
 6. **What a round measures.** On development data, every policy of section 3 is assembled from the same runs
    (FAAR, the gated visual bar, random and no recovery), with the all-repairs diagnostic of brief section 6 and the
    costs of brief section 5. These are development results, never a confirmation.
+
+## 14. Frozen method for the confirmation (2026-11-01, before any validation run)
+
+The research lead decided to keep the routing of section 4 and freeze after practice round 2
+([faar-practice-rounds.md](faar-practice-rounds.md)). Frozen at code commit `e8c024d`:
+
+| Item | Frozen value |
+| --- | --- |
+| Answer model | `gpt-6.1-terra`, temperature 0, `reasoning_effort` none, 128 output tokens, store false; provider config sha256 `35ea0799e1931fe0167224b5b05483f8881c91b3d1d0f3055c72910906b3ae6e` |
+| Prompt | `faar-answer-v2` (the image repair adds its recorded image note) |
+| Retrieval | `multilingual-v1` tokenizer, `cjk-weighted-words-v1` chunks, top 5 (text budget) |
+| Gate | `abstain-or-ocr-gap-v1` plus `query_token_coverage < 0.6923076923076923` (chosen in round 1 by `youden-j-cap30-v1`) |
+| Diagnosis | section 4 order and routes; `structural_threshold` 1, `weird_char_threshold` 0.10 |
+| `retry_retrieval` | `keep-top3-add-next2-v1` |
+| `correct_text` | SymSpell `symspell-en-82765` |
+| `invoke_vlm` | 3 pages, `retrieved-then-gaps-v1`, 150 DPI, JPEG quality 90, long side 2048, `detail: high` |
+| Random repair | seeds 20261101, 20261102, 20261103, section 13 item 4 |
+| Execution | resend rule `one-resend-connection-lost-v1`; failure rule of amendment 2 |
+| Comparison | `scripts/analysis/faar_confirmation/compare_confirmation.py`, committed before the run, with the outcomes, contrasts, decision and cost rules of section 5 |
+
+**Confirmation run.** Once, on `ohr_val_multipage_v1` (835 validation questions on 259 documents, frozen as
+`2026-11-01-ohr-val-multipage-v1-selection`): the no-recovery run, the diagnosis, then `invoke_vlm`,
+`retry_retrieval` and `correct_text` on the flagged set, then the comparison script. Spending cap 10 USD counting
+reserved cost. A run that breaks amendment 2 is reported as invalid; it is not rerun with changed settings. The
+report adds the oracle against the gated repair as descriptive headroom only, not as a claim.
