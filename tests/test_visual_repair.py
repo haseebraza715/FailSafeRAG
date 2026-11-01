@@ -89,8 +89,9 @@ class Project:
         runtime = {"pilot_id": PILOT, "documents": docs, "questions": questions}
         (pilot / "runtime_manifest.json").write_text(json.dumps(runtime))
         manifest_sha = hashlib.sha256((pilot / "runtime_manifest.json").read_bytes()).hexdigest()
+        answers = {"q1": "Ann", "q2": "May", "q3": "Ann Smith"}
         (pilot / "evaluation_manifest.json").write_text(json.dumps({"pilot_id": PILOT, "questions": {
-            q["question_id"]: {"answers": ["x"], "evidence_pages": [0]} for q in questions}}))
+            q["question_id"]: {"answers": answers[q["question_id"]], "evidence_pages": [0]} for q in questions}}))
         gt = root / "OHR-Bench" / "data" / "retrieval_base" / "gt" / "d" / "a.json"
         gt.parent.mkdir(parents=True)
         gt.write_text("[]")
@@ -365,6 +366,10 @@ def test_subset_run_export_and_score(tmp_path: Path) -> None:
     project.run(provider)
     assert provider.sent() == ["q1", "q3"]
     assert [r["question_id"] for r in rvr.export(project.run_dir())] == ["q1", "q3"]
-    assert rvr.score(project.root, project.run_dir())["questions"] == 2
+    summary = rvr.score(project.root, project.run_dir())
+    assert summary["questions"] == 2
+    assert summary["em"] == pytest.approx(0.5)
+    assert summary["f1"] == pytest.approx(5 / 6)
     scores = [json.loads(line) for line in (project.run_dir() / "scores.jsonl").read_text().splitlines()]
     assert [r["question_id"] for r in scores] == ["q1", "q3"]
+    assert [(r["em"], r["f1"]) for r in scores] == [(1, 1.0), (0, pytest.approx(2 / 3))]
