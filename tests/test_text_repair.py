@@ -8,6 +8,7 @@ T5. The repair prompt uses another template than the no-recovery run, or the old
 T6. The shared runner sends a text repair with images, sends a skip record, or exports a skip as a failure.
 T7. ByT5 runs without an authorised download.
 T8. Prepare opens an evaluation-only file.
+T9. The keep-top3 rule loses initial evidence, repeats seen chunks, exceeds the budget, or fails to skip without new evidence.
 """
 
 from __future__ import annotations
@@ -80,6 +81,35 @@ def test_exclude_seen_returns_only_unseen_chunks_up_to_k() -> None:
     assert len(anchored) == 2
     with pytest.raises(TextRepairError):
         retry_hits("gold-pages", "Who signed?", DOC_A[:2], retriever, 2)
+
+
+# --------------------------------------------------------------------------- T9
+
+
+def test_keep_top3_adds_best_unseen_within_budget() -> None:
+    initial = DOC_A[:5]
+    extra = hit("extra", 4, "Extra.")
+    ranked = [DOC_A[4], DOC_A[5], DOC_A[1], extra, DOC_A[0], DOC_A[2], DOC_A[3]]
+    retriever = FakeRetriever(ranked)
+    out = retry_hits("keep-top3-add-next2-v1", "Who signed?", initial, retriever, 5)
+    assert [h.chunk.chunk_id for h in out] == [h.chunk.chunk_id for h in initial[:3]] + [DOC_A[5].chunk.chunk_id, "extra"]
+    assert retriever.queries == ["Who signed?"]
+    assert retry_hits("keep-top3-add-next2-v1", "Q", initial, FakeRetriever(DOC_A), 5) == initial[:3] + [DOC_A[5]]
+    assert retry_hits("keep-top3-add-next2-v1", "Q", initial, FakeRetriever(initial), 5) == []
+
+
+def test_keep_top3_prepare_skips_when_no_new_evidence(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    project = Project(tmp_path)
+    monkeypatch.setattr(rtr, "replay_retrieval", lambda root, pilot, reqs: {
+        **fake_replay(project), "hits": {"q1": DOC_A[:5], "q2": DOC_A[:5], "q3": []},
+        "indexes": {"d/a": SimpleNamespace(retriever=lambda: FakeRetriever(DOC_A[:5]))},
+        "settings": SimpleNamespace(top_k=5),
+    })
+    records, identity = rtr.prepare(root=project.root, repair="retry_retrieval", method="keep-top3-add-next2-v1",
+                                    pilot_id="pilot_t", baseline_run_dir=project.baseline, run_dir=project.run_dir("retry"),
+                                    run_id="retry", resend_rule="none", provider_config=project.provider_config)
+    assert records[0]["action"] == "skip" and records[0]["skip_reason"] == "nothing_new_retrieved"
+    assert identity["method"] == {"name": "keep-top3-add-next2-v1", "top_k": 5}
 
 
 # --------------------------------------------------------------------------- T2
@@ -168,4 +198,4 @@ def test_prepare_never_opens_evaluation_files(tmp_path: Path, monkeypatch: pytes
     monkeypatch.setattr(io, "open", spy)
     prepare(project, monkeypatch, "correct_text", "symspell-en-82765")
     assert opened and not [p for p in opened if "evaluation_manifest" in p or "retrieval_base/gt" in p or "scores.jsonl" in p]
-    assert text_repair.EXPANSION_RULES == ("append-anchor-words-v0", "exclude-seen-v1")
+    assert text_repair.EXPANSION_RULES == ("append-anchor-words-v0", "exclude-seen-v1", "keep-top3-add-next2-v1")
