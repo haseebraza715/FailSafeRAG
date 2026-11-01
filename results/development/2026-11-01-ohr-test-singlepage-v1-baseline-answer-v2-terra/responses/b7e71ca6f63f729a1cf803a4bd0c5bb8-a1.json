@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3495177-8d52-4ba0-8184-d2b578b0f654",
+  "request_id": "b7e71ca6f63f729a1cf803a4bd0c5bb8",
+  "attempt": 1,
+  "attempt_id": "b7e71ca6f63f729a1cf803a4bd0c5bb8-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPav8Mt5ReLptBe8rI0Wl0hAorl8",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1844,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001974,
+  "input_bound_exceeded": false,
+  "latency_ms": 1197,
+  "output_status": "ok",
+  "answer": "6万多亩老橘园重新焕发生机，实现了4年投产3年丰产",
+  "abstained": false,
+  "provider_response": {
+    "text": "6万多亩老橘园重新焕发生机，实现了4年投产3年丰产",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPav8Mt5ReLptBe8rI0Wl0hAorl8",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "6万多亩老橘园重新焕发生机，实现了4年投产3年丰产",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538541,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 1844,
+        "total_tokens": 1870,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1841
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c196dc5d-9e88-471f-b11a-2e815957985b",
+  "request_id": "c2b4ac034534dc943607fa4b854ddac3",
+  "attempt": 1,
+  "attempt_id": "c2b4ac034534dc943607fa4b854ddac3-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPaGxQN5dBH2akQxxPbKeWJqn4J9",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2132,
+    "cached_input_tokens": 0,
+    "output_tokens": 10,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002182,
+  "input_bound_exceeded": false,
+  "latency_ms": 1258,
+  "output_status": "ok",
+  "answer": "邹林、迟立军",
+  "abstained": false,
+  "provider_response": {
+    "text": "邹林、迟立军",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPaGxQN5dBH2akQxxPbKeWJqn4J9",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "邹林、迟立军",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538500,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 2132,
+        "total_tokens": 2142,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2129
+        }
+      }
+    }
+  }
+}

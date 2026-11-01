@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c203f3db-9b79-4aa4-9cd8-845193d8d153",
+  "request_id": "230e2ab19f3a178566285e82b3d0156b",
+  "attempt": 1,
+  "attempt_id": "230e2ab19f3a178566285e82b3d0156b-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPaNf4OykaB54S9pQLocqN80oVjM",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1817,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001927,
+  "input_bound_exceeded": false,
+  "latency_ms": 1073,
+  "output_status": "ok",
+  "answer": "龙头企业集群、农畜产品加工水平和农畜产品品牌建设",
+  "abstained": false,
+  "provider_response": {
+    "text": "龙头企业集群、农畜产品加工水平和农畜产品品牌建设",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPaNf4OykaB54S9pQLocqN80oVjM",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "龙头企业集群、农畜产品加工水平和农畜产品品牌建设",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538507,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1817,
+        "total_tokens": 1839,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1814
+        }
+      }
+    }
+  }
+}

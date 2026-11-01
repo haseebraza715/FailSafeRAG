@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3139676-4d5c-4b51-87d2-90c59b8dab2b",
+  "request_id": "4e88e4551a000d6302cd462950d22abe",
+  "attempt": 1,
+  "attempt_id": "4e88e4551a000d6302cd462950d22abe-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPanQDKdPNVmsbm4Qq2zMq02ptEv",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1827,
+    "cached_input_tokens": 0,
+    "output_tokens": 41,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002032,
+  "input_bound_exceeded": false,
+  "latency_ms": 2171,
+  "output_status": "ok",
+  "answer": "用粮竹草养牛，用草纤维造出超强度草纤维板，提取草汁饮料，用牛的粪便做沼气",
+  "abstained": false,
+  "provider_response": {
+    "text": "用粮竹草养牛，用草纤维造出超强度草纤维板，提取草汁饮料，用牛的粪便做沼气",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPanQDKdPNVmsbm4Qq2zMq02ptEv",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "用粮竹草养牛，用草纤维造出超强度草纤维板，提取草汁饮料，用牛的粪便做沼气",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538533,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1827,
+        "total_tokens": 1868,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1824
+        }
+      }
+    }
+  }
+}

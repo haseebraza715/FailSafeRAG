@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3dcccb2-9f62-444f-afe4-415fde4ad27a",
+  "request_id": "997d3249686660e2f0c037549558864b",
+  "attempt": 1,
+  "attempt_id": "997d3249686660e2f0c037549558864b-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPbAapl4DHeDHozwDr6urno1degO",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1818,
+    "cached_input_tokens": 0,
+    "output_tokens": 50,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002068,
+  "input_bound_exceeded": false,
+  "latency_ms": 1481,
+  "output_status": "ok",
+  "answer": "为大兴农产品赋予统一的标识，完成CI、BI、MI的完整系统，推出并注册果品、蔬菜、畜禽、加工四大类50种大兴农产品品牌",
+  "abstained": false,
+  "provider_response": {
+    "text": "为大兴农产品赋予统一的标识，完成CI、BI、MI的完整系统，推出并注册果品、蔬菜、畜禽、加工四大类50种大兴农产品品牌",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPbAapl4DHeDHozwDr6urno1degO",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "为大兴农产品赋予统一的标识，完成CI、BI、MI的完整系统，推出并注册果品、蔬菜、畜禽、加工四大类50种大兴农产品品牌",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538556,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 1818,
+        "total_tokens": 1868,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1815
+        }
+      }
+    }
+  }
+}

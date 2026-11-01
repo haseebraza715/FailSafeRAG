@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "07f194f9-c115-4d6d-8a4e-5b70a6d964a3",
+  "request_id": "67cdec97d04404e21e5e245c00caaf0b",
+  "attempt": 1,
+  "attempt_id": "67cdec97d04404e21e5e245c00caaf0b-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPVcRsOoeTNKNSloTVg2N18AYI1p",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1766,
+    "cached_input_tokens": 0,
+    "output_tokens": 21,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001871,
+  "input_bound_exceeded": false,
+  "latency_ms": 1064,
+  "output_status": "ok",
+  "answer": "牧业发展不仅关系到牧民生活改善，也关系到城市居民副食供应",
+  "abstained": false,
+  "provider_response": {
+    "text": "牧业发展不仅关系到牧民生活改善，也关系到城市居民副食供应",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPVcRsOoeTNKNSloTVg2N18AYI1p",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "牧业发展不仅关系到牧民生活改善，也关系到城市居民副食供应",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538212,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1766,
+        "total_tokens": 1787,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1763
+        }
+      }
+    }
+  }
+}

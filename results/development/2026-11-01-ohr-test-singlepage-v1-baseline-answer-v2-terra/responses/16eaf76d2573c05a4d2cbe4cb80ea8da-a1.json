@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "4d15be9a-dcbd-4a5c-85c0-ea8bf195ab62",
+  "request_id": "16eaf76d2573c05a4d2cbe4cb80ea8da",
+  "attempt": 1,
+  "attempt_id": "16eaf76d2573c05a4d2cbe4cb80ea8da-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPVzlfSaH1psOLaX9nCXeBgLrhxU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1617,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001692,
+  "input_bound_exceeded": false,
+  "latency_ms": 1062,
+  "output_status": "ok",
+  "answer": "dared his critics to “challenge me at the convention”",
+  "abstained": false,
+  "provider_response": {
+    "text": "dared his critics to “challenge me at the convention”",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPVzlfSaH1psOLaX9nCXeBgLrhxU",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "dared his critics to “challenge me at the convention”",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538235,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1617,
+        "total_tokens": 1632,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1614
+        }
+      }
+    }
+  }
+}

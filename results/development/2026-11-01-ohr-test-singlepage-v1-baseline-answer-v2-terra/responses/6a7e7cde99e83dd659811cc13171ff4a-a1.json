@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3c9c340-20ef-4a60-8f8e-78aacc7780e5",
+  "request_id": "6a7e7cde99e83dd659811cc13171ff4a",
+  "attempt": 1,
+  "attempt_id": "6a7e7cde99e83dd659811cc13171ff4a-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPb7k25HOiQlk87x3SkMy5nbNqvy",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1993,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002123,
+  "input_bound_exceeded": false,
+  "latency_ms": 1450,
+  "output_status": "ok",
+  "answer": "By appointment, during normal business hours, by contacting the appropriate person, as specified under FOR FURTHER INFORMATION CONTACT",
+  "abstained": false,
+  "provider_response": {
+    "text": "By appointment, during normal business hours, by contacting the appropriate person, as specified under FOR FURTHER INFORMATION CONTACT",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPb7k25HOiQlk87x3SkMy5nbNqvy",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "By appointment, during normal business hours, by contacting the appropriate person, as specified under FOR FURTHER INFORMATION CONTACT",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538553,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 1993,
+        "total_tokens": 2019,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1990
+        }
+      }
+    }
+  }
+}

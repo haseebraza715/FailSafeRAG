@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "88662aba-1601-4cc6-9b16-0641207417e7",
+  "request_id": "977d6556ed7e0c6675d2b6b7b0715d5a",
+  "attempt": 1,
+  "attempt_id": "977d6556ed7e0c6675d2b6b7b0715d5a-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPZ3KrkRhvQnmMSceS2HTWRJ8Qk5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1644,
+    "cached_input_tokens": 0,
+    "output_tokens": 18,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001734,
+  "input_bound_exceeded": false,
+  "latency_ms": 1539,
+  "output_status": "ok",
+  "answer": "Apartments and Condominiums with 3 or more units, Residential Hotels",
+  "abstained": false,
+  "provider_response": {
+    "text": "Apartments and Condominiums with 3 or more units, Residential Hotels",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPZ3KrkRhvQnmMSceS2HTWRJ8Qk5",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Apartments and Condominiums with 3 or more units, Residential Hotels",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538425,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 1644,
+        "total_tokens": 1662,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1641
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "49bc473f-ed7b-4656-a18a-15368c99a894",
+  "request_id": "5b397e9033e62b06d5adbd907f1c4398",
+  "attempt": 1,
+  "attempt_id": "5b397e9033e62b06d5adbd907f1c4398-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPVoHo90sPygUwU3Rcdq81TFitvQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1781,
+    "cached_input_tokens": 0,
+    "output_tokens": 54,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002051,
+  "input_bound_exceeded": false,
+  "latency_ms": 1495,
+  "output_status": "ok",
+  "answer": "降水多、气温低、回暖慢，造成农时严重拖后，春播进度差不多向后拖了一个节气；到5月8日，全省仅完成大田播种6297万亩",
+  "abstained": false,
+  "provider_response": {
+    "text": "降水多、气温低、回暖慢，造成农时严重拖后，春播进度差不多向后拖了一个节气；到5月8日，全省仅完成大田播种6297万亩",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPVoHo90sPygUwU3Rcdq81TFitvQ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "降水多、气温低、回暖慢，造成农时严重拖后，春播进度差不多向后拖了一个节气；到5月8日，全省仅完成大田播种6297万亩",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538224,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 54,
+        "prompt_tokens": 1781,
+        "total_tokens": 1835,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1778
+        }
+      }
+    }
+  }
+}

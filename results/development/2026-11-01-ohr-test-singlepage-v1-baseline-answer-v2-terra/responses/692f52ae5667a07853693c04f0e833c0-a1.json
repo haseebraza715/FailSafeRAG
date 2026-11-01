@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "3da9c2a9-0ed4-4f1a-bd4c-bf374eb93eff",
+  "request_id": "692f52ae5667a07853693c04f0e833c0",
+  "attempt": 1,
+  "attempt_id": "692f52ae5667a07853693c04f0e833c0-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPVmcocglBElN04COwV6ZBVE5fSL",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1876,
+    "cached_input_tokens": 0,
+    "output_tokens": 63,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002191,
+  "input_bound_exceeded": false,
+  "latency_ms": 1509,
+  "output_status": "ok",
+  "answer": "分别整合农机购置补贴资金和烟草种植补贴资金，扩大补贴范围，用足补贴标准，对耕整机、开沟机和烟草培土机等烟草种植通用、非通用机械进行累加补贴",
+  "abstained": false,
+  "provider_response": {
+    "text": "分别整合农机购置补贴资金和烟草种植补贴资金，扩大补贴范围，用足补贴标准，对耕整机、开沟机和烟草培土机等烟草种植通用、非通用机械进行累加补贴",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPVmcocglBElN04COwV6ZBVE5fSL",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "分别整合农机购置补贴资金和烟草种植补贴资金，扩大补贴范围，用足补贴标准，对耕整机、开沟机和烟草培土机等烟草种植通用、非通用机械进行累加补贴",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538222,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 63,
+        "prompt_tokens": 1876,
+        "total_tokens": 1939,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1873
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "80f5abee-629d-44e0-bdf9-b3209ebc4e53",
+  "request_id": "1905002fbc1b4c766d1c687c06d540ff",
+  "attempt": 1,
+  "attempt_id": "1905002fbc1b4c766d1c687c06d540ff-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPYfk5mxljfm3U0GyDywALXoqaVC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1059,
+    "cached_input_tokens": 0,
+    "output_tokens": 5,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001084,
+  "input_bound_exceeded": false,
+  "latency_ms": 1043,
+  "output_status": "ok",
+  "answer": "周全",
+  "abstained": false,
+  "provider_response": {
+    "text": "周全",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPYfk5mxljfm3U0GyDywALXoqaVC",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "周全",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538401,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 5,
+        "prompt_tokens": 1059,
+        "total_tokens": 1064,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1056
+        }
+      }
+    }
+  }
+}

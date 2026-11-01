@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "74962764-12a4-4ef0-84bb-b7a9d98868dd",
+  "request_id": "2dae0df715f6225e44074f11e1726c84",
+  "attempt": 1,
+  "attempt_id": "2dae0df715f6225e44074f11e1726c84-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPY6cnTHToZ4ixX8Hq6WFmozuCNv",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1812,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001922,
+  "input_bound_exceeded": false,
+  "latency_ms": 1299,
+  "output_status": "ok",
+  "answer": "采用电动箱式保温系统，分体式温室改成连体式",
+  "abstained": false,
+  "provider_response": {
+    "text": "采用电动箱式保温系统，分体式温室改成连体式",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPY6cnTHToZ4ixX8Hq6WFmozuCNv",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "采用电动箱式保温系统，分体式温室改成连体式",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538366,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1812,
+        "total_tokens": 1834,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1809
+        }
+      }
+    }
+  }
+}

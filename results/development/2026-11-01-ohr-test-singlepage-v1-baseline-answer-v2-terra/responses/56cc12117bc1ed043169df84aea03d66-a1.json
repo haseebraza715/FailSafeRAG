@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "eededb07-e623-4689-9d59-cd2a4eea04e7",
+  "request_id": "56cc12117bc1ed043169df84aea03d66",
+  "attempt": 1,
+  "attempt_id": "56cc12117bc1ed043169df84aea03d66-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPbVDfvRoWX8azxMoBkUVu7Cft2f",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1798,
+    "cached_input_tokens": 0,
+    "output_tokens": 60,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002098,
+  "input_bound_exceeded": false,
+  "latency_ms": 1637,
+  "output_status": "ok",
+  "answer": "地毯、毛纺织业、牛羊肉加工业、青稞酿酒业、马铃薯淀粉业、菜籽油加工业，重点扶持建设农畜产品加工，促进农畜产品流通",
+  "abstained": false,
+  "provider_response": {
+    "text": "地毯、毛纺织业、牛羊肉加工业、青稞酿酒业、马铃薯淀粉业、菜籽油加工业，重点扶持建设农畜产品加工，促进农畜产品流通",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPbVDfvRoWX8azxMoBkUVu7Cft2f",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "地毯、毛纺织业、牛羊肉加工业、青稞酿酒业、马铃薯淀粉业、菜籽油加工业，重点扶持建设农畜产品加工，促进农畜产品流通",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538577,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 60,
+        "prompt_tokens": 1798,
+        "total_tokens": 1858,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1795
+        }
+      }
+    }
+  }
+}

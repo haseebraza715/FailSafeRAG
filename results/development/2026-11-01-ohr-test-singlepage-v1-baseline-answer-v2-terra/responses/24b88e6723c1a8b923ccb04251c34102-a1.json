@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "85c4b44f-f93b-4dbf-83ae-a2d1ba2bdab5",
+  "request_id": "24b88e6723c1a8b923ccb04251c34102",
+  "attempt": 1,
+  "attempt_id": "24b88e6723c1a8b923ccb04251c34102-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPYxFnYhbUkjThppTfSRtFWR4H0D",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 809,
+    "cached_input_tokens": 0,
+    "output_tokens": 32,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.000969,
+  "input_bound_exceeded": false,
+  "latency_ms": 1331,
+  "output_status": "ok",
+  "answer": "Batchelor Buttons, Dianthus, Wildflower mix, plain old grass, Cosmos, Portulaca, Zinnia, Nicotiana",
+  "abstained": false,
+  "provider_response": {
+    "text": "Batchelor Buttons, Dianthus, Wildflower mix, plain old grass, Cosmos, Portulaca, Zinnia, Nicotiana",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPYxFnYhbUkjThppTfSRtFWR4H0D",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Batchelor Buttons, Dianthus, Wildflower mix, plain old grass, Cosmos, Portulaca, Zinnia, Nicotiana",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538419,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 809,
+        "total_tokens": 841,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        }
+      }
+    }
+  }
+}

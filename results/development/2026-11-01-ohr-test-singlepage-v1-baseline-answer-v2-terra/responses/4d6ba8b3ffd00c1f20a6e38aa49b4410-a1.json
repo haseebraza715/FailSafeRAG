@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3d2e249-a0b3-430f-8a23-12e869c458e7",
+  "request_id": "4d6ba8b3ffd00c1f20a6e38aa49b4410",
+  "attempt": 1,
+  "attempt_id": "4d6ba8b3ffd00c1f20a6e38aa49b4410-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPb8qWkonW46MK1HCO5SIrOYi2F9",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1762,
+    "cached_input_tokens": 0,
+    "output_tokens": 37,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001947,
+  "input_bound_exceeded": false,
+  "latency_ms": 1316,
+  "output_status": "ok",
+  "answer": "对农产品质量安全工作实行“一票否决”制，全面推行食用菌绿色产品标准化生产，建立“四级”检验检测体系",
+  "abstained": false,
+  "provider_response": {
+    "text": "对农产品质量安全工作实行“一票否决”制，全面推行食用菌绿色产品标准化生产，建立“四级”检验检测体系",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPb8qWkonW46MK1HCO5SIrOYi2F9",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "对农产品质量安全工作实行“一票否决”制，全面推行食用菌绿色产品标准化生产，建立“四级”检验检测体系",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538554,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 37,
+        "prompt_tokens": 1762,
+        "total_tokens": 1799,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1759
+        }
+      }
+    }
+  }
+}

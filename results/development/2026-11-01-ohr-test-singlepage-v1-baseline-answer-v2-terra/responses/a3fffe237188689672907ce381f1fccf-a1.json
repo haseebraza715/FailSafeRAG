@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "662c5259-4dc1-4a3c-b285-9258988363a4",
+  "request_id": "a3fffe237188689672907ce381f1fccf",
+  "attempt": 1,
+  "attempt_id": "a3fffe237188689672907ce381f1fccf-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPWntW08caxR3hsBrmQs5QkjAsJU",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1013,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001048,
+  "input_bound_exceeded": false,
+  "latency_ms": 1180,
+  "output_status": "ok",
+  "answer": "VCAM-1",
+  "abstained": false,
+  "provider_response": {
+    "text": "VCAM-1",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPWntW08caxR3hsBrmQs5QkjAsJU",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "VCAM-1",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538285,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 1013,
+        "total_tokens": 1020,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        }
+      }
+    }
+  }
+}

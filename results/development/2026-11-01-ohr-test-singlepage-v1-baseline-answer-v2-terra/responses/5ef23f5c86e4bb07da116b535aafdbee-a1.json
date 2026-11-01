@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c1d6acf9-573c-49c2-9e9b-8b1933e65267",
+  "request_id": "5ef23f5c86e4bb07da116b535aafdbee",
+  "attempt": 1,
+  "attempt_id": "5ef23f5c86e4bb07da116b535aafdbee-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPaLx1nLr23HqO2CMeI7pMlJ271L",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1810,
+    "cached_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00192,
+  "input_bound_exceeded": false,
+  "latency_ms": 1304,
+  "output_status": "ok",
+  "answer": "依靠现代科技，五邑农业优质稻产业领跑同行快速腾飞",
+  "abstained": false,
+  "provider_response": {
+    "text": "依靠现代科技，五邑农业优质稻产业领跑同行快速腾飞",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPaLx1nLr23HqO2CMeI7pMlJ271L",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "依靠现代科技，五邑农业优质稻产业领跑同行快速腾飞",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538505,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1810,
+        "total_tokens": 1832,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1807
+        }
+      }
+    }
+  }
+}

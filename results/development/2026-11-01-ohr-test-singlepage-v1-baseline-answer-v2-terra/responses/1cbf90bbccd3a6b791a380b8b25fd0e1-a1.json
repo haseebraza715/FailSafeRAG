@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "752ae18a-91a0-4c95-ac10-3bd31e0350fa",
+  "request_id": "1cbf90bbccd3a6b791a380b8b25fd0e1",
+  "attempt": 1,
+  "attempt_id": "1cbf90bbccd3a6b791a380b8b25fd0e1-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPYG0yvhOFJf0V1y3KDRKxb1aCl6",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1714,
+    "cached_input_tokens": 0,
+    "output_tokens": 26,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001844,
+  "input_bound_exceeded": false,
+  "latency_ms": 1133,
+  "output_status": "ok",
+  "answer": "\\(e_{L'}(\\lambda x,x')=e_L(x,\\hat{\\lambda}x')\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(e_{L'}(\\lambda x,x')=e_L(x,\\hat{\\lambda}x')\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPYG0yvhOFJf0V1y3KDRKxb1aCl6",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(e_{L'}(\\lambda x,x')=e_L(x,\\hat{\\lambda}x')\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538376,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 1714,
+        "total_tokens": 1740,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1711
+        }
+      }
+    }
+  }
+}

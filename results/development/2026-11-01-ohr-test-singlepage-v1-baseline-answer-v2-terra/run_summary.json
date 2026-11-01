@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-01-ohr-test-singlepage-v1-baseline-answer-v2-terra",
+  "pilot_id": "ohr_test_singlepage_v1",
+  "mode": "live",
+  "kind": "development_pilot",
+  "label": "Development pilot with a real answer model under engineering retrieval settings. Not the approved protocol.",
+  "identity_sha256": "74268ca8a3292f54daf6a87df7966f71a78c4838a9d38d6f915a9ed67c631dba",
+  "run_state": "complete",
+  "valid_baseline": true,
+  "valid_baseline_blockers": [],
+  "valid_baseline_means": "valid_baseline checks mechanical completeness and eligibility only. It is true when the run is live, its kind is development_pilot, its runtime manifest is byte-identical to the frozen manifest of its pilot, its state is complete, no question is execution_failed, every returned model equals the requested model, every response reported the Standard service tier, no response reported more input tokens than the input bound and the safety ledger reports no anomaly. It does not mean the prompt, the model, the retrieval settings or the budget are approved, and it is not scientific approval of the run.",
+  "run_kind": "development_pilot",
+  "canonical_manifest": true,
+  "pilot_manifest": {
+    "parent_pilot_id": "ohr_test_singlepage_v1",
+    "frozen_runtime_manifest_sha256": "ff3bbc36301c1cd9e9748302afe8f4e2a49588009238f78c78d6eb626bdab852",
+    "run_runtime_manifest_sha256": "ff3bbc36301c1cd9e9748302afe8f4e2a49588009238f78c78d6eb626bdab852",
+    "canonical": true,
+    "question_count": 330,
+    "question_ids_sha256": "327ed18b993383e3167e821ed38438f822bf7a9fa8058d156d9d874c8989f0ab"
+  },
+  "exit_code": 0,
+  "counts": {
+    "questions": 330,
+    "answered": 307,
+    "no_evidence": 23,
+    "execution_failed": 0,
+    "abstained": 46,
+    "model_abstained": 23,
+    "unserved": 0,
+    "awaiting_reconciliation": 0,
+    "prompt_over_limit": 0
+  },
+  "output_status": {
+    "abstained": 23,
+    "ok": 283,
+    "truncated": 1
+  },
+  "attempts": {
+    "total": 307,
+    "saved": 307,
+    "failed": 0,
+    "unknown": 0,
+    "open": 0
+  },
+  "input_bound_exceeded": 0,
+  "requested_model": "gpt-6.1-terra",
+  "returned_model_mismatch": 0,
+  "returned_models": {
+    "gpt-6.1-terra": 307
+  },
+  "returned_service_tiers": {
+    "default": 307
+  },
+  "cost": {
+    "currency": "USD",
+    "simulated": false,
+    "measured": 0.510896,
+    "reserved": 0.0,
+    "committed_upper": 0.510896,
+    "anomalies": []
+  },
+  "safety_ceiling": {
+    "amount": 0.9,
+    "currency": "USD",
+    "simulated": false
+  },
+  "invocations": [
+    {
+      "invocation_id": "032115e6f7c54ae18be8d0b59864befd",
+      "started_at": "2026-11-01T13:03:31.216Z",
+      "safety_ceiling": {
+        "amount": 0.9,
+        "currency": "USD",
+        "simulated": false
+      },
+      "ceiling_change": null,
+      "ended_reason": "completed"
+    }
+  ],
+  "uncommitted_tail_bytes": 0,
+  "predictions_sha256": "d609a8b2b4bdc8204b20cacd8ec37f6262304c7a5d406fea8d1079f35eaf13bf",
+  "requests_sha256": "b37d2bf3093d462939f81b5deb8dbf3171585910534d8852a3a71b2b5085b02b"
+}

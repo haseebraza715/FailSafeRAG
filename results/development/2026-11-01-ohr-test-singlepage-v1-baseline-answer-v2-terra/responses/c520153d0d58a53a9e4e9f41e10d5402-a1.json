@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c2d18967-1294-41af-8bf9-7d45c5354d5d",
+  "request_id": "c520153d0d58a53a9e4e9f41e10d5402",
+  "attempt": 1,
+  "attempt_id": "c520153d0d58a53a9e4e9f41e10d5402-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPadzpxPOPU1nwOGgWmMa0HiDkCn",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1872,
+    "cached_input_tokens": 0,
+    "output_tokens": 45,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002097,
+  "input_bound_exceeded": false,
+  "latency_ms": 1883,
+  "output_status": "ok",
+  "answer": "购买育种书籍，带回胶州仔细研读，边学习边育种，每月都去拜访老专家，虚心向他请教育种过程中的各种疑难问题",
+  "abstained": false,
+  "provider_response": {
+    "text": "购买育种书籍，带回胶州仔细研读，边学习边育种，每月都去拜访老专家，虚心向他请教育种过程中的各种疑难问题",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPadzpxPOPU1nwOGgWmMa0HiDkCn",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "购买育种书籍，带回胶州仔细研读，边学习边育种，每月都去拜访老专家，虚心向他请教育种过程中的各种疑难问题",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538523,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 45,
+        "prompt_tokens": 1872,
+        "total_tokens": 1917,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1869
+        }
+      }
+    }
+  }
+}

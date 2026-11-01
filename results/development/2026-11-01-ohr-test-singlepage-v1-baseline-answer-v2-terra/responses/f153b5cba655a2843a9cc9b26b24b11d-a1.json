@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c2daa41d-c189-4eb9-95fb-8869bb18065e",
+  "request_id": "f153b5cba655a2843a9cc9b26b24b11d",
+  "attempt": 1,
+  "attempt_id": "f153b5cba655a2843a9cc9b26b24b11d-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPafNhYfSZStxIBbkBaSeWdTAFia",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1693,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001808,
+  "input_bound_exceeded": false,
+  "latency_ms": 1343,
+  "output_status": "ok",
+  "answer": "合理调控个人年度小客车增长速度，抑制小客车过快增长",
+  "abstained": false,
+  "provider_response": {
+    "text": "合理调控个人年度小客车增长速度，抑制小客车过快增长",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPafNhYfSZStxIBbkBaSeWdTAFia",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "合理调控个人年度小客车增长速度，抑制小客车过快增长",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538525,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1693,
+        "total_tokens": 1716,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1690
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c2f9e91c-5638-4bea-9b75-7690b8c18e10",
+  "request_id": "1ae8ce64927edb64f1ea227770c46968",
+  "attempt": 1,
+  "attempt_id": "1ae8ce64927edb64f1ea227770c46968-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPak1RZ0F6CsoZ6TVZYPL3lBjN14",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1720,
+    "cached_input_tokens": 0,
+    "output_tokens": 6,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00175,
+  "input_bound_exceeded": false,
+  "latency_ms": 912,
+  "output_status": "ok",
+  "answer": "胡锦涛",
+  "abstained": false,
+  "provider_response": {
+    "text": "胡锦涛",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPak1RZ0F6CsoZ6TVZYPL3lBjN14",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "胡锦涛",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538530,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 6,
+        "prompt_tokens": 1720,
+        "total_tokens": 1726,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1717
+        }
+      }
+    }
+  }
+}

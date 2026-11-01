@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c280434c-5fcf-4c87-9eca-352f28116deb",
+  "request_id": "55a2408bed8ed75226b7227e9850d9d0",
+  "attempt": 1,
+  "attempt_id": "55a2408bed8ed75226b7227e9850d9d0-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPaTzaXt8yjmurrlXJ8p64QGZkhd",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2070,
+    "cached_input_tokens": 0,
+    "output_tokens": 33,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002235,
+  "input_bound_exceeded": false,
+  "latency_ms": 1225,
+  "output_status": "ok",
+  "answer": "苗期少灌水，控水蹲苗；结果期灌溉时间需要看天，阴天不灌水",
+  "abstained": false,
+  "provider_response": {
+    "text": "苗期少灌水，控水蹲苗；结果期灌溉时间需要看天，阴天不灌水",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPaTzaXt8yjmurrlXJ8p64QGZkhd",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "苗期少灌水，控水蹲苗；结果期灌溉时间需要看天，阴天不灌水",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538513,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 33,
+        "prompt_tokens": 2070,
+        "total_tokens": 2103,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2067
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "05000bc6-b20d-4b6e-b231-1f1795863a76",
+  "request_id": "f066b83f3e4bf038038335bb6b6d67dd",
+  "attempt": 1,
+  "attempt_id": "f066b83f3e4bf038038335bb6b6d67dd-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPVbqupAhoR9e4ZkNAAREVsAEOHm",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1724,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001849,
+  "input_bound_exceeded": false,
+  "latency_ms": 1278,
+  "output_status": "ok",
+  "answer": "归属清晰、权责明确、利益共享、保护严格、流转规范、监管有力",
+  "abstained": false,
+  "provider_response": {
+    "text": "归属清晰、权责明确、利益共享、保护严格、流转规范、监管有力",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPVbqupAhoR9e4ZkNAAREVsAEOHm",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "归属清晰、权责明确、利益共享、保护严格、流转规范、监管有力",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538211,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 25,
+        "prompt_tokens": 1724,
+        "total_tokens": 1749,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1721
+        }
+      }
+    }
+  }
+}

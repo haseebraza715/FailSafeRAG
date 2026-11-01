@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3291b4b-e0c7-4a6d-b6f9-59a5003269e1",
+  "request_id": "e5f7b924ad0342d023f23a4577334c26",
+  "attempt": 1,
+  "attempt_id": "e5f7b924ad0342d023f23a4577334c26-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfParhGCkvvNNLhIlsK2NSHMq2mWL",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1620,
+    "cached_input_tokens": 0,
+    "output_tokens": 66,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00195,
+  "input_bound_exceeded": false,
+  "latency_ms": 1843,
+  "output_status": "ok",
+  "answer": "通过点对点的个性化服务，有针对性地迅速普及农业科技知识、及时传输农业市场信息,有利于提高农民素质和培养新型农民，增加农业产业科技含量和附加值，促进农业增效和农民增收",
+  "abstained": false,
+  "provider_response": {
+    "text": "通过点对点的个性化服务，有针对性地迅速普及农业科技知识、及时传输农业市场信息,有利于提高农民素质和培养新型农民，增加农业产业科技含量和附加值，促进农业增效和农民增收",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfParhGCkvvNNLhIlsK2NSHMq2mWL",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "通过点对点的个性化服务，有针对性地迅速普及农业科技知识、及时传输农业市场信息,有利于提高农民素质和培养新型农民，增加农业产业科技含量和附加值，促进农业增效和农民增收",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538537,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 1620,
+        "total_tokens": 1686,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1617
+        }
+      }
+    }
+  }
+}

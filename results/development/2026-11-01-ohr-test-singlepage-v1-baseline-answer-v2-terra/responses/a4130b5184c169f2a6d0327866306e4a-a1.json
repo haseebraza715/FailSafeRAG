@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "eccefd32-072b-41be-bfc2-edc02aec884e",
+  "request_id": "a4130b5184c169f2a6d0327866306e4a",
+  "attempt": 1,
+  "attempt_id": "a4130b5184c169f2a6d0327866306e4a-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPbSEE1ByFbqdKTp7GbqOHb1uGNX",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 666,
+    "cached_input_tokens": 0,
+    "output_tokens": 39,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.000861,
+  "input_bound_exceeded": false,
+  "latency_ms": 1600,
+  "output_status": "ok",
+  "answer": "阿尔卑斯山脉、喜马拉雅山脉的形成，东非裂谷、红海的形成与变化，大西洋的扩张",
+  "abstained": false,
+  "provider_response": {
+    "text": "阿尔卑斯山脉、喜马拉雅山脉的形成，东非裂谷、红海的形成与变化，大西洋的扩张",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPbSEE1ByFbqdKTp7GbqOHb1uGNX",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "阿尔卑斯山脉、喜马拉雅山脉的形成，东非裂谷、红海的形成与变化，大西洋的扩张",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538574,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 39,
+        "prompt_tokens": 666,
+        "total_tokens": 705,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "4c2b6a2a-92dc-4083-b60f-5caad87d6c4c",
+  "request_id": "a382d02876fa6b05da3f31628ead7526",
+  "attempt": 1,
+  "attempt_id": "a382d02876fa6b05da3f31628ead7526-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPVtViTSS0CYmN5Hc5eClLH7p3U5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1642,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001687,
+  "input_bound_exceeded": false,
+  "latency_ms": 907,
+  "output_status": "ok",
+  "answer": "Kevin P. Rojek",
+  "abstained": false,
+  "provider_response": {
+    "text": "Kevin P. Rojek",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPVtViTSS0CYmN5Hc5eClLH7p3U5",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Kevin P. Rojek",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538229,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1642,
+        "total_tokens": 1651,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1639
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c186cc8f-66fa-4cfc-9ce2-6ff48e3b8d3b",
+  "request_id": "9b6e6d10f77e3581aeccf256cd241525",
+  "attempt": 1,
+  "attempt_id": "9b6e6d10f77e3581aeccf256cd241525-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPaCG7YZuIQzuc5cbQG8WjQlseZW",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1801,
+    "cached_input_tokens": 0,
+    "output_tokens": 46,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002031,
+  "input_bound_exceeded": false,
+  "latency_ms": 1518,
+  "output_status": "ok",
+  "answer": "组建多个农机专业服务队，组织农机农艺技术人员联合开展培训，使农机手掌握机械操作和农艺要求，实行集中统一规范的覆膜机播作业",
+  "abstained": false,
+  "provider_response": {
+    "text": "组建多个农机专业服务队，组织农机农艺技术人员联合开展培训，使农机手掌握机械操作和农艺要求，实行集中统一规范的覆膜机播作业",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPaCG7YZuIQzuc5cbQG8WjQlseZW",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "组建多个农机专业服务队，组织农机农艺技术人员联合开展培训，使农机手掌握机械操作和农艺要求，实行集中统一规范的覆膜机播作业",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538496,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 46,
+        "prompt_tokens": 1801,
+        "total_tokens": 1847,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1798
+        }
+      }
+    }
+  }
+}

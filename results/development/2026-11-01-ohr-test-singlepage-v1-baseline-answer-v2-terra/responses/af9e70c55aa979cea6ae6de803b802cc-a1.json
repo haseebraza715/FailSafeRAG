@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "81a6a13c-466b-422a-bfbe-9bba9f5bf193",
+  "request_id": "af9e70c55aa979cea6ae6de803b802cc",
+  "attempt": 1,
+  "attempt_id": "af9e70c55aa979cea6ae6de803b802cc-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPYkvypS9poTogAi5gyvNGcCsxo4",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1736,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001811,
+  "input_bound_exceeded": false,
+  "latency_ms": 1087,
+  "output_status": "ok",
+  "answer": "苯胺，氯苯，乙酸",
+  "abstained": false,
+  "provider_response": {
+    "text": "苯胺，氯苯，乙酸",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPYkvypS9poTogAi5gyvNGcCsxo4",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "苯胺，氯苯，乙酸",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538406,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1736,
+        "total_tokens": 1751,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1733
+        }
+      }
+    }
+  }
+}

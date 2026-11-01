@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3813bcd-700f-4ec0-91ba-c0bd5492ba7a",
+  "request_id": "b715f3874ae8f2ae61d7f6425eabf9a4",
+  "attempt": 1,
+  "attempt_id": "b715f3874ae8f2ae61d7f6425eabf9a4-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPb0qNTUelIDtF1XQcXFOHil7XgQ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1810,
+    "cached_input_tokens": 0,
+    "output_tokens": 122,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00242,
+  "input_bound_exceeded": false,
+  "latency_ms": 2403,
+  "output_status": "ok",
+  "answer": "领导机关和领导干部中贪污贿赂、失职渎职案件，重点领域和关键环节中的违纪违法案件，严重违反政治纪律和组织人事纪律的案件，重大责任事故和群体性事件涉及的失职渎职及背后的腐败案件，商业贿赂案件，基层政权组织和重点岗位以权谋私、滥用职权的案件，以案谋私、贪赃枉法和为黑恶势力充当“保护伞”等案件",
+  "abstained": false,
+  "provider_response": {
+    "text": "领导机关和领导干部中贪污贿赂、失职渎职案件，重点领域和关键环节中的违纪违法案件，严重违反政治纪律和组织人事纪律的案件，重大责任事故和群体性事件涉及的失职渎职及背后的腐败案件，商业贿赂案件，基层政权组织和重点岗位以权谋私、滥用职权的案件，以案谋私、贪赃枉法和为黑恶势力充当“保护伞”等案件",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPb0qNTUelIDtF1XQcXFOHil7XgQ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "领导机关和领导干部中贪污贿赂、失职渎职案件，重点领域和关键环节中的违纪违法案件，严重违反政治纪律和组织人事纪律的案件，重大责任事故和群体性事件涉及的失职渎职及背后的腐败案件，商业贿赂案件，基层政权组织和重点岗位以权谋私、滥用职权的案件，以案谋私、贪赃枉法和为黑恶势力充当“保护伞”等案件",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538546,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 122,
+        "prompt_tokens": 1810,
+        "total_tokens": 1932,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1807
+        }
+      }
+    }
+  }
+}

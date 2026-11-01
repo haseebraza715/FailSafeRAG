@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "a8ed8f85-a352-4a0b-a530-9872e629c350",
+  "request_id": "a05754ec567a9aa2b2b9a0196b89b858",
+  "attempt": 1,
+  "attempt_id": "a05754ec567a9aa2b2b9a0196b89b858-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPZiJKqIxtBlfiV20q7IbroIe6IZ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1273,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001373,
+  "input_bound_exceeded": false,
+  "latency_ms": 1172,
+  "output_status": "ok",
+  "answer": "\\(C=\\frac{m\\cdot 10^3}{V}\\)",
+  "abstained": false,
+  "provider_response": {
+    "text": "\\(C=\\frac{m\\cdot 10^3}{V}\\)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPZiJKqIxtBlfiV20q7IbroIe6IZ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "\\(C=\\frac{m\\cdot 10^3}{V}\\)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538466,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1273,
+        "total_tokens": 1293,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1270
+        }
+      }
+    }
+  }
+}

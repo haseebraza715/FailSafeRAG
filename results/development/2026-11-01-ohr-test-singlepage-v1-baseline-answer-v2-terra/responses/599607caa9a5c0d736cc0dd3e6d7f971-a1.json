@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c3fe57d3-b181-40a2-ab9a-636eda59f349",
+  "request_id": "599607caa9a5c0d736cc0dd3e6d7f971",
+  "attempt": 1,
+  "attempt_id": "599607caa9a5c0d736cc0dd3e6d7f971-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPbEt5TAAQgnYDACWIeco9jtFzdo",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1808,
+    "cached_input_tokens": 0,
+    "output_tokens": 68,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002148,
+  "input_bound_exceeded": false,
+  "latency_ms": 1668,
+  "output_status": "ok",
+  "answer": "从解决农村能源和环境卫生的需求向在改变农业农村发展方式中发挥基础性作用转变，从户用沼气建设为主向户用沼气与大中型沼气工程建设并重转变，从分散建设管理向产业化和社会化服务转变",
+  "abstained": false,
+  "provider_response": {
+    "text": "从解决农村能源和环境卫生的需求向在改变农业农村发展方式中发挥基础性作用转变，从户用沼气建设为主向户用沼气与大中型沼气工程建设并重转变，从分散建设管理向产业化和社会化服务转变",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPbEt5TAAQgnYDACWIeco9jtFzdo",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "从解决农村能源和环境卫生的需求向在改变农业农村发展方式中发挥基础性作用转变，从户用沼气建设为主向户用沼气与大中型沼气工程建设并重转变，从分散建设管理向产业化和社会化服务转变",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538560,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 1808,
+        "total_tokens": 1876,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1805
+        }
+      }
+    }
+  }
+}

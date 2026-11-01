@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8f187eea-c48c-47f9-95c1-3c1f303fb1fb",
+  "request_id": "2332d15b220f146b53b07683abb22993",
+  "attempt": 1,
+  "attempt_id": "2332d15b220f146b53b07683abb22993-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPZ90Gu4yegiQXg2DLJmZR6eQ737",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1655,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001755,
+  "input_bound_exceeded": false,
+  "latency_ms": 1379,
+  "output_status": "ok",
+  "answer": "no Tatum Cave beetles have been observed in eight separate surveys since 1965",
+  "abstained": false,
+  "provider_response": {
+    "text": "no Tatum Cave beetles have been observed in eight separate surveys since 1965",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPZ90Gu4yegiQXg2DLJmZR6eQ737",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "no Tatum Cave beetles have been observed in eight separate surveys since 1965",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538431,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1655,
+        "total_tokens": 1675,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1652
+        }
+      }
+    }
+  }
+}

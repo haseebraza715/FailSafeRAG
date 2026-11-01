@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "c2844ff7-3eb6-48f1-8023-ae8c98a4fa86",
+  "request_id": "b979d14aaf8dab3bc7dfc6aa1c25e60a",
+  "attempt": 1,
+  "attempt_id": "b979d14aaf8dab3bc7dfc6aa1c25e60a-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPaV7BHGDma8eoJORnEAUpCcAbHy",
+  "finish_reason": "length",
+  "usage": {
+    "input_tokens": 2014,
+    "cached_input_tokens": 0,
+    "output_tokens": 128,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002654,
+  "input_bound_exceeded": false,
+  "latency_ms": 2541,
+  "output_status": "truncated",
+  "answer": "追肥要采用少量多次的原则，以氮钾肥为主。氮素每次不超过5公斤，肥水配合达到一体化。追肥时期分第一穗果膨大期的催果肥，第二、三穗果膨大期的壮果肥；进入盛果期后，根系衰弱吸肥能力下降，既可土施追氮钾肥，也可采用根外追肥喷施磷酸二氢钾、硝酸钙或氯化钙",
+  "abstained": false,
+  "provider_response": {
+    "text": "追肥要采用少量多次的原则，以氮钾肥为主。氮素每次不超过5公斤，肥水配合达到一体化。追肥时期分第一穗果膨大期的催果肥，第二、三穗果膨大期的壮果肥；进入盛果期后，根系衰弱吸肥能力下降，既可土施追氮钾肥，也可采用根外追肥喷施磷酸二氢钾、硝酸钙或氯化钙",
+    "finish_reason": "length",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPaV7BHGDma8eoJORnEAUpCcAbHy",
+      "choices": [
+        {
+          "finish_reason": "length",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "追肥要采用少量多次的原则，以氮钾肥为主。氮素每次不超过5公斤，肥水配合达到一体化。追肥时期分第一穗果膨大期的催果肥，第二、三穗果膨大期的壮果肥；进入盛果期后，根系衰弱吸肥能力下降，既可土施追氮钾肥，也可采用根外追肥喷施磷酸二氢钾、硝酸钙或氯化钙",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538515,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 128,
+        "prompt_tokens": 2014,
+        "total_tokens": 2142,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2011
+        }
+      }
+    }
+  }
+}

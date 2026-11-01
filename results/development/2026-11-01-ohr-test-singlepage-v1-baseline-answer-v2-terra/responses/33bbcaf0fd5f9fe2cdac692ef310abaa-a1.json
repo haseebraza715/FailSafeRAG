@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "6c17932e-0dad-4ad5-8672-6d220ed4218a",
+  "request_id": "33bbcaf0fd5f9fe2cdac692ef310abaa",
+  "attempt": 1,
+  "attempt_id": "33bbcaf0fd5f9fe2cdac692ef310abaa-a1",
+  "saved_by_invocation": "032115e6f7c54ae18be8d0b59864befd",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfPXVX91ci4mD6XPgK7quMadnRQKu",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1066,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001126,
+  "input_bound_exceeded": false,
+  "latency_ms": 984,
+  "output_status": "ok",
+  "answer": "Nihon Keizai Shimbun",
+  "abstained": false,
+  "provider_response": {
+    "text": "Nihon Keizai Shimbun",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfPXVX91ci4mD6XPgK7quMadnRQKu",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Nihon Keizai Shimbun",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793538329,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1066,
+        "total_tokens": 1078,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1063
+        }
+      }
+    }
+  }
+}
