@@ -43,7 +43,7 @@ def choose(root, pilot_id, baseline, diagnosis, out):
         or (selection.get("question_splits") is None and selection.get("pool", "train_exclusive") == "train_exclusive")
     ):
         raise ValueError("pilot's recorded split is not train")
-    config_path = diagnosis / "diagnosis_config.json"
+    config_path = diagnosis / "run_config.json"
     config = read_json(config_path)
     if config["gate_rule"]["feature"] is not None or config["gate_rule"]["threshold"] is not None:
         raise ValueError("diagnosis must use the base gate")
