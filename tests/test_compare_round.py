@@ -150,6 +150,8 @@ def test_outputs_policies_statistics_and_hashes(sample):
     assert result["contrasts"]["random_pooled"]["mcnemar_em"]["p_value"] == max(result["contrasts"][f"random_{s}"]["mcnemar_em"]["p_value"] for s in RANDOM_SEEDS)
     assert result["detectable"]["disagreement_rate"] == 0
     assert result["decision"]["label"] == "development result, not a confirmation"
+    response = sample["baseline_dir"] / "responses/q0.json"
+    assert result["input_and_code_sha256"][str(response.resolve())] == sha(response)
     assert str(SCRIPT) in result["input_and_code_sha256"]
     assert result["input_and_code_sha256"][str((sample["baseline_dir"] / "requests.jsonl").resolve())] == sha(sample["baseline_dir"] / "requests.jsonl")
     assert "descriptive, unadjusted" in (sample["out_dir"] / "report.md").read_text()

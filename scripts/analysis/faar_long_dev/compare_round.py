@@ -148,7 +148,7 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
             continue
         qid = event["question_id"]
         response_path = baseline_dir / "responses" / f"{event['attempt_id']}.json"
-        response_bytes = response_path.read_bytes()
+        response_bytes = reader.bytes(response_path)
         response = json.loads(response_bytes)
         if (hashlib.sha256(response_bytes).hexdigest() != event.get("response_sha256")
                 or response.get("question_id") != qid or response.get("attempt_id") != event["attempt_id"]):
