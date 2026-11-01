@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b8b2619f-3520-445c-86a0-37e7be8d2799",
+  "request_id": "1a2d734df3ceb139922cfc3a9796b561",
+  "attempt": 1,
+  "attempt_id": "1a2d734df3ceb139922cfc3a9796b561-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOjsbhtQxzsAV46GdJfd775NtgiJ",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1355,
+    "cached_input_tokens": 0,
+    "output_tokens": 69,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.0017,
+  "input_bound_exceeded": false,
+  "latency_ms": 1765,
+  "output_status": "ok",
+  "answer": "Group life, optional and dependant life, creditor insurance, accidental death and dismemberment, disability, critical illness, identity theft insurance, executor insurance, balance protection insurance, mortgage protection insurance, trip cancellation insurance, baggage insurance; insurance companies, brokers, agents, third party administrators, reciprocal exchange groups, associations and fraternal societies",
+  "abstained": false,
+  "provider_response": {
+    "text": "Group life, optional and dependant life, creditor insurance, accidental death and dismemberment, disability, critical illness, identity theft insurance, executor insurance, balance protection insurance, mortgage protection insurance, trip cancellation insurance, baggage insurance; insurance companies, brokers, agents, third party administrators, reciprocal exchange groups, associations and fraternal societies",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOjsbhtQxzsAV46GdJfd775NtgiJ",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Group life, optional and dependant life, creditor insurance, accidental death and dismemberment, disability, critical illness, identity theft insurance, executor insurance, balance protection insurance, mortgage protection insurance, trip cancellation insurance, baggage insurance; insurance companies, brokers, agents, third party administrators, reciprocal exchange groups, associations and fraternal societies",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793535252,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 69,
+        "prompt_tokens": 1355,
+        "total_tokens": 1424,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1352
+        }
+      }
+    }
+  }
+}

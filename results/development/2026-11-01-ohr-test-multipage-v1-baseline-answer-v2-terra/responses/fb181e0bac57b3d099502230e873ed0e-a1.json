@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+  "request_id": "fb181e0bac57b3d099502230e873ed0e",
+  "attempt": 1,
+  "attempt_id": "fb181e0bac57b3d099502230e873ed0e-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOjqPzF1aHAmqfiTwbey86tT2Euq",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1548,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001648,
+  "input_bound_exceeded": false,
+  "latency_ms": 993,
+  "output_status": "ok",
+  "answer": "TransCanada lobbyist Paul Elliot’s cozy relationship with U.S. Embassy officials in Ottawa",
+  "abstained": false,
+  "provider_response": {
+    "text": "TransCanada lobbyist Paul Elliot’s cozy relationship with U.S. Embassy officials in Ottawa",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOjqPzF1aHAmqfiTwbey86tT2Euq",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "TransCanada lobbyist Paul Elliot’s cozy relationship with U.S. Embassy officials in Ottawa",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793535250,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1548,
+        "total_tokens": 1568,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1545
+        }
+      }
+    }
+  }
+}

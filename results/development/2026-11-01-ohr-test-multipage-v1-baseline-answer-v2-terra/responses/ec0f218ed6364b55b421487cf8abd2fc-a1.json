@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8f920809-be8c-44d5-98f8-af5294d15e2b",
+  "request_id": "ec0f218ed6364b55b421487cf8abd2fc",
+  "attempt": 1,
+  "attempt_id": "ec0f218ed6364b55b421487cf8abd2fc-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOcFOESTyw8b3bVyT5LaNsBI4yV9",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1610,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001685,
+  "input_bound_exceeded": false,
+  "latency_ms": 1176,
+  "output_status": "ok",
+  "answer": "with (para), in (en), upon (epi)",
+  "abstained": false,
+  "provider_response": {
+    "text": "with (para), in (en), upon (epi)",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOcFOESTyw8b3bVyT5LaNsBI4yV9",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "with (para), in (en), upon (epi)",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534779,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1610,
+        "total_tokens": 1625,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1607
+        }
+      }
+    }
+  }
+}

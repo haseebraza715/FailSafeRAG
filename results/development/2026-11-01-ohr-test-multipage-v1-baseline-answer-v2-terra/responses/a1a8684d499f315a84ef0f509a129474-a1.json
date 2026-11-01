@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "98ba0f0e-120d-4126-9da5-3b38d1aa6c5e",
+  "request_id": "a1a8684d499f315a84ef0f509a129474",
+  "attempt": 1,
+  "attempt_id": "a1a8684d499f315a84ef0f509a129474-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOe2cMc2QVaEMlzF2QigwmhLzrZq",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1729,
+    "cached_input_tokens": 0,
+    "output_tokens": 6,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001759,
+  "input_bound_exceeded": false,
+  "latency_ms": 888,
+  "output_status": "ok",
+  "answer": "Any inpatient facility",
+  "abstained": false,
+  "provider_response": {
+    "text": "Any inpatient facility",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOe2cMc2QVaEMlzF2QigwmhLzrZq",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Any inpatient facility",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534890,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 6,
+        "prompt_tokens": 1729,
+        "total_tokens": 1735,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1726
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "8ad22449-38e3-4ac1-b28e-91322cf7d12b",
+  "request_id": "aaea238ea62cca3123597db6f073a310",
+  "attempt": 1,
+  "attempt_id": "aaea238ea62cca3123597db6f073a310-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfObPkqDnfDkBafDG0xuR5DNuQw8a",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1342,
+    "cached_input_tokens": 0,
+    "output_tokens": 54,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001612,
+  "input_bound_exceeded": false,
+  "latency_ms": 1483,
+  "output_status": "ok",
+  "answer": "PRELIMINARY, PENDINGSUPERVISORREVIEW, PENDINGASSIGNTEAM, PENDINGAPPROVETEAM, PENDINGASSIGNINVESTIGATOR, PENDINGINVESTIGATION, ADMINISTRATIVELYCLOSED",
+  "abstained": false,
+  "provider_response": {
+    "text": "PRELIMINARY, PENDINGSUPERVISORREVIEW, PENDINGASSIGNTEAM, PENDINGAPPROVETEAM, PENDINGASSIGNINVESTIGATOR, PENDINGINVESTIGATION, ADMINISTRATIVELYCLOSED",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfObPkqDnfDkBafDG0xuR5DNuQw8a",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "PRELIMINARY, PENDINGSUPERVISORREVIEW, PENDINGASSIGNTEAM, PENDINGAPPROVETEAM, PENDINGASSIGNINVESTIGATOR, PENDINGINVESTIGATION, ADMINISTRATIVELYCLOSED",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534727,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 54,
+        "prompt_tokens": 1342,
+        "total_tokens": 1396,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1339
+        }
+      }
+    }
+  }
+}

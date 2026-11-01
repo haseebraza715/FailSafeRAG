@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "568e6fb4-0221-4c1f-813d-361301ef1d5f",
+  "request_id": "a19e9c5354033b00214ac2cbff328169",
+  "attempt": 1,
+  "attempt_id": "a19e9c5354033b00214ac2cbff328169-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOYmikTeifSvhR5QTnjAVfZe1XRf",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2092,
+    "cached_input_tokens": 0,
+    "output_tokens": 23,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002207,
+  "input_bound_exceeded": false,
+  "latency_ms": 1337,
+  "output_status": "ok",
+  "answer": "$\\exp(\\beta_{0,lh}^{i})A_{l}^{h}(k,j)$",
+  "abstained": false,
+  "provider_response": {
+    "text": "$\\exp(\\beta_{0,lh}^{i})A_{l}^{h}(k,j)$",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOYmikTeifSvhR5QTnjAVfZe1XRf",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "$\\exp(\\beta_{0,lh}^{i})A_{l}^{h}(k,j)$",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534564,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 2092,
+        "total_tokens": 2115,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2089
+        }
+      }
+    }
+  }
+}

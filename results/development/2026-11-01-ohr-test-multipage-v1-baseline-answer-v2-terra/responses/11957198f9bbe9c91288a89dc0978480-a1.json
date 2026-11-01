@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "969b7460-aaeb-452d-8ac0-55f9920c3a49",
+  "request_id": "11957198f9bbe9c91288a89dc0978480",
+  "attempt": 1,
+  "attempt_id": "11957198f9bbe9c91288a89dc0978480-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOdgiAqIBbNTaFUgiOB0DQXAN150",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2533,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002593,
+  "input_bound_exceeded": false,
+  "latency_ms": 1047,
+  "output_status": "ok",
+  "answer": "Fire Dept., $631,322.29",
+  "abstained": false,
+  "provider_response": {
+    "text": "Fire Dept., $631,322.29",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOdgiAqIBbNTaFUgiOB0DQXAN150",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Fire Dept., $631,322.29",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534868,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 2533,
+        "total_tokens": 2545,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2530
+        }
+      }
+    }
+  }
+}

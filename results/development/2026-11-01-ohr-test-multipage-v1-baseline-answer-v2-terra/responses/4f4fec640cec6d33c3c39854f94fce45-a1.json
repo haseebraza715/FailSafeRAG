@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9adeea26-ae6f-42df-bf70-7aaa553fd9fd",
+  "request_id": "4f4fec640cec6d33c3c39854f94fce45",
+  "attempt": 1,
+  "attempt_id": "4f4fec640cec6d33c3c39854f94fce45-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOeSSWc25zQM2i2OGwMoIUMg27aq",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1752,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001827,
+  "input_bound_exceeded": false,
+  "latency_ms": 990,
+  "output_status": "ok",
+  "answer": "separation of powers, civil rights, rights to due process",
+  "abstained": false,
+  "provider_response": {
+    "text": "separation of powers, civil rights, rights to due process",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOeSSWc25zQM2i2OGwMoIUMg27aq",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "separation of powers, civil rights, rights to due process",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534916,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1752,
+        "total_tokens": 1767,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1749
+        }
+      }
+    }
+  }
+}

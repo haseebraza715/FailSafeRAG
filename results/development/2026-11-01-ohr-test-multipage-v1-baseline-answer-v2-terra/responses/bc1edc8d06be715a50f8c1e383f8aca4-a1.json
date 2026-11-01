@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9ca63e9f-3a0c-45c9-94fb-54c4a70577c0",
+  "request_id": "bc1edc8d06be715a50f8c1e383f8aca4",
+  "attempt": 1,
+  "attempt_id": "bc1edc8d06be715a50f8c1e383f8aca4-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOegbusKVgPp2sRMYlJg33DVYYOG",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1590,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001635,
+  "input_bound_exceeded": false,
+  "latency_ms": 850,
+  "output_status": "ok",
+  "answer": "beef products, peanut products",
+  "abstained": false,
+  "provider_response": {
+    "text": "beef products, peanut products",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOegbusKVgPp2sRMYlJg33DVYYOG",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "beef products, peanut products",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534930,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1590,
+        "total_tokens": 1599,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1587
+        }
+      }
+    }
+  }
+}

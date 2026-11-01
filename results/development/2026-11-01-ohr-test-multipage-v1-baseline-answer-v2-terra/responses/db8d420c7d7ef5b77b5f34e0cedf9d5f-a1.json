@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9461f90d-74a8-4cff-be2d-0b34e95e5d64",
+  "request_id": "db8d420c7d7ef5b77b5f34e0cedf9d5f",
+  "attempt": 1,
+  "attempt_id": "db8d420c7d7ef5b77b5f34e0cedf9d5f-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOdFYz3BmksPIlYY3YqkTEXVPVig",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1680,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.00178,
+  "input_bound_exceeded": false,
+  "latency_ms": 3249,
+  "output_status": "ok",
+  "answer": "1.37, a 37-percent increase in radiative forcing since 1990",
+  "abstained": false,
+  "provider_response": {
+    "text": "1.37, a 37-percent increase in radiative forcing since 1990",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOdFYz3BmksPIlYY3YqkTEXVPVig",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "1.37, a 37-percent increase in radiative forcing since 1990",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534841,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1680,
+        "total_tokens": 1700,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1677
+        }
+      }
+    }
+  }
+}

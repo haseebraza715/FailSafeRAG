@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9869b889-400f-48b3-b7bd-d1b69e697ff9",
+  "request_id": "fd34f6cec145bd1cd815f3a1636177ec",
+  "attempt": 1,
+  "attempt_id": "fd34f6cec145bd1cd815f3a1636177ec-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOe1Ls0NLU6Fp6NLnkyixXvm7tTv",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1549,
+    "cached_input_tokens": 0,
+    "output_tokens": 52,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001809,
+  "input_bound_exceeded": false,
+  "latency_ms": 1457,
+  "output_status": "ok",
+  "answer": "acupuncture, aerobic exercise, craniosacral therapy, diathermy, infrared therapy, kinetic therapy, massage therapy, microwave therapy, paraffin treatment, rolfing therapy, Shiatsu, sports conditioning, ultraviolet therapy, weight training",
+  "abstained": false,
+  "provider_response": {
+    "text": "acupuncture, aerobic exercise, craniosacral therapy, diathermy, infrared therapy, kinetic therapy, massage therapy, microwave therapy, paraffin treatment, rolfing therapy, Shiatsu, sports conditioning, ultraviolet therapy, weight training",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOe1Ls0NLU6Fp6NLnkyixXvm7tTv",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "acupuncture, aerobic exercise, craniosacral therapy, diathermy, infrared therapy, kinetic therapy, massage therapy, microwave therapy, paraffin treatment, rolfing therapy, Shiatsu, sports conditioning, ultraviolet therapy, weight training",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793534889,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 52,
+        "prompt_tokens": 1549,
+        "total_tokens": 1601,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1546
+        }
+      }
+    }
+  }
+}

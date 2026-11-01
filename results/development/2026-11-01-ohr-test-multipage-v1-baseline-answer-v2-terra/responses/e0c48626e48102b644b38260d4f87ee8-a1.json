@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+  "request_id": "e0c48626e48102b644b38260d4f87ee8",
+  "attempt": 1,
+  "attempt_id": "e0c48626e48102b644b38260d4f87ee8-a1",
+  "saved_by_invocation": "577198fe81d84d6a9b66f2dfa4c05885",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfOfp45ON9ed5lLaf0ZmdD9OwthrH",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1808,
+    "cached_input_tokens": 0,
+    "output_tokens": 14,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001878,
+  "input_bound_exceeded": false,
+  "latency_ms": 1092,
+  "output_status": "ok",
+  "answer": "Only the characteristics can serve as the lines of discontinuity",
+  "abstained": false,
+  "provider_response": {
+    "text": "Only the characteristics can serve as the lines of discontinuity",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfOfp45ON9ed5lLaf0ZmdD9OwthrH",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Only the characteristics can serve as the lines of discontinuity",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793535001,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 14,
+        "prompt_tokens": 1808,
+        "total_tokens": 1822,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1805
+        }
+      }
+    }
+  }
+}
