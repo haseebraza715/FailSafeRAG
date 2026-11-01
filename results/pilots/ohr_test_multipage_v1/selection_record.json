@@ -1,0 +1,2846 @@
+{
+ "algorithm": {
+  "allocation": "per-stratum minimum of 1 where feasible, then largest remainder against proportional quotas; ties -> larger pool, then stratum name",
+  "eligibility_rule": "one raw QA name, exactly one source PDF candidate with audit status verified_complete, and a gt reference; missing or empty OCR never excludes",
+  "exclusion_rule": "documents selected by the named frozen pilots are removed from the eligible pool before allocation",
+  "identity_rule": "canonical doc id = NFC of the gt inventory key the QA doc_name resolves to (exact, documented alias, or Unicode NFC), as recorded by the asset audit",
+  "inputs_used": "document identity, doc type and source status only; never answers, evidence strings, string-match results or model outputs",
+  "name": "stratified-hash-rank-v1",
+  "page_rule": "documents with at least 2 PDF pages",
+  "pool_rule": "documents with at least one test question",
+  "question_rule": "only questions in the splits ['test']",
+  "within_stratum": "ascending sha256(seed, 'select', doc_id); independent of input order"
+ },
+ "allocation": [
+  {
+   "allocated": 58,
+   "doc_type": "academic",
+   "eligible_documents": 58,
+   "proportional_quota": 58.0
+  },
+  {
+   "allocated": 79,
+   "doc_type": "administration",
+   "eligible_documents": 79,
+   "proportional_quota": 79.0
+  },
+  {
+   "allocated": 41,
+   "doc_type": "finance",
+   "eligible_documents": 41,
+   "proportional_quota": 41.0
+  },
+  {
+   "allocated": 68,
+   "doc_type": "law",
+   "eligible_documents": 68,
+   "proportional_quota": 68.0
+  },
+  {
+   "allocated": 47,
+   "doc_type": "manual",
+   "eligible_documents": 47,
+   "proportional_quota": 47.0
+  },
+  {
+   "allocated": 22,
+   "doc_type": "news",
+   "eligible_documents": 22,
+   "proportional_quota": 22.0
+  },
+  {
+   "allocated": 12,
+   "doc_type": "textbook",
+   "eligible_documents": 12,
+   "proportional_quota": 12.0
+  }
+ ],
+ "composition": {
+  "eligible_pool": {
+   "doc_type": {
+    "academic": 58,
+    "administration": 79,
+    "finance": 41,
+    "law": 68,
+    "manual": 47,
+    "news": 22,
+    "textbook": 12
+   },
+   "documents": 327,
+   "documents_with_empty_ocr_pages": 104,
+   "documents_with_missing_ocr_pages": 15,
+   "evidence_page_ocr_status": {
+    "empty": 18,
+    "missing": 1,
+    "ok": 927
+   },
+   "evidence_source": {
+    "chart": 123,
+    "formula": 105,
+    "multi": 21,
+    "reading_order": 3,
+    "table": 285,
+    "text": 409
+   },
+   "list_valued_evidence": 114,
+   "multi_page_evidence": 114,
+   "ocr_pages": {
+    "empty": 261,
+    "missing": 16,
+    "ok": 6332
+   },
+   "page_count_bins": {
+    "2-5": 89,
+    "21-50": 24,
+    "6-20": 192,
+    ">50": 22
+   },
+   "pages": 6609,
+   "question_scripts": {
+    "han": 7,
+    "none": 939
+   },
+   "questions": 946
+  },
+  "note": "sample descriptions, not accuracy results",
+  "pilot": {
+   "doc_type": {
+    "academic": 58,
+    "administration": 79,
+    "finance": 41,
+    "law": 68,
+    "manual": 47,
+    "news": 22,
+    "textbook": 12
+   },
+   "documents": 327,
+   "documents_with_empty_ocr_pages": 104,
+   "documents_with_missing_ocr_pages": 15,
+   "evidence_page_ocr_status": {
+    "empty": 18,
+    "missing": 1,
+    "ok": 927
+   },
+   "evidence_source": {
+    "chart": 123,
+    "formula": 105,
+    "multi": 21,
+    "reading_order": 3,
+    "table": 285,
+    "text": 409
+   },
+   "list_valued_evidence": 114,
+   "multi_page_evidence": 114,
+   "ocr_pages": {
+    "empty": 261,
+    "missing": 16,
+    "ok": 6332
+   },
+   "page_count_bins": {
+    "2-5": 89,
+    "21-50": 24,
+    "6-20": 192,
+    ">50": 22
+   },
+   "pages": 6609,
+   "question_scripts": {
+    "han": 7,
+    "none": 939
+   },
+   "questions": 946
+  }
+ },
+ "config": {
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "dataset": "OHR-Bench",
+  "inspection": {
+   "enabled": false
+  },
+  "noisy_text_source": "MinerU",
+  "output_dir": "results/pilots/ohr_test_multipage_v1",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "pilot_id": "ohr_test_multipage_v1",
+  "purpose": "Final test sample approved in docs/research/faar-vs-gated-preregistration.md section 15.",
+  "qa_source": "OHR-Bench/data/qas_v2.json",
+  "reference_text_source": "gt",
+  "schema_version": 1,
+  "selection": {
+   "algorithm": "stratified-hash-rank-v1",
+   "documents": "all",
+   "exclude_documents_of_pilots": [
+    "ohr_dev_v1",
+    "ohr_dev_v2",
+    "ohr_long_dev_v1"
+   ],
+   "min_pages": 2,
+   "minimum_per_available_stratum": 1,
+   "pool": "test",
+   "question_splits": [
+    "test"
+   ],
+   "seed": 20261101,
+   "stratify_by": "doc_type"
+  },
+  "split": "config/datasets/ohr_split.json"
+ },
+ "config_sha256": "876e8d2b154dc19c46ecce44b61848e8d2efdeb7253d75b3e6ed779559a0fa32",
+ "manifest_digests": {
+  "evaluation": "67e201ae77894e647fbf395ca784f53a1d96766cca7ee937c59090d4b85c2437",
+  "runtime": "7a80f1db83e2d9a9848521c0cfc027a210c333daf5630b6e6a24487e7c9f7e36"
+ },
+ "pilot_id": "ohr_test_multipage_v1",
+ "pool": {
+  "eligible_documents": 327,
+  "eligible_sha256": "d195bcc92a5c9f9f9ae8116603724acc43953aba886c8c4f892c5a45275e776e",
+  "excluded_pilots": [
+   {
+    "documents": 30,
+    "pilot_id": "ohr_dev_v1",
+    "selection_digest": "2e2d5061debfb935eb5cdea27cea61273c8064b308e5af5f018d351f458cdd92"
+   },
+   {
+    "documents": 201,
+    "pilot_id": "ohr_dev_v2",
+    "selection_digest": "0d36bf39b9d0d37f623b13bc41f8bc7d0e80de94e62abbdd775f068eb945d657"
+   },
+   {
+    "documents": 101,
+    "pilot_id": "ohr_long_dev_v1",
+    "selection_digest": "a07fb3d5497fcf2817f261b0348519ab0184cd83fd7d325e1c7cbf37b4595e66"
+   }
+  ],
+  "pool_documents": 567,
+  "source_exclusions": [],
+  "train_exclusive_documents": 343
+ },
+ "schema_version": 1,
+ "seed": 20261101,
+ "selected_documents": [
+  {
+   "doc_id": "academic/2305.02437v3",
+   "doc_type": "academic",
+   "rank_key": "6f40981e328ee0a6a5389a79ca71035553d3ea3fbef1de997aa9175a092d2c5d"
+  },
+  {
+   "doc_id": "academic/2305.14160v4",
+   "doc_type": "academic",
+   "rank_key": "4431809322b7f800ad4467ad7ec01bbb824ac9a6eb5f71377975b0681984aaa6"
+  },
+  {
+   "doc_id": "academic/2310.11511v1",
+   "doc_type": "academic",
+   "rank_key": "011c64fd1876508374642c8c0201ab6a0bcfac03a0c0f80021cc81fc124a4643"
+  },
+  {
+   "doc_id": "academic/2402.03216v4",
+   "doc_type": "academic",
+   "rank_key": "241e3a6f0ed19155a10c1e72b3c8ccf89110179e8bd9b6edb5a80993f9576526"
+  },
+  {
+   "doc_id": "academic/2403.20330v2",
+   "doc_type": "academic",
+   "rank_key": "1562a6248e65b7b41b7e85e78762cc752b48dd325ff397294878ac00e47833c1"
+  },
+  {
+   "doc_id": "academic/2404.10198v2",
+   "doc_type": "academic",
+   "rank_key": "c1dcf0ef31a88447b84e888ccf158f3d0418e723ae30ffe48ba2eba3253b2134"
+  },
+  {
+   "doc_id": "academic/2405.14458v1",
+   "doc_type": "academic",
+   "rank_key": "b858581558cb35ed1c057b3d25c961fbd36872b37510c9bf9016ced58874b738"
+  },
+  {
+   "doc_id": "academic/2405.14831v1",
+   "doc_type": "academic",
+   "rank_key": "c7759488ee7540515205f1d404e71d85017b4a1a06d1f1c4d7347a27a1db6363"
+  },
+  {
+   "doc_id": "academic/2409.01704v1",
+   "doc_type": "academic",
+   "rank_key": "23e245db7cd5ef187363c9d9b112325a910c4f292529d35aec4f1701b37033ae"
+  },
+  {
+   "doc_id": "academic/2409.16145v1",
+   "doc_type": "academic",
+   "rank_key": "61e4d61a6e738ab38f268f136f1ff76e4929b13e082489a25d209f22a48fdca0"
+  },
+  {
+   "doc_id": "academic/DUDE_0135477b3fdb890091645e49a17a0721",
+   "doc_type": "academic",
+   "rank_key": "dc25f1d10667e6c53f73ed2dc955ece3026c6c0bec85ef966d6cbd21a59ca641"
+  },
+  {
+   "doc_id": "academic/DUDE_056ec08f1e10c8b9dbd2360eee191178",
+   "doc_type": "academic",
+   "rank_key": "5f708efbf2edcb2a3528463f39b66c78c31f94dc7f53fd7c2cf574cf2b6c93e3"
+  },
+  {
+   "doc_id": "academic/DUDE_07c35f799df1356724315b197d80dd0f",
+   "doc_type": "academic",
+   "rank_key": "bb54aa2be616b05d006d7053aedc1aff4682e60ca07dbe4a366e79bc97b96f73"
+  },
+  {
+   "doc_id": "academic/DUDE_0ec3ccac1365a4c23bd09bbdc23acc77",
+   "doc_type": "academic",
+   "rank_key": "5557513061d302c3906c7aeafc43ef460bfeaa8909a0066e5003681cf974d4bb"
+  },
+  {
+   "doc_id": "academic/DUDE_101d9f69527dcdab20ea04abe6236816",
+   "doc_type": "academic",
+   "rank_key": "fbd0da4c17c4a6464933a9b3170f66d8e886290ed98944302340b12b2af94392"
+  },
+  {
+   "doc_id": "academic/DUDE_158bfc97cd496d509a0ced89c07cb9f9",
+   "doc_type": "academic",
+   "rank_key": "affd428ad4ff1ee96d75e524f43447cff5b70a122ff9a99eb602fcd50cd1ca7e"
+  },
+  {
+   "doc_id": "academic/DUDE_1778332e22e9d09b0a51c90d12e23a0f",
+   "doc_type": "academic",
+   "rank_key": "75c29de7e61c21545661ea8000cd50b27d3b8643aec93129c0bd2cbf3a4fb7a6"
+  },
+  {
+   "doc_id": "academic/DUDE_1c6061aa2d4c3167592fff8e35e5100a",
+   "doc_type": "academic",
+   "rank_key": "7aad009c395674ebdb3de60aa9ee9487369fc1d3c3887780ff0b29fbcb466bdb"
+  },
+  {
+   "doc_id": "academic/DUDE_1d378ff352050b31087089e418a4d7b6",
+   "doc_type": "academic",
+   "rank_key": "d4c58264563b21638504279006a4b31d9dabbb09a8cfc71e5bda02c6db66093d"
+  },
+  {
+   "doc_id": "academic/DUDE_1f7e4a19a7fdab7f8eb19397b2424ac4",
+   "doc_type": "academic",
+   "rank_key": "096e5e73c8ca8c4d38e6e34e87dae07f59e5995b99eabe1f8d49ed7b6d11dd9f"
+  },
+  {
+   "doc_id": "academic/DUDE_22afa7439bc9f31cd34cd1d50019e80c",
+   "doc_type": "academic",
+   "rank_key": "680bd45cd8680dec8808de5ae15e1d77992fca7f5fc16ea5720af9e7d69db0d7"
+  },
+  {
+   "doc_id": "academic/DUDE_27f0eaac13c823483721670829682355",
+   "doc_type": "academic",
+   "rank_key": "72fb153571927dc2439acc81661b2f4d85c82d0effac774ca45a2b42d166174c"
+  },
+  {
+   "doc_id": "academic/DUDE_30608a90fc85ee4a76f322ea5e11de22",
+   "doc_type": "academic",
+   "rank_key": "c6d9ec9cd206e033949c795e78766216a28dd2768ad3bc0124d796dcee3284b2"
+  },
+  {
+   "doc_id": "academic/DUDE_357a4e79427841e3157e31aa6d51af4b",
+   "doc_type": "academic",
+   "rank_key": "b930f8803d04b39a21eb2bd84bbc00a1427d73ca8d6369551515a5260e137a08"
+  },
+  {
+   "doc_id": "academic/DUDE_3746048cf93a87c4c4896ae35fa21b70",
+   "doc_type": "academic",
+   "rank_key": "6ad9d302856aa09bc7db36b5c60099c4e9e8e0e031300658771e7061be5f3033"
+  },
+  {
+   "doc_id": "academic/DUDE_41df437fcc0fe3043493fa950bf9ddf2",
+   "doc_type": "academic",
+   "rank_key": "92deab227354efb9b7bc0e754a70f0ca74372295ef5c7cf8185d82aaa12ff0bb"
+  },
+  {
+   "doc_id": "academic/DUDE_42514b7cca4c98f55a3a344d9b3bac68",
+   "doc_type": "academic",
+   "rank_key": "7ce01a6a7ce6e08320423ca396153b28db73da7a35aaa5ec2c601c5eea0820cf"
+  },
+  {
+   "doc_id": "academic/DUDE_440eaee68e957bef4c64b7c5958000cc",
+   "doc_type": "academic",
+   "rank_key": "f51eb388680a1f5690ab387a12aaf1bd81ef7219b62fde2243182e8fa0106dbe"
+  },
+  {
+   "doc_id": "academic/DUDE_4765549e3002b59377acc1905d969e0e",
+   "doc_type": "academic",
+   "rank_key": "4dc95640592d9e0275d5b648898bfb07108881ada42b9b2696d39e3b15ba797d"
+  },
+  {
+   "doc_id": "academic/DUDE_4814dd54514eb8d44911bd4a16cec351",
+   "doc_type": "academic",
+   "rank_key": "3c9130495788ac2c3f06bf15d837d5bab0560a5bd6e4814161d9e62bf6c08af4"
+  },
+  {
+   "doc_id": "academic/DUDE_4a80f5ebfc82adb6ee48a4f644c81941",
+   "doc_type": "academic",
+   "rank_key": "9868dac7a6bae6822463e73550f21040b3ae42a3c61e47199d31a83ad6c5237b"
+  },
+  {
+   "doc_id": "academic/DUDE_5a5dd9d75260fb6a0fe33c02f49f19fe",
+   "doc_type": "academic",
+   "rank_key": "508d841df474ab610715160808f251261f20625ea5dbb42a7675db24fa9de3ea"
+  },
+  {
+   "doc_id": "academic/DUDE_5bc793e489d56d7ab7c94ae9344e225b",
+   "doc_type": "academic",
+   "rank_key": "a45514af47fc89bff642b5324186e359dee7cfbe1c0dfbfae56626ed10866b8c"
+  },
+  {
+   "doc_id": "academic/DUDE_622217e58cbf46af612d4cbc9abbeb74",
+   "doc_type": "academic",
+   "rank_key": "3288a2f78e10f378aa99a257f51fae4ec3a1139aceb3b51bb1ae669c92b166af"
+  },
+  {
+   "doc_id": "academic/DUDE_67ef6c0914eb8b62048f35a58ec1ffbf",
+   "doc_type": "academic",
+   "rank_key": "f963d2a569bc333d70515a2f95cba0a3088d39f35890557ea8d02603a89e393d"
+  },
+  {
+   "doc_id": "academic/DUDE_68dc234e676960b502201912f591ee14",
+   "doc_type": "academic",
+   "rank_key": "46c6440e317ae81b206fca3bca2efc71804240055aa6e716beb6070caa876471"
+  },
+  {
+   "doc_id": "academic/DUDE_698bba535087fa9a7f9009e172a7f763",
+   "doc_type": "academic",
+   "rank_key": "b16fd79a46c4ce858193f98f056f4fdbaca74e459f26519b67c3c752532e2fcc"
+  },
+  {
+   "doc_id": "academic/DUDE_6a5748c8b368a75d8838418dfc22cc4c",
+   "doc_type": "academic",
+   "rank_key": "bf6ffbd2f981378760d1b31bcc168d86c2baa2e14db8991eb7bb7b47a456c290"
+  },
+  {
+   "doc_id": "academic/DUDE_6b62950f2e35111b8a3bc8251cf4002d",
+   "doc_type": "academic",
+   "rank_key": "b89ee4ad8a45f6ee1d22499415c956ad64068b4c36e691bc2c4995aef0e25911"
+  },
+  {
+   "doc_id": "academic/DUDE_72ef1608e84433b5a57db878963e7439",
+   "doc_type": "academic",
+   "rank_key": "98bdd3785d62d11cec5c1d716adf85fa06f17a22820e06398a8b7434d78273e7"
+  },
+  {
+   "doc_id": "academic/DUDE_73020d676d519ae6c1086d55da428bb2",
+   "doc_type": "academic",
+   "rank_key": "788c947ff6891eec9333a4a7a7854e5cf8f865276cbb8cd7468ed5669a0b4481"
+  },
+  {
+   "doc_id": "academic/DUDE_7a5895d89514def2a56e051c8e584fa9",
+   "doc_type": "academic",
+   "rank_key": "db991df0adf9c02a991a01fa24bf9659de5ad6d81c21fbe59deafd890761e43f"
+  },
+  {
+   "doc_id": "academic/DUDE_83de527c915f2a4fc3e399bb5f58e293",
+   "doc_type": "academic",
+   "rank_key": "897f34a4a182e41d8f91fe6ca1e143778d57447a3a92c8ee067923659e039b56"
+  },
+  {
+   "doc_id": "academic/DUDE_8a25853a013600e52431f6075c2b97f1",
+   "doc_type": "academic",
+   "rank_key": "1121d6a8679e078c45b80a3ec8710407aa7fac938ca28e08eff99b59c3847882"
+  },
+  {
+   "doc_id": "academic/DUDE_8a2ca0ad1444913f4f80ec03cd2a8bf6",
+   "doc_type": "academic",
+   "rank_key": "7bfbfe8bf2181f32bff239c4eea140781babf87cfb03c1d0066e010a897aa55b"
+  },
+  {
+   "doc_id": "academic/DUDE_8a3ead53e05c32566f45f549b9821a4a",
+   "doc_type": "academic",
+   "rank_key": "e9dc1e65858066bfcbd74a20a406fb261f2f28b890680f57c6c30df9b2889984"
+  },
+  {
+   "doc_id": "academic/DUDE_9cabb2bbb2fa4a1aa35867d26645f2ca",
+   "doc_type": "academic",
+   "rank_key": "cd4bcb12ba67780336ab8f12063b4dc1e8d910088626581da4b883cfe159de68"
+  },
+  {
+   "doc_id": "academic/DUDE_a0039a69116e6f8fb5a243eb51d93bd0",
+   "doc_type": "academic",
+   "rank_key": "dac326e0c9187c02bd8f0cc3803f67fe7132c52a8be54df8bd58ef52b74fdff7"
+  },
+  {
+   "doc_id": "academic/DUDE_a605e8c7fccd9716338a3fde2f0e1284",
+   "doc_type": "academic",
+   "rank_key": "3d8b56c1fc0cf4e799dc87f5de98d816e12a7f1248f5a55bcc5a3a62c78ad2bb"
+  },
+  {
+   "doc_id": "academic/DUDE_afe620b9beac86c1027b96d31d396407",
+   "doc_type": "academic",
+   "rank_key": "e7fdb9f1ab1b63c832a790312dc1cfdbbb8568023a121b924b0679f2f84ee9af"
+  },
+  {
+   "doc_id": "academic/DUDE_b13c84e91b5816236faf66262ac673f0",
+   "doc_type": "academic",
+   "rank_key": "732d4d853491db32cc7ef34750af0756d10d8bc872e8078768a57c98b36d0a48"
+  },
+  {
+   "doc_id": "academic/DUDE_b4d56265b2693dbb8649bf997a06551c",
+   "doc_type": "academic",
+   "rank_key": "a5e60cd542c0b15e82be4c72a72dced6aa6dd8146672a235de561ca607fc39ed"
+  },
+  {
+   "doc_id": "academic/DUDE_d1e61f85b2dc6a50309cd4d38259c8ed",
+   "doc_type": "academic",
+   "rank_key": "4a6155208552feae083b13766bef49a10d544d3008e23e3fe5933f9dba2cde19"
+  },
+  {
+   "doc_id": "academic/DUDE_d4ca21a956d0ddce721dfd72eb089fea",
+   "doc_type": "academic",
+   "rank_key": "abe60702962a41c593da848dfe102cd3a31ae0df0b12f0fc1e3b7d636e02c454"
+  },
+  {
+   "doc_id": "academic/DUDE_d9ec56e4efde119e3957cdd4589b248c",
+   "doc_type": "academic",
+   "rank_key": "33afea8085769d57e1285b821997e02bf567dedc8be27eb3a8f464b23ace7de6"
+  },
+  {
+   "doc_id": "academic/DUDE_e13494e894f9a46697b1df0ee88f474b",
+   "doc_type": "academic",
+   "rank_key": "9ae8e34c73b7179d29deeb365790622aab797bbaf972fd5580b916c9ec4934ce"
+  },
+  {
+   "doc_id": "academic/DUDE_e6f3855472231a7ca6aada2f8e85fe5a",
+   "doc_type": "academic",
+   "rank_key": "9edf4ff527e1748f6cfa08858ef29b6184f548cffab268e32919d3b395fab6fc"
+  },
+  {
+   "doc_id": "academic/DUDE_fadbcaa2d27182b0f5fa87677f329708",
+   "doc_type": "academic",
+   "rank_key": "5415b7fe6c9df0483d9391f4874a9a00ff9861a39025ff9a0e4ab5de892a9607"
+  },
+  {
+   "doc_id": "administration/DUDE_022e426491cae00aa10f1ff2fe5fec1f",
+   "doc_type": "administration",
+   "rank_key": "d3b8e12d58c92ff5fa197d2926381f61c6492a14544a1e0fb5cd8643d9dcbe26"
+  },
+  {
+   "doc_id": "administration/DUDE_0657b292eb654213a00b57ac137f8666",
+   "doc_type": "administration",
+   "rank_key": "6826607367afbdcb2f2e1f41b82f57abda98660a7c143982e62c903b46a453dc"
+  },
+  {
+   "doc_id": "administration/DUDE_06a099741b8a087d4731575b6360fb0d",
+   "doc_type": "administration",
+   "rank_key": "d3e28f9b07b01bca7464a198564ea6da9b58d3588c36966c5732684833ce8efd"
+  },
+  {
+   "doc_id": "administration/DUDE_099847dc7daae70c00e3343416641f03",
+   "doc_type": "administration",
+   "rank_key": "8069261a6d49a35144db5fb55c2b8713dbe864bea19f7df32c10b7c84b86d4cb"
+  },
+  {
+   "doc_id": "administration/DUDE_0e10a9ef231c049b48ac66467fca17e8",
+   "doc_type": "administration",
+   "rank_key": "b2aa858576a398fac3b896f5f8771fe1ec8a18c29f195c255b51fc1fd32cb1c8"
+  },
+  {
+   "doc_id": "administration/DUDE_0e22690bb0a737fae78b1f8c6fc0dede",
+   "doc_type": "administration",
+   "rank_key": "d64516ec025f356e1477f22bbcd955c9785612a7640a70790441cdaa014684e0"
+  },
+  {
+   "doc_id": "administration/DUDE_0efb341dfb77bee6be16348a534eb9db",
+   "doc_type": "administration",
+   "rank_key": "8b27fd3e975c795e42e0c0a5b0c8191aadecb3713ff2d03a546f257ba26ac39c"
+  },
+  {
+   "doc_id": "administration/DUDE_0f99f130f4678d682cf3c0313644928b",
+   "doc_type": "administration",
+   "rank_key": "1fe01e214fccc99291d6e3ab20848c985a18ce4a6cf52f5f9d881302d180e550"
+  },
+  {
+   "doc_id": "administration/DUDE_182228e839cfb822d19f389d502187be",
+   "doc_type": "administration",
+   "rank_key": "65ecf2c0bb04c7dc707fd2b1315859488c58eadd71ebdd63d4bd14329ed77926"
+  },
+  {
+   "doc_id": "administration/DUDE_1cfbe42dec72fffe1ef2df4f9d5bf077",
+   "doc_type": "administration",
+   "rank_key": "722e95af3a400dff64a67208900344bca1a18741548672c4fd96c95c7841f4ce"
+  },
+  {
+   "doc_id": "administration/DUDE_1dc3bde19bcbc3540827ae86875b3ee6",
+   "doc_type": "administration",
+   "rank_key": "1864870b5455d0edcb2c3f68c9e7b97a1194c783381b7fd2be42dc14f2797bd5"
+  },
+  {
+   "doc_id": "administration/DUDE_1f31d620634896d8c87d7665e8ca1e13",
+   "doc_type": "administration",
+   "rank_key": "d79fb9f669ac7a7b419d0aa5abad6ac732b9d8d103287f9ab0e30e5d348aa589"
+  },
+  {
+   "doc_id": "administration/DUDE_1fdfa288d7d2309d5d9c6c72d460eb52",
+   "doc_type": "administration",
+   "rank_key": "586bd3cb9fb0f36cc2028e6faf78a2b96deddd2c9fe98e1610a918cce49bec14"
+  },
+  {
+   "doc_id": "administration/DUDE_20558e2978024245bb02b61d700e1b8c",
+   "doc_type": "administration",
+   "rank_key": "23d26c39852cf6353288854a87869f53f8bf4282a60cf119514121e63c1b5945"
+  },
+  {
+   "doc_id": "administration/DUDE_208ad3d9c80175d51e5bd94730c987a8",
+   "doc_type": "administration",
+   "rank_key": "a4bc599ad9e538bedf55a0369ac5847357bb80dbd39804a8cdc6bf2ee4adc0d5"
+  },
+  {
+   "doc_id": "administration/DUDE_2198693c4f2931d6ad513e2e518bac98",
+   "doc_type": "administration",
+   "rank_key": "8be7539273d2892a37afa4edc53e5b79feeba18bfdf3bb3ae9cfe24d11a2de43"
+  },
+  {
+   "doc_id": "administration/DUDE_2b2b79bdd3b40f8cdb638363579f2b68",
+   "doc_type": "administration",
+   "rank_key": "ddc45c4d1fb37c249efef8ab406c3624840cdaa3719cbf493e2ff6e6efdf08fb"
+  },
+  {
+   "doc_id": "administration/DUDE_2d071d2a3ef2e812c45e5c3fff0b502a",
+   "doc_type": "administration",
+   "rank_key": "3a05a34c9cdfd0f4c12cc3ed02db756ad1bcd51f476cd63d6ee9b559c7fd64a6"
+  },
+  {
+   "doc_id": "administration/DUDE_2fc6472cd340da81d0a3e2c78cc3c262",
+   "doc_type": "administration",
+   "rank_key": "6238398a782214759d7e4a0ed96739126ba7b73f11973dfb46ac0157cd2fb143"
+  },
+  {
+   "doc_id": "administration/DUDE_30848bef8c70a47cdef077c3f59ee009",
+   "doc_type": "administration",
+   "rank_key": "03d0543c92d4a9af6526fd3f5c237559d71995351b9a62f279e2606af4e26b16"
+  },
+  {
+   "doc_id": "administration/DUDE_32ce4220381a83d67c1876c51c3107b1",
+   "doc_type": "administration",
+   "rank_key": "bc28a19b91ca4749ab1ce6806c901664a3dbbd23f4b49675b493fcd003d1c1d7"
+  },
+  {
+   "doc_id": "administration/DUDE_39d80c85d34b90077166ba5a3ead4989",
+   "doc_type": "administration",
+   "rank_key": "25b211b433a52a58a3b00849d22886290f69dfb2ccc5c0339e73578e2da0a386"
+  },
+  {
+   "doc_id": "administration/DUDE_3d7f6e11d47bc35aecc2672581933006",
+   "doc_type": "administration",
+   "rank_key": "d827cbcdc8a54592efb1a318adbbf631e065e82a22acaeba83f3a8fcf55643a0"
+  },
+  {
+   "doc_id": "administration/DUDE_418de08aeec6452b8ab15be8d0500891",
+   "doc_type": "administration",
+   "rank_key": "3137ec33d3a967118ae9cf5a5386b0d24538d65c7149125c0135873be04c4ab6"
+  },
+  {
+   "doc_id": "administration/DUDE_41c64e955f9587ab8d430bdb0d51a3f3",
+   "doc_type": "administration",
+   "rank_key": "b7831dcac6653b6b732019e0873eff0cf9ed3854049e112507887d93a3cf1a9d"
+  },
+  {
+   "doc_id": "administration/DUDE_469c4349b5969c97c734b41e0f9275ae",
+   "doc_type": "administration",
+   "rank_key": "e4f004ebb9f35e0d2e78f491814a983032b74e97ee067ae90790f656d0656999"
+  },
+  {
+   "doc_id": "administration/DUDE_492c67738d0444d67cb75e13ee1a5716",
+   "doc_type": "administration",
+   "rank_key": "016923fb44ad12e8dfa97bf42b24b6ab8709c311c5bd7843814b971687616806"
+  },
+  {
+   "doc_id": "administration/DUDE_4e21a534c257e8fc24467f659a21f228",
+   "doc_type": "administration",
+   "rank_key": "3f5ffbbd5d44b14002c4513f74ad5d3d4d6541be800bf7d5a5d023816c83be9e"
+  },
+  {
+   "doc_id": "administration/DUDE_51eff2469ca1333116cbe7a45696e13f",
+   "doc_type": "administration",
+   "rank_key": "1a18e10d9a80fa6459cd6730dfe3125b21b313439eb9280d44f0a3a43c3c8b00"
+  },
+  {
+   "doc_id": "administration/DUDE_58e83686e3b6496d2d03c010293d39cb",
+   "doc_type": "administration",
+   "rank_key": "e977f842d1eb349b5d1a8318f3ab8ba5e2ce91e2fe5ac7486eb3f619c8f74a50"
+  },
+  {
+   "doc_id": "administration/DUDE_5a25bfefdc81b21734ba6872f10d9ae6",
+   "doc_type": "administration",
+   "rank_key": "bab59c969f5c353044a53c82b8c8e8c05b4e7cdd2b55288906cccc3c5212ec21"
+  },
+  {
+   "doc_id": "administration/DUDE_5b1147787bc78c7c394c2d613a685b6c",
+   "doc_type": "administration",
+   "rank_key": "5dcebe22fd5c0ce99d22eae034ca12d2e275ced8fdd5ffc2a4f543149d3b327e"
+  },
+  {
+   "doc_id": "administration/DUDE_5d6d55c850c9c18218b7371a1d0bc246",
+   "doc_type": "administration",
+   "rank_key": "d87d8fe459df68e910c6d3f2bbf9e59227e5b379569a7d5a547edc6068a4eb57"
+  },
+  {
+   "doc_id": "administration/DUDE_5de164b84771775d71a01f0f16792bcb",
+   "doc_type": "administration",
+   "rank_key": "c03504cbf1b877c44ba9d4d59628d3127f10b183dd80d55ff32edaa4dc0cf014"
+  },
+  {
+   "doc_id": "administration/DUDE_5eb8aed7951d5eea7f39d01674b663a4",
+   "doc_type": "administration",
+   "rank_key": "05a649e36aa12f8e8fe4858553df2cda3031be25c8ff2bab227311ae409df05c"
+  },
+  {
+   "doc_id": "administration/DUDE_5f5ab30a69686faf4d9f76ab103b8944",
+   "doc_type": "administration",
+   "rank_key": "cb5e7efc9bb10049b3ca995de3959fe4663f8c71dee0d2099ead19aa9c524e65"
+  },
+  {
+   "doc_id": "administration/DUDE_5fca69305ae96898ffdb285a1946fa04",
+   "doc_type": "administration",
+   "rank_key": "8fc32be5d3ea378acd2873c41960e844c48ee16c56ed1b2f465b069e039ac195"
+  },
+  {
+   "doc_id": "administration/DUDE_63a7691bc22fb1581c768ad3704146fe",
+   "doc_type": "administration",
+   "rank_key": "9dcdab1d548bd9f473f255cd029bf2b599ab2b00d9122fc6d22446b339d7e606"
+  },
+  {
+   "doc_id": "administration/DUDE_67807cdcff5e62e7bf8ba30c0e7a075e",
+   "doc_type": "administration",
+   "rank_key": "9450c1c6b064aaf3be4fc42e155792cafbfe9b69efd184dea26f4aad526b4036"
+  },
+  {
+   "doc_id": "administration/DUDE_689505bdc55730c70c96401944c41c97",
+   "doc_type": "administration",
+   "rank_key": "dbc855cefcbb7549382af75046b08d72d3f7e727552359329b6ff15c1fde8844"
+  },
+  {
+   "doc_id": "administration/DUDE_69249955a489ef39fdea892bc68aeacd",
+   "doc_type": "administration",
+   "rank_key": "7aec54cfc35e1fc8fb3cda4a9fc1b10a7a2a7060a896bc4918f02ac4fe3caf1a"
+  },
+  {
+   "doc_id": "administration/DUDE_692ea5531c3fcf6b5af1b836787b2133",
+   "doc_type": "administration",
+   "rank_key": "9dfd858c84dce46a37dafc2917f5b9f2a9f1d57b6c9b4dc776eca8515a5856f8"
+  },
+  {
+   "doc_id": "administration/DUDE_6a20828592382b248eeaa7a9b20ce8ec",
+   "doc_type": "administration",
+   "rank_key": "20200f03f1cb79c72cd3f3a991d09f30ff854711e6e0bd45e5f13a0e1c438454"
+  },
+  {
+   "doc_id": "administration/DUDE_754ef7cb5bb921efbefd2e61977148da",
+   "doc_type": "administration",
+   "rank_key": "b487ad7030845ffc9dc00234da673ad3086c22e3e5a55c6989abe677d0ff9ad6"
+  },
+  {
+   "doc_id": "administration/DUDE_83532f3ed78e6953c328836ece425670",
+   "doc_type": "administration",
+   "rank_key": "f9e0a708afaf4abcc2a31636f5a6c9e961552dc625051a96226c3073ffce3390"
+  },
+  {
+   "doc_id": "administration/DUDE_89b5665df3507beff0e02b82fc7024ce",
+   "doc_type": "administration",
+   "rank_key": "63ba713c4b357d5767104f3282c5319126769b84a0fe4a2ef36d7643cc7cdfc8"
+  },
+  {
+   "doc_id": "administration/DUDE_89e1585bda5a4f315f97358c6969fca6",
+   "doc_type": "administration",
+   "rank_key": "3ba993ba85e6cbe49a3a2802d2a16ada0808210253e369c98f805dbd01611ec4"
+  },
+  {
+   "doc_id": "administration/DUDE_8e7c4cb542ad160f80fb3d795ada35d8",
+   "doc_type": "administration",
+   "rank_key": "abf7b26c91d2d2fd2573b0c6d9c47a5e694da6eb9dd36c754295ebe23b2f8c15"
+  },
+  {
+   "doc_id": "administration/DUDE_9dd3bc50eae21bf704809de42b2d5a8e",
+   "doc_type": "administration",
+   "rank_key": "892f25431b3b3e375ca86d8da63b23726ebcb77c5357f53bb1b8ab1099f160a8"
+  },
+  {
+   "doc_id": "administration/DUDE_a072a2e20bbb8dd49196f17144b5a3f1",
+   "doc_type": "administration",
+   "rank_key": "8f5522460416ed33c90552117b660c71fdc7e36903aff70181b7074adc03dd66"
+  },
+  {
+   "doc_id": "administration/DUDE_a28b40970b8a867da20d68570c66ce7b",
+   "doc_type": "administration",
+   "rank_key": "23d73a81a5795bd9e09ae744533e375285ebfe85a464f863127a1a7efe3624c1"
+  },
+  {
+   "doc_id": "administration/DUDE_a2ef3dbde89003fb50b69e4565bf165f",
+   "doc_type": "administration",
+   "rank_key": "592784a38dbb5473bcafe9977961d3febf0e2d23723656ebb1b03fbe8dd77224"
+  },
+  {
+   "doc_id": "administration/DUDE_a316f9cb668a61d1ed54668e176f6254",
+   "doc_type": "administration",
+   "rank_key": "cc6bb4845a5ce2cac42a6d889ce0c8b9a3115a7618c31dc219ae7be3898379dc"
+  },
+  {
+   "doc_id": "administration/DUDE_a77d8e23b8ff302d04dd6254e4a67159",
+   "doc_type": "administration",
+   "rank_key": "35f5ec9a49ba360c29f3cde100e48b250b62addc5ce7bd1194a395430a340e1a"
+  },
+  {
+   "doc_id": "administration/DUDE_ab20a33bc0bb38bd10a5fd09d4c84de0",
+   "doc_type": "administration",
+   "rank_key": "74331576e116cb4062f526ce3ce36e51f14949ee77a77864675607dce0a7281b"
+  },
+  {
+   "doc_id": "administration/DUDE_aee605ea2f6dec0a0086ebf1bebd081d",
+   "doc_type": "administration",
+   "rank_key": "b1f9beb677d1773d584ed02d84466e5ec440091fef759e28a7e9f840864d2fdf"
+  },
+  {
+   "doc_id": "administration/DUDE_af58e490d370b326100ed9df5caa6539",
+   "doc_type": "administration",
+   "rank_key": "6011a01cd80e4880f57cc62a279d9ecaa5f58d20110a382391d424ce2d97705b"
+  },
+  {
+   "doc_id": "administration/DUDE_b0fc5bd24c9d2e04b532107d2ab80c31",
+   "doc_type": "administration",
+   "rank_key": "a4f2a757764c52b40df8b595f4504d1752a2878c6e089e281ae0ce89a9ce5218"
+  },
+  {
+   "doc_id": "administration/DUDE_b1dee171f8ee0534db9edb6950dfdc54",
+   "doc_type": "administration",
+   "rank_key": "fdb18d03738bce0bce86338a5c7d5e7cad126781ef3cd4c341b14fa6f84ce25c"
+  },
+  {
+   "doc_id": "administration/DUDE_b3bdb82180ad8c84aa023f705bb6a173",
+   "doc_type": "administration",
+   "rank_key": "52e0b562fa80aaef363b4c5bd5c1f75c92dbe67fd3dcbf8a104865abe5db6f61"
+  },
+  {
+   "doc_id": "administration/DUDE_b522d413684679a3b963b8079191acce",
+   "doc_type": "administration",
+   "rank_key": "22c920d84816b97c86c6937663e52308a13f5b683c597b4612ea2beb43a7d44c"
+  },
+  {
+   "doc_id": "administration/DUDE_ba24cf0007338f4101c5a2a94eb415e2",
+   "doc_type": "administration",
+   "rank_key": "2013ea84a96924ad5f23de4238125e009c0b555241fad4cc015289ce04e2ce42"
+  },
+  {
+   "doc_id": "administration/DUDE_c820376a9e6a7f81477a85e39be05322",
+   "doc_type": "administration",
+   "rank_key": "00532d61d3597e13f2b916c769970e9debc2939d0c23b999d6c9e107bfcd6361"
+  },
+  {
+   "doc_id": "administration/DUDE_cadfcf3a02971e2f4b733c408a93f9fe",
+   "doc_type": "administration",
+   "rank_key": "dc1754ec981150a909e8a633306fea243bf05bedb9d8d5113aef54c242f82ba8"
+  },
+  {
+   "doc_id": "administration/DUDE_d02c71efb2744b583514b4cf65fb9c82",
+   "doc_type": "administration",
+   "rank_key": "a696c7b8945cfa10a2de0f53b2887504cc63d54d7abb8e46e9b7b2333ffe9e83"
+  },
+  {
+   "doc_id": "administration/DUDE_e639029d16094ea71d964e2fb953952b",
+   "doc_type": "administration",
+   "rank_key": "1919a8f74a58827eec1762dc9b45b465b99ad9042750ec707957bd38ea28b527"
+  },
+  {
+   "doc_id": "administration/DUDE_e6d91c551d367127c11fffd7f077c210",
+   "doc_type": "administration",
+   "rank_key": "a6d58485bbf9320dd707e01d1854119736a93f76e19f98870c35fef5205ac7e4"
+  },
+  {
+   "doc_id": "administration/DUDE_e79deb02a0c0e87511080836c5d4347b",
+   "doc_type": "administration",
+   "rank_key": "b19e1a6ef599db080b173fdd9ed4f893f6cbfd0c38d7a19a328029cd4332de87"
+  },
+  {
+   "doc_id": "administration/DUDE_ead50ea3382d22ecad9fa41f246f7681",
+   "doc_type": "administration",
+   "rank_key": "fb4bf0c03a38f5a7874db47805e2e9bb6cdfce022bef8864390d75993384c5c7"
+  },
+  {
+   "doc_id": "administration/DUDE_ee991b96b631a07f1bf5a39b3d723d71",
+   "doc_type": "administration",
+   "rank_key": "8b903b604d7e96068227ba205793415ab777c78c80e5432cb7ba446cc9b8f4b8"
+  },
+  {
+   "doc_id": "administration/DUDE_eefcc78eed46846c09810b37f92e4cfb",
+   "doc_type": "administration",
+   "rank_key": "3f5bbb2524c964929465715bd952832f798e2c4be74125fc8aefdd6e4e0ba5bf"
+  },
+  {
+   "doc_id": "administration/DUDE_ef121be44a0987f5eb7b8664b14ef7ee",
+   "doc_type": "administration",
+   "rank_key": "ee26bc7ac477e42c4683af6273d13dfeda9e1268c0a54c713c330268548bc12b"
+  },
+  {
+   "doc_id": "administration/DUDE_f09483101a6018918e1994421c9c5b24",
+   "doc_type": "administration",
+   "rank_key": "5c969f37257a7c5dd90478b346ed8a7866acbbc47e474aceb60d28b682022024"
+  },
+  {
+   "doc_id": "administration/DUDE_f73606aa7e1fc3ae0e68dbcd378e7205",
+   "doc_type": "administration",
+   "rank_key": "b4cf80f6a247813365c1178abdb07239d74b2617d5ae87170fc2104a6b306325"
+  },
+  {
+   "doc_id": "administration/DUDE_f74c7053a991c1cb08307b87678046bd",
+   "doc_type": "administration",
+   "rank_key": "8881d32f54a11ca5308b8862b38582921b9a6b7f68b83fdbe4483ba897d29892"
+  },
+  {
+   "doc_id": "administration/DUDE_f86d073b0d735ac873a65d906ba82758",
+   "doc_type": "administration",
+   "rank_key": "63996af3f8b596de8a074794b79ab649a298e50ce3bd83901ef9450e95626999"
+  },
+  {
+   "doc_id": "administration/DUDE_f8e0ae0c4c43771e46aa01d89a3c8ce2",
+   "doc_type": "administration",
+   "rank_key": "ebad02488ac90b6b756380f3690d737bedd7b2c43bd496861f48967998ad2bac"
+  },
+  {
+   "doc_id": "administration/DUDE_fdac8d1e9ef56519371df7e6532df27d",
+   "doc_type": "administration",
+   "rank_key": "d70a7b0377a8f07968d0e5c095371ce7891a72318e853c37998469a06143b8d2"
+  },
+  {
+   "doc_id": "administration/DUDE_fdd3308efacddb88d4aa6e2073f481d4",
+   "doc_type": "administration",
+   "rank_key": "0249e6544833101de555d7e74385bd522db1b6da17e1e6c1d394409b312546ab"
+  },
+  {
+   "doc_id": "finance/3M_2023Q2_10Q",
+   "doc_type": "finance",
+   "rank_key": "13b3903926678b45744417660918c949e2997545c5c73d42b45136831e6af191"
+  },
+  {
+   "doc_id": "finance/AES_2022_10K",
+   "doc_type": "finance",
+   "rank_key": "3409d79c01173549424d8ca8be78681cc20a464a12da388f4f85801f8c73c154"
+  },
+  {
+   "doc_id": "finance/AMAZON_2017_10K",
+   "doc_type": "finance",
+   "rank_key": "5874a813aa3c416c66c43ecb55054c1cfb90e314b5304978f271154282205833"
+  },
+  {
+   "doc_id": "finance/AMAZON_2019_10K",
+   "doc_type": "finance",
+   "rank_key": "6eb16812038c9f32a4a2001ab8aab2dffb99123b32fb74c76ae18cae4e680a2e"
+  },
+  {
+   "doc_id": "finance/AMD_2022_10K",
+   "doc_type": "finance",
+   "rank_key": "0ea679e4cf4e156be6a7e29ccc9d0f004e677131c08e53672e4a3b69ef7ae69b"
+  },
+  {
+   "doc_id": "finance/DUDE_026e416e05d6efc5f061a2165fd827c3",
+   "doc_type": "finance",
+   "rank_key": "8b911c7bac99755badca2e25f85d24ddef5447b217a8fb427c46976664687f31"
+  },
+  {
+   "doc_id": "finance/DUDE_026f7368e60d003ce320feae644ab80f",
+   "doc_type": "finance",
+   "rank_key": "ae52cced4da704de9ff554956e764292e0bb172f11bd6d2cd62d2f6c362a0be8"
+  },
+  {
+   "doc_id": "finance/DUDE_073c5e237cfc190effc8ff2a3b0f7fe5",
+   "doc_type": "finance",
+   "rank_key": "bf2b4567ea4e08663e12c936ece826f7066290c8384cc4d01fb7f99409802b8a"
+  },
+  {
+   "doc_id": "finance/DUDE_14e2b38682e240a0271398353da073bf",
+   "doc_type": "finance",
+   "rank_key": "e6ad1ac6acd03934b0c27226d4fe3666152576ca096a3fc5623cf385fcc68c05"
+  },
+  {
+   "doc_id": "finance/DUDE_17bf090664516bca69bc6e6ddc0835ca",
+   "doc_type": "finance",
+   "rank_key": "aa677a7669c33c4c3ac95e9e536fea57a2cc8813112ff2d382247add94e14196"
+  },
+  {
+   "doc_id": "finance/DUDE_19e2c7749fef1e5925397dccd70a709d",
+   "doc_type": "finance",
+   "rank_key": "62dfd2d3c0085a36e02faaaad61f482f71b704bbb6208b6c0b9c6107da82147c"
+  },
+  {
+   "doc_id": "finance/DUDE_1b8ee1c5da9c5c5e79a6233b3a190bd4",
+   "doc_type": "finance",
+   "rank_key": "38bc954f5e5231da626ebb920f7ba52fd05e4325b6f93dd14a960ab51fffd4ba"
+  },
+  {
+   "doc_id": "finance/DUDE_1c05e585ea1c0f394984e3fbe454779a",
+   "doc_type": "finance",
+   "rank_key": "167e17a89c3354c9706324528a422b2f7a9a4922cd04e80bfd75e78f61ede168"
+  },
+  {
+   "doc_id": "finance/DUDE_2089ef469f745aa455f8833829e586d6",
+   "doc_type": "finance",
+   "rank_key": "40281d4fbd79372a27de9538775b91f21e47b4111b5c6afaf3f831a7080e93df"
+  },
+  {
+   "doc_id": "finance/DUDE_23f3a1d986afd381a1afa31fb2c909ea",
+   "doc_type": "finance",
+   "rank_key": "ef06327bd52b4ce70ec32aa372b912ecc6b3769dc0bfd7fd84f343e9cf61931a"
+  },
+  {
+   "doc_id": "finance/DUDE_2658138cd3e6af802de36cc0079c39a5",
+   "doc_type": "finance",
+   "rank_key": "22c10b912419197d735d2f72fdced76454de81b8335172435f05f47f05b8837a"
+  },
+  {
+   "doc_id": "finance/DUDE_2879a049d77aae9eccbedf4e9af7ac70",
+   "doc_type": "finance",
+   "rank_key": "57d6bc5b96a2a393dcd22b182eacd75dd3fe790eff39eaaa97675e1773a4fada"
+  },
+  {
+   "doc_id": "finance/DUDE_2a4f630b97930d237501424020291801",
+   "doc_type": "finance",
+   "rank_key": "f760ee1f1a02577158a2975560cabea43edecf87bc7ddd341bb85f6d2367aa52"
+  },
+  {
+   "doc_id": "finance/DUDE_2accf320e30670fe3aa588db1d011b9a",
+   "doc_type": "finance",
+   "rank_key": "8d75211c0027ba3eedb60ca167d81f80054b7bf9ccb1fcd5f3df317c796f215b"
+  },
+  {
+   "doc_id": "finance/DUDE_39b236c1bc41a9cfb7a8077ab3fd2853",
+   "doc_type": "finance",
+   "rank_key": "db51df6d503d7821ff9ff2be36d30364df29055e874660a59470a562ebca7a04"
+  },
+  {
+   "doc_id": "finance/DUDE_3fa071f802e84d978b58ea4a8e88542b",
+   "doc_type": "finance",
+   "rank_key": "bf85ebb72c6202da21f810cea951244de627d4a65638389bac84a1d38cda7607"
+  },
+  {
+   "doc_id": "finance/DUDE_41a472a829a533f34735f712d47a28ef",
+   "doc_type": "finance",
+   "rank_key": "068f1ec3d38f2b761c5dfeea32bbe94677cef8d7fbb0f209e035bd38e4f533c7"
+  },
+  {
+   "doc_id": "finance/DUDE_4f3030e6432f07af55229eae15f63174",
+   "doc_type": "finance",
+   "rank_key": "62340b8d56f02df02cc1e32bcaf1fa7d64adf45442839e7ebf9a599b465563f2"
+  },
+  {
+   "doc_id": "finance/DUDE_5dacfc7a1f4ba3b3dafc9e491fc06cb1",
+   "doc_type": "finance",
+   "rank_key": "4d34bc4d3c6897bac153a68955833baf0991cd9003e93655b7653dbce2a4aa84"
+  },
+  {
+   "doc_id": "finance/DUDE_5dd6f5fec7819bf14a494b4f437f43d4",
+   "doc_type": "finance",
+   "rank_key": "2467cf4ba9396c542c26167c8d1a24b6d27b4af396dbd9c49a3080d72ffbc223"
+  },
+  {
+   "doc_id": "finance/DUDE_5eff9d45fd14e5a2c5aaff30d08acd43",
+   "doc_type": "finance",
+   "rank_key": "2ae7e8b8c76dcf81fec207701f7ddfd3d9cb1405d2a12aad5990554e341c4ce6"
+  },
+  {
+   "doc_id": "finance/DUDE_70e9ace09360e34cc312c59e3e7a4ce9",
+   "doc_type": "finance",
+   "rank_key": "720c0f99f65992ffd7e6ac916fa0dbf1d5b6659c7ad14003f37e7123f3e3ef4c"
+  },
+  {
+   "doc_id": "finance/DUDE_7363cf192645974b1c69377fee54d59e",
+   "doc_type": "finance",
+   "rank_key": "6e87d200afbf1ace0a266a55f15466780186221ba9906d4bff23aee4778f3d56"
+  },
+  {
+   "doc_id": "finance/DUDE_76aacf03aaea6245d83ea8ebf498a296",
+   "doc_type": "finance",
+   "rank_key": "2e048564a5d3f0de8142cb0001acf5a68b6480dd6f5434ba5f80c9517d0cda98"
+  },
+  {
+   "doc_id": "finance/DUDE_7815afd4c09fb3a266b51d676baab010",
+   "doc_type": "finance",
+   "rank_key": "05feaf979222ad4c60c6bbd00fcc017c757e42d36628f250234e1135fc6f9a7d"
+  },
+  {
+   "doc_id": "finance/DUDE_7f363a8c89db52bec6c02fc53fafe786",
+   "doc_type": "finance",
+   "rank_key": "7cb7829a95d611bc81f3365c580ea62b1db1e0b539e1625372a367052e4681ef"
+  },
+  {
+   "doc_id": "finance/DUDE_7f9a15aecb5a5ff3893bab0991c86742",
+   "doc_type": "finance",
+   "rank_key": "9400dbf4e421d35f1a24079a3d3ce49074f466f97b6ba197531abfe2fa24bd9d"
+  },
+  {
+   "doc_id": "finance/DUDE_8683e2e1c1ebdbc9a31216456d7ece17",
+   "doc_type": "finance",
+   "rank_key": "8f695fe8aabe7fa308d854000c010ad9e6aef13a95613f20ae4c4191bda1d57d"
+  },
+  {
+   "doc_id": "finance/DUDE_9f5e2ca5587c15514608ee169ece3d77",
+   "doc_type": "finance",
+   "rank_key": "6f5bbaacb31f37ae31654ec83fade25a7268bdf3ec2e34e352c20f8081732705"
+  },
+  {
+   "doc_id": "finance/DUDE_a4e751799acf2d9369ee89afb50e8408",
+   "doc_type": "finance",
+   "rank_key": "5f6280a5495e15433fb0ad09cc526f5e37febd0e063058f2cddf46eabc9110e0"
+  },
+  {
+   "doc_id": "finance/DUDE_ac009163f46e43e541395703cc76ade0",
+   "doc_type": "finance",
+   "rank_key": "fbfeed81dfb30394eed0185db2808c4d471fb73579e37bbbd4ba652315301742"
+  },
+  {
+   "doc_id": "finance/JPMORGAN_2021Q1_10Q",
+   "doc_type": "finance",
+   "rank_key": "7dc1865d1839e2a3d2f9d1112eac268fce65c8dcf4e6758b6e6ec99d10d0cd63"
+  },
+  {
+   "doc_id": "finance/JPMORGAN_2022Q2_10Q",
+   "doc_type": "finance",
+   "rank_key": "b6d9e03110b9d605b0e65b60ffdf3cf95d895ba123e8c22e0ea0a6a8eacaf613"
+  },
+  {
+   "doc_id": "finance/JPMORGAN_2022_10K",
+   "doc_type": "finance",
+   "rank_key": "52a59b1b7064c5877af5a9a59b38eecb9059a73d107dd7b139a3cff1f735be9c"
+  },
+  {
+   "doc_id": "finance/JPMORGAN_2023Q2_10Q",
+   "doc_type": "finance",
+   "rank_key": "8f5a61335cf7b284733bdd85b2e75a118a92493b5a55630b968a78340aca0430"
+  },
+  {
+   "doc_id": "finance/VERIZON_2021_10K",
+   "doc_type": "finance",
+   "rank_key": "f7aefcb7ed87cdb3b053c83377ddc5372e7303eee7b92fdc4dc67c9ee5aaf272"
+  },
+  {
+   "doc_id": "law/ADMA BioManufacturing, LLC -  Amendment #3 to Manufacturing Agreement ",
+   "doc_type": "law",
+   "rank_key": "f07331696dff25683b528bea403cae4d1f2a040059c38e2a3b69f75dfed7c9cb"
+  },
+  {
+   "doc_id": "law/AIRTECHINTERNATIONALGROUPINC_05_08_2000-EX-10.4-FRANCHISE AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "461c8132871b6353be014b84beb94bd1fe75e5c679da698627d3fe0838dc2eca"
+  },
+  {
+   "doc_id": "law/ASIANDRAGONGROUPINC_08_11_2005-EX-10.5-Reseller Agreement",
+   "doc_type": "law",
+   "rank_key": "a0464276a6d7906af8e29f539d6bffd4c57f589dd03d0b14dd718322e1aa6aba"
+  },
+  {
+   "doc_id": "law/ArmstrongFlooringInc_20190107_8-K_EX-10.2_11471795_EX-10.2_Intellectual Property Agreement",
+   "doc_type": "law",
+   "rank_key": "f7a85fb4c9d84f8c2abe26e7a9d53328f4d95932f7d8633b2d69ce14abc7bd21"
+  },
+  {
+   "doc_id": "law/Array BioPharma Inc. - LICENSE, DEVELOPMENT AND COMMERCIALIZATION AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "9a6b70f22c07debe6ebe865f9ffff43667a227000c472ae05745186eab30700a"
+  },
+  {
+   "doc_id": "law/BANUESTRAFINANCIALCORP_09_08_2006-EX-10.16-AGENCY AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "906df06b3a71d5e0e49c2879fd594bbed9b7e564a577bc50bd8c25346be1ea45"
+  },
+  {
+   "doc_id": "law/BIOAMBERINC_04_10_2013-EX-10.34-DEVELOPMENT AGREEMENT (1)",
+   "doc_type": "law",
+   "rank_key": "35741f3cc4e39c8e146514031d7d99bb02048d0fd9c2df1dc7b83e1fb1375e86"
+  },
+  {
+   "doc_id": "law/CardlyticsInc_20180112_S-1_EX-10.16_11002987_EX-10.16_Maintenance Agreement1",
+   "doc_type": "law",
+   "rank_key": "777c9917fe1602fc9c45a4b0ce7028f10c1e5265c583d5a105ec3e1f65e9ab91"
+  },
+  {
+   "doc_id": "law/CcRealEstateIncomeFundadv_20181205_POS 8C_EX-99.(H)(3)_11447739_EX-99.(H)(3)_Marketing Agreement",
+   "doc_type": "law",
+   "rank_key": "296a69484f7712ec1ec57ab9d8a99bbf57cb7bd64c0c02c618b076213cd687b7"
+  },
+  {
+   "doc_id": "law/DIVERSINETCORP_03_01_2012-EX-4-RESELLER AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "ba66444169c34a1b1f6e6496094a88668aac998a17e5960f5f64b445770f2202"
+  },
+  {
+   "doc_id": "law/DUDE_05c32b8ef101e6b827ccc12b72fddd11",
+   "doc_type": "law",
+   "rank_key": "fda0b5bf81ed678d6d833cd7bb27becf94de775fd8e683d69af87a62b37c1a4d"
+  },
+  {
+   "doc_id": "law/DUDE_0f649220ea1397b3f4d0fb272b4427d2",
+   "doc_type": "law",
+   "rank_key": "8f018220bbde8ee28fdba73df12bc572adc7adf2b9155231ba4abd883a18c408"
+  },
+  {
+   "doc_id": "law/DUDE_0fd01e9cac08043b447c0a0477160308",
+   "doc_type": "law",
+   "rank_key": "09b2946081f2ac56a0e14f8d2d9bc23a2d053f897ced21b4486ec91f83c3eef9"
+  },
+  {
+   "doc_id": "law/DUDE_10b37e7fb16a67ac2ca19e47b27c8d3d",
+   "doc_type": "law",
+   "rank_key": "6c6c17173422f9fd8e252a27b57fbb4b93f42b463a69e5aa3656123639ed043a"
+  },
+  {
+   "doc_id": "law/DUDE_128ea53b9421b04ccae7a482c0d3bbda",
+   "doc_type": "law",
+   "rank_key": "3e4058df13b072eb6beb613030fec9fdcf7308000a9c7865175065baaad8d6ba"
+  },
+  {
+   "doc_id": "law/DUDE_1a1e3c10c247e83b96f00fe8b926b844",
+   "doc_type": "law",
+   "rank_key": "4f010a4af77936e9b8483c9f2e77561486488b15addd6ddbd4bc9717c15dbb7c"
+  },
+  {
+   "doc_id": "law/DUDE_23e1a6a3ab002ce5e17718e5c2309110",
+   "doc_type": "law",
+   "rank_key": "b8b8d6f2d54f4c7ba0cec7aa782f7e5e2c890d7ef7e8bbd11b24762d46f23f93"
+  },
+  {
+   "doc_id": "law/DUDE_25ab1502f316011a4971ea47888bf6c4",
+   "doc_type": "law",
+   "rank_key": "5c43e1b75c3caceebc2dc218edd9edaf371537eb9d6f3c60bdf18b7cb88c6163"
+  },
+  {
+   "doc_id": "law/DUDE_2b2129b334e2acd2a4dce3238419819f",
+   "doc_type": "law",
+   "rank_key": "2635316a44d1469684faead12a37c288dad8b606a20cebbaa573ce7cb5c946b6"
+  },
+  {
+   "doc_id": "law/DUDE_39dff27605b4806c75e7ae30609a05d0",
+   "doc_type": "law",
+   "rank_key": "55b97d97c1aaf765aac52b236db79387d74bf1fcb0a6d080091cb9c91ed785a3"
+  },
+  {
+   "doc_id": "law/DUDE_3c0c04e9af041ec0835ab4899a827cd0",
+   "doc_type": "law",
+   "rank_key": "8c362623cc9d2f4bcc0dba86abd001299485635de5c89ee871d61fbfb790edd1"
+  },
+  {
+   "doc_id": "law/DUDE_3cc88affca79359d0a2307fcb6308f95",
+   "doc_type": "law",
+   "rank_key": "6a890fe0c282ed4a8ba78008c004f8da96f5762bb2df59fb1c303fd6b8486368"
+  },
+  {
+   "doc_id": "law/DUDE_5338a15055d43ed03d2bf41dfe0e4da0",
+   "doc_type": "law",
+   "rank_key": "203e1daf2daac715be5195c56cc0c2e71490a22a45c685d03a1dd971368463bc"
+  },
+  {
+   "doc_id": "law/DUDE_55e351401d03315e5e70299499e2c83e",
+   "doc_type": "law",
+   "rank_key": "20cca9f21a63b92f83ba72dc76fd2c9536941096a49f208224b9a3422f26bca9"
+  },
+  {
+   "doc_id": "law/DUDE_7c3f6204b3241f142f0f8eb8e1fefe7a",
+   "doc_type": "law",
+   "rank_key": "8a30fcdfb20ce606d78e1e3ab022255c9c059d3f48dc8083fa95fe53597ecc03"
+  },
+  {
+   "doc_id": "law/DUDE_7d5f6660f892400387fb8d91cfad4592",
+   "doc_type": "law",
+   "rank_key": "7e634f59596aaa1943af850b398817c0516f6b7e0744495f174c435a0cdac3ba"
+  },
+  {
+   "doc_id": "law/DUDE_83a7960c76b6ec0c76cdf93d8fe7c715",
+   "doc_type": "law",
+   "rank_key": "11786668264236e4d77138e47fe34e59d3262b0be9874576a1e9f7feb9c5d083"
+  },
+  {
+   "doc_id": "law/DUDE_8c8f5a5a1488c3aa27dafb5d5a7b1f56",
+   "doc_type": "law",
+   "rank_key": "fee9d298442ebce7acae62ef18e7d2b77b2f4d7a9f08e6cd124a5c59f8f91af8"
+  },
+  {
+   "doc_id": "law/DUDE_9bd004110e42eab4c5dfbef2a93b9f2a",
+   "doc_type": "law",
+   "rank_key": "8ee1ab66eb4d34cc66d08987d797ac3467429b9d93fe1fbaea4e3286fbf83599"
+  },
+  {
+   "doc_id": "law/DUDE_a2ed58df070a5430f90bab8ee2c90ced",
+   "doc_type": "law",
+   "rank_key": "ca90a3495e5ab7b4df595da80ca88dfdf8b5def5cd3b8b2d88375baa07996797"
+  },
+  {
+   "doc_id": "law/DUDE_b05a7904ab29fe72d55491485c0ca71d",
+   "doc_type": "law",
+   "rank_key": "e7b9a02485c210e66798372c35dbd119e67e8ff098e810f3e6f0e84279870c78"
+  },
+  {
+   "doc_id": "law/DUDE_b62dc913e04e2bbea95d608f9943868b",
+   "doc_type": "law",
+   "rank_key": "a39deedfc255fab0df805c30f2b1af74913f84a5e25a2e6b5af50657c2a77519"
+  },
+  {
+   "doc_id": "law/DUDE_bcdf261dab03a8755acb5b795b4912cc",
+   "doc_type": "law",
+   "rank_key": "11abb09fcb4216ef52b788fb070263b56fb13270f4a9ccf4ae57fc45488c0432"
+  },
+  {
+   "doc_id": "law/DUDE_dd814385b004d770a820cf236db667ff",
+   "doc_type": "law",
+   "rank_key": "17ed947d7b26513fa2b11c688622be5450741eb54002d74bf7a7db46a340f1f8"
+  },
+  {
+   "doc_id": "law/DYNTEKINC_07_30_1999-EX-10-ONLINE HOSTING AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "1888d6e977eaa2f2d7b5e924cee93c4ac57a795bf8eb05120dcd816d6c766063"
+  },
+  {
+   "doc_id": "law/ENERGYXXILTD_05_08_2015-EX-10.13-Transportation AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "0932505c57b51d959a091b6c8cbf8b307605369f11460c2d95d8e3f641099891"
+  },
+  {
+   "doc_id": "law/EcoScienceSolutionsInc_20171117_8-K_EX-10.1_10956472_EX-10.1_Endorsement Agreement",
+   "doc_type": "law",
+   "rank_key": "09083b7a9bb2fbda4963eafbe396cdb6d59e1695159855252ff2f100b1f16542"
+  },
+  {
+   "doc_id": "law/FIBROGENINC_10_01_2014-EX-10.11-COLLABORATION AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "cbc84fb5dd25dfb0c3da81f6ed1b2c0a873df7cbbfe6caf31ed7961a50151a71"
+  },
+  {
+   "doc_id": "law/FIDELITYNATIONALINFORMATIONSERVICES,INC_08_05_2009-EX-10.3-INTELLECTUAL PROPERTY AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "cbd4cf8a10ef1a182d9800167c0cd93045dab4e97132f950602815aa156c5d6b"
+  },
+  {
+   "doc_id": "law/GRIDIRONBIONUTRIENTS,INC_02_05_2020-EX-10.3-SUPPLY AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "876f146432ab91b7114b9a1fe12a08c479b59f52cc845b619bb418f0f155c001"
+  },
+  {
+   "doc_id": "law/GULFSOUTHMEDICALSUPPLYINC_12_24_1997-EX-4-AFFILIATE AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "d6f2a89513a895a25356d8dbe0d7445838ef73ae1e1be548acaf3ba6fef0e775"
+  },
+  {
+   "doc_id": "law/GWG HOLDINGS, INC. - ORDERLY MARKETING AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "a0c224fe49f4952397df137658117b48eb9ff8644b7f4e63416de8853cb3ac37"
+  },
+  {
+   "doc_id": "law/HALITRON,INC_03_01_2005-EX-10.15-SPONSORSHIP AND DEVELOPMENT AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "ca81d83170808a982e10dbb2afdb8e10416e715c3f4ff8d244ea267dcf931cea"
+  },
+  {
+   "doc_id": "law/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement",
+   "doc_type": "law",
+   "rank_key": "e8f379f7ae7f61338cc24aa9b2da0e002b138d45940c28e4078e91da324c3e88"
+  },
+  {
+   "doc_id": "law/IDREAMSKYTECHNOLOGYLTD_07_03_2014-EX-10.39-Cooperation Agreement on Mobile Game Business",
+   "doc_type": "law",
+   "rank_key": "20ac133941c90a12d4f2929bc8d7cc8c0185afd6c9e82542de5ff044facbd99d"
+  },
+  {
+   "doc_id": "law/IntegrityFunds_20200121_485BPOS_EX-99.E UNDR CONTR_11948727_EX-99.E UNDR CONTR_Service Agreement",
+   "doc_type": "law",
+   "rank_key": "97fcee87da8ae36a9c96fc2824cd983368282cc5bc56d60e55b5249743426b84"
+  },
+  {
+   "doc_id": "law/KitovPharmaLtd_20190326_20-F_EX-4.15_11584449_EX-4.15_Manufacturing Agreement",
+   "doc_type": "law",
+   "rank_key": "c91ac19e6df2b52b21aa6110cc178ada77ca2002d7817003e3f480176a22eea7"
+  },
+  {
+   "doc_id": "law/MARSHALLHOLDINGSINTERNATIONAL,INC_04_14_2004-EX-10.15-ENDORSEMENT AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "4e68c89816a40ca271fb583bf8bfef65b6abba5d0856b45ff6e1d77981cd9d82"
+  },
+  {
+   "doc_id": "law/MPLXLP_06_17_2015-EX-10.1-TRANSPORTATION SERVICES AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "a9b15ec669e6c57c6992ab856ef085d2546beb9946a8c0b7e17ddf4590a45abc"
+  },
+  {
+   "doc_id": "law/MRSFIELDSORIGINALCOOKIESINC_01_29_1998-EX-10-FRANCHISE AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "fa8559b676c7979520e043ffa8e26f3779e23fd35f3903c54d931379def64372"
+  },
+  {
+   "doc_id": "law/N2KINC_10_16_1997-EX-10.16-SPONSORSHIP AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "6576d340f0d466714644387e87bf047cd33936f8fcfb9790226a9cdf79d53823"
+  },
+  {
+   "doc_id": "law/NETGEAR,INC_04_21_2003-EX-10.16-AMENDMENT TO THE DISTRIBUTOR AGREEMENT BETWEEN INGRAM MICRO AND NETGEAR-",
+   "doc_type": "law",
+   "rank_key": "a7061ceb69cd675acae41a2994f3032c99a48527a9336ed075547ac5d3fa5874"
+  },
+  {
+   "doc_id": "law/NEXSTARFINANCEHOLDINGSINC_03_27_2002-EX-10.26-OUTSOURCING AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "cfec6bf3604bdb111d55e59f05f970546b9c7b5eed3e53d4c62c403964c254ae"
+  },
+  {
+   "doc_id": "law/OPTIMIZEDTRANSPORTATIONMANAGEMENT,INC_07_26_2000-EX-6.6-DISTRIBUTOR AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "6b72b7823671c55cebf03fe5b5c231db7e9cfdd5e0270bb8a88a03d3b154951f"
+  },
+  {
+   "doc_id": "law/ParatekPharmaceuticalsInc_20170505_10-KA_EX-10.29_10323872_EX-10.29_Outsourcing Agreement",
+   "doc_type": "law",
+   "rank_key": "3c45df1fa4cb6cac333ec86700214d136fafbdb3ac84d267506afd98fd9f581d"
+  },
+  {
+   "doc_id": "law/PareteumCorp_20081001_8-K_EX-99.1_2654808_EX-99.1_Hosting Agreement",
+   "doc_type": "law",
+   "rank_key": "d30683b51214d3d4638e0cb095ef409ac6f1e2abfa07aab21eba40ef327e727d"
+  },
+  {
+   "doc_id": "law/RISEEDUCATIONCAYMANLTD_04_17_2020-EX-4.23-SERVICE AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "2c42255c6b17a2644c4d0ee269532403c99e881cd65e9e2a7699cf79588d213f"
+  },
+  {
+   "doc_id": "law/ReynoldsConsumerProductsInc_20191115_S-1_EX-10.18_11896469_EX-10.18_Supply Agreement",
+   "doc_type": "law",
+   "rank_key": "26419c82b65cde25fa1ba1d1de596f2a81344cf8efe55459858e21d8d88135c2"
+  },
+  {
+   "doc_id": "law/RgcResourcesInc_20151216_8-K_EX-10.3_9372751_EX-10.3_Franchise Agreement",
+   "doc_type": "law",
+   "rank_key": "1b2b5343909c7c748ff8b5feb9349a4b95b2e89b253442d4797868885bdaeb9a"
+  },
+  {
+   "doc_id": "law/SIBANNAC,INC_12_04_2017-EX-2.1-Strategic Alliance Agreement",
+   "doc_type": "law",
+   "rank_key": "1011f6a2665e5a38c2fad6d89d9288dfa2231f97999f4daf9664e2a8a9e3b724"
+  },
+  {
+   "doc_id": "law/ScansourceInc_20190822_10-K_EX-10.38_11793958_EX-10.38_Distributor Agreement2",
+   "doc_type": "law",
+   "rank_key": "67147c92cc8d82da254c36ef6f6245f4f8ae7c6394a6fbaa48f561ea91ca9a45"
+  },
+  {
+   "doc_id": "law/TRICITYBANKSHARESCORP_05_15_1998-EX-10-OUTSOURCING AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "140f6814dafeef40bbc0d135d84b68b7e1dc47e98665cd56db8b81bd2b1e8a9a"
+  },
+  {
+   "doc_id": "law/TheglobeComInc_19990503_S-1A_EX-10.20_5416126_EX-10.20_Co-Branding Agreement",
+   "doc_type": "law",
+   "rank_key": "6703dda2125cca4190d0c91839db8c4535fa6856ea652a87d838059391f5ec85"
+  },
+  {
+   "doc_id": "law/UnionDentalHoldingsInc_20050204_8-KA_EX-10_3345577_EX-10_Affiliate Agreement",
+   "doc_type": "law",
+   "rank_key": "7f2c6e954f09e8d5880dcbe00e76cc75210034ad8d40c836c7be74d985a92a2d"
+  },
+  {
+   "doc_id": "law/VAXCYTE,INC_05_22_2020-EX-10.19-SUPPLY AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "37d28a16a662cbf988ad53a1cbe1e4fce8607215e87a496cddb00e5da590754e"
+  },
+  {
+   "doc_id": "law/WHITESMOKE,INC_11_08_2011-EX-10.26-PROMOTION AND DISTRIBUTION AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "fcfcb2b55f96fd16c950846926d06db3f1e8266a8d4403620d0a0f5dd86a15b0"
+  },
+  {
+   "doc_id": "law/WOMENSGOLFUNLIMITEDINC_03_29_2000-EX-10.13-ENDORSEMENT AGREEMENT",
+   "doc_type": "law",
+   "rank_key": "1550d2f637ad581ee2298293abf3c3835fd84bd9afdb6f8332957f533d88da15"
+  },
+  {
+   "doc_id": "law/ZtoExpressCaymanInc_20160930_F-1_EX-10.10_9752871_EX-10.10_Transportation Agreement",
+   "doc_type": "law",
+   "rank_key": "98dc361543f8817ab40c826d80304aa0baca63197d6d28240f0c93f1c8aa140c"
+  },
+  {
+   "doc_id": "manual/2021-Apple-Catalog",
+   "doc_type": "manual",
+   "rank_key": "d323eb6749fd9b7288c1722e16cb230bff3f5b9f300424d4ebb1dfff7194334c"
+  },
+  {
+   "doc_id": "manual/8dfc21ec151fb9d3578fc32d5c4e5df9",
+   "doc_type": "manual",
+   "rank_key": "3b5ac4d8f407e02672872d3c7d47100feceaa0cf5c4c4a1008368ae73160135e"
+  },
+  {
+   "doc_id": "manual/DSA-278777",
+   "doc_type": "manual",
+   "rank_key": "14aadb10c739f3b71754356f63cd94432299005e7f5a37d37a2a8a0db1a79fad"
+  },
+  {
+   "doc_id": "manual/DUDE_074d888605a7db82a24dda46a4fb1cf6",
+   "doc_type": "manual",
+   "rank_key": "5ff0b896442a4f215c52a962d550076f617049e3442ab6ce69572dc0a4b86500"
+  },
+  {
+   "doc_id": "manual/DUDE_07ceb89dd95fa8f2147bc20ebbf46d1b",
+   "doc_type": "manual",
+   "rank_key": "e634345b2e7516a7284bc9e22dc655c1626100e95354a5ab9d067eefb5c5183c"
+  },
+  {
+   "doc_id": "manual/DUDE_0a75e34902d940f917064d04c5b9200a",
+   "doc_type": "manual",
+   "rank_key": "40963cbfc63ce9f1c24847863dbf7d17075c4e5f35d4443631f24b53a5506733"
+  },
+  {
+   "doc_id": "manual/DUDE_0b53f868b09478e8f81218d1042a4ffd",
+   "doc_type": "manual",
+   "rank_key": "62a52563bc0ae4c4ae5359772151534e92f92ddd0173a4ed9181ad6c231b04d5"
+  },
+  {
+   "doc_id": "manual/DUDE_0f5a18061a331c6323b1155f217b6990",
+   "doc_type": "manual",
+   "rank_key": "78a4c6ed956929dc71339fbb998736969a3c1cd3a58efc73a1fdad690e571392"
+  },
+  {
+   "doc_id": "manual/DUDE_1425843ed123f77e6bac6510bfa88e37",
+   "doc_type": "manual",
+   "rank_key": "10e134c8858c0754618b8fc7b8176bf23b9e4022be3187de4560886531e99055"
+  },
+  {
+   "doc_id": "manual/DUDE_18d9d3b04edbc34b40537e62f5c9cac2",
+   "doc_type": "manual",
+   "rank_key": "70261ef5e03af03d5bca1f41436c11a64b98a06ddd625d515dc36c60d5ec4843"
+  },
+  {
+   "doc_id": "manual/DUDE_1cd2146b6b1e1b96e9cb8ca214947c7a",
+   "doc_type": "manual",
+   "rank_key": "02ac68f289bf5546f9729331b7a9454d223669eee5854b6fd47bb153b0a8f529"
+  },
+  {
+   "doc_id": "manual/DUDE_2418cfbfb0f4130c72da92b065bb1645",
+   "doc_type": "manual",
+   "rank_key": "7506adc595edf8ff08f69a5d46a1aea543498347a932bfc0ce4835e71998b734"
+  },
+  {
+   "doc_id": "manual/DUDE_2fa10a3586663bd64632c44a7113c166",
+   "doc_type": "manual",
+   "rank_key": "d05641125a1b3eecbf56f473b1a13cfffc3e5355ded17905819b165d87c88568"
+  },
+  {
+   "doc_id": "manual/DUDE_367820fb3f907a5a925dfa8592bac4ad",
+   "doc_type": "manual",
+   "rank_key": "fa343ec93f3f797867444f3fced0c4cf718820b7dcae2f013074c81a2b4def71"
+  },
+  {
+   "doc_id": "manual/DUDE_419207eeee98da33a7600cddcaf9aeb6",
+   "doc_type": "manual",
+   "rank_key": "d25e6405ce4b530b3af7a5cf9b604a00fc3fab6ffadfa4176d1a984dcaacf117"
+  },
+  {
+   "doc_id": "manual/DUDE_483773e1587fce6a5b7c2b3822b42d06",
+   "doc_type": "manual",
+   "rank_key": "f4c48bed4a958d1a8f266a5a9afca09b3771f0c1f8d7c73a7d0c1463f241c8ef"
+  },
+  {
+   "doc_id": "manual/DUDE_496db845646745971797dfba148a2102",
+   "doc_type": "manual",
+   "rank_key": "9e29412cf8dd34816e14a241c08f9241f8ca9cf0defdefd5c6d2ee32e05dd01f"
+  },
+  {
+   "doc_id": "manual/DUDE_4f399b8c526ffb6a2fd585a18d4ed5ec",
+   "doc_type": "manual",
+   "rank_key": "a44feb835b21157d406bf524838c311485e22fe2b1ca5cf5d55c39e00772fcee"
+  },
+  {
+   "doc_id": "manual/DUDE_59e7bde1539f952ab01c87a0aba014d8",
+   "doc_type": "manual",
+   "rank_key": "f9afc79af527afb340bfe4c739f57672b2a595aed851af4f88066249861984ea"
+  },
+  {
+   "doc_id": "manual/DUDE_5f584f24294d615bd09f9b91486f1191",
+   "doc_type": "manual",
+   "rank_key": "b9395879926a6900f1a17bae50957d056a7ed2b66fb3fc494cabcf77c7fac71a"
+  },
+  {
+   "doc_id": "manual/DUDE_6ca906941dd218a18dd4bc3fca3c50ad",
+   "doc_type": "manual",
+   "rank_key": "d36c3f82004d30c2502d895d1689fc903ff7f5f2d13ffddcce78c2d594171010"
+  },
+  {
+   "doc_id": "manual/DUDE_6eab458673d9bf01f264326a76b2c115",
+   "doc_type": "manual",
+   "rank_key": "fb93fbb9b37638cc16620dfa43e69b9d7de79885858b9baff06b75beeabbbe00"
+  },
+  {
+   "doc_id": "manual/DUDE_6f2f811e7fc0f0db88e741e36910eb93",
+   "doc_type": "manual",
+   "rank_key": "fec4be04f8ee097cbd7ea4ced338cd0e874da52e88e2ce5016dbcd618283f9b5"
+  },
+  {
+   "doc_id": "manual/DUDE_6fb13bc1f0c86db5f2c25df215b569e5",
+   "doc_type": "manual",
+   "rank_key": "08857c305d9ad5d8d53801b03aae45d30d7512d9f5fe0ae39f931cca432583bd"
+  },
+  {
+   "doc_id": "manual/DUDE_74cf2b3e5d719309e451c07e63fb21e1",
+   "doc_type": "manual",
+   "rank_key": "1c441aa06c0abae6e3dba4cf875fa552bfa3bcf7bac2e03753edb74d359bb7bb"
+  },
+  {
+   "doc_id": "manual/DUDE_7788b9b11d08c942b4ce0769bd6271ec",
+   "doc_type": "manual",
+   "rank_key": "8e104f428edb01129ac6989ad6f89fafa23a975e39bb090acb5e588debb288f7"
+  },
+  {
+   "doc_id": "manual/DUDE_7b23ad9e2faa7ff9df3e9ea27797554d",
+   "doc_type": "manual",
+   "rank_key": "d7a971d23510b4e438a21d425b89e699d6766da1fca6f5b34c338c395247ed50"
+  },
+  {
+   "doc_id": "manual/DUDE_7c2936796f14c3681324745ace7ba756",
+   "doc_type": "manual",
+   "rank_key": "c463f64a060102abeb87f591c210dc8b185f40ea093ae9229eafa6e0ab47409e"
+  },
+  {
+   "doc_id": "manual/DUDE_92e6f39a5879ed34a43417498e72ad27",
+   "doc_type": "manual",
+   "rank_key": "53d3de81b8007ae80d83d128469f741f625f36724581ab8dea2dc2cda9be6219"
+  },
+  {
+   "doc_id": "manual/DUDE_9dcd49e7703fe1e4fafaf8347038fd7e",
+   "doc_type": "manual",
+   "rank_key": "e149e712f8eb6a40d207355bc8b33ba96aa266d4650cf51f0994884500d79d4e"
+  },
+  {
+   "doc_id": "manual/DUDE_9e273735023d65875ad99110282f4476",
+   "doc_type": "manual",
+   "rank_key": "2581b6719173911093d48653f58155676d0a57cf335debe8177ed62cb612005b"
+  },
+  {
+   "doc_id": "manual/DUDE_dcaf570308a17af5786306634e519aff",
+   "doc_type": "manual",
+   "rank_key": "b49a9f07b80b632127bc7a2e3cc2cb0e648d19fcb8978ef356b7830ac235d9bd"
+  },
+  {
+   "doc_id": "manual/DUDE_e2bc45aa3496db141565a2f1a1246033",
+   "doc_type": "manual",
+   "rank_key": "e1d0fc0bac49645f81bdca5226384269f6b07f161bbe3456736d31ca5eb6b15f"
+  },
+  {
+   "doc_id": "manual/DUDE_e3da4ec33b853c7078243375728ba545",
+   "doc_type": "manual",
+   "rank_key": "68cc97dfc3aa176487531b4cdf2b0c95f8d10cbced78da0637ec13d91de804e2"
+  },
+  {
+   "doc_id": "manual/DUDE_f0fe4fbad1fcedc2fcaa74491a33c998",
+   "doc_type": "manual",
+   "rank_key": "e532c328f805a5e3651ef875d72b192fdae9cf168dfacd46058d258ce1a7d77b"
+  },
+  {
+   "doc_id": "manual/DUDE_f4b94a357468f4c857fd0ea38b1f55bc",
+   "doc_type": "manual",
+   "rank_key": "9aa932a95d01f1485f1ed97238a17535ac498322133ade03113b478aa3858fbf"
+  },
+  {
+   "doc_id": "manual/Guide-for-international-students-web",
+   "doc_type": "manual",
+   "rank_key": "5ae81f0bf49b4914a2e72391fe170522f4c5f9a5f70b16f72951379828ed4e3d"
+  },
+  {
+   "doc_id": "manual/Macbook_air",
+   "doc_type": "manual",
+   "rank_key": "21e13d3472c3a01ad6464be735737ee75bf84e7f3bfb25d452e722ecb8a6fa37"
+  },
+  {
+   "doc_id": "manual/User_Manual_1500S_Classic_EN",
+   "doc_type": "manual",
+   "rank_key": "abda1222e6d9c308ccdf582569850f5141ff6ddd7e2bd4f273dfccca7d88305b"
+  },
+  {
+   "doc_id": "manual/dgx_a100",
+   "doc_type": "manual",
+   "rank_key": "0fc968a6b6dbe594870cff897c2445f380e45441aac22019830eb88599c615e4"
+  },
+  {
+   "doc_id": "manual/guojixueshengshenghuozhinanyingwen9.1",
+   "doc_type": "manual",
+   "rank_key": "6a6281fb30148f66a99f9ff5aacbcfef5a9a70457b66726112f93fe71f227177"
+  },
+  {
+   "doc_id": "manual/honor_watch_gs_pro",
+   "doc_type": "manual",
+   "rank_key": "07b99193848bfdcf0b22662b903f0639bcaeadd3d16ab147f064d76760974d31"
+  },
+  {
+   "doc_id": "manual/mi_phone",
+   "doc_type": "manual",
+   "rank_key": "91b3a308457f3de7e9097e918b47d37cf179e17cb74d96e8ee67ed8de23e8e1b"
+  },
+  {
+   "doc_id": "manual/nova_y70",
+   "doc_type": "manual",
+   "rank_key": "fb299a3ee1ab8985e6be20c750ec70552688e36efc0941ddda17c6ed697fb6a2"
+  },
+  {
+   "doc_id": "manual/obs-productdesc-en",
+   "doc_type": "manual",
+   "rank_key": "02830c9c74a22f66b6d76bed705d7c26b410f044e6d87113db16cfa25fa47270"
+  },
+  {
+   "doc_id": "manual/owners-manual-2170416",
+   "doc_type": "manual",
+   "rank_key": "6dd699564ff8e1fd7c26c188da061a9c78c7ab6d3c41c6aa051160c5f1c88cf3"
+  },
+  {
+   "doc_id": "manual/watch_d",
+   "doc_type": "manual",
+   "rank_key": "240123cc4e83989164bc01d44c990c60778b93d6a1c4e2a97950539c475cbdbd"
+  },
+  {
+   "doc_id": "news/DUDE_0035933fa932060c5f38a00136c5d9d8",
+   "doc_type": "news",
+   "rank_key": "9826c96ea474711b78f03896416e52be129faf7952fe1fb338ff5084dd84f766"
+  },
+  {
+   "doc_id": "news/DUDE_01bf30fbfe375c21fc0dfb8726feb70b",
+   "doc_type": "news",
+   "rank_key": "6613e2196537b8668130d7f07cedf30aa6fafae6810eab5efc9c4660d32fd784"
+  },
+  {
+   "doc_id": "news/DUDE_037c6f7c08d7988d71837bfafe17ee4c",
+   "doc_type": "news",
+   "rank_key": "c703b5de7b79ae022d33cc3284ebf148b7c1b38cc38decd63eafed67772703a2"
+  },
+  {
+   "doc_id": "news/DUDE_03cf82cf235f6f62313442913a08d111",
+   "doc_type": "news",
+   "rank_key": "1b3d04e25b9a7654098e22f90612f9fe76dee79f8bae2f71d3ded9726915a274"
+  },
+  {
+   "doc_id": "news/DUDE_069edaafc1370cf97e3a2dfb80c16442",
+   "doc_type": "news",
+   "rank_key": "2460676f668ba1e691e1e8ea264875f720dd19338051ffa09ec55c9d01736c8c"
+  },
+  {
+   "doc_id": "news/DUDE_06cc755612621483103dd1752c3927f7",
+   "doc_type": "news",
+   "rank_key": "433972bcbc3d9468f7c2483dd3b90cd0ece58862c13e579f8ec25ee664f86974"
+  },
+  {
+   "doc_id": "news/DUDE_098bda18540fa5e097196c3f7898d4f1",
+   "doc_type": "news",
+   "rank_key": "ce1fe16c11c1ec9018808fca673d12bdb2101d1bceae0a6a3e8ab052fd5ae492"
+  },
+  {
+   "doc_id": "news/DUDE_0b6ed1329eef932d9c671a00ce5bc3cb",
+   "doc_type": "news",
+   "rank_key": "a5c34dc7f15e75f06dbf5f069ad1c91d1a56612227cb13fad59cc44d9ab83276"
+  },
+  {
+   "doc_id": "news/DUDE_0b85477387a9d0cc33fca0f4becaa0e5",
+   "doc_type": "news",
+   "rank_key": "c7b5c3e9a24a2fdcce68808c10eb17b0dea07d8689b3e11e65548ac3339de93f"
+  },
+  {
+   "doc_id": "news/DUDE_251a5ff8c1af9633669c840682682728",
+   "doc_type": "news",
+   "rank_key": "76586431e8005fb748d90c471a8f3955e72fcd1af05b784277886cdd0acd7042"
+  },
+  {
+   "doc_id": "news/DUDE_2c2dac658e7bc1662e5c02a7e03d5664",
+   "doc_type": "news",
+   "rank_key": "411ade31412874c593994f4f8d0d0449f24b25c1f69f3a200be45c130db47fcf"
+  },
+  {
+   "doc_id": "news/DUDE_4632128f58c39ffce34dd3591fc448a0",
+   "doc_type": "news",
+   "rank_key": "fef3a4392e544482c2b41acdc6930392cb286476243921e1d7ffcc0a2f672086"
+  },
+  {
+   "doc_id": "news/DUDE_567c4e652c52aa4cad53360da3ea4519",
+   "doc_type": "news",
+   "rank_key": "9c635091b9e41dad9b6d82f208a0663c9634689f09277ceb4f8b42236cec81f5"
+  },
+  {
+   "doc_id": "news/DUDE_62ba680b413005aa9f018454c4ab4c43",
+   "doc_type": "news",
+   "rank_key": "93ff048d68adf503d453cb069b0f21280bbcb3309c59d50c01a7d4fbf9b38198"
+  },
+  {
+   "doc_id": "news/DUDE_70285d99e1ed228c46f12da196c27a81",
+   "doc_type": "news",
+   "rank_key": "0e0020fdad7c73b7a287e21b2336a5b680700b68adde360254f729a6ce7fbfb0"
+  },
+  {
+   "doc_id": "news/DUDE_92f9ea6d347bfb916119612a3dcc9bb1",
+   "doc_type": "news",
+   "rank_key": "eab6219f3a867df13073f8097eef635dda424b93e676a60dc4a9b6c7cf4bbdd0"
+  },
+  {
+   "doc_id": "news/DUDE_a103dd2b48b154227a4057fd4bc6d038",
+   "doc_type": "news",
+   "rank_key": "5ffd43696c3812099c76cdf4c3af6e0202f3624f7401a6fac8bab094b63b9026"
+  },
+  {
+   "doc_id": "news/DUDE_d7d024763949a421053be022696238bc",
+   "doc_type": "news",
+   "rank_key": "3202c15bed38f50ad6c55d422eb2c964ca2a08a2149427d625ec0b119fa8bd82"
+  },
+  {
+   "doc_id": "news/DUDE_e093ce7234d7a94f8082fbdadd28c230",
+   "doc_type": "news",
+   "rank_key": "5b8a7e3f8fe97326051d7deedb7c122f33ba02b2b3a09169a0d805afd41e5471"
+  },
+  {
+   "doc_id": "news/DUDE_e3de17e096a22529da1572168737fbec",
+   "doc_type": "news",
+   "rank_key": "82b0fcbb872fae9958379cbcbb1677d59f9536ef79d8d719f9ea93021784f4d8"
+  },
+  {
+   "doc_id": "news/DUDE_e5ea142a211f647dc2175ae7a2e40ede",
+   "doc_type": "news",
+   "rank_key": "33eb179f02f36f5e24163ae4b3724edeca960bc393ce1d0d1626143e7a18844c"
+  },
+  {
+   "doc_id": "news/DUDE_e761e602efb72da844d2bd97aac38cfd",
+   "doc_type": "news",
+   "rank_key": "8cfc6d80c0111297495b3605890bb5a37acb0e3ae1e92d38aee4a25c9a0dafbf"
+  },
+  {
+   "doc_id": "textbook/DUDE_093d14dc9252bac119eaa0136c9ca6a7",
+   "doc_type": "textbook",
+   "rank_key": "7ffa6d7afc457f685ae78be8325002ea80cf4832e6de1af1bea04ddcb26bed79"
+  },
+  {
+   "doc_id": "textbook/DUDE_0da5da2608ed89cdddd52bd078beced8",
+   "doc_type": "textbook",
+   "rank_key": "a53888911b3e31727991a98d3736bf82d5b9e8a1bf18d487d8b1fd47531a866d"
+  },
+  {
+   "doc_id": "textbook/DUDE_2902d4ed88edf8dfc765f57adb5b6207",
+   "doc_type": "textbook",
+   "rank_key": "92dbeb851a64d843fc259c576a100be2986579e5a98a9d79e76581512a435485"
+  },
+  {
+   "doc_id": "textbook/DUDE_30b32e2105907052a37238fc8d7a4d08",
+   "doc_type": "textbook",
+   "rank_key": "800f384264226798220a2e8ecce155e8ccc5aa0d3dd44b4a552e6bf455c5ffa1"
+  },
+  {
+   "doc_id": "textbook/DUDE_30c2837b193cfe2934eb0cbe2e4c4dfa",
+   "doc_type": "textbook",
+   "rank_key": "02e53b43e28c9ff1881b4ab2956cdd4e8f3cf52d52e40b8bfbce8622ee69eaa7"
+  },
+  {
+   "doc_id": "textbook/DUDE_7612210e7d99dfeea6f75d1a2632349c",
+   "doc_type": "textbook",
+   "rank_key": "dcad40d7394d005332d13ce2f948118ba3041fb5be7bb55533429ede397b7085"
+  },
+  {
+   "doc_id": "textbook/DUDE_89a3da3457ce1451bc01e4b83fb95f04",
+   "doc_type": "textbook",
+   "rank_key": "98f576bf5d0a31be4d3924971433b981c697d4915e2346ba2379fbdef8605aac"
+  },
+  {
+   "doc_id": "textbook/DUDE_8faf21534c13a3ea466f305f283c084a",
+   "doc_type": "textbook",
+   "rank_key": "2c7171e72b9f7e849802eaa9317c9a5c09176e51776f992452bed4b0bf3d5237"
+  },
+  {
+   "doc_id": "textbook/DUDE_93b8f44c0d90b95e0a02acb02d793504",
+   "doc_type": "textbook",
+   "rank_key": "70fc60dc5146415452974373cd3c4eb6f78a12d09fadc607bb78896f85ed244a"
+  },
+  {
+   "doc_id": "textbook/DUDE_951b16508dfde68d02142c8be439cd73",
+   "doc_type": "textbook",
+   "rank_key": "9a6d508379a2e4fbcb56faa9b254f5ca50749a960ab8e5c02d09d29ebcf23447"
+  },
+  {
+   "doc_id": "textbook/DUDE_98a39b108a879d984dbac55a5b33aab2",
+   "doc_type": "textbook",
+   "rank_key": "61fc114a1d8d67fabcc1f9b441023bd2ba822498adb2101ea05d80e3e5ea8c54"
+  },
+  {
+   "doc_id": "textbook/DUDE_f1efdd6aa8441a8fd29ebddcc1945fa3",
+   "doc_type": "textbook",
+   "rank_key": "eceb45a1cb2d86801120166a1f6c33be39e37535d036122a65e14855ba34b70c"
+  }
+ ],
+ "selected_question_ids": [
+  "002f9cc4-096b-4aff-b5b7-751f497e28aa",
+  "007b0a78-f278-4163-9312-8e5cbea3351d",
+  "00a594c2-0d4e-4d06-8c16-4ccabbfcc661",
+  "00c818ba-a210-4d25-b92c-5f423f203c22",
+  "013a3cfa-d2b2-4882-bb2d-32d0a65c2fea",
+  "01847803-d840-4ccb-a446-eceecaa0a679",
+  "01a08af9-6bd5-4636-a472-af5aea70aed1",
+  "01d9587a-49fd-4505-98b2-8ca8eabd7c89",
+  "01f5b716-4b50-4821-a6b6-31e03ae688c0",
+  "0262a5aa-edec-41ef-9762-762620379089",
+  "02e1030c-791d-469f-913e-8c9792a75c02",
+  "0305ba49-8a8c-450c-8290-f61f1616b10d",
+  "032a0c06-4f55-458e-8618-93ec82d768c6",
+  "034be832-f8c7-450d-b036-bf2cee165adb",
+  "035d6ede-a3c9-4e99-b131-aac79f4b6e25",
+  "0361524c-2cc0-4859-aa65-24ab713b7e05",
+  "03aa88ef-0678-43d5-9805-3e4845aff4b8",
+  "03f00242-59bb-480a-80aa-10f383a7566b",
+  "04408df3-2004-45b8-a0d8-336027812704",
+  "0487ff4a-7967-4ae8-912e-368d633344fb",
+  "048c238d-46eb-4138-90ee-358ef791645d",
+  "04d6b908-4550-421b-9ca6-dbcbc5f83946",
+  "0642f2b0-e84f-440f-b0ea-a3c6d844bf78",
+  "066db941-5f7d-4765-831c-827638e4b0ca",
+  "06b42b6f-1f94-43c8-98a7-75945b8c4949",
+  "06c6cb66-8e7f-4afd-8cc7-2f1c6923e8da",
+  "070227a3-7a37-40a5-972e-78a53176ee40",
+  "0703c5f1-5b4f-4458-a523-923afe963e96",
+  "07fe6a4e-2a6f-4e47-9b61-f92b9cf600ec",
+  "081f7d48-bf27-4b0e-8900-2e4fcbb4b8dc",
+  "089b30a0-809f-4923-87a1-798fe6addd9e",
+  "089f059c-f6e6-4035-b612-12fe40dac72e",
+  "08a30261-b675-4bef-ac60-1ff0b0350134",
+  "08ccf199-2ed9-43d0-b846-ce9a623d110d",
+  "0a00792f-1475-461e-8cd7-cea507b008f8",
+  "0a59f5dc-395a-4924-ad76-e2117f49992c",
+  "0bf4dac5-5a35-4b4d-9781-7a56697bb880",
+  "0c377a52-6fed-4601-8d41-c1455a1a0983",
+  "0ce22c82-6262-402c-af46-d003d2cc42b1",
+  "0d16422e-94db-4613-9fb5-559e8b9e1fb2",
+  "0d9ecdf1-29eb-4c72-a19e-a432f78c9f9b",
+  "0dbcad25-daac-43a3-82f8-9ef40b9bcb7e",
+  "0df099c5-62a7-4dc7-b273-38fcdfa69923",
+  "0e1bebee-5052-4fb0-b33a-463cd3e01f89",
+  "0e1ee981-43e3-4f49-b4bd-ba0d8e4a5806",
+  "0ec7c92e-b36d-4c16-a3cc-0cc1274e9b70",
+  "0f266902-f574-455f-8e85-6b8622c66d8e",
+  "0fa300b3-2f8b-477b-8897-82b2495f3505",
+  "108e0777-95b7-4925-a86c-deaf9dc701aa",
+  "109d5c8d-4562-4aff-96b2-64357bb8be94",
+  "1122da51-f90c-41ce-9c4c-cadbf2f1553b",
+  "112a2174-9d27-4596-b945-2195d03ce606",
+  "1140b40c-0fa1-43f1-9171-649d930d25ab",
+  "119aa71b-f6bf-47b5-9f46-fe0222087f22",
+  "11d7ad85-6e2d-4604-9ac0-407b8f06d1a1",
+  "11f0458c-f767-4ead-aa00-246fa6034d21",
+  "120961ea-0913-4087-95d3-8ca9986cc8d5",
+  "13e90002-caa4-4e10-be9d-3cf49e865042",
+  "141c3b45-5d03-4541-9bdf-c9c1681ad515",
+  "148a23d2-ad09-4b96-980b-9ba8a0013df0",
+  "14998517-6e5e-4126-9082-9e6189a14e1a",
+  "14dddbc7-b388-4ab6-8df7-6120a4c866ba",
+  "1519401c-8b1f-4137-8ea2-55e08e50c79a",
+  "153ec69a-09ef-4edc-a5ee-c1bc481f3a4c",
+  "157245a6-50d2-498b-bdef-65bfa46d6bca",
+  "1690677d-6007-452a-bd1a-a552969c3c13",
+  "169be909-660a-4ddf-87bc-4a82204efbaa",
+  "16db36e4-d4ae-4486-ab19-4984f49eb5a6",
+  "1704e146-312c-4940-a497-78e2194c955f",
+  "1712dd21-3cd5-4568-9f5c-335ff36240ff",
+  "1775336d-71ea-4d05-89a3-e80e966e1277",
+  "177a776f-5136-4f65-a042-f2921f857232",
+  "181a218e-cfd6-4560-9c05-c1f3241d3e27",
+  "18845c17-bd87-4a2d-bde9-0e5206885f43",
+  "18f619be-e17f-4abb-9f35-1b27e14c8a83",
+  "19b3f5f7-ae83-43e8-9964-22812295a871",
+  "1a1eddfe-f593-44be-a56f-87954551d132",
+  "1a98d8ed-0829-4d09-b449-70bb40532330",
+  "1b03812d-e0e7-4e67-ab68-400f5699f506",
+  "1b1ab9d8-ea62-4d1c-9f4f-db4cebf1aa33",
+  "1b3d0270-1d60-4e66-9540-e2f14f22070d",
+  "1bbc4328-c53e-4873-94db-705df2032b43",
+  "1cc99fcc-1ddb-4059-bfb9-c71bb69d0fae",
+  "1d0f64d2-3bba-405b-b77b-f1ce58fb4205",
+  "1d646311-d058-470d-876e-eeb28c96d735",
+  "1db1da26-42e5-42da-b527-351219cc9acc",
+  "1dc1d806-6dda-4c9e-a391-cffa15ae14f2",
+  "1eb04cb7-0096-4ade-8757-2fa2ca6f301f",
+  "1eb8142e-7dfd-4503-be72-1a184dddc0a4",
+  "200d56e9-a9bc-4d21-86d8-e8d2ead08f47",
+  "200f7753-f217-4aac-a59c-ff81e5ce0ca6",
+  "205bf9e7-c42b-43fa-ab4d-e9deec7b009c",
+  "2176f980-3258-4da3-b858-bd5ac500cf83",
+  "21929d49-fa67-4a2b-828f-e61e42a5b1ea",
+  "21d1b44f-20dc-48c0-a368-829610e6eabe",
+  "24399726-ebfb-4364-952f-f3b3594285f4",
+  "24902e0b-e1f4-46d1-9f75-5ba15aa128f8",
+  "24b6e94e-8632-4bf5-b206-816c9aac62b5",
+  "25128961-880b-4a4c-bcec-2c1d9a044f6a",
+  "25473977-17e6-4595-93c1-d25b124ba4fc",
+  "254bf7ae-1d0a-4994-b20b-575d4e28e674",
+  "25c72f6f-217f-4013-9bac-75b8a5c67b09",
+  "25cf03ba-ddb2-43da-a955-28be759bf9c4",
+  "266fdc4c-eff7-4051-8ad1-f667039d1c4d",
+  "26c2dbba-3dd2-471a-8a04-92d913c27bb7",
+  "2776c381-3ab4-4e25-bc22-e39e36283e54",
+  "28314bdf-f3b7-4415-b67a-413f73d15439",
+  "284884a2-55e5-41d9-b036-4ad9ee5be9b9",
+  "2849d45f-8b06-40b0-a2f4-388a3bd47992",
+  "2977d9fc-ea24-44d9-8e5a-45d53b01f386",
+  "2a242810-77ca-4875-aa37-6232057141b1",
+  "2a4e54c4-3e2d-4e5c-bc3a-1e63dae9e562",
+  "2a68a671-e9df-4835-9871-7fe53edccce0",
+  "2a6c0aa2-7d08-4b15-b574-76f9734262c2",
+  "2a8a24c0-7ecf-4da5-a332-3af3bb65687c",
+  "2a8a9952-8344-4662-84a4-211a40e1a768",
+  "2ac98394-09d9-4f3b-aafe-babba6f33d64",
+  "2b15149e-82de-4dbf-bab2-d94947bd881c",
+  "2b2e6826-8d17-4524-a6f6-10f1fc74fda6",
+  "2b65e81a-75a0-4dcb-9366-3b23031d604b",
+  "2bec0b51-6d3b-41b3-99e0-cba212531d5b",
+  "2bef7682-a992-4bb0-93d8-8615e2cf1e9e",
+  "2c05b870-cd34-4cd7-b7ed-75b463d0fccd",
+  "2c2df3c2-1951-4f87-b63f-83c6c89309e9",
+  "2c8941bd-4b71-48ac-8241-1753bd3a98bd",
+  "2cd395eb-c290-4413-9cb2-c15cf5232a0c",
+  "2d1d134f-91ee-4f41-b7f4-c64ceff9c794",
+  "2d37eef0-37ab-42a9-b885-1428834160b2",
+  "2d47a26d-3ba9-4c99-ae51-643e9444b514",
+  "2d49ec80-65ba-4571-9603-641927bace69",
+  "2d70b34e-e0d0-489b-bab1-a5e3dcfe2264",
+  "2e95f5b6-74bd-4f67-b5ed-c7eb35d327e0",
+  "2e9db14b-67b8-4585-95ce-fe1c1d91796c",
+  "2f595bc0-dad1-4c2b-9656-1c9429efcdfc",
+  "2f790ec8-85b9-4f35-9f66-fd74a00f676a",
+  "2f904d38-2fc3-4c2d-a0c0-0bd95cf8a17e",
+  "2f9b10a5-2e6f-4527-aaa2-51d5b4cde631",
+  "2fa0823a-5d1a-44c3-ab35-da2c04465ea7",
+  "2fa2875c-434d-402f-a24f-e185fe71a43d",
+  "2fcaabb7-a215-4d67-8497-63c69532c958",
+  "311dabd3-7066-487f-b1c0-f0772805bf68",
+  "31a91c69-4f5a-4827-bb33-f45b552bc38c",
+  "3215100e-6272-42af-9212-6ff19fa1c6c9",
+  "32fa6380-6187-4c98-948a-5ae045ade3c0",
+  "334b65c6-c4e5-4aea-a65b-da70955947b1",
+  "33755744-a22a-45f9-ab5a-8e04b76a548c",
+  "33b7511e-0d37-4753-bfb6-d33dbda9f246",
+  "34156cda-e537-4db1-ad4a-905ef931b13e",
+  "34cc701d-0eb9-4521-b63e-28c8206a6793",
+  "350a6087-cfbe-42e6-94e7-147e76b4ecc7",
+  "35e3c06b-68b1-46a2-9a7a-1d9141ed7ecd",
+  "35f24653-8968-451e-992c-203767941a9d",
+  "360cdc9a-020c-4bc0-966e-e0a416a5b607",
+  "3660fc39-f55a-4e57-bc63-747aa71cbf0f",
+  "36de63ac-ffba-4243-9755-d54219cfde66",
+  "37176e84-d977-4993-bc49-d76fcfc6e625",
+  "38018b47-b29a-4b06-9af6-6c5f2577bffa",
+  "380320fc-f302-4be7-b864-45d74c6bf5b8",
+  "38516f38-57de-43a2-a11c-8ae063e3ece8",
+  "38ac5de0-27ec-4840-b317-2c5357b48d16",
+  "38dfe76b-ae35-4290-ad80-ab08c963d148",
+  "38e54547-9c23-4b0a-bc15-c487f9fe518d",
+  "38f71af9-4680-4561-a072-11ba7e0c3415",
+  "399852a0-bd1b-4102-8d5c-141d6cf49ca8",
+  "39c185a6-c577-45be-8ad9-620c26a0bb36",
+  "3a3c6203-8520-4295-855d-36aa5f069f91",
+  "3a5e991b-9321-4e20-8583-530823f37f18",
+  "3a7f4ed9-4c7c-432b-9145-c99e8cfaf92a",
+  "3a87f02f-9e05-4181-94fe-dd4737721be2",
+  "3ad88a3c-befd-4012-8e0b-4dce5d20309b",
+  "3b2d1fc9-eded-44e3-b9e6-f58f7fdf2229",
+  "3bdc85dc-6c5f-4136-9b4c-3736c314f367",
+  "3cc020d9-10ca-45f4-b9da-713d74784fcf",
+  "3cc17dde-0736-4cd2-a9c4-5171f0d58306",
+  "3d17fd48-e0dd-4e20-8dfc-0cb0dc97baec",
+  "3dc51701-a76f-40a9-9db9-43222d85ceb2",
+  "3df8eeef-e44a-41f6-9251-ad083fcb34fa",
+  "3e3f40cc-3761-4cba-b568-94a17b1cbc27",
+  "3e517fc9-ee59-4b3d-a0d8-87f4f718d008",
+  "3eda138c-7831-4f78-a6f5-87c83f178fb6",
+  "3f73c96b-41f9-4476-bf05-837ad197a115",
+  "3f93aa56-19e0-4b74-9d6f-3707711797fa",
+  "3fee6277-bf90-44b9-8e87-e8503a65b6e2",
+  "405087bd-ff55-4ae5-953d-a58add28c2a1",
+  "410616bd-66bf-45f8-9cbe-3e7a74e0da1e",
+  "431d779a-dec3-4099-9ca7-b806649ddd51",
+  "446c1893-c9d3-4db9-abb9-aa725c9fb440",
+  "446d159e-b5c2-45dc-91cc-faaa931f3649",
+  "44827928-a915-4dd4-8f8b-7281d0ae95b4",
+  "4505f4f6-0a8c-46c7-8921-5f4f9edb95f2",
+  "45522a9a-879f-4e36-8c88-5b36259ef6d7",
+  "455cb937-7433-447e-b16a-f1e0087641ea",
+  "45bdc4c8-ef8d-4a23-b7fa-19390ff5fa08",
+  "46685cdd-75f9-4f41-90a1-5299054efa50",
+  "47074405-f330-4a2f-afc8-a4aef1b8bffd",
+  "47f050aa-b574-4132-af38-22707072aa51",
+  "48223921-5e49-4b10-8ab3-b4f24bca8e79",
+  "4825a5c2-f99d-4c77-a7a8-4e192304deae",
+  "49bf1bd2-3aaa-4be6-a994-6bed26fef269",
+  "49cf808d-25e7-4238-a474-2ec74af05b76",
+  "49e78dcc-9dd3-49c3-8b75-471e1a340ed5",
+  "4a276dda-34c3-494a-812e-a9b8e7e13ed8",
+  "4a6edc95-c641-4236-9874-81a2d38b5acf",
+  "4a6f7151-df05-40c5-83a5-da6370069215",
+  "4ada56bd-34f2-4ada-8dd6-8d366cfdf281",
+  "4b703e9e-6ee4-4785-8b98-a7b581164669",
+  "55333d8b-473d-4d85-96d2-7bf91b827bb9",
+  "5540aea2-6b05-4eba-8e22-0794d203088c",
+  "56071c76-8136-45b4-be62-7fd8ea8db075",
+  "567fec5e-04ea-481d-a006-8c1cbbd743b3",
+  "568e6fb4-0221-4c1f-813d-361301ef1d5f",
+  "575812c8-2347-4fc4-9e76-ca348fdf18e7",
+  "575b4b67-ce92-4ea9-9fd4-1997b13a56f2",
+  "57e663a4-be2e-4945-9717-b33e666fffc0",
+  "57f72032-eed9-453f-8682-bd160661e635",
+  "5812047f-4276-4448-8d3e-2b86d60bf186",
+  "582a4042-8d62-40ae-b601-02146273633d",
+  "5975d0ad-a365-46b6-a9b0-98b2ba2a20d8",
+  "59c21586-320c-4721-a4d6-635e02456240",
+  "59cc48be-94c4-4878-852b-c3a8066b2e6b",
+  "5b0f8a16-148c-4bd2-84bd-2f21b0a2cbeb",
+  "5b1f9264-6c55-4706-a0f3-f80a9e046b1a",
+  "5b26de25-553d-4dc5-aae4-70679855a966",
+  "5b471c43-7499-428c-b0c3-2323c1b199c4",
+  "5b51adb0-06a2-4761-b2d1-1495966d3047",
+  "5c101261-9776-4b3a-8341-9acefebd6b72",
+  "5ca5042e-10c2-4392-a9db-a34c532221e2",
+  "5d14bafb-c8f1-49d5-b1d8-c3831272a92c",
+  "5d59adb3-45e0-4cc1-ac54-a78ed8bacbcf",
+  "5d87a7c1-5593-45d0-8847-22316fab7a98",
+  "5d87f7dc-4127-4e5b-8387-a5417ed55be6",
+  "5d8ae987-3f4f-4b9b-95ed-9d8a5948f633",
+  "5e4bcc97-b9a0-4da1-bd60-3fa2af7d2aec",
+  "5e86f6aa-04cb-4e62-a391-a567684e8ede",
+  "5fe1ea9c-ca70-4692-90d8-416a4fe569dd",
+  "603fa8f0-1549-4dee-830b-4d6d9575d095",
+  "6047d73a-2932-4409-ae3d-cba28be11555",
+  "60895e0b-2598-4d48-9e7b-e4bc0c016ca2",
+  "60c8e5a0-d560-464c-95f7-792a739ac9e2",
+  "60cdc9db-fea0-4b70-8a8b-425cbaab6a44",
+  "615e2bb3-19b5-422e-937e-c30494a0490b",
+  "61b90490-ce40-4ea6-8c64-ba42df6b038d",
+  "61c9be50-fd15-41c6-8de9-cc8d50db0531",
+  "61eb6eb5-e9a9-475b-8165-28c04e8c434c",
+  "61eb9c5e-4379-449e-82b4-79e1611ba08d",
+  "61ee7c76-f35a-4767-acd8-efb1dde06374",
+  "626a7f3e-c9ce-4799-9016-0550262894d1",
+  "630ac131-3f41-4b3a-a493-c8292e7d609a",
+  "63342f18-a92b-4b89-b86c-0a926ea3f40e",
+  "63c0738f-7442-49eb-981c-8d72fb184fa6",
+  "6437f920-3b10-463a-b138-90278c286cd4",
+  "64b2507c-4d15-44a4-88fa-964a1679910b",
+  "64ebeb65-9f7e-41a1-bbe1-17d4c0b915ec",
+  "7ffee1f0-ab99-440c-ba3f-9a20a346e5ed",
+  "800522d8-70ad-4b28-bf4a-b7c54d8af2ce",
+  "801d9e56-764a-4d3f-8824-596607d8a97f",
+  "80237892-2ba2-4e96-a2f5-e38b53f6527c",
+  "802f2b6f-8d2a-4b06-9635-01788944ac75",
+  "8037b354-59c7-4694-a460-0ed803035421",
+  "803ed5b7-988b-4559-97ad-3ff5c0468509",
+  "80499cb6-af26-4c1e-9c88-25699307f6c1",
+  "804a51b8-3cdb-4984-8c1a-38582be86c74",
+  "804c5c6f-fcae-46b3-a591-f3da26e1e79f",
+  "8066b49b-b1d7-42a0-bd25-cefb7a0a02ba",
+  "806a4718-baa6-43b4-a4a7-49d95aba5c0b",
+  "80812cd5-69aa-44e4-b67a-91d0afd18e58",
+  "80b9b013-aea1-4905-a5a9-3eb6ba0fa23d",
+  "80c096f8-59d0-4d90-85b3-a992a480e729",
+  "80c6f0b3-52c0-4d81-a6bd-421adbf288e8",
+  "80d1b3c7-70a6-41f2-a89c-b6158e6f777c",
+  "8109e99e-9008-499e-b7f4-430d7987228a",
+  "8122fb3a-60b8-4244-81e3-23542ebe8dcb",
+  "8145c25e-7683-4ff5-a1e6-24fd3bc5b265",
+  "814c9a47-9d5a-41ac-b22d-881937ea876b",
+  "8171bd9b-42cb-4012-b992-a55e37cea2a7",
+  "81769c47-d8e5-4ee8-a2f8-bcbefe5af34e",
+  "8196f14d-1b34-4506-89e3-cdad8f390b44",
+  "819745a2-219d-49cb-9539-a2b9773a33f1",
+  "81c34e9e-2d65-4606-92d6-fa21dea79f4c",
+  "81d367fa-f3b6-4030-8055-0a205de4a916",
+  "81ffbbc1-84c8-4b95-8637-da9e8bb62aff",
+  "820bc51d-db3a-4fa6-87d0-286213f36e53",
+  "8236aa18-f643-4c39-b95c-1a8ad094dc8c",
+  "826ad650-d48e-4fa1-b5da-11bacd37d3ba",
+  "826ed9a8-cc79-4307-a988-2091a43852a9",
+  "828aac2f-06a4-4a73-8303-59bd7ab0203c",
+  "82da2082-d6e8-4792-99ba-fb981bfebf5f",
+  "82fa1326-a650-4c1e-b3a5-9c61567e7aaf",
+  "8328d07d-3356-4527-9651-3aad47a557a6",
+  "83443238-083a-4926-9a85-4dd80f4287d7",
+  "835c38ac-2f31-4198-9190-a321f9560b4a",
+  "835c644d-641e-4899-a625-8f2611c6da8e",
+  "8364119a-138d-4cb4-a346-b18cfcc4ff14",
+  "836c4d13-f2ff-4d8b-a67f-6ee814f92249",
+  "83709770-6b1b-46c3-8951-3e123f527068",
+  "8380be45-6c43-4e07-89b4-06666cb37a76",
+  "83883b07-4cd7-405e-8da7-4333cd418d00",
+  "838c0518-3adb-41f5-860b-cff0360b45dc",
+  "8390465e-fdd6-4d41-95e2-c968c24950c8",
+  "839a1c40-3b51-4bba-99f8-35683b2b0e82",
+  "839de8c1-7d42-44f4-8e4b-7138783aaaa9",
+  "83aac0a5-c84b-4c62-adf9-b993b013b5aa",
+  "83f73761-c941-44a0-8e48-754efad5a021",
+  "840658d1-c1da-4d39-b735-0626dca8b6fd",
+  "840fbb0b-a5e3-47af-871d-ade6432255ee",
+  "84793472-d376-4cc1-8b17-1435e76564be",
+  "848d6744-2489-473b-b5fa-9dc0938d4510",
+  "84911fd1-f106-46d4-99b6-9a6e2d1ad1e0",
+  "849ff130-5135-4fc3-b273-48d50b4647ed",
+  "84c9ffd0-d2cc-462e-97fb-7373af22cc7a",
+  "84cd1667-d6f7-4fda-ab56-45d548e8eb25",
+  "84dafda4-239d-4c84-9908-e18a6dda2427",
+  "84dbb21d-59e9-4903-9a80-2594ef14714e",
+  "84dc9336-7894-4216-997a-c20d61b209e3",
+  "8519bc4c-3fa4-4381-bc02-cb694369f1d6",
+  "85225ff0-742d-4e15-9672-1c34998ed417",
+  "852c3855-7bbc-4445-81ff-054159742dff",
+  "8530503d-e1e0-45a6-a63b-b53c0db6c5cb",
+  "8534af6a-11e8-422d-8072-5d931a09bce7",
+  "8535daa3-1da5-4b80-9a0c-955e5aad1f2e",
+  "85938354-a951-45f6-8c9d-61d780bc3723",
+  "859bfbec-8c99-465c-a825-353fdc710603",
+  "85abbe0d-68b7-4683-a89b-71faa9521c54",
+  "85bcc617-8d09-4cb2-aa96-0b23ab247017",
+  "85d66f28-83e0-4600-9ae9-5846965da173",
+  "860d23d6-4c85-4837-b5cf-489783c8e374",
+  "861b548d-f013-46a3-a6bb-00f11e884b80",
+  "8623efb5-2bfc-4b66-8527-cf282efab350",
+  "862ac9bc-cee2-4663-9ed9-0f61a38587a3",
+  "864cce95-3e97-4b9e-a362-bc243927e72b",
+  "867d280d-4673-4a9c-a75d-46163df7000d",
+  "86fadb0e-89b1-40d4-8218-ca25f23db306",
+  "86fe1d05-e89d-47e3-b4ff-18fac3e33204",
+  "8703f505-7810-4635-9143-754a620fef79",
+  "8727d1df-ad7b-48a0-b5eb-125dd828c5f0",
+  "8729a8c3-80cb-41d8-b77b-f18a7dbd8426",
+  "8742bb23-c8f1-47df-8d07-9761198d619d",
+  "876f9d40-62c0-4f76-a018-6a2521b5668f",
+  "877260c8-f01c-4be2-b287-996faef6d8c3",
+  "8772a35a-a39b-4d7e-ac14-774571f5fbe5",
+  "878738df-a207-4258-9cd4-f4563cd1d4ae",
+  "87b2059b-dde5-4931-a38e-fdecbbbf45fb",
+  "87b8a1f9-e00e-4ef4-9e3b-68b89314f8c4",
+  "87c65cdc-a473-490d-a966-9a6753d6904b",
+  "87f3fd05-9325-4512-9249-875153d544cd",
+  "8806076c-067f-47de-85ba-05fa06176257",
+  "883e1603-4416-4007-b7aa-66cf4f546717",
+  "884aac86-d48c-498b-9d19-41263010687c",
+  "885811a5-2df0-4d01-aded-524ba057b678",
+  "8859ef17-b3e2-433a-bddf-5beee7bd60fc",
+  "88623846-c717-4901-94d3-16b33e85c5a3",
+  "88653e42-cefe-43ec-a918-4b9f501049e2",
+  "8875a2d1-4bcf-4bdb-9689-114eeeed4e4b",
+  "889c8ae2-4e3c-4f2d-8332-559dcad00273",
+  "88acae71-594c-4123-841d-e7436e729a0d",
+  "88af1a4b-8ae0-41f1-a80f-0d9988df3f1c",
+  "88af33ca-4906-4346-8ba5-5e798978b588",
+  "88b7b3c2-bc8e-4bd9-bbee-7cddbcec553e",
+  "88c194f5-2d20-4bd3-84aa-6b594e808415",
+  "88d5484e-4a97-4775-95b7-a0bd095537b4",
+  "88df9cb3-bd73-4565-b71a-1393bd104215",
+  "88e2d0ba-eff3-4ffd-860f-6a74469d573e",
+  "88e2d6f6-267f-48f4-a2b9-9e76d2cc93b2",
+  "88e610a6-ac81-4b36-afb7-0a4bbcb50455",
+  "88e73bcc-c9ae-422f-9b0a-e6b5bf9fae68",
+  "893c73dc-a8c7-4a6d-8b1d-868e8bddf0b7",
+  "8960b388-5154-469f-86f5-c3e0c3b82238",
+  "8961b8fd-232b-4101-befa-833001c9f0eb",
+  "89e15429-8994-4e72-bc4b-7c2440c7e024",
+  "8a0d38a7-559f-4033-bd09-5adbf7831c76",
+  "8a3ac61d-b6dc-48c8-976a-b6fb866db1fb",
+  "8a50b90c-207c-439b-b18d-ae2e5aa4ff84",
+  "8a551fcf-b1cc-4cb8-a232-d6588b74c7c8",
+  "8a97f21e-064b-4a71-ac72-b48ae6604198",
+  "8a9c8621-dd6b-4b07-ba42-b794e570074b",
+  "8aae7bbc-07a8-429a-aff2-d9965e4620c9",
+  "8ab44981-ac4a-46db-a909-2fd861b8f059",
+  "8ac722b0-0474-4e6c-b61e-232e91dab613",
+  "8ad22449-38e3-4ac1-b28e-91322cf7d12b",
+  "8adee9e3-1828-4918-8ceb-65a4029210a6",
+  "8af179ff-c2dc-4ef2-8ab0-c86d3d4bbee9",
+  "8b4eb003-401a-4e8a-bba0-fd458d3ac4b9",
+  "8b8afb48-4b5f-467c-8bae-cc6d5839fa50",
+  "8be6b9cb-4396-4ea9-9fbd-197ce417fca9",
+  "8bf65c25-4d89-45e5-be9d-5bd1d0f38a80",
+  "8c141838-f468-40a2-a604-e5aff4db1c1e",
+  "8c177fa1-9b4a-4394-8e89-388fcbaa69eb",
+  "8c188f49-13bc-421f-9887-75f5e852c87c",
+  "8c7b8c8f-d3b6-4552-8c90-7b5e63528f2a",
+  "8c7ca017-1859-4282-9815-1e348a508306",
+  "8c81f39f-4ab4-4c83-b5cf-9da9a323164f",
+  "8c88bc2c-a393-4722-b90c-92b4d21d4f6f",
+  "8c971839-5637-4e73-a0be-8cf3a8a3b3ae",
+  "8caaa3b1-6ea4-4899-bc46-812a319f075f",
+  "8cbb522f-c202-4b40-8156-059158bd9178",
+  "8cd4f97a-3dd9-40b9-b850-54e55bc6f0e3",
+  "8d00b7b2-7d82-4ccf-81eb-88e5d549faad",
+  "8d0717f8-6708-4be7-a73c-a0558bc0c940",
+  "8d0ad138-ff8c-4833-b6ba-36cbf2a2ec9d",
+  "8d0eb05d-489f-4d5a-9e26-491b7cd75272",
+  "8d10328c-e35e-43dc-841d-8a8df74c7d63",
+  "8d109ac4-a87c-45ff-9ca4-1b580e01f001",
+  "8d134b27-40fa-4ad1-9cb0-aa03ed1f3843",
+  "8d319f6d-cf3a-44cb-93e2-ebfb5c57c6d8",
+  "8d4415fe-cd2b-4b20-8bcc-9e1b3f152831",
+  "8d6402d2-9cf0-4930-8e10-739c33cfce7c",
+  "8d74ba55-ce73-4847-a581-3357351b4a8d",
+  "8d8e79ee-328e-4fd0-b8e7-ca2fcdf68574",
+  "8d9ecfb9-f549-4e22-a0df-7f74efe78b60",
+  "8da65308-90b9-476e-9033-11e086b3afe1",
+  "8da7aff7-0f77-496a-abba-ab043a81b8f4",
+  "8dc22bf1-a46f-4f42-8554-ac8a56530509",
+  "8dc8bea3-5093-48d3-9827-19fec6b29a3c",
+  "8dd0d526-ed18-4365-a34f-4bb680ad8bd3",
+  "8de2b1c4-c292-4814-931e-8a3f0e4c7984",
+  "8df54a24-e6e4-49f4-aed4-4b11144844d2",
+  "8e5c9a22-f123-45d0-a70e-39ef8e38dbe7",
+  "8e814d53-b8fc-4c0a-8c3b-5ddfa44e31e9",
+  "8e8b678b-896a-47bf-a86b-7b19a41d3941",
+  "8e8dee47-12b9-4b58-833f-5e647d9a8481",
+  "8e959d51-a4b0-4ea3-8994-638b47803f34",
+  "8e96831a-30a8-4825-be49-dbe7ee0d5182",
+  "8ea13400-05b9-4653-add6-d48977814748",
+  "8ea4cd74-d9f1-4274-b0d4-692a9f4248d2",
+  "8ed01ca7-9514-470a-b891-b06662b5ec6b",
+  "8f3aa983-1d38-446b-8a78-c5c5f1c2d691",
+  "8f3af2a2-6151-4c4c-919a-b9238b36f95d",
+  "8f3b3866-ea97-46d8-8c4b-fae58b4706e7",
+  "8f3ecb5e-1f90-42bf-b2bf-68893639cee7",
+  "8f7b1e9d-8c7c-425a-abc0-3ac7b311257f",
+  "8f7d7092-ef58-4475-bd33-307bc984fec7",
+  "8f920809-be8c-44d5-98f8-af5294d15e2b",
+  "8fa20238-4290-4d1c-977c-85bd94bd943a",
+  "8faa1221-d340-402e-9bf3-9c32729253c4",
+  "8fddb0d9-dd4c-4778-a958-eec9ebfc3908",
+  "8fec447b-8e75-4512-bc40-fb9e2acf77b1",
+  "900757fc-2a86-41d5-8b0b-fafc0be44183",
+  "900eee9b-10a1-4b00-af8a-e159cc7953ef",
+  "9041f147-c758-4bde-9822-d64549c85564",
+  "90557d70-9f86-4308-91be-1f9e6d451417",
+  "905888bf-7976-40f9-9b5f-43b06485ea29",
+  "9063e6c6-5ff7-40c3-9978-0a51bd1a8a0f",
+  "9087b05a-3c0b-430d-9113-9fa2fe597ccb",
+  "90a68172-f944-4054-9f2a-17a58a34db0d",
+  "90b9ab22-b30c-4a3d-a0ee-d9538e0a194f",
+  "9113abd2-99e8-4056-be16-bc94b253a58e",
+  "91377194-451b-4d0f-8a29-34edd73b56eb",
+  "9142b986-32ad-4ead-bb55-4f39625f251d",
+  "914c0078-1295-4f9d-99ca-a89fe8dc93af",
+  "9172a4ce-3462-49eb-89ed-9cbbef2bcd79",
+  "91755dfe-09f1-48fb-a099-7a10278afcce",
+  "91c05179-673b-4055-ae6f-eeef98b9cc7f",
+  "91d10e1f-a17c-41bc-8cec-942a48aa6f44",
+  "920e2dae-c7d9-4871-b4be-1aa7bc65b854",
+  "923090c9-27a6-47f2-94c1-0185c6cf6a7d",
+  "923b6b02-c43c-4872-b9fa-0ab3894580bd",
+  "9244bdd6-bf33-4139-b14b-a635632fcbce",
+  "925c6384-0d68-412a-a3ec-1dd0c07afa06",
+  "928ca3e8-a185-45fd-b9bd-4a42a055e30e",
+  "929647df-7f4a-43a7-8717-93c72d21bb0d",
+  "92ef181c-62ad-4603-a181-1ff0125f0449",
+  "932ad819-1c5e-42dd-9c43-0dcc3ae5b633",
+  "93439c34-9511-4be5-8399-79e958f2ef4f",
+  "9375d0c3-7aa4-42fb-a4bb-4c8b23a25178",
+  "93971830-8f3a-421e-9f39-c0f35d9952f0",
+  "93ad4bda-e8bd-441a-bbb8-a17cebc263f1",
+  "93b649bc-32c9-4b2e-a211-4947ec424a93",
+  "93bf9056-c33d-4d27-b3c8-d759aefc070c",
+  "93c6e8e6-ac6b-4f3a-9cdd-9bf60989c22c",
+  "93ce76f1-dfc5-4e57-a76d-6cd239f7e1d5",
+  "93dfa22b-9d6d-40ce-824c-09d7531720b2",
+  "9406cc96-fee6-420c-855d-401b68a8ed3e",
+  "942ac326-39d7-4444-85ad-ce995b0479ec",
+  "9439f68d-b142-4971-84f5-fad295b5fcda",
+  "943a0e43-95f1-448f-8ccf-b86cec227da9",
+  "944f8cbe-8c25-4232-bf5c-5b22fc9cb128",
+  "94550f98-694d-4f14-b6b8-63e34cfb1325",
+  "9461f90d-74a8-4cff-be2d-0b34e95e5d64",
+  "94a36170-ad1e-41af-a3f4-8af0975ad6f5",
+  "94aa681f-79c9-4b02-8e06-0e0202fc3b5e",
+  "94abe799-2be4-4e4d-ba6e-bbc16bce3ffb",
+  "94b67285-36b8-49fe-8fc6-664b9093e321",
+  "94bed05a-fbc9-4ba7-bf41-63c25309b095",
+  "94c4cbe7-a53a-45b6-9420-a852fbcfc02a",
+  "94c5e75e-d200-4734-80dd-f9be109b144e",
+  "950089e8-c803-417f-8a49-3193ea2b0a4c",
+  "9501e917-496d-427b-baf2-f402a0e624f1",
+  "950cc5e4-e64b-4096-baa3-be0ad37d6baf",
+  "952e95ec-29bd-4a88-b3bd-45a7a3563cf0",
+  "952ebb3f-a597-4265-814b-56c9b77d6cdb",
+  "9552b1d8-b757-4dfd-8f12-5f1db3b421e1",
+  "9563b15c-0a98-4d99-a36e-9abf03462f64",
+  "9588005c-a912-4908-9ca8-2cba2b663ba9",
+  "95939b94-29b0-4fb0-93bd-763ad034f1a2",
+  "95a75e2f-cedb-4dcd-acaf-9c00752e4b48",
+  "95a9a270-df74-48ba-8806-5f28db09e480",
+  "95b4f0f3-2bda-4116-af4c-3e81b625873c",
+  "95c7f377-6789-4f77-a145-df7b86eb467d",
+  "95da9372-7762-4ce4-992b-57ea836ceee9",
+  "95df3d5f-0a24-472f-a1b5-4d31250e2eba",
+  "962abf81-6ffa-450d-9172-c95c9eb5fddd",
+  "962c7fb5-88cf-4163-b89b-a1f8cb73c813",
+  "967a5099-951e-40dc-83af-4f510e589a64",
+  "969216b8-149c-4019-8e31-20d5533e9f06",
+  "969ae6f5-21d0-49d0-907b-bfad6c90bb74",
+  "969b7460-aaeb-452d-8ac0-55f9920c3a49",
+  "969e7d5d-fce8-4c4a-98c5-43109a1f3e39",
+  "96ab64d2-3512-4906-a4ed-017b208a888e",
+  "96c29ddc-553c-41f1-acdd-933147dcf784",
+  "96c46b3a-0f35-4ac7-9b95-875b40af2cac",
+  "96d5b77c-7186-4a93-bef8-b4032bf23125",
+  "96de7955-5e83-4d6c-94fc-fef16888ddde",
+  "96f85401-f4c3-4994-ab34-72da13234695",
+  "970dbb8f-9dce-4107-a5ea-a3dc485ea356",
+  "9799eac6-8c08-44a9-9988-d6a66670db25",
+  "97b1a244-eda2-412a-b65d-4af890188600",
+  "97df88e4-ab9f-4669-beba-f30cfe21a5e5",
+  "97e379e9-f919-4ea4-9d0b-bc0c6635897f",
+  "98001c60-dc2b-4413-94bb-c1a10a66a583",
+  "98533ef4-022f-4989-831c-7b016925cf1f",
+  "98562814-ff2f-4e3b-9a2c-fabbe25da0d8",
+  "9860f6ef-bdc0-452a-b361-8ed6ed8304b6",
+  "9864ef23-c21c-4a3e-9929-4ce5294ea48c",
+  "9869b889-400f-48b3-b7bd-d1b69e697ff9",
+  "98ba0f0e-120d-4126-9da5-3b38d1aa6c5e",
+  "98dc09f0-7d62-4a2e-bc6c-77ac7a384026",
+  "98e656ef-c535-42c6-a9f8-d9ec790c84d6",
+  "98ec02e1-bccc-457a-bb1e-adb046fbd74c",
+  "98f3b0a1-c4d8-447a-84fc-93cf47767f64",
+  "99083b8b-5de6-4850-90e8-d2b5cf941367",
+  "9915505d-1048-41c1-b44e-28bba0c3af28",
+  "994e4c4d-09af-474d-b6fa-082fe1ad3c5b",
+  "9953ded8-c4ea-4478-b099-10884a2fa7e2",
+  "9966e6c9-dc31-43c7-a3fd-6c8380b17f7b",
+  "9968e549-c020-420b-baba-e1ad56b43ab6",
+  "9980d06b-7ab4-41de-aeac-6de51c60a44c",
+  "99b986a9-39f3-49b8-b2b9-2481707bf484",
+  "99cd7a9c-b2ef-47df-95c2-979098c44cd4",
+  "99da307f-5aab-4ff3-b0e8-a28d59715885",
+  "99e78caa-e387-4594-a1df-bc4b2e8dc2d9",
+  "99e8c828-21da-432c-9c68-d4fd0bd7696f",
+  "9a02da57-8c13-4407-8bb4-6d8e13762cdc",
+  "9a187a66-81ab-4791-b6d3-efac2ef45b75",
+  "9a1ac1e7-c512-4c80-a01c-d70056653d06",
+  "9a6c6472-649d-4c3b-b031-f40030bea102",
+  "9a6d3883-bb20-43ef-84be-bf55b83db2e5",
+  "9a81cbc8-b46c-42fe-b89c-b03131495113",
+  "9aa12ecd-fca7-45ca-9c18-2bc700839dd2",
+  "9ab97caa-1db9-403f-881f-d054ff72a5bd",
+  "9ac67927-b93b-44f0-8e70-188921b61740",
+  "9adeea26-ae6f-42df-bf70-7aaa553fd9fd",
+  "9b15f2e4-b465-490a-bee3-fc1b545875ec",
+  "9b46f9cb-a40a-41fe-b2e0-a84aa0924655",
+  "9b6d7435-ac76-47c7-b017-3361687eb2cd",
+  "9b8b71a1-b38a-45fb-b611-64cebfc74ca9",
+  "9ba303f8-48aa-4614-9e4e-0131644a7877",
+  "9bd5afc6-7a56-42ad-9a56-01a65c743c70",
+  "9be5f070-b77c-4704-936c-a97558e903bc",
+  "9c06b7f3-a6b5-4017-9676-2bcb0e63d754",
+  "9c1977f6-0520-4605-ba61-0fcfdd5c4055",
+  "9c5db72a-d5a7-4028-ac3d-c6a410f84581",
+  "9c75bbf1-ba42-4985-adcc-b451a96f704b",
+  "9c831eeb-d949-4847-b17c-939dfdadf355",
+  "9c8f30c9-4168-4e0e-a4da-45082cfc0f4f",
+  "9ca63e9f-3a0c-45c9-94fb-54c4a70577c0",
+  "9cd3c6cd-c667-40a5-b5b0-ef2df342e25a",
+  "9cd976f5-91f1-4eb0-be14-7f1359296e80",
+  "9ce55f33-6207-4555-a1c4-cff6108bc733",
+  "9d12ecc5-0c65-4dc4-be4c-2e64a62f9abd",
+  "9d1d9f57-a86d-4aeb-b084-0869badb7f46",
+  "9d378d0a-636d-4721-9939-c0ce838a6208",
+  "9d3dd496-fc1d-4307-9de3-37511e651634",
+  "9d3f167c-428e-4010-8af9-1216720527ad",
+  "9d6c1161-2b84-4043-929a-7a5be4035396",
+  "9d744daf-9b9f-463f-aedb-f4c9ca46ab7f",
+  "9d88f502-38a2-4833-9fca-e52f22476ccb",
+  "9dd0630e-1897-4812-9ee3-efdba012368c",
+  "9de4a72e-52cc-4b1e-b79b-edadbfd26649",
+  "9df7a58b-4ce5-4928-9078-839c4145bda8",
+  "9e1ce121-664a-44f5-bbee-f784454d86ce",
+  "9e2c8f2d-1aaf-4215-a42b-754f495c168e",
+  "9e4c8800-084f-4708-b072-d57fe676eb4b",
+  "9e9c9fcc-65cb-43db-8f56-24cd0a19bbf7",
+  "9eaa78d6-7b4e-4e6e-b99a-b196542be8ca",
+  "9f183dd2-5fe5-4714-8776-e563dd010c05",
+  "9f22d501-1d30-4c72-9b20-ffaa9179cfc5",
+  "9f6c251d-06e8-4e8a-9a71-3ff912631155",
+  "9f82ed4a-c3c6-452b-b55d-8294e0312f6c",
+  "9fb7953f-0b78-4c45-8b48-0f30e92d31c2",
+  "9fbde1a1-4cee-44b5-b9ac-8d5a3e87678d",
+  "a00f9b1b-65bd-4317-a4c1-9186b717e7d7",
+  "a061a65a-42a2-4ced-8798-73b4a5d57d64",
+  "a089aaed-548f-46e2-bbb6-0e3d24648445",
+  "a08bb967-d37f-4a9e-8ab2-6c580cc62b66",
+  "a091534d-e2dc-4869-88ab-6c1eb1c6d0f2",
+  "a0a57b5a-e05e-4082-87d0-3a05edda715f",
+  "a0e6d4c9-0566-4f72-9bd9-3c196477d5f8",
+  "a0eb6f03-fa96-4889-b7d4-90b904c5a8ff",
+  "a12e82e0-3ca9-46b7-acf0-889f2e760b61",
+  "a1faa79f-abf3-40e9-8cdc-8d3e93c65e68",
+  "a27731f8-a35e-426a-981c-86431842d0fd",
+  "a28eaa87-000e-441e-b7bd-66c6feee6f04",
+  "a2939b3b-7fa7-4d8a-bf88-ec827f99d273",
+  "a2a108ac-8220-4413-b95e-f30884498906",
+  "a2b4e1a7-16db-49c4-9e67-6c01a23a8329",
+  "a2bdeab0-a1d8-48da-ba5b-5bfba2a12d9e",
+  "a2c43b1a-ac23-4ec3-8dad-d2c6cebe4337",
+  "a2d80ae5-d757-4ea5-a859-eb5171d101cd",
+  "a2e10459-0efc-4f92-892b-ee03237b2a53",
+  "a2f5b0b4-09ac-4b79-acb7-f9c7b10a60de",
+  "a3141aec-b770-4f17-9e24-b3be42004291",
+  "a35026fe-cdcf-41e1-957b-3d5b524b386f",
+  "a3560178-f80e-4391-a68e-176d5bf73a3b",
+  "a3673229-1ca2-4892-a8ae-748fdafe243f",
+  "a37068b7-95d3-416e-b0fc-e22fe2c9cbfe",
+  "a377abb7-4050-46be-94e6-560526b78b78",
+  "a3859b99-4d29-45c1-abb5-71fbe02b159a",
+  "a3b29737-5e8e-4d6e-8bbc-b1c525072562",
+  "a3de4605-d2e5-4373-813e-87ebf442af80",
+  "a4061c28-1ea8-440c-a9cc-3a14a90bf1bf",
+  "a412a083-06f0-4d87-8e7a-da8586838397",
+  "a428231e-2a07-4254-b61a-d23ef36dae9c",
+  "a447faed-d2ad-4808-bf04-524f6cbdb0a2",
+  "a4545742-d659-4826-83b6-2dc0b927ee07",
+  "a48589e7-0058-4e10-9cf1-e229e1779838",
+  "a494a9e7-0eb8-4048-94e0-bd173b2de0c1",
+  "a4dcf23b-efb1-4210-a3d5-6a65c17346e3",
+  "a50ef594-e548-42f5-ad82-692d7eadcabd",
+  "a543736b-e1c4-4d7b-a2a8-57dbf976e145",
+  "a551a8dc-d710-45e8-a2ae-fe81e0e95e0a",
+  "a558199c-c4e2-4d76-8248-0659bac7f43b",
+  "a5620490-639f-4c72-a12a-666de977a983",
+  "a56617f3-b29a-4fa7-971d-62d1ac82ce76",
+  "a57a9c82-aeae-4da7-9913-3e39bde1b1d2",
+  "a5863000-e8ac-474b-b616-89d1b5d0848e",
+  "a5ad3471-2feb-4b43-bb5d-774959555f65",
+  "a5b7a662-2516-44b5-b010-4f28225cf95c",
+  "a5df973a-39a6-4458-ab7c-c31999332305",
+  "a5f3aa63-a5cb-4d9f-a579-49170806989a",
+  "a5f81471-1ea8-4fb2-b8b7-b4102fb9fd80",
+  "a6014330-9fed-48e8-955d-e161e3c74c1f",
+  "a60ff5bc-d10b-4908-98c8-9a7284ccaf98",
+  "a6140831-fd1d-4bdb-a05d-4991975d41e6",
+  "a61727fe-acaa-4133-9753-9e35b60fb40e",
+  "a61a7119-1fc7-43d9-9c5f-10678b26ee31",
+  "a63423a4-8d67-45dd-9405-b33214a6ea95",
+  "a65041c1-d45c-4cc2-87ff-aac7c83e529e",
+  "a67311c5-06f0-4c5b-9375-fb7e88c4187d",
+  "a67a386b-7b2e-4598-a9be-607c03c1a5ee",
+  "a6a14ca9-e468-4aea-b3a3-380a39899ffd",
+  "a6ae8a6b-714d-49bf-9232-11dabbd792bc",
+  "a6bacef6-7237-4e5c-8716-12024f48cdc4",
+  "a6cdd8ac-696d-49cf-bb4c-85b8778c4809",
+  "a6d39c86-88ba-469c-af36-30552429a817",
+  "a6da4f1c-ff90-4c52-82a2-7187aae0b916",
+  "a6f83811-906b-4371-91ed-c036dcd54248",
+  "a6fd86fe-f57b-4feb-928c-d64a1cd396ff",
+  "a71c10cd-ea20-4560-a728-62b2b00b972b",
+  "a73ac477-4ef1-4332-adc4-d2805feaf2b8",
+  "a7531a77-5d2d-454c-bd0e-08c1f536a73a",
+  "a782b7d8-000a-4645-b6c1-49c62a184780",
+  "a78489e0-bba3-44a1-b099-be0d9be2a323",
+  "a796a7c5-d861-4949-8eda-14f75ca942ac",
+  "a797617e-eb96-42a7-b0b9-9f5b7360569f",
+  "a7a4cc95-d0ae-422f-a285-5bbb10a2ba14",
+  "a7aa2018-e45f-4efc-9212-849c4db9f39b",
+  "a7bd0e14-5a95-421d-86c1-25ef4283dfaf",
+  "a7ece26d-d66b-44b5-871f-de57f2e6101b",
+  "a7ef9956-5684-4380-8907-727dc87ea6b5",
+  "a7f210f1-0577-43f5-9f9d-55ee4f969ba1",
+  "a808bc5b-26ed-47f8-b4e6-f5a36b7c6dcb",
+  "a835569d-9992-4f16-a373-f25b9489880a",
+  "a84680c5-0a2b-4277-94ca-36e54fac0626",
+  "a857a857-d05f-4efd-95e0-26e5d6ed2e55",
+  "a87c17f9-e5c5-4d69-963a-6e54e046c705",
+  "a8878b4c-9225-494d-a766-916ed20bd3f1",
+  "a888d81e-0012-4b0d-a337-1816974a8c02",
+  "a8915ced-72a5-4409-9042-7543fcf747b5",
+  "a89e1ca5-d503-48a1-a97d-e13764596c4b",
+  "a8a89f10-dad2-43d4-a56b-157cdd5d6626",
+  "a8ac15d9-b2b0-4a03-b336-5df25b777292",
+  "a8c00983-99eb-44db-91af-ecc8d5c9ab5c",
+  "a8c2937b-b9a2-43ba-a492-09c85c2db407",
+  "a8ce2d5c-3802-45f6-aba0-f5b22fb0b68b",
+  "a8d36674-3386-40e3-a268-e71e110a212d",
+  "a8f50798-49ce-477e-9efa-f5e7e801b3e1",
+  "a903297c-017d-4d70-b22c-6555fd34e797",
+  "a923eb50-5403-4c71-af60-4eb9f6311592",
+  "a9254c5d-e7ab-4cba-a659-85505612d7d3",
+  "a92c1d27-5b26-4386-9372-a42ebe708288",
+  "a934abd1-1b4a-4dce-a56b-3b1de54e4a17",
+  "a9368b64-fdf6-4633-9177-d983a0f3d310",
+  "a936a040-6f04-48b2-8d94-bd4b56b85e72",
+  "a937bc04-44e3-40a4-85f9-8625126abfb0",
+  "a9400bdb-88ae-4b76-98e3-d2826c968ec3",
+  "a94017f9-aa66-442d-b208-87f74561c0e4",
+  "a9445cc5-b7fb-47f1-96d1-5fe629292b57",
+  "a94b75ef-76ba-4de6-bae3-81e2c47a9ef5",
+  "a95162bf-d820-4fda-8f05-929c4d837bbf",
+  "a9564365-e3a6-48ff-a49b-3bec2cc453a7",
+  "a95d59cb-fc3d-4524-aea4-98ba4a231c8c",
+  "a96aab3f-308c-435c-8844-aa5a0bd5579c",
+  "a96e2bf4-5865-43b8-b915-486569967b5c",
+  "a97d229a-eab9-4eba-93f2-8ab5616cd40e",
+  "a98c6d59-afd4-480a-bdf0-1ce6cec384b0",
+  "a99ce4cd-fc9f-48b0-aa72-895f890cc685",
+  "a9a7db77-ec36-4bee-aaef-9db9f4ddf1db",
+  "a9a9551d-a4e8-4c5c-84cc-c84af47416eb",
+  "a9afa87a-d181-49bf-aa09-9a46f25a3c68",
+  "a9bd7bb6-c89e-478b-a4cd-5fb7ffe264d2",
+  "a9c11b22-0d46-446b-b36c-8a21728fa5ae",
+  "a9c6cfd0-4604-4f9e-972e-84a6774dd906",
+  "a9cb4872-83cb-41f4-b793-9a853f7ec204",
+  "a9ce126f-0738-40cb-aec8-c7b536430713",
+  "a9d017bd-9ca0-4f7e-872a-c70e6b2db508",
+  "a9d34502-c2d1-4066-bbbe-4dff7b203945",
+  "a9dced40-3c3d-4b90-b2d9-698ccd8131b8",
+  "a9ec881d-41b7-4531-b8d6-7ff5c615b4d6",
+  "a9f05788-ef07-422a-ab5b-2c3fc1cfe7c7",
+  "a9f905c1-515b-494e-b187-036c239ce4db",
+  "a9f92bc9-b621-4bda-b645-34aec0862c36",
+  "aa0a45d0-3437-4d22-8f8c-8a392d321b16",
+  "aa109c8b-90f2-4581-8387-6712a3982527",
+  "aa174a94-d6a3-46b1-8d0d-6aa1dc33b27f",
+  "aa17c0e0-a57b-4015-85ab-e048f020b84a",
+  "aa2aa8a4-d92c-4dcf-8118-cac68cb6b4c5",
+  "aa3c4492-caa6-4699-96fa-2c9ff14eafdd",
+  "aa481b71-69aa-492a-86b0-abfe157aea95",
+  "aa520bd7-a80b-4e0d-b341-c0da3a0ea2fe",
+  "aa54ce34-c734-4926-bbb7-3da5ad424c07",
+  "aa861df5-24bd-4011-8ba2-0e0688e2c431",
+  "aa87b4f8-d29e-4635-8ee8-7598042c13dd",
+  "aaa03d56-7778-492a-9173-f701c1855c0b",
+  "aaafdf6c-3000-41f7-87ba-4a6ad9c682e7",
+  "aabdef94-0400-43b6-ad76-dcb93c26ea4d",
+  "aaced152-f6de-4ed0-bd1d-1de8837c4eee",
+  "aacf7c01-6bf7-411e-a545-aafca2a8d7f7",
+  "aad9d2cd-4fb5-4fe1-ba95-cc23d81d2af4",
+  "aaf091fa-999b-4b31-b4a9-117af94bd6ef",
+  "aafc551c-565a-4ac6-b47d-52e4b3243e82",
+  "aaffef87-83b5-489a-9859-bb7bfa8a1964",
+  "ab0cb841-fb93-4021-8c14-bb3a7a45da94",
+  "ab2c0a51-314a-454e-9ec7-e029f421e11b",
+  "ab34b74d-2838-4093-9771-a472bfaea9e5",
+  "ab497986-1ef3-4e77-8335-52bc4ffab150",
+  "ab4cbd3b-0ad6-4009-8470-99c3f8e32ebe",
+  "ab4d541a-36a2-4899-b1ae-f5b901d7fd42",
+  "ab80af29-88cf-44bf-98db-b4e9adef9e22",
+  "ab8ac5f6-bf16-49a1-b049-9d0854d6efd4",
+  "ab9119a3-f60f-42e6-bb13-9d0d0b37e144",
+  "ab9190ba-7a15-4be5-a25e-2cd73327f319",
+  "ab945665-33b4-4a33-b324-7312d90e1cbd",
+  "abad965c-8629-4906-ac24-c2f5917bee66",
+  "abb279f3-14c1-4907-8fe9-ea6bca236c89",
+  "abc5dddc-55cd-4251-9995-c6089db23185",
+  "abd9ce5b-c9b3-4402-a098-2da7e0b3a61d",
+  "abeaac6b-e18c-4875-9baa-428962181254",
+  "abf38103-6668-4e5f-8e06-cf7a051778a6",
+  "abff90a3-325e-48c2-9043-c797ead3293e",
+  "ac03685d-98fb-4ecd-8f2f-f703ecde77fd",
+  "ac079a42-c1a7-4308-a1e8-48d1d32461b1",
+  "ac11ec60-9448-40c6-b83c-e93d8f980c52",
+  "ac1a39a2-1666-4752-9281-e0df1beaa455",
+  "ac23daf4-b80f-451a-a361-0c0910679dab",
+  "ac3eb3b7-26ea-400d-976c-98033c99de5a",
+  "ac4ebce0-a02a-4b21-a2a7-d0fcc683ad33",
+  "ac4f81f5-c8e7-44e5-93eb-5a23f64bf06e",
+  "ac527166-9224-4274-b247-6a228ea70cf1",
+  "ac640544-4e03-4540-aeac-f05e6901d7db",
+  "ac64d21d-f0ba-4767-9707-9bbd29f19109",
+  "ac7548b0-846f-4ad7-b499-82b661993911",
+  "ac791bae-9cfc-408b-9ce4-355961d944f6",
+  "ac87e452-b652-4286-8c26-709b1aed7bb9",
+  "ac87f113-5ab8-4838-a8de-16ace0c6f566",
+  "ac923653-b883-4fa0-a21c-14e2af8877c1",
+  "b3aebc89-d985-4b79-ab4d-7f2fffa279a8",
+  "b4269806-074a-423e-bf7b-5605c338a973",
+  "b4930cee-4bf1-40c2-a5f4-5205df948481",
+  "b4ca4280-df61-4b40-b843-ad65b6427e98",
+  "b4ce5148-c533-45a7-b146-a64332738945",
+  "b4e52caa-cf9f-4590-93ec-93a4d8a3cefa",
+  "b5547e49-8847-4c35-b2be-8f241a64c88a",
+  "b59c7862-ef3b-45a2-8ada-e1c1fc97fee2",
+  "b5c03f6f-94e4-4c44-a3fb-dbda86ae9d5c",
+  "b605853e-116f-4fe5-a763-7fdb768dca26",
+  "b60ae541-8773-4622-a0d1-42e11f5713f0",
+  "b6123acf-f566-4e7a-937a-d5bec1b4fb0d",
+  "b6133e01-b2c9-446a-bc4d-dd4e8f3ffc3a",
+  "b6134118-aa60-4829-8e9b-9ef68077dd0d",
+  "b6239680-a05d-4fe8-a12f-bd83def5f645",
+  "b62a5539-d8db-41e0-a127-b6a7f087d96b",
+  "b63346c5-0dab-4bbf-b040-1c7958d77657",
+  "b63c024d-ba63-4150-9af0-9b234c50fa2b",
+  "b6460859-7518-42d0-9311-2ea899f00dec",
+  "b6555984-9777-4466-848f-527810f9c5ce",
+  "b65694b0-8f6d-4fd0-92a3-b8a134651b4b",
+  "b65d0e85-d0cf-4cb3-8f78-7f384f85a821",
+  "b65d4075-16b8-4d86-a16b-8795038fa28e",
+  "b6609c37-0c30-49ca-b9ec-885dac6c9363",
+  "b6619596-8917-4ec2-afcd-b0eaa653dc52",
+  "b667063c-73a3-4e69-a154-6194f3c5e978",
+  "b676e7cc-51d4-4782-8787-86e5b1b0732c",
+  "b678d31d-bada-4ee6-9065-aa6f4eba8c2a",
+  "b67918a3-be3a-4bfa-b415-9f231edcde4d",
+  "b68c0d7e-7535-49be-b7d7-4f619e7f9920",
+  "b68d5d58-939e-4b29-94d9-b7572d98961d",
+  "b69921d7-42b1-4d2c-aec1-e87d2e14366c",
+  "b6a06a26-a045-4a38-9f2a-d67673b1d738",
+  "b6a5ca06-85c3-48ca-81d6-8bd6127824c2",
+  "b6a5fad5-78b5-43f7-a389-b9579501f9a6",
+  "b6acb1e0-20c9-4c77-8745-0d89b32a502e",
+  "b6bca2a2-be79-4965-bc9a-923672bbe7b3",
+  "b6c4bd88-5450-48ea-8907-8f43227bcd3f",
+  "b6d192a6-a51a-4512-b0df-6faae6d6a1bd",
+  "b6d2f720-6ec1-41cd-b32b-b8a6c73d26c7",
+  "b6d773ab-db78-4788-b9fa-ce586050e0ac",
+  "b6dd5d59-9ff7-4117-a5dd-97a63b95548e",
+  "b6e1ff5a-c2f5-4956-9775-824f1ce5c8d8",
+  "b6e355f6-95bb-440d-89cd-4af97d161f29",
+  "b6ec93b4-df0b-40b9-a234-a39f3eb91392",
+  "b6f2f193-7082-421f-a46b-9eb1c75c4f7e",
+  "b6f891e7-6b2d-4e71-87d0-964d85b535ed",
+  "b70a5331-1840-4e51-ba39-35e7dab3bd89",
+  "b70b27e9-413d-4a54-abf4-c8e91cf8d875",
+  "b70ca652-7f66-4726-97bb-87f3f3372827",
+  "b70f9370-e574-4045-8a88-3bc41a15671b",
+  "b71498de-9ebc-42f4-9d34-b8a2157720d5",
+  "b7205fd1-ae28-4f27-94e6-856a9eb11234",
+  "b7299414-e54c-4f6a-ac16-0f3094c6b5de",
+  "b736da7b-470f-4738-ae02-5cbdd796b64e",
+  "b7416359-115c-4aa5-9893-3b8017d9d1f3",
+  "b741a73d-e407-43ac-ad2d-234ea3090d52",
+  "b7458047-3d62-43a4-b45d-44270394bf15",
+  "b7510971-70fe-4070-b160-35b9842672e8",
+  "b75e8314-dff8-4e56-b0f6-3b07624d6e2e",
+  "b760903b-4b40-4eff-9755-73e5ca49c6ad",
+  "b762da15-c075-4872-b33f-dd74082db67a",
+  "b76447f1-f0e8-45f5-a63d-d7464e15969f",
+  "b765c6a0-ec30-4a6b-9d92-fb66086ee630",
+  "b76e73e2-1686-4adb-ab20-f3dedd03b06e",
+  "b76fc5b2-acc5-42df-bac4-9efa5be12d09",
+  "b7748526-6c5e-4664-a44a-fe8480a3803d",
+  "b78a140f-f850-499e-a146-d504dd48f46f",
+  "b78b1afb-03f6-4c7d-a1fe-df0e3d685df5",
+  "b78cbc94-8278-4b1a-8436-9c0b706bd805",
+  "b78e80a7-58b9-42da-ba8f-534862a9ba51",
+  "b79617f4-1c69-4f14-adae-f3f242030e08",
+  "b7a02afd-30d6-463f-91c2-72d801267789",
+  "b7acb32f-ab09-4f60-8688-067c8dfd3d71",
+  "b7b21c30-2566-4b62-9c7e-db6ffd752b0b",
+  "b7b303de-14c4-4464-9927-fca9a5a21175",
+  "b7bd5f7c-317d-4f7f-a3e7-01a28fec0ab0",
+  "b7c2cdf6-da16-47ee-a782-3fe57c6d6276",
+  "b7c433ed-a7e7-41cc-b0fb-11cd2f9c8694",
+  "b7d39602-a47e-4d06-9905-3bac8efe73d0",
+  "b7e287b7-be3e-4807-a289-412ba5419e0d",
+  "b7e2c9c5-7e15-4e9d-b920-e6035d5f8960",
+  "b7ea0e83-71e8-4cb9-a0cc-b61c5260c13b",
+  "b7f9fa3f-8794-487f-9714-b7765c40689d",
+  "b7fd9bca-ff23-4b9e-98ed-6d0f5588c4b5",
+  "b80446f3-5f65-459f-ad5e-192c59524210",
+  "b804a3e6-ad77-443c-8948-439e0bb0c91f",
+  "b80b99a3-e55c-4c7c-82f0-d85a29236cba",
+  "b80bb4a4-d8bd-496c-9baa-c0de63dc3d19",
+  "b80d9758-57ae-45e0-864b-16295dbaf5fd",
+  "b80e256c-9d00-497a-bd66-1eaacc52e546",
+  "b81ecf78-53c2-4969-bb45-82ae22be8109",
+  "b82327e9-67cd-4c04-922e-b4661dd83401",
+  "b824af96-7169-42db-b15a-ca1ae676b228",
+  "b830f72b-373e-4ace-8789-493e67a49f34",
+  "b8343368-5930-44de-827b-688e8986ac29",
+  "b835faf4-7a25-4999-bf7e-da170da8255b",
+  "b853286b-cf55-429d-badc-0cb132cdc93b",
+  "b869e166-33bd-4548-8cdb-bca5ea40a809",
+  "b86a1e90-4010-4810-b0d5-41a130c67b46",
+  "b86a685d-159f-40df-89ed-109eeae1a562",
+  "b86bf93f-d2a2-43ab-8454-327ab32584da",
+  "b87140f7-ac7e-4df5-8b34-d40e7c91c912",
+  "b875be78-568b-48a2-9408-7d5c7f1282b6",
+  "b89e64aa-fb0b-4ce3-9a99-93554f552275",
+  "b8a01382-79c9-419a-ba80-4486b4f7a778",
+  "b8a899c0-3daa-4dbb-96d6-159d0dda875b",
+  "b8ad9d57-1a6c-41a2-876b-73dbedbdf94a",
+  "b8b1205e-3911-48d0-99d9-07e5ee3f65bd",
+  "b8b2619f-3520-445c-86a0-37e7be8d2799",
+  "b8bc2300-4fcd-4959-ae55-a55e3e2f6be1",
+  "b8bf2d53-93bb-4990-83f5-3b298b820fc8",
+  "b8c9105c-48c7-44c8-aee0-a3b14f00e225",
+  "b8dbd687-1f82-4372-94e3-5a523e8b9986",
+  "b8dc3bab-e932-4b68-86c3-ac0162806e40",
+  "b8e3ad10-46f3-4269-844e-f78e16764a3c",
+  "b8f33281-262d-44eb-89a3-7765f7aee83c",
+  "b911f14f-c801-470f-b29f-df2816c65f1b",
+  "c41b983c-8826-440f-97a3-dd008bdb89ad",
+  "c4226efd-1227-466d-b85c-1f2ef5eba7ff",
+  "c43e038a-fe4d-45c4-be6a-fae8fb47c30a",
+  "cd98f5be-ba55-49fd-a7b3-ba6c34b354c2",
+  "cd9bad1f-cc55-470b-b19b-4b98650b2cca",
+  "cd9cc801-f2a2-46ea-97a9-17fde4e1b413",
+  "cda4d2fc-fb20-40a7-8309-6a19a20afb40",
+  "cda4d9aa-9976-4a91-8b86-c6aa2d847f0e",
+  "cda73c69-3dde-4bfa-a692-0634df528bd5",
+  "cdac297d-fe80-4b01-b1c8-4c1b2c0d77bd",
+  "cdacd0c2-b3e7-485f-879a-037344fd67ed",
+  "cdb2cb00-69b4-4205-877a-04cc83fa04cb",
+  "cdb2d977-c4bd-499e-8c41-40c6d50a1703",
+  "cdb80bf5-2997-4996-a3d0-1aaabbf0ec5d",
+  "cdb88750-e894-4f4c-b131-a5bb00f57aef",
+  "cdc0fca2-2c6f-4432-9605-7885b9467f7d",
+  "cdd26aa9-8351-46bb-bdfa-90e74434af0c",
+  "cdd7159c-aba9-4a2c-974a-84e570829fb3",
+  "cdd8404e-a5ac-484d-8f3d-43dfb7f4cfff",
+  "cde65b43-850c-4e30-82c8-9ab1bd5c59e0",
+  "cde975ac-1027-4551-bba7-748370681394",
+  "cdebd43d-a425-48b8-b0fd-7351380fcbca",
+  "cdfa3a2e-1a9f-4cf2-98d7-9033c07c4dd3",
+  "cdfb9629-7232-4c4b-9b33-233c2f23135f",
+  "ce056e41-6044-4df5-9cf2-243589a44dae",
+  "ce0669d5-edac-4276-80c5-b84862ec2d99",
+  "ce09cff7-a10a-451f-ab0e-ea788dfdb2d5",
+  "ce0ab3d6-1835-4158-ac3b-9d61d3ea456a",
+  "ce0d42c3-abfa-45ed-ae16-23ee0e637f13",
+  "ce10fd5a-9794-4282-98a9-9f67d23b3e8f",
+  "ce11cdd3-c75b-40e5-85aa-8f6420310e2c",
+  "ce180220-8e88-42b9-ae28-1d9904db8f74",
+  "ce1c3c4b-ef02-4f2d-8421-23f51cefc2ae",
+  "ce1fb7e3-5fe4-4e13-9efb-0c3ac0b276c1",
+  "ce220f3b-561a-4c52-9a1e-142ab589401e",
+  "ce28fb71-2859-497f-b983-884cb2b2de82",
+  "ce2ff228-031e-4bfe-b423-9e948a73b28e",
+  "ce3447fd-083a-46dc-bf65-0045fad7283f",
+  "ce34eb91-a963-4acd-a6bc-f9ef82750554",
+  "ce381057-21bd-4566-a682-84312bef4b3e",
+  "ec73c90d-eda0-4f4c-bdec-7712c6946166",
+  "ec7535ec-551d-47be-985a-82679bcadee6",
+  "ec75cc3f-e618-46f5-b046-25465174aa6e",
+  "ec7ae775-b4e9-4789-bd2a-04520ebb7fd6",
+  "ec823ef6-c9c9-4836-abfc-79d1ff7b7d30",
+  "ec8b7ba5-f000-4caa-b971-0d1125f44bc0",
+  "ec8c0152-7d1d-4685-b551-10b09e71ba76",
+  "ec9387f1-b2b5-4643-8893-977a0471d8c4",
+  "ec9cb7ef-ddea-4e26-9e5f-677f4942ca5b",
+  "ec9d8871-2340-42f0-b73d-bfb7dc59aa21",
+  "eca0a90a-6635-45d6-965c-0da1328a3d21",
+  "eca5f71b-70f8-45d2-942d-3682ca530fec",
+  "eca72d48-8084-4c2a-905b-05ccdfa57bcb"
+ ],
+ "selection_digest": "4b93d71b121b96f5d69102b6786792c4f2d8468ffc221245c63136589246b3d6",
+ "source_family_overlap": {
+  "confidence": "uncertain: inferred from naming conventions, not upstream metadata; no other grouping (e.g. company filings, GNHK writers) is attempted",
+  "families": [],
+  "families_shared_with_val_or_test": [],
+  "families_with_several_pilot_documents": [],
+  "pilot_documents_in_families": 0,
+  "rules": {
+   "omnidocbench_hex_page": "'omnidocbench_<collection>_<32-hex id>_<page>': page of one source; family is collection + id",
+   "pdf_page_suffix": "'<publication>.pdf_<page>': page excerpt of one publication; family strips '_<page>'"
+  }
+ },
+ "sources": {
+  "audit_content_sha256": "7bb6df50f543f2c4130409f46e98865a34d2316e7c7e6ceba4e87f0c2557e04b",
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "pdf_archive_sha256": "f9bc65f383172c4ea47940c47dfab01dd36c03a120bc0450d7a962917098c783",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "pdf_source_lock_sha256": "6f562ba33c413101ce04a177a8dfcec03301590a33f5c76cca8d3413f51b4df6",
+  "qa_sha256": "2446db28741fa9f392067ee7aae7f3b05e0d85c584069a50ddd5b1b5bc783f58",
+  "split_sha256": "64583a532c5db5aa31e4cbb5cd9c7d894c7a2d5e8aa49f1a7f6041f54e714f53",
+  "text_tree_digests": {
+   "OHR-Bench/data/retrieval_base/MinerU": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "a0d022f0359f127d8b90af8ebbb4fafe7ac541549f90f4ccf0c3ae83231bd18c"
+   },
+   "OHR-Bench/data/retrieval_base/gt": {
+    "files": 1560,
+    "sha256_of_sorted_path_hash_lines": "0ead14d965030864274e5297a1f171c6fc347fc88e6c189c78f60e0e285d10c5"
+   }
+  }
+ },
+ "volatile": {
+  "generated_at_utc": "2026-11-01T11:57:41+00:00",
+  "repository": {
+   "available": true,
+   "branch": "research/terra-answer-model",
+   "commit": "8a2e721adecf11ccc3befa335e696ea83b89da94",
+   "dirty": true,
+   "dirty_paths": [
+    "results/pilots/ohr_test_multipage_v1/"
+   ]
+  }
+ }
+}
