@@ -87,7 +87,12 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         raise ComparisonError("pilot selection question set differs")
     baseline_config = reader.json(baseline_dir / "run_config.json")
     summary = reader.json(baseline_dir / "run_summary.json")
-    if summary.get("run_state") != "complete" or summary.get("valid_baseline") is not True or summary.get("pilot_id") != pilot_id:
+    identity_config = baseline_config.get("identity", {})
+    blockers = summary.get("valid_baseline_blockers", [])
+    if (summary.get("run_state") != "complete" or summary.get("pilot_id") != pilot_id
+            or baseline_config.get("mode") != "live" or identity_config.get("run_kind") != "development_pilot"
+            or identity_config.get("pilot_manifest", {}).get("canonical") is not True
+            or any(not b.endswith("question(s) are execution_failed") for b in blockers)):
         raise ComparisonError("baseline is incomplete or invalid")
     runtime_sha = reader.hashes[str((pilot / "runtime_manifest.json").resolve())]
     if runtime_sha not in json.dumps(baseline_config):

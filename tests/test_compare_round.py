@@ -58,9 +58,9 @@ def sample(tmp_path):
     req = [{"question_id": q["question_id"], "doc_id": q["doc_id"], "action": "send"} for q in questions]
     jsonl(baseline / "requests.jsonl", req)
     base_sha = sha(baseline / "requests.jsonl")
-    dump(baseline / "run_config.json", {"identity": {"runtime_manifest_sha256": runtime_sha}})
+    dump(baseline / "run_config.json", {"mode": "live", "identity": {"runtime_manifest_sha256": runtime_sha, "run_kind": "development_pilot", "pilot_manifest": {"canonical": True}}})
     dump(baseline / "run_summary.json", {"pilot_id": "pilot", "run_state": "complete", "valid_baseline": True,
-                                         "cost": {"measured": 0.4, "reserved": 0}})
+                                         "cost": {"measured": 0.4, "reserved": 0}, "valid_baseline_blockers": []})
     jsonl(baseline / "predictions.jsonl", [{"question_id": q["question_id"], "status": "answered", "answer": "yes" if i == 0 else "no"} for i, q in enumerate(questions)])
     change_json(baseline / "run_summary.json", lambda x: x.update(predictions_sha256=sha(baseline / "predictions.jsonl")))
     events = []
@@ -318,3 +318,18 @@ def test_baseline_prediction_hash_must_match_summary(sample):
     jsonl(path, rows)
     with pytest.raises(compare_round.ComparisonError, match="predictions hash"):
         run(sample)
+
+
+def test_terminal_baseline_failure_reaches_validity_check(sample):
+    baseline = sample["baseline_dir"]
+    rows = read_jsonl(baseline / "predictions.jsonl")
+    rows[0].update(status="execution_failed", answer="yes")
+    jsonl(baseline / "predictions.jsonl", rows)
+    events = read_jsonl(baseline / "attempts.jsonl")
+    event = next(e for e in events if e.get("attempt_id") == "q0" and e["event"] == "response_saved")
+    event.update(event="outcome_unknown")
+    jsonl(baseline / "attempts.jsonl", events)
+    change_json(baseline / "run_summary.json", lambda x: x.update(valid_baseline=False, valid_baseline_blockers=["1 question(s) are execution_failed"], predictions_sha256=sha(baseline / "predictions.jsonl"), cost={"measured": 0.3, "reserved": 0.2}))
+    result = run(sample)
+    assert result["policies"]["no_recovery"]["em"] == 0
+    assert result["validity"]["valid"] is False
