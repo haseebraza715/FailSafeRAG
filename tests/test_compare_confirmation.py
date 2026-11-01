@@ -139,3 +139,19 @@ def test_existing_output_refused_before_reading_inputs(tmp_path, kind):
         out.symlink_to(tmp_path / "missing")
     with pytest.raises(confirmation.shared.ComparisonError, match="output directory exists"):
         confirmation.compare(tmp_path)
+
+
+def test_shared_parameters_preserve_confirmation_bytes(frozen):
+    import subprocess
+
+    root, _, _, _ = frozen
+    source = subprocess.check_output(["git", "show", "76c9c21:scripts/analysis/faar_confirmation/compare_confirmation.py"], text=True)
+    old = {"__file__": str(SCRIPT), "__name__": "old_confirmation"}
+    exec(compile(source, str(SCRIPT), "exec"), old)
+    old["PROVIDER_SHA"] = confirmation.PROVIDER_SHA
+    old["compare"](root)
+    out = root / confirmation.OUTPUT
+    before = {p.name: p.read_bytes() for p in out.iterdir()}
+    shutil.rmtree(out)
+    confirmation.compare(root)
+    assert {p.name: p.read_bytes() for p in out.iterdir()} == before
