@@ -267,3 +267,37 @@ so the run could never reach the amendment 2 check. The fix (`ba0f920`, reviewed
 terminal failures through and changes nothing for runs without them (development results reproduce exactly). It
 uses no outcome. The frozen code commit is now `b075dbd`; every other frozen value is unchanged. Registry record
 `2026-11-01-faar-frozen-method-v2` supersedes `-v1`.
+
+**Second amendment to section 14 (2026-11-01, before the image repair run).** The research lead raised the
+confirmation spending cap from 10 to 12 USD counting reserved cost, with a 7.50 USD ceiling on the `invoke_vlm` run.
+The no-recovery, diagnosis and text repair runs had spent 3.581498 USD with no reserved cost, and the image run's
+expected 6.5 USD would have left no margin under 10 USD. No validation outcome had been read. Nothing else changes.
+
+## 15. Final test plan (2026-11-01, before any test run)
+
+The research lead approved this plan. It may still overrule it before the test runs.
+
+**Primary sample.** Every eligible OHR-Bench test question on a multi-page document: 946 questions on 327
+documents, counted from metadata only. No test document is in `ohr_dev_v1`, `ohr_dev_v2` or `ohr_long_dev_v1`.
+252 of the documents also carry questions in `ohr_val_multipage_v1`; the validation sample was used once, for the
+confirmation, and never for tuning, and the report states this overlap.
+
+**Secondary sample, reported separately.** The 330 single-page test questions. They were left out of the
+confirmation because on a page with empty text FAAR and the gated repair send the same image, so the two policies
+tend to give the same answers there. The secondary result shows whether the primary conclusion holds on that part of
+the test split. It does not enter the Holm family of the primary result, and it cannot change the primary decision.
+
+**Method.** The frozen method of section 14 at code commit `b075dbd`, unchanged: the same answer model, prompt,
+retrieval, gate, diagnosis, repairs, random seeds, resend rule and failure rule.
+
+**Comparison.** The confirmation comparison script with only the pilot and run ids changed, once per sample, each
+committed before its sample's first test run. Outcomes, contrasts, the decision rule and the cost rule are those of
+section 5. The oracle against the gated repair is reported as descriptive headroom only.
+
+**Order and cost.** Each sample is built once as its own frozen pilot, then gets the no-recovery run, the diagnosis,
+the three repairs on the flagged set and its comparison. The primary sample runs first. Spending cap 15 USD for the
+whole test stage, counting reserved cost. The confirmation flagged 77% of its questions (647 of 835), more than the
+55% assumed in the first estimate, so the primary sample is now expected to cost about 11.5 USD and the secondary
+about 3 USD. The secondary sample starts only if its dry-run estimate fits under the remaining cap; if it does not,
+the research lead decides whether to raise the cap. A run stopped by its cap or invalid under amendment 2 is reported
+as such and is not rerun with changed settings.
