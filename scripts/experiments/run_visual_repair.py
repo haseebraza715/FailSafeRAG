@@ -37,6 +37,7 @@ from pathlib import Path
 from typing import Any
 
 from faar.answer_prompt import get_template, parse_reply
+from faar.baseline import terminal_baseline, terminal_prediction
 from faar.live_contract import ProviderError, ProviderRequest
 from faar.live_runner import build_live_provider, load_provider_config, refuse_redirecting_environment
 from faar.request_budget import input_token_upper_bound, measured_cost, request_cost_upper_bound
@@ -115,8 +116,17 @@ def load_baseline(root: Path, pilot_id: str, baseline_run_dir: Path) -> dict[str
     manifest_sha = _sha(runtime_bytes)
     if json.dumps(baseline_identity, sort_keys=True).find(manifest_sha) < 0:
         raise RepairError(f"{baseline_run_dir.name} does not record the runtime manifest of {pilot_id} ({manifest_sha[:12]})")
-    if baseline_summary.get("valid_baseline") is not True:
-        raise RepairError(f"{baseline_run_dir.name} is not a valid no-recovery run (valid_baseline is not true)")
+    blockers = baseline_summary.get("valid_baseline_blockers", [])
+    if (not terminal_baseline(baseline_config, baseline_summary, pilot_id)
+            or (baseline_summary.get("valid_baseline") is not True and not blockers)):
+        raise RepairError(f"{baseline_run_dir.name} is not a valid_baseline or terminal no-recovery run")
+    predictions = _read_jsonl(baseline_run_dir / "predictions.jsonl")
+    ids = [q["question_id"] for q in runtime["questions"]]
+    prediction_ids = [p["question_id"] for p in predictions]
+    if len(set(ids)) != len(ids) or len(set(prediction_ids)) != len(prediction_ids) or set(ids) != set(prediction_ids):
+        raise RepairError(f"{baseline_run_dir.name} prediction question set differs from the runtime manifest")
+    if any(not terminal_prediction(p) for p in predictions):
+        raise RepairError(f"{baseline_run_dir.name} has unfinished predictions")
     requests_bytes = _read_bytes(baseline_run_dir / "requests.jsonl")
     requests = {r["question_id"]: r for r in (json.loads(line) for line in requests_bytes.decode("utf-8").splitlines() if line.strip())}
     template_ids = {r["template_id"] for r in requests.values()}
