@@ -158,6 +158,7 @@ POOL_RULES = {
     "train_exclusive": "documents all of whose questions are in the train split",
     "train_without_test": "documents with at least one train question and no test question (validation questions allowed)",
     "validation_multipage": "documents with at least one validation question",
+    "test": "documents with at least one test question",
 }
 
 
@@ -180,7 +181,8 @@ def build_pool(inputs: dict[str, Any], pool_kind: str = "train_exclusive") -> di
     elif pool_kind == "train_without_test":
         candidates = sorted(d for d, s in splits_by_doc.items() if "train" in s and "test" not in s)
     else:
-        candidates = sorted(d for d, s in splits_by_doc.items() if "val" in s)
+        split_name = "val" if pool_kind == "validation_multipage" else "test"
+        candidates = sorted(d for d, s in splits_by_doc.items() if split_name in s)
     pdf_docs = manifest["ohr"]["coverage"]["pdf_per_document"]
     gt_unresolved = set(manifest["ohr"]["coverage"]["text_sources"]["gt"]["unresolved_documents"])
     eligible, exclusions = [], []
@@ -736,6 +738,11 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
     splits = normalized_splits(sel_cfg.get("question_splits"))
     if pool_kind == "validation_multipage" and splits != {"val"}:
         raise PilotError("validation_multipage requires question_splits: [validation]")
+    if pool_kind == "test" and splits != {"test"}:
+        raise PilotError("test requires question_splits: [test]")
+    min_pages, max_pages = sel_cfg.get("min_pages"), sel_cfg.get("max_pages")
+    if min_pages is not None and max_pages is not None and max_pages < min_pages:
+        raise PilotError("max_pages must be at least min_pages")
     inspection_enabled = config.get("inspection", {}).get("enabled", True)
     if render and inspection_enabled and splits is not None and splits - {"train"}:
         raise PilotError("inspection is forbidden for non-train splits")
@@ -745,17 +752,19 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
     excluded, excluded_records = excluded_pilot_documents(project_root, config)
     if excluded_records:
         pool = {**pool, "eligible": [d for d in pool["eligible"] if d not in excluded]}
-    min_pages = sel_cfg.get("min_pages")
     if min_pages is not None:
         pdf_docs = inputs["manifest"]["ohr"]["coverage"]["pdf_per_document"]
         pool = {**pool, "eligible": [d for d in pool["eligible"] if pdf_docs[pool["raw_by_doc"][d][0]]["pdf_pages"] >= min_pages]}
+    if max_pages is not None:
+        pdf_docs = inputs["manifest"]["ohr"]["coverage"]["pdf_per_document"]
+        pool = {**pool, "eligible": [d for d in pool["eligible"] if pdf_docs[pool["raw_by_doc"][d][0]]["pdf_pages"] <= max_pages]}
     selected, allocation, ranks = select_documents(pool["eligible"], config)
     docs = build_documents(project_root, inputs, pool, selected, config)
     runtime, evaluation, qflags = build_manifests(project_root, inputs, pool, docs, config)
     assert_runtime_boundary(runtime)
     for q in runtime["questions"]:
         actual_split = pool["split_of"].get(q["question_id"])
-        allowed = {"val"} if pool_kind == "validation_multipage" else {"train"}
+        allowed = {"val"} if pool_kind == "validation_multipage" else {"test"} if pool_kind == "test" else {"train"}
         if actual_split not in allowed:
             raise PilotError(f"question {q['question_id']} is not in an allowed split")
         if render and inspection_enabled and actual_split != "train":
@@ -806,10 +815,12 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
         },
         "manifest_digests": {"runtime": digest(runtime), "evaluation": digest(evaluation)},
     }
-    if pool_kind != "train_exclusive" or min_pages is not None or sel_cfg.get("question_splits") is not None:
+    if pool_kind != "train_exclusive" or min_pages is not None or max_pages is not None or sel_cfg.get("question_splits") is not None:
         # only for configs that use these options, so an earlier pilot's record reproduces unchanged
         selection["algorithm"]["pool_rule"] = POOL_RULES[pool_kind]
         selection["algorithm"]["page_rule"] = f"documents with at least {min_pages} PDF pages" if min_pages is not None else None
+        if max_pages is not None:
+            selection["algorithm"]["page_rule"] = (selection["algorithm"]["page_rule"] + f" and at most {max_pages} PDF pages" if min_pages is not None else f"documents with at most {max_pages} PDF pages")
         selection["algorithm"]["question_rule"] = f"only questions in the splits {sel_cfg.get('question_splits')}"
         selection["pool"]["pool_documents"] = len(pool["candidates"])
     if excluded_records:  # only for configs that exclude, so an earlier pilot's record reproduces unchanged
