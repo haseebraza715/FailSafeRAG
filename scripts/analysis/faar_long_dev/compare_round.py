@@ -99,13 +99,12 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         baseline_field = "storage" if field == "store" else field
         if field not in provider:
             raise ComparisonError(f"provider config missing {field}")
-        if baseline_field in baseline_provider:
-            value = ("disabled" if provider[field] is False else "enabled" if provider[field] is True else None) if field == "store" else provider[field]
-            if value is None or value != baseline_provider[baseline_field]:
-                raise ComparisonError(f"baseline provider {field} mismatch")
-            checked_fields.append(field)
-    if "model" not in checked_fields or "params" not in checked_fields or "service_tier" not in checked_fields:
-        raise ComparisonError("baseline provider missing model, params or service_tier")
+        if baseline_field not in baseline_provider:
+            raise ComparisonError(f"baseline provider missing {baseline_field}")
+        value = ("disabled" if provider[field] is False else "enabled" if provider[field] is True else None) if field == "store" else provider[field]
+        if value is None or value != baseline_provider[baseline_field]:
+            raise ComparisonError(f"baseline provider {field} mismatch")
+        checked_fields.append(field)
     prompt = identity_config.get("prompt", {})
     try:
         template = get_template(prompt["template_id"])
@@ -133,6 +132,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
     check_set(set(requests), ids, "baseline requests")
     check_set(set(predictions), ids, "baseline predictions")
     for qid, request in requests.items():
+        if request.get("action") == "send" and request.get("max_output_tokens") != provider["max_output_tokens"]:
+            raise ComparisonError(f"baseline request max_output_tokens mismatch for {qid}")
         if request.get("doc_id") != questions[qid]["doc_id"] or ("question" in request and request["question"] != questions[qid]["question"]):
             raise ComparisonError(f"baseline request mismatch for {qid}")
     if any(p.get("unserved") or p.get("awaiting_reconciliation") or p.get("status") not in ("answered", "no_evidence", "execution_failed") for p in predictions.values()):
@@ -210,6 +211,8 @@ def read_inputs(root: Path, pilot_id: str, baseline_dir: Path, diagnosis_dir: Pa
         if not blocked <= flagged:
             raise ComparisonError(f"{repair} has unknown blocked questions")
         for qid, row in rows.items():
+            if records[qid].get("action", "send") == "send" and records[qid].get("max_output_tokens") != provider["max_output_tokens"]:
+                raise ComparisonError(f"{repair} request max_output_tokens mismatch for {qid}")
             if row.get("status") == "answered":
                 check_returned(row, f"{repair} prediction", required=False)
             if records[qid].get("doc_id") != questions[qid]["doc_id"]:
