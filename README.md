@@ -1,40 +1,56 @@
 # FAAR
 
-FAAR is a failure-aware OCR-RAG pipeline for document question answering. It
-retrieves from OCR text first, then applies a typed recovery only when a quality
-gate indicates that the evidence is likely to fail. Recoveries are `semantic`
-(retry retrieval), `word_level` (correct OCR noise), and `structural` (selective
-visual fallback).
+FAAR (Failure-Aware Agentic Retrieval) is a document question-answering pipeline over OCR text. It answers from the
+retrieved OCR text first. When a gate flags the answer as likely wrong, FAAR diagnoses why and picks a matching
+repair. Empty OCR pages and broken layout go to an image repair that shows the page images to the model. Word-level
+OCR noise goes to SymSpell text correction. Everything else goes to a second retrieval.
+
+## Result
+
+The study is finished, and FAAR does not beat a simple image repair. On 946 held-out multi-page OHR-Bench test
+questions, the answer model (`gpt-6.1-terra`) got these shares of questions exactly right:
+
+| Policy | Exact match | Cost per question (USD) |
+| --- | ---: | ---: |
+| No recovery | 0.236 | 0.00171 |
+| FAAR | 0.266 | 0.00320 |
+| Image repair on every flagged question | 0.315 | 0.00831 |
+
+FAAR is 4.9 points below the image repair (95% document interval [-7.3, -2.6], Holm p 6.6e-6) and 3.1 points above
+no recovery. It costs 0.39 times as much as the image repair. Its diagnosis does no better than picking a repair at
+random. The validation confirmation and the development rounds show the same pattern.
+
+Read the [FAAR study report](docs/reports/faar-study-report.md) for the method, every stage's results, why FAAR lost
+and the limitations.
 
 ## Status
 
 | Stage | State |
 | --- | --- |
-| Local implementation and regression tests | Ready |
-| OHR data audit and locked PDF archive | Done ([report](docs/reports/data_audit.md)) |
-| Development pilot `ohr_dev_v1` selection and inspection packet | Frozen; no real-model run ([report](docs/reports/pilot_readiness.md)) |
-| Offline engineering path: `src/faar/pilot_runner.py`, official scorer `src/faar/ohr_scoring.py` | Exists. Current run: [`results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`](results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/). It uses a rule-based extractor, no repair and no model call. It is an engineering check, not a baseline ([report](docs/reports/prebaseline-engineering.md)) |
-| First real baseline (no recovery, real answer model, `ohr_dev_v1`) | Proposed in [study brief section 15](docs/research/study-brief.md#15-first-real-baseline-proposed-protocol). Nothing is approved, and no model call has run |
-| Bounded 108-page CUDA calibration on a shared cluster | Commands are ready. On hold until the lead approves it. It is not the automatic next step |
-| Full OHR validation preparation and B0-B4 paper runs | Not done |
+| Data audit and locked PDF archive | Done ([report](docs/reports/data_audit.md)) |
+| Development pilots `ohr_dev_v1` and `ohr_dev_v2` | Done. The image repair gained 8.5 points over no recovery and became the bar |
+| Practice rounds on `ohr_long_dev_v1` (423 train questions) | Done, method frozen at `b075dbd` ([log](docs/research/faar-practice-rounds.md)) |
+| Confirmation on `ohr_val_multipage_v1` (835 validation questions) | Done, run once. FAAR 4.4 points below the bar ([report](docs/research/faar-confirmation.md)) |
+| Final test on `ohr_test_multipage_v1` (946) and `ohr_test_singlepage_v1` (330) | Done, run once ([report](docs/research/faar-final-test.md)) |
+| Cluster calibration and B0-B4 paper runs from the earlier plan | Not run. The FAAR study used the OpenAI API only |
 
-Real-model results, GPU calibration measurements and full validation results
-are still pending. The study brief is the only current plan.
-Older 40-example mock-backend numbers in `docs/history/reports/` and
-`artifacts/phase3/` are prototype evidence only. They are not AAAI baselines.
+Every run is recorded in [experiments/registry.jsonl](experiments/registry.jsonl). Older 40-example mock-backend
+numbers in `docs/history/reports/` and `artifacts/phase3/` are prototype evidence only.
 
 ## Where things are
 
 | Need | Location |
 | --- | --- |
-| Current study design: question, comparisons, scoring, decisions | [docs/research/study-brief.md](docs/research/study-brief.md) |
+| Study report with all results | [docs/reports/faar-study-report.md](docs/reports/faar-study-report.md) |
+| Pre-registration, frozen method and test plan | [docs/research/faar-vs-gated-preregistration.md](docs/research/faar-vs-gated-preregistration.md) |
+| Study design: question, comparisons, scoring, decisions | [docs/research/study-brief.md](docs/research/study-brief.md) |
 | Earlier AAAI plan, kept as evidence; the study brief says which parts still apply | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
 | Code | `src/faar/` (package), `scripts/` (CLIs), `cluster/` (launcher and scheduler templates), `tests/` |
 | Configuration and locks | `config/`: split, checksums, OHR PDF source lock, model revisions, pilot configs |
 | Benchmark inputs | `OHR-Bench/` (vendored upstream QA and text; tracked), `data/ohr_bench_raw/pdfs.zip` (locked archive; ignored) |
 | Derived data | `data/benchmark_prep/`, `data/external/` (ignored); `data/phase0/` (prototype, tracked) |
 | Experiment runs and their state | [experiments/](experiments/README.md): `registry.jsonl` plus the run-record format |
-| Result payloads | `results/` (audit, pilot, smoke, environment); prototype outputs in `artifacts/` and `logs/` |
+| Result payloads | `results/development/` (raw model replies and run records), `results/analysis/` (comparison reports and per-question scores), `results/pilots/` (frozen samples); prototype outputs in `artifacts/` and `logs/` |
 | Current reports | [docs/reports/](docs/reports/index.md) |
 | Paper | [paper/main.tex](paper/main.tex) ([build and provenance](paper/README.md)) |
 | History and the 2026-09-28 path map | [docs/history/](docs/history/README.md) |
@@ -110,7 +126,9 @@ the cluster were not tested. To re-check after a dependency change, run
 `python scripts/diagnostics/openmp_check.py`. It prints a JSON report and takes
 about 6 minutes with the default 5 trials.
 
-## First cluster commands
+## Cluster commands
+
+The FAAR study did not use the cluster. These commands are from the earlier plan and were never submitted.
 
 Login-node preflight, no CUDA:
 
