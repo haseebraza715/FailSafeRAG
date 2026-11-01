@@ -11,7 +11,8 @@ below apply even when they make a task slower.
 
 ## Where things are
 
-- Study design: [docs/research/study-brief.md](docs/research/study-brief.md) is the only current plan. It labels each rule as agreed, proposed default or lead decision. A proposed default is not approved. Do not implement an open lead decision. [docs/research/aaai-plan.md](docs/research/aaai-plan.md) is the earlier plan, kept as evidence. The brief says which of its parts still apply.
+- Study status: the FAAR study has finished. [docs/reports/faar-study-report.md](docs/reports/faar-study-report.md) reports it. [docs/research/faar-vs-gated-preregistration.md](docs/research/faar-vs-gated-preregistration.md) holds the frozen method, the decision rule and the test plan. The confirmation and the final test ran once each. Do not rerun them or change their records.
+- Study design: [docs/research/study-brief.md](docs/research/study-brief.md) is the design the pre-registration builds on. It labels each rule as agreed, proposed default or lead decision. A proposed default is not approved. Do not implement an open lead decision. [docs/research/aaai-plan.md](docs/research/aaai-plan.md) is the earlier plan, kept as evidence. The brief says which of its parts still apply.
 - Current data and pilot reports: [docs/reports/](docs/reports/index.md).
 - Run records and their format: [experiments/README.md](experiments/README.md).
 - Paper: [paper/main.tex](paper/main.tex), with rules in [paper/README.md](paper/README.md).

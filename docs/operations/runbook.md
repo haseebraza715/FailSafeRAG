@@ -93,8 +93,8 @@ sbatch cluster/templates/slurm_calibration_108.sbatch
 This runs one complete 108-page document
 (`manual/User_Manual_1500S_Classic_EN`, pages 0–107) through PDF extraction, Docling, page
 rendering, and pinned GOT-OCR. The job refuses to start if the document or
-inventory is not that exact 108-page set. **Calibration evidence only — never a paper
-result.** Submit nothing else until it is approved. Do not use
+inventory is not that exact 108-page set. **The output is calibration evidence only and is
+never a paper result.** Submit nothing else until it is approved. Do not use
 `cluster/templates/slurm_one_gpu.sbatch` for this step.
 
 ## 7. Monitor logs and disk

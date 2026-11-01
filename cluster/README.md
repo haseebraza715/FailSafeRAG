@@ -107,8 +107,8 @@ subprocess, per-stage memory is released before the next stage starts.
 ## Validation B0 and gate tuning
 
 The gate threshold may be tuned only on the validation split. Before the
-lock exists, the ordered runner can produce the validation B0 in isolation —
-this is the only ordered-runner mode that does not require
+lock exists, the ordered runner can produce the validation B0 in isolation.
+This is the only ordered-runner mode that does not require
 `config/gate_threshold.json`:
 
 ```bash

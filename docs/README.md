@@ -2,33 +2,34 @@
 
 ## Current status
 
-- The study design is [research/study-brief.md](research/study-brief.md). It is the only current plan, and it labels each rule Agreed, Proposed default or Lead decision. Section 15 proposes the first real baseline. Nothing in it is approved.
-- An offline engineering path exists (`src/faar/pilot_runner.py`, `src/faar/ohr_scoring.py`). Its current run is [`results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/`](../results/engineering/2026-09-29-ohr-dev-v1-offline-engineering-r4/). It uses a rule-based extractor, no repair and no model call, so it is an engineering check and not a baseline. See the [pre-baseline engineering report](reports/prebaseline-engineering.md).
-- No real-model run has happened.
+The FAAR study is finished. Diagnosis-based repair did not beat the gated image repair on the final test (26.6%
+against 31.5% exact match on 946 multi-page test questions). Start with the
+[FAAR study report](reports/faar-study-report.md).
 
 ## Cluster work
 
-The cluster commands are available:
-
-- [Supervisor handoff](../SUPERVISOR_HANDOFF.md)
-- [Shared-cluster runbook](operations/runbook.md)
-
-Those two files are the operational source of truth for cluster procedure. GPU calibration is not the automatic next step. It waits for the lead's approval.
+The FAAR study used the OpenAI API and no cluster. The cluster commands from the earlier plan were never submitted.
+Their procedure is in the [supervisor handoff](../SUPERVISOR_HANDOFF.md) and the
+[shared-cluster runbook](operations/runbook.md).
 
 ## Current
 
 | Path | Contents |
 | --- | --- |
-| [research/study-brief.md](research/study-brief.md) | Current study design: question, comparisons, scoring and decisions |
+| [reports/faar-study-report.md](reports/faar-study-report.md) | The whole FAAR study: method, results of every stage, limitations |
+| [research/faar-vs-gated-preregistration.md](research/faar-vs-gated-preregistration.md) | Pre-registration: policies, decision rule, frozen method, test plan |
+| [research/faar-practice-rounds.md](research/faar-practice-rounds.md), [faar-confirmation.md](research/faar-confirmation.md), [faar-final-test.md](research/faar-final-test.md) | Stage reports with run ids and costs |
+| [research/study-brief.md](research/study-brief.md) | Study design the pre-registration builds on: question, comparisons, scoring |
+| [research/repair-analysis-plan.md](research/repair-analysis-plan.md), [visual-repair-design.md](research/visual-repair-design.md), [ohr-dev-v2-proposal.md](research/ohr-dev-v2-proposal.md), [longer-document-sample-options.md](research/longer-document-sample-options.md) | Development plans and decisions that led to the pre-registration, kept as records |
 | [research/aaai-plan.md](research/aaai-plan.md) | Earlier AAAI plan, kept as evidence; not the current protocol |
 | [research/aaai-reproducibility.md](research/aaai-reproducibility.md) | Environment, model pins, and identity checks |
-| [architecture/overview.md](architecture/overview.md) | Current system design |
+| [architecture/overview.md](architecture/overview.md) | The pipeline the study ran, step by step |
 | [operations/runbook.md](operations/runbook.md) | Shared-cluster procedure |
-| [reports/](reports/index.md) | Current data audit, pilot readiness and pre-baseline engineering reports |
+| [reports/](reports/index.md) | The study report, plus the data audit, pilot readiness and pre-baseline engineering reports |
 | [../experiments/README.md](../experiments/README.md) | Run registry and run-record format |
 | [../paper/README.md](../paper/README.md) | Current paper source and table/figure provenance |
 | [../cluster/README.md](../cluster/README.md) | Launcher, templates, and scheduler mechanics |
-| [../annotation/README.md](../annotation/README.md) | Label study commands, after a real B0 exists |
+| [../annotation/README.md](../annotation/README.md) | Label study commands; the label study was not run |
 | [evidence/evidence-manifest.tsv](evidence/evidence-manifest.tsv) | Provenance of committed prototype assets |
 
 ## Historical

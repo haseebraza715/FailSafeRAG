@@ -1,20 +1,18 @@
 # Supervisor handoff
 
-The commands for a bounded 108-page CUDA calibration on a shared cluster are
-prepared. The calibration is on hold until the research lead approves it, and it
-is not the next research step by default: the current plan is the
-[study brief](docs/research/study-brief.md). Full validation and B0-B4 paper
-runs have not started. The complete command and
-recovery reference is [docs/operations/runbook.md](docs/operations/runbook.md).
+The FAAR study finished on 2026-11-01 without using the cluster. It ran on the OpenAI API, and its results are in
+the [FAAR study report](docs/reports/faar-study-report.md). The commands below for a bounded 108-page CUDA
+calibration were prepared for the earlier plan and never submitted. The complete command and recovery reference is
+[docs/operations/runbook.md](docs/operations/runbook.md).
 
 ## Current gate
 
 | Stage | Status |
 | --- | --- |
 | Local implementation and regression tests | Ready |
-| Allocated-GPU preflight and 108-page calibration | Commands ready; on hold until approved |
-| Full validation preparation | Waiting for calibration approval |
-| B0-B4 and paper runs | Not run |
+| FAAR study (development, confirmation, final test) | Done on the OpenAI API |
+| Allocated-GPU preflight and 108-page calibration | Commands ready; never submitted |
+| Full validation preparation and B0-B4 paper runs | Not run |
 
 The repository contains 40-example mock-backend results from prototype work.
 They are not paper baselines.

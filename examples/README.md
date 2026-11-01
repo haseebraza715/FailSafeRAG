@@ -1,8 +1,8 @@
 # Demo corpus (`demo_corpus/`)
 
 A tiny synthetic corpus (three one-page documents, ~40 words each) committed to
-the repository so the pipeline demo runs fully offline and deterministically —
-no API keys, no model downloads, no GPU.
+the repository so the prototype pipeline demo runs offline and gives the same output
+every time. It needs no API key, no model download and no GPU. The FAAR study did not use this demo.
 
 ## Layout
 
@@ -28,7 +28,7 @@ diagnosed as `word_level`, and recovery routes to OCR-text correction. Because
 the offline profile disables ByT5, the correction is a *guarded skip* and the
 pipeline answers from the flagged evidence with a measured confidence
 (`support_score` 9 on the noisy page vs 10 on the clean page). No visual model
-is invoked on any example — multimodal spend stays at zero.
+is invoked on any example, so no image model is called.
 
 ## Running it
 
@@ -38,5 +38,5 @@ python scripts/demo/demo_run.py                # milestone trace over all three 
 
 The `faar-demo run-example` CLI accepts the same `--project-root` pointing at
 this directory (it enables word-level ByT5 correction by default; on macOS
-builds where faiss and torch OpenMP runtimes conflict, that path can crash —
-use the demo script, or `run-benchmark --no-enable-byt5`, instead).
+builds where faiss and torch OpenMP runtimes conflict, that path can crash.
+Use the demo script, or `run-benchmark --no-enable-byt5`, instead).

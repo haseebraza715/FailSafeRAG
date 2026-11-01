@@ -1,44 +1,78 @@
 # Architecture
 
-Current system summary for FAAR. Operational cluster steps are in
-[SUPERVISOR_HANDOFF.md](../../SUPERVISOR_HANDOFF.md).
+This page describes the pipeline the FAAR study ran, from the frozen sample to the comparison report. The results
+are in the [FAAR study report](../reports/faar-study-report.md). The method settings are frozen in
+[faar-vs-gated-preregistration.md](../research/faar-vs-gated-preregistration.md), section 14.
 
-## System Summary
+## The pipeline runs in five steps
 
-FAAR improves OCR-heavy document QA by combining text-first retrieval with failure-aware recovery. The controller first evaluates answerability with a quality gate, then applies typed recovery only when needed:
-
-- `semantic` -> retrieval retry/backtracking
-- `word_level` -> OCR text correction
-- `structural` -> selective visual fallback
-
-This design keeps the default path lightweight while preserving robust handling of difficult OCR cases.
-
-## High-Level Flow
+Each step reads the previous step's run folder under `results/development/` and writes its own. Only the answer
+steps call the model. The gate, the diagnosis and the comparison run offline.
 
 ```mermaid
 flowchart TD
-    input[Question and ExampleId] --> load[Load OCR-backed Example]
-    load --> chunk[Chunk and Metadata]
-    chunk --> retrieve[Hybrid Retrieve]
-    retrieve --> gate[Quality Gate]
-    gate -->|pass| answer_direct[Answer Direct]
-    gate -->|diagnose| diagnose[Failure Diagnosis]
-    diagnose --> policy[Recovery Policy]
-    policy -->|semantic| retry[Retry Retrieval]
-    policy -->|word_level| correct[Correct OCR Text]
-    policy -->|structural| visual[Visual Fallback]
-    retry --> answer_recovered[Answer Recovered]
-    correct --> answer_recovered
-    visual --> answer_recovered
-    answer_direct --> log[Structured Log]
-    answer_recovered --> log
+    pilot[Frozen sample<br>results/pilots/] --> base[No-recovery answers<br>run_pilot_live.py]
+    base --> diag[Gate and diagnosis<br>diagnose_run.py]
+    diag --> retry[Retry retrieval<br>run_text_repair.py]
+    diag --> correct[Text correction<br>run_text_repair.py]
+    diag --> image[Image repair<br>run_visual_repair.py]
+    base --> cmp[Policy comparison<br>compare_confirmation.py, compare_test.py]
+    diag --> cmp
+    retry --> cmp
+    correct --> cmp
+    image --> cmp
 ```
 
-## Main Components
+1. `scripts/data/build_pilot.py` builds a sample once from a config in `config/pilots/` and freezes it under
+   `results/pilots/<pilot_id>/`. The runtime manifest holds what the pipeline may read. The evaluation manifest holds
+   the gold answers, which only the scorer reads.
+2. `scripts/experiments/run_pilot_live.py` retrieves the top 5 chunks for each question and asks the answer model
+   for the initial answer. `src/faar/live_runner.py` keeps durable request and response records, so an interrupted
+   run resumes without paying twice.
+3. `scripts/experiments/diagnose_run.py` applies the gate and the diagnosis from `src/faar/diagnosis.py` to every
+   question. It sends no request and reads no evaluation file.
+4. Each repair runs on every flagged question, whatever the diagnosis chose. `scripts/experiments/run_text_repair.py`
+   runs `retry_retrieval` and `correct_text` (`src/faar/text_repair.py`, `src/faar/symspell.py`).
+   `scripts/experiments/run_visual_repair.py` runs `invoke_vlm` (`src/faar/visual_repair.py`).
+5. The comparison script builds each policy from the saved answers, scores it and writes the report, the
+   per-question scores and the statistics. It refuses to run if its output folder already exists.
 
-- Ingestion/chunking: prepares OCR text and metadata for retrieval.
-- Retriever: text-first hybrid retrieval over indexed chunks.
-- Quality gate: decides direct answer vs recovery path.
-- Failure diagnosis + policy: maps failures to recovery actions.
-- Recovery modules: targeted correction, retry, or visual fallback.
-- Logging: structured outputs for reproducibility and analysis.
+Running every repair on every flagged question lets one set of model calls score all policies. FAAR takes the
+repair its diagnosis chose. The gated image repair takes `invoke_vlm`. The random policy takes a repair drawn from a
+hash of the question id. The best repair in hindsight takes whichever repair was right.
+
+## The gate decides which questions get a repair
+
+The gate `abstain-or-ocr-gap-v1+query_token_coverage<0.692308` flags a question when any of these holds:
+
+- The initial answer abstained or found no evidence.
+- The document has a page with empty or missing OCR text.
+- Fewer than 69.2% of the question's words appear in the retrieved text.
+
+`scripts/experiments/choose_confidence_gate.py` chose the last threshold on train data.
+
+## The diagnosis picks one repair
+
+`src/faar/diagnosis.py` checks the rules in this order and stops at the first match.
+
+| Diagnosis | Fires when | Repair |
+| --- | --- | --- |
+| `missing_text` | No text evidence, or a retrieved or shown page has empty OCR text | `invoke_vlm` |
+| `structural` | The top chunk shows at least one layout-damage signal | `invoke_vlm` |
+| `word_level` | More than 10% of the top chunk's characters are unusual | `correct_text` |
+| `semantic` | None of the above | `retry_retrieval` |
+
+## The three repairs answer again from new evidence
+
+- `retry_retrieval` keeps the initial top 3 chunks and adds the 2 best chunks the first retrieval did not send
+  (`keep-top3-add-next2-v1`).
+- `correct_text` runs SymSpell spelling correction over the retrieved chunks.
+- `invoke_vlm` sends the initial text plus images of up to 3 pages, chosen from the retrieved pages and then the
+  pages with empty OCR text (150 DPI, JPEG quality 90).
+
+Every repair uses the same answer model and prompt (`faar-answer-v2`) as the initial answer.
+
+## Older code from the prototype
+
+`src/faar/graph.py`, `src/faar/recovery.py` and the `faar-demo` command are the prototype controller from before the
+study. They use a different gate and different repairs. The study did not run them.

@@ -1,5 +1,10 @@
 # First study: diagnosis-based recovery for OCR-backed document QA
 
+**Status (2026-11-01).** The study has finished. The method that ran, the decision rule and the test plan are in
+[faar-vs-gated-preregistration.md](faar-vs-gated-preregistration.md), which overrides this brief where they differ.
+The results are in the [FAAR study report](../reports/faar-study-report.md). The text below is the design as written
+before any model run.
+
 This brief is the current design of FAAR's first study. It replaces
 [aaai-plan.md](aaai-plan.md) as the plan to follow. It describes intended
 behaviour. It does not report results, and it does not authorise model calls,

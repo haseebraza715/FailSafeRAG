@@ -21,35 +21,27 @@ it measures the execution path and not answer quality.
 
 ## Current runs
 
-| run_id | Kind | Status |
-| --- | --- | --- |
-| `proto-phase3-mock-40` | engineering_check | completed (mock backend; not a baseline) |
-| `2026-08-03-b0-one-doc-smoke` | engineering_check | completed (smoke; not a baseline) |
-| `2026-08-08-arxivqa-full-paper-prep` | data_preparation | completed per run log; bulk outputs absent locally |
-| `2026-09-28-ohr-pdf-archive` | data_preparation | completed |
-| `2026-09-28-ohr-asset-audit` | data_preparation | completed |
-| `2026-09-28-ohr-dev-v1-selection` | data_preparation | completed (pilot sample only; no model run) |
-| `faar-ohr-108-calibration` | engineering_check | planned |
-| `2026-09-28-ohr-dev-v1-offline-engineering` | engineering_check | completed; outputs kept only in the ignored `.local/work/runs/` because its `run_config.json` records home-directory paths |
-| `2026-09-28-ohr-dev-v1-offline-engineering-r2` | engineering_check | completed; superseded by r3 after the review fixes |
-| `2026-09-28-ohr-dev-v1-offline-engineering-r3` | engineering_check | completed; superseded by r4, which adds multilingual retrieval |
-| `2026-09-29-ohr-dev-v1-offline-engineering-r4` | engineering_check | completed (rule-based extractor, no repair; not a baseline) |
-| `2026-09-29-ohr-dev-v1-fake-provider-r1` | engineering_check | completed; superseded by fake-provider-r2 after the review fixes |
-| `2026-09-29-ohr-dev-v1-fake-provider-r2` | engineering_check | completed; superseded by fake-provider-r3 after the fix-verification findings |
-| `2026-09-29-ohr-dev-v1-fake-provider-r3` | engineering_check | completed; superseded by fake-provider-r4 after the safety-stop and HTTP-outcome fixes |
-| `2026-09-29-ohr-dev-v1-fake-provider-r4` | engineering_check | completed; superseded by fake-provider-r5 after the storage, service-tier, transport and run-kind safeguards |
-| `2026-09-30-ohr-dev-v1-fake-provider-r5` | engineering_check | completed; superseded by fake-provider-r6 after the deslop refactor |
-| `2026-09-30-ohr-dev-v1-live-check-subset-fake-r1` | engineering_check | completed; superseded by live-check-subset-fake-r2 after the deslop refactor |
-| `2026-09-30-ohr-dev-v1-fake-provider-r6` | engineering_check | completed (answer-model path with the fake provider; answers and costs simulated; not a baseline) |
-| `2026-09-30-ohr-dev-v1-live-check-subset-fake-r2` | engineering_check | completed (fake rehearsal of the 8-question live check; not canonical, never a baseline) |
-| `2026-09-30-ohr-dev-v1-live-check-r1` | engineering_check | abandoned (first live invocation under Approval A; HTTP 401 `invalid_api_key` on the first request, nothing processed or billed; the code changed afterwards, so it cannot resume and a successor run takes its place) |
-| `2026-10-31-ohr-dev-v1-live-check-r2` | engineering_check | completed (successor of live-check-r1 on gpt-4o-2024-11-20; 6 sent, 2 no_evidence, $0.019; verifier 0 FAIL) |
-| `2026-10-31-ohr-dev-v1-baseline-r1` | development_pilot | completed (no-recovery baseline on gpt-4o-2024-11-20; 63 answered, 7 no_evidence, $0.223; not scored, because the answer model changed to gpt-6.1-terra) |
-| `2026-10-31-ohr-dev-v1-live-check-terra-r1` | engineering_check | completed (8-question live check on gpt-6.1-terra with reasoning_effort none; $0.008; verifier 0 FAIL) |
-| `2026-10-31-ohr-dev-v1-baseline-terra-r1` | development_pilot | completed (no-recovery baseline on gpt-6.1-terra; 63 answered, 7 no_evidence, $0.086; all-question EM 0.214, F1 0.468; development data, not a scientific evaluation) |
+`registry.jsonl` holds 66 runs: 9 `data_preparation`, 19 `engineering_check` and 38 `development_pilot`. No run is
+recorded as `scientific_evaluation`. The FAAR confirmation and final test runs are recorded as `development_pilot`.
+Print every run's current kind and status with:
 
-No scientific evaluation has run. This table is a convenience; the registry is
-authoritative.
+```bash
+python3 -c "import json; last = {}
+for line in open('experiments/registry.jsonl'): r = json.loads(line); last[r['run_id']] = r
+for r in last.values(): print(r['run_id'], r['kind'], r['status'], sep='  ')"
+```
+
+The FAAR study runs, by stage. Each stage report names every run and its cost.
+
+| Stage | Run ids | Report |
+| --- | --- | --- |
+| Development pilots | `2026-10-31-ohr-dev-v1-*`, `2026-10-31-ohr-dev-v2-*` | [ohr_dev_v2 comparison](../results/analysis/2026-10-31-ohr-dev-v2-confirmation/report.md) |
+| Practice rounds | `2026-11-01-ohr-long-dev-v1-*` | [faar-practice-rounds.md](../docs/research/faar-practice-rounds.md) |
+| Frozen method | `2026-11-01-faar-frozen-method-v2` (supersedes `-v1`) | [pre-registration, section 14](../docs/research/faar-vs-gated-preregistration.md) |
+| Confirmation | `2026-11-01-ohr-val-multipage-v1-*` | [faar-confirmation.md](../docs/research/faar-confirmation.md) |
+| Final test | `2026-11-01-ohr-test-multipage-v1-*`, `2026-11-01-ohr-test-singlepage-v1-*` | [faar-final-test.md](../docs/research/faar-final-test.md) |
+
+The registry is authoritative. The [FAAR study report](../docs/reports/faar-study-report.md) summarises the results.
 
 ## Record format (schema_version 1)
 
