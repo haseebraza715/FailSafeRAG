@@ -9,7 +9,8 @@ the run, and only to score.
 Commands::
 
     python scripts/experiments/run_visual_repair.py prepare --pilot-id ohr_dev_v2 \\
-        --baseline-run-dir results/development/<no-recovery run> --run-dir results/development/<run_id>
+        --baseline-run-dir results/development/<no-recovery run> --run-dir results/development/<run_id> \\
+        [--questions-file <file with one question id per line>]
     FAAR_ALLOW_LIVE_REQUESTS=I_UNDERSTAND_THIS_SPENDS_MONEY python scripts/experiments/run_visual_repair.py run \\
         --run-dir results/development/<run_id> --cap 2.50
     python scripts/experiments/run_visual_repair.py export --run-dir results/development/<run_id>
@@ -157,12 +158,22 @@ def prepare(
     resend_rule: str,
     provider_config: Path,
     archive: Path,
+    questions_file: Path | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Write ``run_config.json`` and ``requests.jsonl``. Sends nothing. Refuses a changed identity in an existing run."""
     if resend_rule not in RESEND_RULES:
         raise RepairError(f"unknown resend rule {resend_rule!r}")
     loaded = load_baseline(root, pilot_id, baseline_run_dir)
     runtime, manifest_sha, baseline, template = loaded["runtime"], loaded["runtime_sha256"], loaded["requests"], loaded["template"]
+    questions = None
+    if questions_file is not None:
+        questions_bytes = _read_bytes(questions_file)
+        questions = {line.strip() for line in questions_bytes.decode("utf-8").splitlines() if line.strip()}
+        if not questions:
+            raise RepairError("questions file is empty")
+        unknown = questions - {q["question_id"] for q in runtime["questions"]}
+        if unknown:
+            raise RepairError(f"{len(unknown)} question ids are not in {pilot_id}")
     config = load_provider_config(provider_config)
     documents = {d["doc_id"]: d for d in runtime["documents"]}
     renderer = PageRenderer(archive, documents)
@@ -170,6 +181,8 @@ def prepare(
     records = []
     for q in runtime["questions"]:
         qid = q["question_id"]
+        if questions is not None and qid not in questions:
+            continue
         base = baseline[qid]
         doc = documents[q["doc_id"]]
         system, user, retrieved = repair_text(base, template)
@@ -206,6 +219,9 @@ def prepare(
         "requests_sha256": _canonical(records),
         "code": {_rel(p, ROOT): _sha(p.read_bytes()) for p in code_files},
     }
+    if questions is not None:
+        identity["questions_file_sha256"] = _sha(questions_bytes)
+        identity["question_count"] = len(questions)
     write_identity(run_dir, identity, records)
     return records, identity
 
@@ -415,6 +431,7 @@ def main() -> int:
     p.add_argument("--budget", type=int, default=DEFAULT_BUDGET)
     p.add_argument("--resend-rule", choices=RESEND_RULES, default="none")
     p.add_argument("--run-id")
+    p.add_argument("--questions-file", type=Path)
     r = sub.add_parser("run")
     r.add_argument("--cap", type=float, required=True, help="hard ceiling in USD for this run, counting reserved cost")
     sub.add_parser("export")
@@ -425,9 +442,12 @@ def main() -> int:
     run_dir = args.run_dir if args.run_dir.is_absolute() else ROOT / args.run_dir
     if args.command == "prepare":
         baseline = args.baseline_run_dir if args.baseline_run_dir.is_absolute() else ROOT / args.baseline_run_dir
+        questions_file = args.questions_file
+        if questions_file is not None and not questions_file.is_absolute():
+            questions_file = ROOT / questions_file
         records, identity = prepare(root=ROOT, pilot_id=args.pilot_id, baseline_run_dir=baseline, run_dir=run_dir,
                                     run_id=args.run_id or run_dir.name, budget=args.budget, resend_rule=args.resend_rule,
-                                    provider_config=PROVIDER_CONFIG, archive=PDF_ARCHIVE)
+                                    provider_config=PROVIDER_CONFIG, archive=PDF_ARCHIVE, questions_file=questions_file)
         print(json.dumps({"run_dir": _rel(run_dir, ROOT), "requests": len(records),
                           "images": sum(len(x["selected_pages"]) for x in records),
                           "image_bytes": sum(i["bytes"] for x in records for i in x["images"]),

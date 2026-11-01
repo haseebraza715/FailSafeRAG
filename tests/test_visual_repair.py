@@ -14,6 +14,8 @@ R6. The cap is crossed: a request is sent when measured plus reserved plus its b
 R7. A changed run reuses a run directory, or the repair runs on a baseline that is invalid, of another pilot or
     of another template.
 R8. The gate differs from ``abstain-or-ocr-gap-v1``.
+R9. A subset includes unlisted questions, accepts invalid ids or an empty file, or changes the full-run format.
+R10. A subset cannot run, export and score only its own questions.
 """
 
 from __future__ import annotations
@@ -87,8 +89,9 @@ class Project:
         runtime = {"pilot_id": PILOT, "documents": docs, "questions": questions}
         (pilot / "runtime_manifest.json").write_text(json.dumps(runtime))
         manifest_sha = hashlib.sha256((pilot / "runtime_manifest.json").read_bytes()).hexdigest()
+        answers = {"q1": "Ann", "q2": "May", "q3": "Ann Smith"}
         (pilot / "evaluation_manifest.json").write_text(json.dumps({"pilot_id": PILOT, "questions": {
-            q["question_id"]: {"answers": ["x"], "evidence_pages": [0]} for q in questions}}))
+            q["question_id"]: {"answers": answers[q["question_id"]], "evidence_pages": [0]} for q in questions}}))
         gt = root / "OHR-Bench" / "data" / "retrieval_base" / "gt" / "d" / "a.json"
         gt.parent.mkdir(parents=True)
         gt.write_text("[]")
@@ -329,3 +332,44 @@ def test_a_baseline_of_another_pilot_manifest_is_refused(tmp_path: Path) -> None
     (project.baseline / "run_config.json").write_text(json.dumps({"identity": {"runtime_manifest": {"sha256": "0" * 64}}}))
     with pytest.raises(RepairError, match="does not record the runtime manifest"):
         project.prepare()
+
+
+def test_subset_identity_validation_and_full_run_format(tmp_path: Path) -> None:
+    project = Project(tmp_path)
+    full = project.prepare()
+    full_config = json.loads((project.run_dir() / "run_config.json").read_text())
+    subset = tmp_path / "questions.txt"
+    subset.write_text("q3\n\nq1\nq1\n")
+    rows = project.prepare(name="subset", questions_file=subset)
+    assert [r["question_id"] for r in rows] == ["q1", "q3"]
+    config = json.loads((project.run_dir("subset") / "run_config.json").read_text())
+    assert config["questions_file_sha256"] == hashlib.sha256(subset.read_bytes()).hexdigest()
+    assert config["question_count"] == 2
+    assert "questions_file_sha256" not in full_config and "question_count" not in full_config
+    assert rows == [full[0], full[2]] and config["requests_sha256"] != full_config["requests_sha256"]
+    with pytest.raises(RepairError, match="different identity"):
+        project.prepare(questions_file=subset)
+    subset.write_text("q1\nunknown\n")
+    with pytest.raises(RepairError, match="not in"):
+        project.prepare(name="bad", questions_file=subset)
+    subset.write_text(" \n\n")
+    with pytest.raises(RepairError, match="empty"):
+        project.prepare(name="bad", questions_file=subset)
+
+
+def test_subset_run_export_and_score(tmp_path: Path) -> None:
+    project = Project(tmp_path)
+    subset = tmp_path / "questions.txt"
+    subset.write_text("q3\nq1\n")
+    project.prepare(questions_file=subset)
+    provider = ScriptedProvider()
+    project.run(provider)
+    assert provider.sent() == ["q1", "q3"]
+    assert [r["question_id"] for r in rvr.export(project.run_dir())] == ["q1", "q3"]
+    summary = rvr.score(project.root, project.run_dir())
+    assert summary["questions"] == 2
+    assert summary["em"] == pytest.approx(0.5)
+    assert summary["f1"] == pytest.approx(5 / 6)
+    scores = [json.loads(line) for line in (project.run_dir() / "scores.jsonl").read_text().splitlines()]
+    assert [r["question_id"] for r in scores] == ["q1", "q3"]
+    assert [(r["em"], r["f1"]) for r in scores] == [(1, 1.0), (0, pytest.approx(2 / 3))]
