@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b85ef953-c162-4f0b-a7df-dbe37c4177d5",
+  "request_id": "9eb3e1ac1f32c1726a47f75419c86418",
+  "attempt": 1,
+  "attempt_id": "9eb3e1ac1f32c1726a47f75419c86418-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDWMNIiMb6HezrTpr89ZX93I0uVN",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1591,
+    "cached_input_tokens": 0,
+    "output_tokens": 73,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001956,
+  "input_bound_exceeded": false,
+  "latency_ms": 1728,
+  "output_status": "ok",
+  "answer": "cooperate with Freedom Mortgage’s efforts to cause the Acknowledgement Agreement to be revised or replaced with an alternative arrangement proposed by Freedom Mortgage that is acceptable to Ginnie Mae and that will provide Cherry Hill with benefits, rights and remedies that are, in the reasonable judgment of Cherry Hill, not materially less favorable than those provided under the Acknowledgement Agreement",
+  "abstained": false,
+  "provider_response": {
+    "text": "cooperate with Freedom Mortgage’s efforts to cause the Acknowledgement Agreement to be revised or replaced with an alternative arrangement proposed by Freedom Mortgage that is acceptable to Ginnie Mae and that will provide Cherry Hill with benefits, rights and remedies that are, in the reasonable judgment of Cherry Hill, not materially less favorable than those provided under the Acknowledgement Agreement",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDWMNIiMb6HezrTpr89ZX93I0uVN",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "cooperate with Freedom Mortgage’s efforts to cause the Acknowledgement Agreement to be revised or replaced with an alternative arrangement proposed by Freedom Mortgage that is acceptable to Ginnie Mae and that will provide Cherry Hill with benefits, rights and remedies that are, in the reasonable judgment of Cherry Hill, not materially less favorable than those provided under the Acknowledgement Agreement",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492130,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 73,
+        "prompt_tokens": 1591,
+        "total_tokens": 1664,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1588
+        }
+      }
+    }
+  }
+}

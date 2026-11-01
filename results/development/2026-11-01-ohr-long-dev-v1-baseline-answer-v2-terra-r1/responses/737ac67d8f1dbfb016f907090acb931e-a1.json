@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b84675e5-0753-4e03-99bb-bbf1fad3f133",
+  "request_id": "737ac67d8f1dbfb016f907090acb931e",
+  "attempt": 1,
+  "attempt_id": "737ac67d8f1dbfb016f907090acb931e-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDWIala2JD98VrqnYMhsCXLnizLD",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1671,
+    "cached_input_tokens": 0,
+    "output_tokens": 5,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001696,
+  "input_bound_exceeded": false,
+  "latency_ms": 1099,
+  "output_status": "ok",
+  "answer": "Nevada",
+  "abstained": false,
+  "provider_response": {
+    "text": "Nevada",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDWIala2JD98VrqnYMhsCXLnizLD",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Nevada",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492126,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 5,
+        "prompt_tokens": 1671,
+        "total_tokens": 1676,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1668
+        }
+      }
+    }
+  }
+}

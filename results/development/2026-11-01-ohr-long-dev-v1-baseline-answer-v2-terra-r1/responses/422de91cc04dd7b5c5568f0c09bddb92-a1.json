@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "00a81de9-d20f-47d0-8465-6d6b81fb18b3",
+  "request_id": "422de91cc04dd7b5c5568f0c09bddb92",
+  "attempt": 1,
+  "attempt_id": "422de91cc04dd7b5c5568f0c09bddb92-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDPdGM8cagWYUS410vaS7zZLfzqT",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1657,
+    "cached_input_tokens": 0,
+    "output_tokens": 8,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001697,
+  "input_bound_exceeded": false,
+  "latency_ms": 1915,
+  "output_status": "ok",
+  "answer": "Yes, with prior authorization",
+  "abstained": false,
+  "provider_response": {
+    "text": "Yes, with prior authorization",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDPdGM8cagWYUS410vaS7zZLfzqT",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Yes, with prior authorization",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491713,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 1657,
+        "total_tokens": 1665,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1654
+        }
+      }
+    }
+  }
+}

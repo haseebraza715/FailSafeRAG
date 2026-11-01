@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "95a46683-5456-4b6a-baed-c131a8e363d6",
+  "request_id": "614b5d5c67a533f86b6d8eef43bbdac8",
+  "attempt": 1,
+  "attempt_id": "614b5d5c67a533f86b6d8eef43bbdac8-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDT1DpZk7s5Vx9Wx1OPwKc5Cfv14",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1633,
+    "cached_input_tokens": 0,
+    "output_tokens": 20,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001733,
+  "input_bound_exceeded": false,
+  "latency_ms": 1006,
+  "output_status": "ok",
+  "answer": "official purchases in the United States necessary for the operation of the diplomatic or consular mission",
+  "abstained": false,
+  "provider_response": {
+    "text": "official purchases in the United States necessary for the operation of the diplomatic or consular mission",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDT1DpZk7s5Vx9Wx1OPwKc5Cfv14",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "official purchases in the United States necessary for the operation of the diplomatic or consular mission",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491923,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1633,
+        "total_tokens": 1653,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1630
+        }
+      }
+    }
+  }
+}

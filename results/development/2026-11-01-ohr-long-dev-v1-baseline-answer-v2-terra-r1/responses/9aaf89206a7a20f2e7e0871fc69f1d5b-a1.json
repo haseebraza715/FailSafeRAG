@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "41bcf9d9-441a-41ec-aff9-d8638f7edf7d",
+  "request_id": "9aaf89206a7a20f2e7e0871fc69f1d5b",
+  "attempt": 1,
+  "attempt_id": "9aaf89206a7a20f2e7e0871fc69f1d5b-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDQgPshnwfqEtkviOYpH3iqfZuE5",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1514,
+    "cached_input_tokens": 0,
+    "output_tokens": 12,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001574,
+  "input_bound_exceeded": false,
+  "latency_ms": 1828,
+  "output_status": "ok",
+  "answer": "lithium-ion, nickel metal hydride",
+  "abstained": false,
+  "provider_response": {
+    "text": "lithium-ion, nickel metal hydride",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDQgPshnwfqEtkviOYpH3iqfZuE5",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "lithium-ion, nickel metal hydride",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491778,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1514,
+        "total_tokens": 1526,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1511
+        }
+      }
+    }
+  }
+}

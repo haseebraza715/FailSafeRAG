@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b7d8eff4-e0fa-438e-9383-7e52ef0bbb66",
+  "request_id": "2ed0dbbf250729f01cdf1c78b3ed5f25",
+  "attempt": 1,
+  "attempt_id": "2ed0dbbf250729f01cdf1c78b3ed5f25-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDVuqFuGfOW5XIbNc660GXgJaVFv",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1612,
+    "cached_input_tokens": 0,
+    "output_tokens": 50,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001862,
+  "input_bound_exceeded": false,
+  "latency_ms": 1409,
+  "output_status": "ok",
+  "answer": "Its affiants robosigned foreclosure documents, and its notaries failed to authenticate signatures, resulting in potential False Claims Act violations. DOJ used the review and analysis in negotiating a settlement agreement with Wells Fargo and four other mortgage servicers",
+  "abstained": false,
+  "provider_response": {
+    "text": "Its affiants robosigned foreclosure documents, and its notaries failed to authenticate signatures, resulting in potential False Claims Act violations. DOJ used the review and analysis in negotiating a settlement agreement with Wells Fargo and four other mortgage servicers",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDVuqFuGfOW5XIbNc660GXgJaVFv",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Its affiants robosigned foreclosure documents, and its notaries failed to authenticate signatures, resulting in potential False Claims Act violations. DOJ used the review and analysis in negotiating a settlement agreement with Wells Fargo and four other mortgage servicers",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492102,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 1612,
+        "total_tokens": 1662,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1609
+        }
+      }
+    }
+  }
+}

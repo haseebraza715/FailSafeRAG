@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "ecec20f8-2dfb-4147-8a13-2a0dfd56bf4b",
+  "request_id": "c3a6623bb28d555aa741659e1b1ced30",
+  "attempt": 1,
+  "attempt_id": "c3a6623bb28d555aa741659e1b1ced30-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDX16p3MhGXjC5XmwaeISDXNIt3b",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1428,
+    "cached_input_tokens": 0,
+    "output_tokens": 9,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001473,
+  "input_bound_exceeded": false,
+  "latency_ms": 885,
+  "output_status": "ok",
+  "answer": "Current intensity = voltage / resistance",
+  "abstained": false,
+  "provider_response": {
+    "text": "Current intensity = voltage / resistance",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDX16p3MhGXjC5XmwaeISDXNIt3b",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Current intensity = voltage / resistance",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492171,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1428,
+        "total_tokens": 1437,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1425
+        }
+      }
+    }
+  }
+}

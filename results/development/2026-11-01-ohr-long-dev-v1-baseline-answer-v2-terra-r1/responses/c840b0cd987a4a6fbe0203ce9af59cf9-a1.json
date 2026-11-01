@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "0245b669-c404-49ea-a19c-d0a853e920e9",
+  "request_id": "c840b0cd987a4a6fbe0203ce9af59cf9",
+  "attempt": 1,
+  "attempt_id": "c840b0cd987a4a6fbe0203ce9af59cf9-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDPj7XFVBBhbWJoOoLCxH1ml6lRD",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1426,
+    "cached_input_tokens": 0,
+    "output_tokens": 11,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001481,
+  "input_bound_exceeded": false,
+  "latency_ms": 1042,
+  "output_status": "ok",
+  "answer": "New Alaska Room at Loussac Library",
+  "abstained": false,
+  "provider_response": {
+    "text": "New Alaska Room at Loussac Library",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDPj7XFVBBhbWJoOoLCxH1ml6lRD",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "New Alaska Room at Loussac Library",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491719,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1426,
+        "total_tokens": 1437,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1423
+        }
+      }
+    }
+  }
+}

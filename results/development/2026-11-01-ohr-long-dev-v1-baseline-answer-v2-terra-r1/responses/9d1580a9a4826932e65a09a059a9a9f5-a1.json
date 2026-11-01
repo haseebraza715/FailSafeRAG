@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "37c9f06d-fdc7-4b19-86f2-38d863a081a2",
+  "request_id": "9d1580a9a4826932e65a09a059a9a9f5",
+  "attempt": 1,
+  "attempt_id": "9d1580a9a4826932e65a09a059a9a9f5-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDQTy5nd4ZdcKzU24rb8BbIkgsre",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1624,
+    "cached_input_tokens": 0,
+    "output_tokens": 34,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001794,
+  "input_bound_exceeded": false,
+  "latency_ms": 1418,
+  "output_status": "ok",
+  "answer": "notify both Club and the Concessionaire immediately upon issuance of such recall, and be responsible for any costs or expenses incurred by Club or the Concessionaire",
+  "abstained": false,
+  "provider_response": {
+    "text": "notify both Club and the Concessionaire immediately upon issuance of such recall, and be responsible for any costs or expenses incurred by Club or the Concessionaire",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDQTy5nd4ZdcKzU24rb8BbIkgsre",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "notify both Club and the Concessionaire immediately upon issuance of such recall, and be responsible for any costs or expenses incurred by Club or the Concessionaire",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491765,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 34,
+        "prompt_tokens": 1624,
+        "total_tokens": 1658,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1621
+        }
+      }
+    }
+  }
+}

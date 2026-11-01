@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9cceaf69-6be1-4c8b-b69d-11562b7cc1b2",
+  "request_id": "0e0c33d2b566f4469996ffb3260baf64",
+  "attempt": 1,
+  "attempt_id": "0e0c33d2b566f4469996ffb3260baf64-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDTg5MSvqLgSi0GNWIucHWtnZlch",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1522,
+    "cached_input_tokens": 0,
+    "output_tokens": 21,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001627,
+  "input_bound_exceeded": false,
+  "latency_ms": 1144,
+  "output_status": "ok",
+  "answer": "pizza restaurant worker, bank teller, department store cashier, daycare worker, factory production line worker",
+  "abstained": false,
+  "provider_response": {
+    "text": "pizza restaurant worker, bank teller, department store cashier, daycare worker, factory production line worker",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDTg5MSvqLgSi0GNWIucHWtnZlch",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "pizza restaurant worker, bank teller, department store cashier, daycare worker, factory production line worker",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491964,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1522,
+        "total_tokens": 1543,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1519
+        }
+      }
+    }
+  }
+}

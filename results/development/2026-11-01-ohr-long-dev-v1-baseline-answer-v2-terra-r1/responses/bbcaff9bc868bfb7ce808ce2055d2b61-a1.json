@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "94ebb818-a86c-4b38-8425-444f9e2715e8",
+  "request_id": "bbcaff9bc868bfb7ce808ce2055d2b61",
+  "attempt": 1,
+  "attempt_id": "bbcaff9bc868bfb7ce808ce2055d2b61-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDSs7PTPqtqte6S7hMRgqg4GRuHA",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1744,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001889,
+  "input_bound_exceeded": false,
+  "latency_ms": 1427,
+  "output_status": "ok",
+  "answer": "March 30, 2016 to April 1, 2016 at L'Fisher Hotel in Bacolod City",
+  "abstained": false,
+  "provider_response": {
+    "text": "March 30, 2016 to April 1, 2016 at L'Fisher Hotel in Bacolod City",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDSs7PTPqtqte6S7hMRgqg4GRuHA",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "March 30, 2016 to April 1, 2016 at L'Fisher Hotel in Bacolod City",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491914,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 1744,
+        "total_tokens": 1773,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1741
+        }
+      }
+    }
+  }
+}

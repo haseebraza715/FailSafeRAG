@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b8103153-12cd-47a6-a492-27fbde8a5b9b",
+  "request_id": "2e81448efcd715ebcd7e01474bce1845",
+  "attempt": 1,
+  "attempt_id": "2e81448efcd715ebcd7e01474bce1845-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDW7aevIFKI7BZBivlfLQrC8VuG0",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1528,
+    "cached_input_tokens": 0,
+    "output_tokens": 31,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001683,
+  "input_bound_exceeded": false,
+  "latency_ms": 1280,
+  "output_status": "ok",
+  "answer": "He was placed in the Witness Protection Program and received special favors, including conjugal visits, food, clothes, jewelry, and free phone calls",
+  "abstained": false,
+  "provider_response": {
+    "text": "He was placed in the Witness Protection Program and received special favors, including conjugal visits, food, clothes, jewelry, and free phone calls",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDW7aevIFKI7BZBivlfLQrC8VuG0",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "He was placed in the Witness Protection Program and received special favors, including conjugal visits, food, clothes, jewelry, and free phone calls",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492115,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 31,
+        "prompt_tokens": 1528,
+        "total_tokens": 1559,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1525
+        }
+      }
+    }
+  }
+}

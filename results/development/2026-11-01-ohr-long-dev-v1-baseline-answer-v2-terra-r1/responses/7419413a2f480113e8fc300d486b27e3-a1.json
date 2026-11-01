@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "90993300-9fc4-481c-a34c-e949367233d8",
+  "request_id": "7419413a2f480113e8fc300d486b27e3",
+  "attempt": 1,
+  "attempt_id": "7419413a2f480113e8fc300d486b27e3-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDSNZUu30LSq8VhkYgbRGgjSBr5D",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1487,
+    "cached_input_tokens": 0,
+    "output_tokens": 15,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001562,
+  "input_bound_exceeded": false,
+  "latency_ms": 1164,
+  "output_status": "ok",
+  "answer": "BT, TF, FM, USB, AUX, Handsfree",
+  "abstained": false,
+  "provider_response": {
+    "text": "BT, TF, FM, USB, AUX, Handsfree",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDSNZUu30LSq8VhkYgbRGgjSBr5D",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "BT, TF, FM, USB, AUX, Handsfree",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491883,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1487,
+        "total_tokens": 1502,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1484
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b7bf492b-0cb0-46fd-812c-98b28964f2ac",
+  "request_id": "8dbfb63f16ddc97d75bc6d8427afafa6",
+  "attempt": 1,
+  "attempt_id": "8dbfb63f16ddc97d75bc6d8427afafa6-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDVrtCZJgLhqLgJwyiMOz1tQ75uj",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1199,
+    "cached_input_tokens": 0,
+    "output_tokens": 53,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001464,
+  "input_bound_exceeded": false,
+  "latency_ms": 1558,
+  "output_status": "ok",
+  "answer": "Destruction of Filipino homes, churches, hospitals, schools; women and children driven into the swamp and the jungle and mountain fastnesses from their burning homes; Filipino dead at about 30,000; total U.S. casualties 4,989",
+  "abstained": false,
+  "provider_response": {
+    "text": "Destruction of Filipino homes, churches, hospitals, schools; women and children driven into the swamp and the jungle and mountain fastnesses from their burning homes; Filipino dead at about 30,000; total U.S. casualties 4,989",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDVrtCZJgLhqLgJwyiMOz1tQ75uj",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Destruction of Filipino homes, churches, hospitals, schools; women and children driven into the swamp and the jungle and mountain fastnesses from their burning homes; Filipino dead at about 30,000; total U.S. casualties 4,989",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492099,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 53,
+        "prompt_tokens": 1199,
+        "total_tokens": 1252,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1196
+        }
+      }
+    }
+  }
+}

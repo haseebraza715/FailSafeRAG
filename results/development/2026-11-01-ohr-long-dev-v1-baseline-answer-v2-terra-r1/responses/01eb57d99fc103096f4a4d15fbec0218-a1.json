@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "a5155cc6-0a46-48d2-9713-6340b64cdb0c",
+  "request_id": "01eb57d99fc103096f4a4d15fbec0218",
+  "attempt": 1,
+  "attempt_id": "01eb57d99fc103096f4a4d15fbec0218-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDUhMPTtAXi9cFYqILKF5JCSvXR1",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1690,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001725,
+  "input_bound_exceeded": false,
+  "latency_ms": 964,
+  "output_status": "ok",
+  "answer": "veto the legislation",
+  "abstained": false,
+  "provider_response": {
+    "text": "veto the legislation",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDUhMPTtAXi9cFYqILKF5JCSvXR1",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "veto the legislation",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492027,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 1690,
+        "total_tokens": 1697,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1687
+        }
+      }
+    }
+  }
+}

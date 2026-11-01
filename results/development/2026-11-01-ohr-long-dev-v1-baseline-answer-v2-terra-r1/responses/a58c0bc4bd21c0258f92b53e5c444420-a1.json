@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "a44c5b6e-4b7a-4e1f-bb8c-ebc7d0b83f03",
+  "request_id": "a58c0bc4bd21c0258f92b53e5c444420",
+  "attempt": 1,
+  "attempt_id": "a58c0bc4bd21c0258f92b53e5c444420-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDUe4gEIas6R1x5xvk3d7LbgqoDF",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1629,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001664,
+  "input_bound_exceeded": false,
+  "latency_ms": 1084,
+  "output_status": "ok",
+  "answer": "Tenant, as Trustee",
+  "abstained": false,
+  "provider_response": {
+    "text": "Tenant, as Trustee",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDUe4gEIas6R1x5xvk3d7LbgqoDF",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Tenant, as Trustee",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492024,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 1629,
+        "total_tokens": 1636,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1626
+        }
+      }
+    }
+  }
+}

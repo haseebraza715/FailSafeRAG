@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "9c4572ee-9724-47b1-ad11-139728f8c26f",
+  "request_id": "a13971ba1b6718f44bbfd6f742183443",
+  "attempt": 1,
+  "attempt_id": "a13971ba1b6718f44bbfd6f742183443-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDTaPimfDNGgNDfeZvCu0qcTmBix",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1633,
+    "cached_input_tokens": 0,
+    "output_tokens": 10,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001683,
+  "input_bound_exceeded": false,
+  "latency_ms": 967,
+  "output_status": "ok",
+  "answer": "wastes energy by marked heat production",
+  "abstained": false,
+  "provider_response": {
+    "text": "wastes energy by marked heat production",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDTaPimfDNGgNDfeZvCu0qcTmBix",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "wastes energy by marked heat production",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491958,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1633,
+        "total_tokens": 1643,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1630
+        }
+      }
+    }
+  }
+}

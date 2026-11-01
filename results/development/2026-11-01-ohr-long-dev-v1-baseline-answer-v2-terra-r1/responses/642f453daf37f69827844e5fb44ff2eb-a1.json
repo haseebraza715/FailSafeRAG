@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b587e220-ddb2-4258-87f5-a9de6a0e5eca",
+  "request_id": "642f453daf37f69827844e5fb44ff2eb",
+  "attempt": 1,
+  "attempt_id": "642f453daf37f69827844e5fb44ff2eb-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDVNjdjt8wKMt3x28kZ9wcPr45O4",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1649,
+    "cached_input_tokens": 0,
+    "output_tokens": 29,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001794,
+  "input_bound_exceeded": false,
+  "latency_ms": 1259,
+  "output_status": "ok",
+  "answer": "County business was discussed in his office; campaign-related meetings took place off campus at a Starbucks, at his home or some other location",
+  "abstained": false,
+  "provider_response": {
+    "text": "County business was discussed in his office; campaign-related meetings took place off campus at a Starbucks, at his home or some other location",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDVNjdjt8wKMt3x28kZ9wcPr45O4",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "County business was discussed in his office; campaign-related meetings took place off campus at a Starbucks, at his home or some other location",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492069,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 1649,
+        "total_tokens": 1678,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1646
+        }
+      }
+    }
+  }
+}

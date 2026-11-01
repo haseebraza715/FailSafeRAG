@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b8c40624-945e-4697-9276-4ef5048c7a1d",
+  "request_id": "5f9b94fa47e89221253a0659bebb2a39",
+  "attempt": 1,
+  "attempt_id": "5f9b94fa47e89221253a0659bebb2a39-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDWYjWcC8aEXgFq5tq8PoEwUIikS",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1559,
+    "cached_input_tokens": 0,
+    "output_tokens": 42,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001769,
+  "input_bound_exceeded": false,
+  "latency_ms": 1555,
+  "output_status": "ok",
+  "answer": "The Director develops and monitors operating and capital budgets, grant applications and gifts, and works with Library support boards to solicit funding; the ideal candidate has successful fundraising experience and experience with capital projects and renovations",
+  "abstained": false,
+  "provider_response": {
+    "text": "The Director develops and monitors operating and capital budgets, grant applications and gifts, and works with Library support boards to solicit funding; the ideal candidate has successful fundraising experience and experience with capital projects and renovations",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDWYjWcC8aEXgFq5tq8PoEwUIikS",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "The Director develops and monitors operating and capital budgets, grant applications and gifts, and works with Library support boards to solicit funding; the ideal candidate has successful fundraising experience and experience with capital projects and renovations",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492142,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 42,
+        "prompt_tokens": 1559,
+        "total_tokens": 1601,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1556
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b89adb9f-dd86-472c-aa7a-c688588931df",
+  "request_id": "b9e02342b2528c170e91cd267fc16c6d",
+  "attempt": 1,
+  "attempt_id": "b9e02342b2528c170e91cd267fc16c6d-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDWR58a9GHXb5AV5GcJ5WqumYUDH",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1688,
+    "cached_input_tokens": 0,
+    "output_tokens": 39,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001883,
+  "input_bound_exceeded": false,
+  "latency_ms": 1489,
+  "output_status": "ok",
+  "answer": "Reported in Mexico; unconfirmed in Florida in 1947 and positively identified in 1958; found on both cattle and horses, as was the fever tick in St. Croix",
+  "abstained": false,
+  "provider_response": {
+    "text": "Reported in Mexico; unconfirmed in Florida in 1947 and positively identified in 1958; found on both cattle and horses, as was the fever tick in St. Croix",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDWR58a9GHXb5AV5GcJ5WqumYUDH",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Reported in Mexico; unconfirmed in Florida in 1947 and positively identified in 1958; found on both cattle and horses, as was the fever tick in St. Croix",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492135,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 39,
+        "prompt_tokens": 1688,
+        "total_tokens": 1727,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1685
+        }
+      }
+    }
+  }
+}

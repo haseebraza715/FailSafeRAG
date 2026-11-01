@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "950aa45c-39bc-4e1e-9a50-faef22a6740d",
+  "request_id": "a60489734b5571c1a1e45ca22727a758",
+  "attempt": 1,
+  "attempt_id": "a60489734b5571c1a1e45ca22727a758-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDSwDDGooolxMS8i9KBNjJGPbQJC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1783,
+    "cached_input_tokens": 0,
+    "output_tokens": 7,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001818,
+  "input_bound_exceeded": false,
+  "latency_ms": 1115,
+  "output_status": "ok",
+  "answer": "117 South Massachusetts Avenue",
+  "abstained": false,
+  "provider_response": {
+    "text": "117 South Massachusetts Avenue",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDSwDDGooolxMS8i9KBNjJGPbQJC",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "117 South Massachusetts Avenue",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491918,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 1783,
+        "total_tokens": 1790,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1780
+        }
+      }
+    }
+  }
+}

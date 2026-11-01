@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b41d6669-795c-4f25-ad58-fb07335c28fc",
+  "request_id": "fdc7bbc7ce0602000278cc5d0cee5d4a",
+  "attempt": 1,
+  "attempt_id": "fdc7bbc7ce0602000278cc5d0cee5d4a-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDVEvzoUsYNiKrZop8RZMuQL27Nb",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1537,
+    "cached_input_tokens": 0,
+    "output_tokens": 21,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001642,
+  "input_bound_exceeded": false,
+  "latency_ms": 1278,
+  "output_status": "ok",
+  "answer": "Sears parts are made to the original specifications to fit right ... function better ...last longer",
+  "abstained": false,
+  "provider_response": {
+    "text": "Sears parts are made to the original specifications to fit right ... function better ...last longer",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDVEvzoUsYNiKrZop8RZMuQL27Nb",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "Sears parts are made to the original specifications to fit right ... function better ...last longer",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492060,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1537,
+        "total_tokens": 1558,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1534
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "b61e3803-68ca-4d1f-828b-a2a8a6bbbbc2",
+  "request_id": "8af5a89bc05e01f92e4cf3dfa1d772ed",
+  "attempt": 1,
+  "attempt_id": "8af5a89bc05e01f92e4cf3dfa1d772ed-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDVSnNFpDyI1MeS0ptanVL3FV28U",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 1552,
+    "cached_input_tokens": 0,
+    "output_tokens": 36,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.001732,
+  "input_bound_exceeded": false,
+  "latency_ms": 1237,
+  "output_status": "ok",
+  "answer": "fit right, function better, last longer, Prompt service whenever you need it, Expert service by factory trained technicians, Guaranteed Factory Specification Parts especially made for your Kenmore",
+  "abstained": false,
+  "provider_response": {
+    "text": "fit right, function better, last longer, Prompt service whenever you need it, Expert service by factory trained technicians, Guaranteed Factory Specification Parts especially made for your Kenmore",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDVSnNFpDyI1MeS0ptanVL3FV28U",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "fit right, function better, last longer, Prompt service whenever you need it, Expert service by factory trained technicians, Guaranteed Factory Specification Parts especially made for your Kenmore",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793492074,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 36,
+        "prompt_tokens": 1552,
+        "total_tokens": 1588,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 1549
+        }
+      }
+    }
+  }
+}

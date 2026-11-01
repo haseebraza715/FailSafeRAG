@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "question_id": "938eff47-9080-4fb5-acb2-14c6ba61b9c4",
+  "request_id": "d7ade1c96b1a156cedffc4cf3d8ef0ff",
+  "attempt": 1,
+  "attempt_id": "d7ade1c96b1a156cedffc4cf3d8ef0ff-a1",
+  "saved_by_invocation": "618fb55d32094128a1088fd3d9558cf8",
+  "returned_model": "gpt-6.1-terra",
+  "returned_service_tier": "default",
+  "response_id": "chatcmpl-EfDSggGsmN2Nsny0ee2Hi5hJXh6pC",
+  "finish_reason": "stop",
+  "usage": {
+    "input_tokens": 2211,
+    "cached_input_tokens": 0,
+    "output_tokens": 25,
+    "reasoning_tokens": 0
+  },
+  "measured_cost": 0.002336,
+  "input_bound_exceeded": false,
+  "latency_ms": 1249,
+  "output_status": "ok",
+  "answer": "BURNT GREASE, ROASTS of NUTS, SUGAR, WHITE-FLOUR BAKING",
+  "abstained": false,
+  "provider_response": {
+    "text": "BURNT GREASE, ROASTS of NUTS, SUGAR, WHITE-FLOUR BAKING",
+    "finish_reason": "stop",
+    "refusal": null,
+    "raw": {
+      "id": "chatcmpl-EfDSggGsmN2Nsny0ee2Hi5hJXh6pC",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "logprobs": null,
+          "message": {
+            "content": "BURNT GREASE, ROASTS of NUTS, SUGAR, WHITE-FLOUR BAKING",
+            "refusal": null,
+            "role": "assistant",
+            "annotations": [],
+            "audio": null,
+            "function_call": null,
+            "tool_calls": null
+          }
+        }
+      ],
+      "created": 1793491902,
+      "model": "gpt-6.1-terra",
+      "object": "chat.completion",
+      "service_tier": "default",
+      "system_fingerprint": null,
+      "usage": {
+        "completion_tokens": 25,
+        "prompt_tokens": 2211,
+        "total_tokens": 2236,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 2208
+        }
+      }
+    }
+  }
+}
