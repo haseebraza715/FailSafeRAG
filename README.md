@@ -128,7 +128,8 @@ about 6 minutes with the default 5 trials.
 
 ## Cluster commands
 
-The FAAR study did not use the cluster. These commands are from the earlier plan and were never submitted.
+The FAAR study did not use the cluster. These commands are from the earlier plan, were never submitted and have no
+planned use. Before anyone submits them, the research lead has to approve the calibration.
 
 Login-node preflight, no CUDA:
 
@@ -137,8 +138,7 @@ Login-node preflight, no CUDA:
 ```
 
 Allocated-GPU preflight, then the bounded 108-page calibration. These commands
-are available. Do not submit them until the lead approves the calibration, and
-submit nothing else until its report is approved.
+are available.
 
 ```bash
 sbatch cluster/templates/slurm_preflight.sbatch
@@ -149,9 +149,7 @@ Edit partition, account, QOS, and `FAAR_GPU_BUDGET_GB` in those templates before
 submission. Exact procedure, resume, shard merge, and stop conditions are in
 [SUPERVISOR_HANDOFF.md](SUPERVISOR_HANDOFF.md) and
 [docs/operations/runbook.md](docs/operations/runbook.md).
-The calibration is the only cluster job prepared so far. It waits for the
-lead's approval, and full validation stays blocked until its measurements are
-approved.
+The calibration is the only cluster job prepared.
 
 ## Documentation
 

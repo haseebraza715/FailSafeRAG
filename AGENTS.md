@@ -23,7 +23,7 @@ below apply even when they make a task slower.
 
 - Label every run by what it measured, using the kinds in `experiments/README.md` (`data_preparation`, `engineering_check`, `development_pilot` and `scientific_evaluation`). Each kind supports a different claim. Mock-backend and smoke runs are engineering checks even when they report EM or F1.
 - Keep gold answers, evidence-page labels, evidence contexts and clean ground-truth text out of runtime retrieval, gating, diagnosis and recovery. Clean text may serve only as a diagnostic reference condition.
-- Do not edit source locks, the fixed split, the locked QA file, a frozen pilot selection or a completed run's outputs (`config/`, `OHR-Bench/data/qas_v2.json`, `results/pilots/`). When the research lead approves a change, create a separately versioned successor, such as a new `pilot_id` and output directory, and leave the original intact.
+- Do not edit source locks, the fixed split, the locked QA file, a frozen pilot selection or a completed run's outputs (`config/`, `OHR-Bench/data/qas_v2.json`, `results/pilots/`, `results/development/`, `results/analysis/`). When the research lead approves a change, create a separately versioned successor, such as a new `pilot_id` and output directory, and leave the original intact.
 - Treat missing or empty OCR as a recorded condition of the noisy input. Never exclude a question for it automatically, and never fill it from ground truth.
 - Do not tune on test outcomes. Do not keep changing and re-running an experiment in search of a positive result. A null or negative result is evidence.
 - Development iteration on development data is normal. Record it as the study brief describes, so no change to data, code or settings is hidden.

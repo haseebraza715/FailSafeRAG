@@ -6,7 +6,8 @@ are in the [FAAR study report](../reports/faar-study-report.md). The method sett
 
 ## The pipeline runs in five steps
 
-Each step reads the previous step's run folder under `results/development/` and writes its own. Only the answer
+Each answer and diagnosis step reads the previous step's run folder under `results/development/` and writes its own.
+The comparison writes its report to `results/analysis/`. Only the answer
 steps call the model. The gate, the diagnosis and the comparison run offline.
 
 ```mermaid
@@ -57,9 +58,9 @@ The gate `abstain-or-ocr-gap-v1+query_token_coverage<0.692308` flags a question 
 
 | Diagnosis | Fires when | Repair |
 | --- | --- | --- |
-| `missing_text` | No text evidence, or a retrieved or shown page has empty OCR text | `invoke_vlm` |
+| `missing_text` | No text evidence, or one of the up to 3 pages the image repair would show has empty or missing OCR text | `invoke_vlm` |
 | `structural` | The top chunk shows at least one layout-damage signal | `invoke_vlm` |
-| `word_level` | More than 10% of the top chunk's characters are unusual | `correct_text` |
+| `word_level` | More than 10% of the top chunk's characters or tokens look like OCR noise | `correct_text` |
 | `semantic` | None of the above | `retry_retrieval` |
 
 ## The three repairs answer again from new evidence

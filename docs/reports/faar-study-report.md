@@ -18,7 +18,7 @@ retrieval (26.5%) and slightly below a random choice of repair (27.5% averaged o
 
 The same pattern held in development, in the confirmation run on validation data and in the final test. On a
 secondary sample of 330 single-page test questions, FAAR was 1.8 points below the image repair, which is not
-significant (p 0.21).
+significant (Holm p 0.42).
 
 ## The question
 
@@ -33,13 +33,14 @@ and picks a matching repair. The question was:
 
 The benchmark is OHR-Bench, using its MinerU OCR output as the noisy input text. Clean ground-truth text, gold
 answers and evidence-page labels were never used to make a runtime decision. They were used only for scoring and for
-one diagnostic reference (the per-question best repair in hindsight, reported as headroom).
+diagnostic reference conditions: the `ohr_dev_v1` headroom runs, which answered from clean text or gold evidence
+pages, and the per-question best repair in hindsight, reported as headroom.
 
 The answer model is `gpt-6.1-terra` through the OpenAI API, with temperature 0, `reasoning_effort` none and at most
 128 output tokens. Every policy uses the same retrieval (top 5 chunks from the document), the same answer prompt
 (`faar-answer-v2`) and the same initial answer.
 
-Questions passed to a repair are chosen by a gate. The gate flags a question when the initial answer abstained, when
+Questions passed to a repair are chosen by a gate. The gate flags a question when the initial answer abstained or found no evidence, when
 the document has a page with empty OCR text, or when fewer than 69.2% of the question's words appear in the
 retrieved text. The last threshold was chosen on development data by Youden's J with a 30% flag cap.
 
@@ -62,9 +63,9 @@ checks the rules in this order:
 
 | Diagnosis | Fires when | Repair |
 | --- | --- | --- |
-| `missing_text` | No text evidence was retrieved, or a retrieved or shown page has empty OCR text | Image repair |
+| `missing_text` | No text evidence was retrieved, or one of the up to 3 pages the image repair would show has empty or missing OCR text | Image repair |
 | `structural` | The top chunk shows at least one layout-damage signal | Image repair |
-| `word_level` | More than 10% of the top chunk's characters are unusual | Text correction (SymSpell), then answer again |
+| `word_level` | More than 10% of the top chunk's characters or tokens look like OCR noise | Text correction (SymSpell), then answer again |
 | `semantic` | None of the above | Retry retrieval (keep the top 3 chunks, add the 2 best unseen ones), then answer again |
 
 ## How the study kept the result honest
@@ -86,15 +87,16 @@ was seen. Failed and negative runs stay in the registry.
 The decision rule was set in advance. FAAR beats the bar only if the Holm-adjusted McNemar p is below 0.05 and the
 95% document-bootstrap interval (10,000 resamples, seed 20261031) lies above 0.
 
-A second reviewer, who did not write the analysis code, rescored the practice rounds, the confirmation and both test
-samples from the raw model replies with an independent scorer. Every policy score matched, with no question scored
-differently.
+A second reviewer, who did not write the analysis code, rescored the confirmation and both test samples from the raw
+model replies with an independent scorer, and recomputed the practice-round numbers. Every policy score matched, with
+no question scored differently. The stage reports record this for the practice rounds and the primary test sample.
 
 ## Development: setting the bar
 
 On `ohr_dev_v2` (414 train questions on 201 documents), showing page images raised EM from 0.287 to 0.372, a gain of
 8.5 points (interval [+5.1, +12.3], McNemar 42 gained and 7 lost). Most of the gain came from pages whose OCR text was
-empty. Applying the image repair only to questions the gate flagged gave the same +8.5 points at half the cost (0.0027
+empty. Applying the image repair only to questions the base gate `abstain-or-ocr-gap-v1` flagged, without the coverage
+condition, gave the same +8.5 points at half the cost (0.0027
 against 0.0055 USD per question). That gated image repair became the bar FAAR had to beat. The answer prompt change
 tested on the same sample made no difference (-0.2 points), so `faar-answer-v2` was kept.
 
@@ -111,12 +113,12 @@ document with the test questions. Details are in [faar-practice-rounds.md](../re
 | No recovery | 0.310 | 0.310 |
 | Gated image repair (the bar) | 0.397 | 0.397 |
 | FAAR | 0.307 | 0.343 |
-| Best repair per question in hindsight | 0.416 | not rerun |
+| Best repair per question in hindsight | 0.416 | 0.409 |
 
 In round 1, the retry repair threw away all 5 initial chunks and made answers worse than no recovery. Round 2
 changed only the retry rule, to keep the top 3 chunks and add the 2 best unseen ones. That lifted FAAR from 0.307
-to 0.343, above no recovery, but still 5.4 points below the bar. The image repair scored highest on every diagnosis
-route in both rounds. The method was frozen after round 2 without a third round.
+to 0.343, above no recovery, but still 5.4 points below the bar. The image repair scored highest or tied for highest on
+every diagnosis route in both rounds. The method was frozen after round 2 without a third round.
 
 ## Confirmation on validation data
 
@@ -175,7 +177,8 @@ decision. The full report is
 | Gated image repair | 0.345 | 0.00407 |
 | FAAR | 0.327 | 0.00240 |
 
-FAAR minus the image repair was -1.8 points (interval [-4.3, +0.6], McNemar p 0.21, 5 gained and 11 lost). The
+FAAR minus the image repair was -1.8 points (interval [-4.3, +0.6], 5 gained and 11 lost, McNemar p 0.21, Holm p
+0.42 within this sample). The
 difference is not significant. FAAR minus no recovery was +3.3 points (interval [+1.4, +5.5], Holm p 0.010).
 
 ## Why FAAR lost
@@ -193,8 +196,8 @@ the primary test sample.
 The table shows why:
 
 - The image repair is best on every route, including the routes where the diagnosis said the text was the problem.
-- SymSpell text correction never beat the initial answer on its own route. On these documents, word-level OCR noise
-  was not what kept the model from answering.
+- SymSpell text correction never beat the initial answer on its own route. That suggests word-level OCR noise was
+  not what kept the model from answering on these documents.
 - Retry retrieval helps on its route (0.131 to 0.177), but the image helps more (0.231). Most flagged questions (541
   of 706) went to retry.
 
@@ -208,7 +211,8 @@ find those cases. Its choices do no better than random.
 
 - On long documents the gate flags most questions: 706 of 946 in the primary test (75%). A document with one empty
   OCR page triggers the gate for every question on it. 412 of the 706 flagged test questions carry that reason. The
-  gate was designed and tested on shorter documents.
+  base gate was designed on the shorter `ohr_dev_v1` and `ohr_dev_v2` documents. With the coverage condition it
+  flagged 54% of the practice-round questions, against 75% on the test.
 - The initial answer abstained on 467 of the 946 test questions. Much of the comparison happens on questions the
   baseline did not try to answer.
 - One answer model, one OCR system (MinerU) and one benchmark were tested. The result may differ with a stronger OCR
