@@ -6,6 +6,7 @@ D3. The gate drops a reason, flags without one, or applies the confidence condit
 D4. A half-specified or unknown confidence condition is accepted.
 D5. A confidence feature is computed wrongly (coverage, margin with one chunk, empty retrieval).
 D6. A sent question without chunks is diagnosed silently.
+D7. The flagged list differs from the diagnosis rows, their order, or its recorded hash and count.
 """
 
 from __future__ import annotations
@@ -93,3 +94,33 @@ def test_confidence_features() -> None:
 def test_a_sent_question_without_chunks_is_refused() -> None:
     with pytest.raises(DiagnosisError):
         diagnose(initial_sent=True, chunks=[], pages=pages("ok"))
+
+
+def test_flagged_file_matches_diagnosis_and_config(tmp_path, monkeypatch) -> None:
+    import hashlib
+    import json
+
+    import diagnose_run as dr
+    from test_text_repair import fake_replay
+    from test_visual_repair import PILOT, Project
+
+    project = Project(tmp_path)
+    predictions = [{"question_id": q, "status": "no_evidence" if q == "q3" else "answered", "abstained": False}
+                   for q in ("q1", "q2", "q3")]
+    (project.baseline / "predictions.jsonl").write_text("".join(json.dumps(p) + "\n" for p in predictions))
+    replay = fake_replay(project)
+    loaded = dr.rvr.load_baseline(project.root, PILOT, project.baseline)
+    for doc in loaded["runtime"]["documents"]:
+        for page in doc["pages"]:
+            page["ocr_status"] = "ok"
+    monkeypatch.setattr(dr.rvr, "load_baseline", lambda *args: loaded)
+    monkeypatch.setattr(dr, "replay_retrieval", lambda *args: replay)
+    out = project.run_dir("diagnosis")
+    rows = dr.diagnose_run(root=project.root, pilot_id=PILOT, baseline_run_dir=project.baseline, out_dir=out, rule=GateRule())
+    flagged = (out / "flagged_questions.txt").read_bytes()
+    assert flagged == b"q3\n"
+    assert flagged == "".join(r["question_id"] + "\n" for r in rows if r["flagged"]).encode()
+    assert [json.loads(line) for line in (out / "diagnosis.jsonl").read_text().splitlines()] == rows
+    config = json.loads((out / "flagged_questions_meta.json").read_text())
+    assert config["flagged_questions_sha256"] == hashlib.sha256(flagged).hexdigest()
+    assert config["flagged_count"] == sum(r["flagged"] for r in rows)

@@ -4,10 +4,10 @@
         --pilot-id ohr_long_dev_v1 --baseline-run-dir results/development/<no-recovery run> \\
         --out-dir results/development/<diagnosis id> [--gate-feature query_token_coverage --gate-threshold 0.5]
 
-Writes ``diagnosis_config.json`` and ``diagnosis.jsonl`` (one row per question: the gate decision and its reasons,
-the confidence features, and for every question the diagnosis, route and signal values, so a later gate can be
-applied without recomputing). The retrieval is replayed offline and checked hit for hit against the evidence the
-no-recovery run sent.
+Writes ``run_config.json`` and ``diagnosis.jsonl`` with a row per question, including gate decisions, reasons,
+confidence features, diagnoses, routes and signals. It also writes ``flagged_questions.txt`` in manifest order
+and ``flagged_questions_meta.json`` with its hash and count. The retrieval is replayed offline and checked hit for
+hit against the evidence the no-recovery run sent.
 """
 
 from __future__ import annotations
@@ -77,8 +77,12 @@ def diagnose_run(
         "code": {rel: hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
                  for rel in ("scripts/experiments/diagnose_run.py", "src/faar/diagnosis.py", "src/faar/quality.py", "src/faar/text_repair.py")},
     }
+    flagged = "".join(r["question_id"] + "\n" for r in rows if r["flagged"]).encode("utf-8")
     rvr.write_identity(out_dir, config, None)
     (out_dir / "diagnosis.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows), encoding="utf-8")
+    (out_dir / "flagged_questions.txt").write_bytes(flagged)
+    metadata = {"flagged_questions_sha256": hashlib.sha256(flagged).hexdigest(), "flagged_count": sum(r["flagged"] for r in rows)}
+    (out_dir / "flagged_questions_meta.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     return rows
 
 
