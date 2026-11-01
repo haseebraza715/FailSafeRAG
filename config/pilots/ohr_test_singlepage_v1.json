@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "pilot_id": "ohr_test_singlepage_v1",
+  "purpose": "Final test sample approved in docs/research/faar-vs-gated-preregistration.md section 15.",
+  "dataset": "OHR-Bench",
+  "qa_source": "OHR-Bench/data/qas_v2.json",
+  "split": "config/datasets/ohr_split.json",
+  "audit_manifest": "results/data_audit/asset_manifest.json",
+  "pdf_source_lock": "config/ohr_pdf_source_lock.json",
+  "noisy_text_source": "MinerU",
+  "reference_text_source": "gt",
+  "output_dir": "results/pilots/ohr_test_singlepage_v1",
+  "selection": {
+    "algorithm": "stratified-hash-rank-v1",
+    "seed": 20261101,
+    "documents": "all",
+    "pool": "test",
+    "question_splits": [
+      "test"
+    ],
+    "stratify_by": "doc_type",
+    "minimum_per_available_stratum": 1,
+    "exclude_documents_of_pilots": [
+      "ohr_dev_v1",
+      "ohr_dev_v2",
+      "ohr_long_dev_v1"
+    ],
+    "max_pages": 1
+  },
+  "inspection": {
+    "enabled": false
+  }
+}
