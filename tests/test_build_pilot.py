@@ -361,3 +361,63 @@ def test_longer_document_pool_keeps_test_documents_and_validation_questions_out(
     config["selection"]["min_pages"] = 3
     _write(project / "config/pilots/long3.json", config)
     assert build(project, project / "config/pilots/long3.json", "--no-render") == pilot.EXIT_INVALID  # L3: no 3-page document
+
+
+# Confirmation pool failures: C1 non-validation or ineligible documents enter; C2 excluded or single-page
+# documents enter; C3 sampling drops an eligible document; C4 inspection exposes a non-train question.
+
+
+def test_confirmation_pool_and_disabled_inspection(project: Path) -> None:
+    first = write_config(project, documents=5, name="first")
+    assert build(project, first, "--no-render") == 0
+    config = json.loads(write_config(project, name="confirmation").read_text())
+    config["selection"].update(pool="validation_multipage", documents="all", min_pages=2,
+                               question_splits=["validation"], exclude_documents_of_pilots=["first"])
+    config["inspection"]["enabled"] = False
+    path = project / "config/pilots/confirmation.json"
+    _write(path, config)
+    assert build(project, path) == 0
+    record, runtime, _ = load(project, "confirmation")
+    assert {d["doc_id"] for d in record["selected_documents"]} == {"finance/shared", "textbook/book.pdf_9"}
+    assert {q["question_id"] for q in runtime["questions"]} == {"s2", "v1"}
+    assert not (project / "results/pilots/confirmation/inspection").exists()
+
+    long_config = json.loads(write_config(project, name="long_exclusion").read_text())
+    long_config["selection"].update(pool="train_without_test", documents="all", question_splits=["train"])
+    long_path = project / "config/pilots/long_exclusion.json"
+    _write(long_path, long_config)
+    assert build(project, long_path, "--no-render") == 0
+    config["pilot_id"], config["output_dir"] = "disjoint", "results/pilots/disjoint"
+    config["selection"]["exclude_documents_of_pilots"] = ["long_exclusion"]
+    disjoint = project / "config/pilots/disjoint.json"
+    _write(disjoint, config)
+    assert build(project, disjoint) == 0
+    assert {q["question_id"] for q in load(project, "disjoint")[1]["questions"]} == {"v1"}
+
+    config["pilot_id"], config["output_dir"] = "short", "results/pilots/short"
+    config["selection"]["min_pages"] = 3
+    _write(project / "config/pilots/short.json", config)
+    assert build(project, project / "config/pilots/short.json") == pilot.EXIT_INVALID
+
+
+@pytest.mark.parametrize("split", ["validation", "val", "test"])
+def test_inspection_refused_for_non_train_splits(project: Path, split: str) -> None:
+    config = json.loads(write_config(project).read_text())
+    config["selection"]["question_splits"] = [split]
+    path = project / "config/pilots/test_pilot.json"
+    _write(path, config)
+    assert build(project, path) == pilot.EXIT_INVALID
+    assert not (project / "results/pilots/test_pilot").exists()
+
+
+def test_validation_pool_uses_standard_eligibility() -> None:
+    qas = [{"ID": str(i), "doc_name": name} for i, name in enumerate(["ok", "missing", "unresolved", "multi", "train"])]
+    pdf = {name: {"status": "verified_complete", "candidates": ["one"]} for name in ("ok", "unresolved", "multi", "train")}
+    pdf["multi"]["candidates"] = ["one", "two"]
+    manifest = {"ohr": {"coverage": {"pdf_per_document": pdf, "text_sources": {"gt": {"alias_resolutions": [], "unresolved_documents": ["unresolved"]}}}}}
+    inputs = {"qas": qas, "manifest": manifest, "split": {"splits": {"val": ["0", "1", "2", "3"], "train": ["4"]}}}
+    pool = pilot.build_pool(inputs, "validation_multipage")
+    assert pool["eligible"] == ["ok"]
+    assert {row["doc_id"] for row in pool["exclusions"]} == {"missing", "unresolved", "multi"}
+    assert pilot.build_pool(inputs, "train_exclusive")["eligible"] == ["train"]
+    assert pilot.build_pool(inputs, "train_without_test")["eligible"] == ["train"]

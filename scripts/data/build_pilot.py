@@ -157,6 +157,7 @@ def text_file_index(project_root: Path, source: str) -> dict[str, Path]:
 POOL_RULES = {
     "train_exclusive": "documents all of whose questions are in the train split",
     "train_without_test": "documents with at least one train question and no test question (validation questions allowed)",
+    "validation_multipage": "documents with at least one validation question",
 }
 
 
@@ -176,8 +177,10 @@ def build_pool(inputs: dict[str, Any], pool_kind: str = "train_exclusive") -> di
     train_exclusive = sorted(d for d, s in splits_by_doc.items() if s == {"train"})
     if pool_kind == "train_exclusive":
         candidates = train_exclusive
-    else:
+    elif pool_kind == "train_without_test":
         candidates = sorted(d for d, s in splits_by_doc.items() if "train" in s and "test" not in s)
+    else:
+        candidates = sorted(d for d, s in splits_by_doc.items() if "val" in s)
     pdf_docs = manifest["ohr"]["coverage"]["pdf_per_document"]
     gt_unresolved = set(manifest["ohr"]["coverage"]["text_sources"]["gt"]["unresolved_documents"])
     eligible, exclusions = [], []
@@ -353,9 +356,13 @@ def build_documents(project_root: Path, inputs: dict[str, Any], pool: dict[str, 
     return docs
 
 
+def normalized_splits(splits: list[str] | None) -> set[str] | None:
+    return {"val" if split == "validation" else split for split in splits} if splits is not None else None
+
+
 def question_rows(inputs: dict[str, Any], pool: dict[str, Any], doc_ids: Any, config: dict[str, Any]) -> list[dict[str, Any]]:
     """QA rows of the given documents, limited to ``selection.question_splits`` when the config names any."""
-    splits = config["selection"].get("question_splits")
+    splits = normalized_splits(config["selection"].get("question_splits"))
     return sorted(
         (r for r in inputs["qas"] if pool["canon"][str(r["doc_name"])] in doc_ids
          and (splits is None or pool["split_of"].get(str(r["ID"])) in splits)),
@@ -724,10 +731,16 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
     config = json.loads(config_path.read_text(encoding="utf-8"))
     if config.get("selection", {}).get("algorithm") != SELECTION_ALGORITHM:
         raise PilotError(f"config selection algorithm must be {SELECTION_ALGORITHM}")
-    out = project_root / config["output_dir"]
-    inputs = load_inputs(project_root, config)
     sel_cfg = config["selection"]
     pool_kind = sel_cfg.get("pool", "train_exclusive")
+    splits = normalized_splits(sel_cfg.get("question_splits"))
+    if pool_kind == "validation_multipage" and splits != {"val"}:
+        raise PilotError("validation_multipage requires question_splits: [validation]")
+    inspection_enabled = config.get("inspection", {}).get("enabled", True)
+    if render and inspection_enabled and splits is not None and splits - {"train"}:
+        raise PilotError("inspection is forbidden for non-train splits")
+    out = project_root / config["output_dir"]
+    inputs = load_inputs(project_root, config)
     pool = build_pool(inputs, pool_kind)
     excluded, excluded_records = excluded_pilot_documents(project_root, config)
     if excluded_records:
@@ -741,12 +754,16 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
     runtime, evaluation, qflags = build_manifests(project_root, inputs, pool, docs, config)
     assert_runtime_boundary(runtime)
     for q in runtime["questions"]:
-        if pool["split_of"].get(q["question_id"]) != "train":
-            raise PilotError(f"question {q['question_id']} is not in train")
+        actual_split = pool["split_of"].get(q["question_id"])
+        allowed = {"val"} if pool_kind == "validation_multipage" else {"train"}
+        if actual_split not in allowed:
+            raise PilotError(f"question {q['question_id']} is not in an allowed split")
+        if render and inspection_enabled and actual_split != "train":
+            raise PilotError("inspection is forbidden for non-train splits")
 
     pages, ocr, pool_q = pool_profiles(project_root, inputs, pool, config)
     if sel_cfg.get("question_splits") is not None:
-        pool_q = [q for q in pool_q if pool["split_of"].get(q["question_id"]) in sel_cfg["question_splits"]]
+        pool_q = [q for q in pool_q if pool["split_of"].get(q["question_id"]) in splits]
     selection = {
         "schema_version": SCHEMA_VERSION,
         "pilot_id": config["pilot_id"],
@@ -822,7 +839,7 @@ def build(project_root: Path, config_path: Path, *, render: bool = True) -> dict
         write_json(record_path, selection_out)
 
     result = {"status": status, "selection_digest": selection["selection_digest"], "documents": len(selected), "questions": len(runtime["questions"]), "pages": sum(d["pdf"]["page_count"] for d in docs.values())}
-    if render:
+    if render and inspection_enabled:
         inspection = select_inspection(qflags, config)
         idir = out / "inspection"
         cases_path = idir / "inspection_cases.json"
