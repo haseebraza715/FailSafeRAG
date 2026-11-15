@@ -17,6 +17,7 @@ Their procedure is in the [supervisor handoff](../SUPERVISOR_HANDOFF.md) and the
 | Path | Contents |
 | --- | --- |
 | [reports/faar-study-report.md](reports/faar-study-report.md) | The whole FAAR study: method, results of every stage, limitations |
+| [research/research-log.md](research/research-log.md) | Dated log of everything tried, with observations, findings and what was not done. Add an entry for every new run or decision |
 | [research/faar-vs-gated-preregistration.md](research/faar-vs-gated-preregistration.md) | Pre-registration: policies, decision rule, frozen method, test plan |
 | [research/faar-practice-rounds.md](research/faar-practice-rounds.md), [faar-confirmation.md](research/faar-confirmation.md), [faar-final-test.md](research/faar-final-test.md) | Stage reports with run ids and costs |
 | [research/study-brief.md](research/study-brief.md) | Study design the pre-registration builds on: question, comparisons, scoring |

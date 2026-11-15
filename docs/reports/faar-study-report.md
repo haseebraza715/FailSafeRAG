@@ -232,9 +232,89 @@ text repairs costs accuracy. FAAR's real advantage is cost, at about 0.4 times t
 cost could report FAAR as a cheaper option that keeps about 40% of the image repair's gain over no recovery (+3.1 of
 +7.9 points).
 
-The headroom suggests a different research question for future work. A learned router could predict, from runtime
-signals, whether the image repair is needed for a question. That is a new question and would need its own
-development and test data.
+The headroom suggests a different research question for future work. A router could predict, from runtime signals,
+whether the image repair is needed for a question. An exploratory analysis after the test (below) found that a learned
+router saves cost but does not gain accuracy, and that a two-step rule scored above the bar. That finding is post hoc.
+Confirming it is a new question and would need its own pre-registration and fresh data.
+
+## Exploratory analysis after the test (2026-11-15)
+
+This section is post hoc and is not a confirmed result. It was written after the final test outcomes were known, it
+uses test outcomes as targets and for scoring, and its rules were not pre-registered. It does not change the result
+above: FAAR did not beat the gated image repair. The analysis is offline, with no new model call, on the saved runs of
+the practice rounds, the confirmation and the primary test sample. The full report is
+[results/analysis/2026-11-15-router-signal-exploration/report.md](../../results/analysis/2026-11-15-router-signal-exploration/report.md).
+It is registered as run `2026-11-15-router-signal-exploration`.
+
+**Which questions need the image.** Among the flagged questions, a repair can help in four ways. "Text only" means
+retry or text correction was right and the image was wrong. "Image only" means the image was right and both text
+repairs were wrong.
+
+| Sample | Flagged | Text only right | Image only right | Both right | Neither right |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Practice (`ohr_long_dev_v1`) | 228 | 5 | 28 | 48 | 147 |
+| Validation | 647 | 35 | 57 | 118 | 437 |
+| Test (primary) | 706 | 27 | 71 | 113 | 495 |
+
+**Gate check on the test sample.** "Fixed" means the initial answer was wrong and at least one of the three repairs was
+right. "Broken" means the initial answer was right and at least one repair was wrong.
+
+| Gate reasons | n | Initial EM | Fixed | Broken |
+| --- | ---: | ---: | ---: | ---: |
+| `abstained` | 127 | 0.008 | 35 | 0 |
+| `abstained` + `document_ocr_gap` | 102 | 0.000 | 23 | 0 |
+| `abstained` + `document_ocr_gap` + `low_query_token_coverage` | 119 | 0.000 | 17 | 0 |
+| `abstained` + `low_query_token_coverage` | 119 | 0.000 | 23 | 0 |
+| `document_ocr_gap` | 163 | 0.503 | 3 | 5 |
+| `document_ocr_gap` + `low_query_token_coverage` | 28 | 0.357 | 0 | 2 |
+| `low_query_token_coverage` | 48 | 0.333 | 3 | 7 |
+| All flagged | 706 | 0.154 | 104 | 14 |
+
+Every fix came from a question whose initial answer abstained, apart from 6. The 239 questions flagged without an
+abstention had 108 right at first. Repairs fixed 6 wrong ones, and at least one repair broke 14 right ones. The
+`document_ocr_gap` and `low_query_token_coverage` reasons flag questions that repairs rarely fix.
+
+**A learned router.** A logistic model on 68 runtime features, trained on the practice and validation questions and
+applied once to test, predicted "image needed" (image only right). Document-grouped cross-validated AUC was 0.689.
+Test AUC was 0.787, but 252 of the 327 test documents also carry validation questions, so that figure is not
+document-independent. On the 75 new test documents (65 flagged questions, 6 positives) the AUC was 0.678 with an
+interval of [0.426, 0.895]. The abstention flag alone has AUC 0.665 on test, and 68 of the 71 image-only questions had
+an abstained initial answer. Sending the questions the model ranks highest to the image, and the rest to retry
+retrieval, gave these operating points on test.
+
+| Share of flagged questions sent to the image | EM | USD per question | Gain over random at the same share |
+| ---: | ---: | ---: | --- |
+| 0.248 | 0.3055 | 0.00435 | +0.0279 [+0.0120, +0.0447] |
+| 0.435 | 0.3214 | 0.00538 | +0.0344 [+0.0204, +0.0498] |
+| 0.528 | 0.3224 | 0.00587 | +0.0308 [+0.0189, +0.0437] |
+| 1.000 (the gated image repair) | 0.3150 | 0.00831 | 0 |
+| Hindsight best, for reference | 0.3457 | 0.00244 | |
+
+The router holds the bar's EM at about two thirds of the cost and no operating point comes near the hindsight best.
+On the 75 new test documents the interval around the gain includes 0 at every operating point. For the logistic router, choosing
+the share by the best out-of-fold training EM picks 1.0, the bar itself.
+
+**Two fixed rules.** Two simple rules were written down before their test numbers were computed. They use no learned
+model and were not tuned. Intervals resample documents.
+
+| Rule | EM on test | USD per question | EM minus the bar |
+| --- | ---: | ---: | --- |
+| Gated image repair (the bar) | 0.3150 | 0.00831 | |
+| Abstain only: image if the initial answer abstained, else no repair | 0.3161 | 0.00612 | +0.0011 [-0.0064, +0.0085] |
+| Retry then image: retry retrieval, then image if the retry still abstains | 0.3383 | 0.00687 | +0.0233 [+0.0111, +0.0350] |
+
+The abstain-only rule matches the bar's EM at about three quarters of its cost. The retry-then-image rule scores 2.3
+points above the bar at lower cost. The report gives the pooled practice and validation result, not validation alone.
+On those two samples pooled, abstain only was 0.0072 below the bar ([-0.0154, +0.0008]) and retry then image was 0.0167
+above it ([+0.0033, +0.0305]). On the 75 new test documents the retry-then-image gain was +0.0248
+([-0.0091, +0.0597]), too uncertain to read.
+
+**What a confirmation would need.** These rules came from data the study had already used, and the test sample shares
+252 documents with validation. A confirmation would need a new pre-registration that fixes the rule, the gate, the
+thresholds, the comparison against the gated image repair and the decision rule before any run. It would need
+documents that none of the practice, validation or test samples used, and a sample sized from the disagreement between
+the rule and the image repair. The 208 train-only questions left after `ohr_dev_v2` hold only 59 multi-page questions,
+so where such documents come from is open.
 
 ## Cost
 

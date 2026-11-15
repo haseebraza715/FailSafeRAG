@@ -21,7 +21,7 @@ it measures the execution path and not answer quality.
 
 ## Current runs
 
-`registry.jsonl` holds 66 runs: 9 `data_preparation`, 19 `engineering_check` and 38 `development_pilot`. No run is
+`registry.jsonl` holds 67 runs: 9 `data_preparation`, 19 `engineering_check` and 39 `development_pilot`. No run is
 recorded as `scientific_evaluation`. The FAAR confirmation and final test runs are recorded as `development_pilot`.
 Print every run's current kind and status with:
 
@@ -40,6 +40,7 @@ The FAAR study runs, by stage. Each stage report names every run and its cost.
 | Frozen method | `2026-11-01-faar-frozen-method-v2` (supersedes `-v1`) | [pre-registration, section 14](../docs/research/faar-vs-gated-preregistration.md) |
 | Confirmation | `2026-11-01-ohr-val-multipage-v1-*` | [faar-confirmation.md](../docs/research/faar-confirmation.md) |
 | Final test | `2026-11-01-ohr-test-multipage-v1-*`, `2026-11-01-ohr-test-singlepage-v1-*` | [faar-final-test.md](../docs/research/faar-final-test.md) |
+| Exploratory analysis after the test (post hoc, offline) | `2026-11-15-router-signal-exploration` | [analysis report](../results/analysis/2026-11-15-router-signal-exploration/report.md) |
 
 The registry is authoritative. The [FAAR study report](../docs/reports/faar-study-report.md) summarises the results.
 

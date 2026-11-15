@@ -42,6 +42,7 @@ numbers in `docs/history/reports/` and `artifacts/phase3/` are prototype evidenc
 | Need | Location |
 | --- | --- |
 | Study report with all results | [docs/reports/faar-study-report.md](docs/reports/faar-study-report.md) |
+| Research log: everything tried, in date order, with findings | [docs/research/research-log.md](docs/research/research-log.md) |
 | Pre-registration, frozen method and test plan | [docs/research/faar-vs-gated-preregistration.md](docs/research/faar-vs-gated-preregistration.md) |
 | Study design: question, comparisons, scoring, decisions | [docs/research/study-brief.md](docs/research/study-brief.md) |
 | Earlier AAAI plan, kept as evidence; the study brief says which parts still apply | [docs/research/aaai-plan.md](docs/research/aaai-plan.md) |
